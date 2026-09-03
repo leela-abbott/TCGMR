@@ -1,0 +1,148 @@
+//QIFC309  JOB (IFC,07),'UNIT FETCH     ',
+//  MSGCLASS=R,%5
+/*RESOURCE C=1,T=1,XPR
+/*JOBPARM FORMS=LANB,S=X90B
+/*ROUTE  PRINT RMT2017
+//*********************************************************************
+//*** NAME:   QIFC309                                               ***
+//*** DATE:   09/26/2005                                            ***
+//*** AUTHOR: A DORFMAN                                             ***
+//*** DESC:   GET UNIT DATA                                         ***
+//*** MOD HISTORY                                                   ***
+//*** DATE       NAME               DESCRIPTION                     ***
+//*** ========== ================== ==============================  ***
+//*** 09/26/2005 A DORFMAN          orignal                         ***
+//*** 03/10/2007 A DORFMAN          Eliminate write of RGMD20       ***
+//*** 04/02/2007 A Dorfman          Fix FTP error                   ***
+//*** 04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE***
+//*** 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION***
+//*** 09/22/2014 R MEINHARDT        ADDED ABT/ABV SPLIT CRITERIA    ***
+//*********************************************************************
+//*
+//IFC309XX PROC NODE='XA ',SYSTEM=XXX,CYCLE=XXXXX,SEC='%6'    
+//********************************************************************* 
+//*** NAME:   IFC309XX                                              *** 
+//*** DATE:   09/26/2005                                            *** 
+//*** AUTHOR: A DORFMAN                                             *** 
+//*** DESC:   GET UNIT DATA                                         *** 
+//*** MOD HISTORY                                                   *** 
+//*** DATE       NAME               DESCRIPTION                     *** 
+//*** ========== ================== ==============================  *** 
+//*** 09/26/2005 A DORFMAN          ORIGINAL                        *** 
+//********************************************************************* 
+//********************************************************************* 
+//* *** ALLOCATE AND/OR EMPTY TEMPORARY DATASET FOR FTP                 
+//********************************************************************* 
+//IFC309UA EXEC PGM=IEFBR14                                             
+//DD1      DD  DSN=ABT.&SEC..IFC.RBLB20,                                
+//        DISP=(MOD,DELETE),                                            
+//        UNIT=SYSDA,SPACE=(TRK,1)                                      
+//DD2      DD  DSN=ABT.&SEC..IFC.RBLB20.EXT1,                           
+//        DISP=(MOD,DELETE),                                            
+//        UNIT=SYSDA,SPACE=(TRK,1)                                      
+//DD3      DD  DSN=ABT.&SEC..IFC.RBLB20.ABV,                            
+//        DISP=(MOD,DELETE),                                            
+//        UNIT=SYSDA,SPACE=(TRK,1)
+//DD2      DD  DSN=ABT.&SEC..IFC.RBLB20.ABT,                            
+//        DISP=(MOD,DELETE),                                            
+//        UNIT=SYSDA,SPACE=(TRK,1)                                      
+//********************************************************************  
+//* *** FORMAT UNIT SALES  AND  CREATE CONTROL STATEMENTS FOR TRANSFER  
+//********************************************************************  
+//IFC309   EXEC    PGM=IFC309,REGION=512K,PARM='&NODE,&SYSTEM,&CYCLE'   
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                             
+//         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                              
+//*                                                                     
+//         INCLUDE MEMBER=SYSOUTDD                                      
+//*                                                                     
+//RBBD20   DD DSN=%E,DISP=SHR                                           
+//IFCD01   DD  DSN=ABT.&SEC..IFC.RBLB20,                                
+//         DISP=(NEW,CATLG,DELETE),                                     
+//         STORCLAS=BASE,                                               
+//         MGMTCLAS=STDPROD,                                            
+//         SPACE=(15416,(500,50),RLSE),                                 
+//         DCB=(RECFM=FB,LRECL=232,BLKSIZE=0)                           
+//IFCD02   DD  DSN=ABT.&SEC..IFC.RBLB20.EXT1,                           
+//         DISP=(NEW,CATLG,DELETE),                                     
+//         STORCLAS=BASE,                                               
+//         MGMTCLAS=STDPROD,                                            
+//         SPACE=(24000,(10,1),RLSE),                                   
+//         DCB=(RECFM=FB,LRECL=80,BLKSIZE=0)                            
+//*----------------------------------------------------------------
+//*              *** SPLIT ABBOTT AND ABBVIE TCGM MARGIN INFO
+//*----------------------------------------------------------------
+//IFC309UC EXEC PGM=SORT                                                        
+//SORTIN   DD DSN=ABT.&SEC..IFC.RBLB20,DISP=SHR                                 
+//SORTOUT  DD DSN=ABT.&SEC..IFC.RBLB20.ABT,                                     
+//            DISP=(NEW,CATLG,DELETE),AVGREC=K,                                 
+//            MGMTCLAS=STDDEVL,STORCLAS=BASE,                                   
+//            SPACE=(9191,(20,20),RLSE)                                         
+//SORTWK01 DD UNIT=SYSDA,SPACE=(27840,(10,10),RLSE)                             
+//SORTWK02 DD UNIT=SYSDA,SPACE=(27840,(10,10),RLSE)                             
+//SORTWK03 DD UNIT=SYSDA,SPACE=(27840,(10,10),RLSE)                             
+//SYSIN    DD *                                                                 
+ INCLUDE COND=((32,1,CH,NE,C'1',                                                
+       AND,32,1,CH,NE,C'3',                                                     
+       AND,32,1,CH,NE,C'F',                                                     
+       AND,32,1,CH,NE,C'G',                                                     
+       AND,32,1,CH,NE,C'M',                                                     
+       AND,32,1,CH,NE,C'P'),                                                    
+      OR,((32,1,CH,EQ,C'1',                                                     
+        OR,32,1,CH,EQ,C'3'),                                                    
+       AND,(33,2,CH,NE,C'10',                                                   
+       AND,33,2,CH,NE,C'30',                                                    
+       AND,33,2,CH,NE,C'41',                                                    
+       AND,33,2,CH,NE,C'42',                                                    
+       AND,33,2,CH,NE,C'55',                                                    
+       AND,33,2,CH,NE,C'61',                                                    
+       AND,33,2,CH,NE,C'65',                                                    
+       AND,33,2,CH,NE,C'71',                                                    
+       AND,33,2,CH,NE,C'81',                                                    
+       AND,33,2,CH,NE,C'92')))                                                  
+ SORT FIELDS=COPY                                                               
+//SYSOUT   DD SYSOUT=*                                                          
+//SYSLST   DD SYSOUT=*                                                          
+//SYSPRINT DD SYSOUT=*                                                          
+//ABNLTERM DD SYSOUT=*                                                          
+//ABENDAID DD SYSOUT=A                                                          
+//SYSUDUMP DD SYSOUT=(A,,DUMP)   
+//********************************************************************
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM ORACLE              
+//********************************************************************
+//*IFC309UB EXEC  PGM=FTPABT                                          
+//*                                                                   
+//*         INCLUDE MEMBER=SYSOUTDD                                   
+//*                                                                   
+//*INPUT    DD  DSN=ABT.&CNTL..SORTCARD(IFC309UB),DISP=SHR            
+//********************************************************************
+//*LOGMSG1   EXEC  PGM=LOGMSG,                                        
+//*             COND=(0,EQ,IFC309UB),PARM=ABEND                       
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                 
+//*****************************************************************   
+//***** END OF PROC ****** I F C 3 0 9 X X ****** END OF PROC *****   
+//*****************************************************************   
+//         PEND
+//IFC309XX EXEC IFC309XX,SYSTEM=%1,CYCLE=%2,SEC='%6'
+//**********************************************************************
+//*  FTP HAS BEEN REPLACED BY MQFTE
+//**********************************************************************
+//*IFC309UB.INPUT DD *
+//*%8
+//*%9
+//*PUT 'ABT.%6.IFC.RBLB20.ABT' '%A/UNITS/%2.UNITS'
+//*QUIT
+//*************************************************************                 
+//*  TRANSFER   ABBOTT   TRIGGER FROM MVS TO AS400 ESSBASE VIA MQFTE                     
+//*************************************************************                   
+//IFC309UC EXEC FTEREXX
+//SYSTSIN DD *
+%FTEREX1 ABT.S1.PROCLIB FTEXML01 MQP2 LCMVS_P -
+     ABT.%6.IFC.RBLB20.ABT -
+     %A/UNITS/ -
+     %2.UNITS -
+     USLCAGEP -     
+     BSS_TCGMSUITE_P -
+     N  
+//*****************************************************************
+//***** END OF JOB  ****** Q I F C 3 0 9   ****** END OF JOB  *****
+//*****************************************************************

@@ -1,0 +1,71 @@
+	<table class="mntNav" width="780" cellpadding="0" cellspacing="0">
+		<tr>
+			<td>
+				<a href="asrMaintenance.do" class="mntNav">
+					Asr<br />
+					Data</a>
+			</td>
+
+			<td>
+				<a href="asrTranMaintenance.do" class="mntNav">
+					Asr<br />
+					Maint</a>
+			</td>
+			<td>
+				<a href="bpcsMaint.do" class="mntNav">
+					BPC<br />
+					Data</a>
+			</td>
+			<td>
+				<a href="bpcsTranMaint.do" class="mntNav">
+					BPC<br />
+					Maint</a>
+			</td>
+
+			<td>
+				<a href="bpcRevMaint.do" class="mntNav">
+					BPC<br />Rev<br />
+					Data</a>
+			</td>
+			<td>
+				<a href="bpcRevTranMaint.do" class="mntNav">
+					BPC<br />Rev<br />
+					Maint</a>
+			</td>			
+			<td>
+				<a href="bpcExMaint.do" class="mntNav">
+					BPC<br />
+					Ex<br />
+					Data</a>
+			</td>
+			<td>
+				<a href="bpcExTranMaint.do" class="mntNav">
+					BPC<br />
+					Ex<br />
+					Maint</a>
+			</td>
+			<!--  Not using this feature
+			<td>
+				<a href="rateExMaint.do" class="mntNav">
+					Rate<br />
+					Ex<br />
+					Data</a>
+			</td>
+			<td>
+				<a href="rateExTranMaint.do" class="mntNav">
+					Rate<br />
+					Ex<br />
+					Maint</a>
+			</td> -->
+			<td>
+				<a href="notesMaint.do" class="mntNav">
+					Notes<br />
+					Data</a>
+			</td>
+			<td>
+				<a href="notesTranMaint.do" class="mntNav">
+					Notes<br />
+					Maint</a>
+			</td>
+		</tr>
+	</table>

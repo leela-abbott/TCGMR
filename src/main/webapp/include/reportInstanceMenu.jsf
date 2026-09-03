@@ -1,0 +1,53 @@
+<html:form name="reportMenuForm" action="printReport" type="abbott.ai.tcgm.action.form.ReportMenuForm" >
+<bean:define id="reportList" name="reportMenuForm" property="reportList" />
+<bean:define id="destinationList" name="reportMenuForm" property="destinationList" />
+  <table width="400" border="0" cellpadding="2" cellspacing="2" >
+    <tr>
+      <td align="center" class="tableHeading">Available Reports</td>
+      <td colspan="2" width=200 align="center" class="tableHeading">Print & Display Options</td>
+    </tr>
+    <tr valign="top">
+      <td rowspan="4" >
+	  <div align="center">
+          <html:select property="selReport" size="6">
+          	<html:options property="reportDefinition.id" labelProperty="reportDefinition.name" collection="reportList" />
+          </html:select>
+     </div>
+	 </td>
+      <td colspan="2" width=200 valign="top"><div align="center">
+          <a href="javascript:checkRestriction('DISPLAY')"><img src="images/btnDisplay.png" border=0 width="80" height="20"></a></div></td>
+    </tr>
+    <tr valign="top">
+      <td width="100" valign="top" class="smNormal">
+            <input type="checkbox" name="chkImmediate" value="checkbox">Immediate<br>
+            <html:select property="selReportDest">
+          	   <html:options property="value" labelProperty="label" collection="destinationList" />
+            </html:select>
+		</td>
+		<td width="100" valign="top" class="smNormal">
+		<input type="checkbox" name="chkRestrict" value="checkbox">Restrict<br>
+		<input name="txtCopies" type="text" value="1" size="3" maxlength="3"> Copies</td>
+    </tr>
+    <tr>
+      <td colspan="2" width=200><div align="center"><a href="javascript:checkRestriction('PRINT')"><img src="images/btnPrint.png" border=0 width="80" height="20"></a></div></td>
+    </tr>
+  </table>
+  <html:hidden property="cmd" />
+  <html:hidden property="returnLocation" />
+</html:form>
+<script language="javascript">
+function checkRestriction(cmd) {
+    if (document.forms[0].chkRestrict.checked) {
+        document.forms[0].cmd.value = cmd;
+        document.forms[0].action="openReportRestrictions.do";
+        document.forms[0].submit();
+    }
+    else if (cmd == "PRINT") {
+        document.forms[0].action="printReport.do";
+        document.forms[0].submit();
+    }
+    else if (cmd == "DISPLAY") {
+        viewReport(document.forms[0].selReport.value);
+    }
+}
+</script>

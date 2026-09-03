@@ -1,0 +1,182 @@
+//QIFC332 JOB (IFC,07),'SALES FILE',               DOWNLOAD DATA TO ESSBJOB24530
+// %4,%5                                                                        
+/*ROUTE PRINT R2017                                                     00000300
+/*JOBPARM FORMS=LANB                                                    00000400
+/*RESOURCE C=1,T=1,K=RT                                                 00000500
+//JOBLIB JCLLIB ORDER=(ABT.AB.PROCLIB,ABT.DV.PROCLIB)                   00000600
+//********************************************************************  00000700
+//*  NAME:    QIFC332     *** ABBOTT ***                             *  00000800
+//*  DATE:    11/22/2006                                             *  00000900
+//*  AUTHOR:  A DORFMAN                                              *  00001000
+//*  DESC:                                                           *  00001100
+//*  CREATES SALES FILE FORMATTED FOR ESSBASE LOADING                *  00001200
+//*  WHERE:                                                          *  00001300
+//*         MM   IS THE REQUESTED MONTH FOR THE DOWNLOADED DATA      *  00001400
+//*         YYYY IS THE FISCAL YEAR FOR THE DOWNLOADED DATA          *  00001500
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                  *  00001600
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                   *  00001700
+//*  MOD HISTORY                                                     *  00001800
+//*  DATE       NAME             DESCRIPTION                         *  00001900
+//*  ========== ================ =================================== *  00002000
+//*  11/22/2006 A DORFMAN        ORIGINAL                            *  00002100
+//* 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION   *  00002200
+//*  11/12/2014 R MEINHARDT ADDED SORT STEP TO SPLIT ABBOTT/ABBVIE   *  00002300
+//*                         DATA                                     *  00002400
+//********************************************************************  00002500
+//***IFC332XX PROC PARM031='122005V1',SEC='AB',CNTL='AB'                00002600
+//********************************************************************  00002700
+//*  CREATES SALES DATA FORMATTED FOR ESSBASE LOADING                *  00002800
+//*  WHERE:                                                          *  00002900
+//*         MM   IS THE REQUESTED MONTH                              *  00003000
+//*         YYYY IS THE FISCAL YEAR FOR WHICH THE DATA IS DOWNLOADED *  00003100
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                  *  00003200
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                   *  00003300
+//********************************************************************  00003400
+//***IFC332UA EXEC  PGM=IEFBR14                                         00003500
+//***RGMD32   DD DSN=ABT.&SEC..IFC.RGMD32,DISP=(MOD,DELETE),            00003600
+//***            UNIT=SYSDA,SPACE=(TRK,1)                               00003700
+//***RGMD33   DD DSN=ABT.&SEC..IFC.RGMD33,DISP=(MOD,DELETE),            00003800
+//***            UNIT=SYSDA,SPACE=(TRK,1)                               00003900
+//**********************************************************************00004000
+//***IFC332   EXEC PGM=IFC332,REGION=2048K,PARM=&PARM031                00004100
+//***STEPLIB  DD DSN=ABT.AB.DUMMYLIB,DISP=SHR                           00004200
+//***         DD DSN=ABT.AB.PERMLIB,DISP=SHR                            00004300
+//***RGMD20   DD DSN=ABT.&SEC..RGM.RGMD20.ORIG(+0),DISP=OLD         +I  00004400
+//***RGMD32   DD DSN=ABT.&SEC..IFC.RGMD32,                          +0  00004500
+//***            DISP=(NEW,CATLG,DELETE),                               00004600
+//***            STORCLAS=BASE,                                         00004700
+//***            MGMTCLAS=STDPROD,                                      00004800
+//***            SPACE=(27200,(2000,200),RLSE),                         00004900
+//***            DCB=(RECFM=FB,LRECL=213,BLKSIZE=0)                     00005000
+//****    AS400 TRIGGER RECORD                                          00005100
+//***RGMD33    DD  DSN=ABT.&SEC..IFC.RGMD33,                         +0 00005200
+//***             DISP=(,CATLG,DELETE),                                 00005300
+//***             STORCLAS=BASE,                                        00005400
+//***             MGMTCLAS=STDPROD,                                     00005500
+//***             SPACE=(24000,(10,1),RLSE),                            00005600
+//***             DCB=(RECFM=FB,LRECL=11,BLKSIZE=0)                     00005700
+//*                                                                     00005800
+//***         INCLUDE MEMBER=SYSOUTDD                                   00005900
+//*                                                                     00006000
+//***SORTWK01 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006100
+//***SORTWK02 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006200
+//***SORTWK03 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006300
+//***SORTWK04 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006400
+//***SORTWK05 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006500
+//***SORTWK06 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                         00006600
+//********************************************************************* 00006700
+//******* END OF PROC ******  I F C 3 1 0 X X ****** END OF PROC ****** 00006800
+//********************************************************************* 00006900
+//***         PEND                                                      00007000
+//IFC333XX EXEC IFC333XX,PARM031='%1%2%3%Y',CNTL='%7',SEC='%6'          00007100
+//**************************************************************        00007200
+//*  EXTRACT ONLY THE   ABBOTT   ROLLSLS DATA FROM RGMD20 FILE          00007300
+//**************************************************************        00007400
+//IFC332UX.SYSIN DD *                                                   00007500
+ INCLUDE COND=(37,1,CH,NE,C'F',                                         00007600
+       AND,37,1,CH,NE,C'G',                                             00007700
+       AND,37,1,CH,NE,C'M',                                             00007800
+       AND,37,1,CH,NE,C'P',                                             00007900
+        AND,35,3,CH,NE,C'101',                                          00008000
+        AND,35,3,CH,NE,C'301',                                          00008100
+        AND,35,3,CH,NE,C'411',                                          00008200
+        AND,35,3,CH,NE,C'421',                                          00008300
+        AND,35,3,CH,NE,C'551',                                          00008400
+        AND,35,3,CH,NE,C'611',                                          00008500
+        AND,35,3,CH,NE,C'651',                                          00008600
+        AND,35,3,CH,NE,C'711',                                          00008700
+        AND,35,3,CH,NE,C'811',                                          00008800
+        AND,35,3,CH,NE,C'921',                                          00008900
+        AND,35,3,CH,NE,C'103',                                          00009000
+        AND,35,3,CH,NE,C'303',                                          00009100
+        AND,35,3,CH,NE,C'413',                                          00009200
+        AND,35,3,CH,NE,C'423',                                          00009300
+        AND,35,3,CH,NE,C'553',                                          00009400
+        AND,35,3,CH,NE,C'613',                                          00009500
+        AND,35,3,CH,NE,C'653',                                          00009600
+        AND,35,3,CH,NE,C'713',                                          00009700
+        AND,35,3,CH,NE,C'813',                                          00009800
+        AND,35,3,CH,NE,C'923')                                          00009900
+ SORT FIELDS=COPY                                                       00010000
+//*********************************************************             00010100
+//*  RGMD20.SPLIT IS USED IN PROC AS INPUT TO IFC332.                   00010200
+//*  ABT.AB.RGM.RGMD20.ORIG(0) IS USED AS INPUT TO SORT SPLIT           00010300
+//*********************************************************             00010400
+//*IFC332.RGMD20 DD DSN=ABT.AB.RGM.RGMD20.ORIG(0),DISP=OLD              00010500
+//*                                                                     00010600
+//*************************************************************                 
+//* CHANGE FTP TO MQFTE FOR TCGM UPGRADE PROJECT  07/28/2015                    
+//*************************************************************                 
+//*IFC332UC.INPUT DD *                                                  00010700
+//*UAPD5003P                                                                    
+//*ftprurd Today032513                                                          
+//*PUT 'ABT.AB.RGM.RGMD32' '/prod/ai/usrdat/rurd/ROLLSLS.txt'                   
+//*QUIT                                                                         
+//*IFC332UD.INPUT DD *                                                          
+//*UAPD5003P                                                                    
+//*ftprurd Today032513                                                          
+//*PUT 'ABT.AB.RGM.RGMD33' '/prod/ai/usrdat/rurd/RGMTRG.txt'                    
+//*QUIT                                                                         
+//*                                                                             
+//*****************************************************************             
+//*  TRANSFER   ABBOTT   TRIGGER FROM MVS TO AS400 ESSBASE VIA MQFTE            
+//******************************************************************            
+//IFC332UC EXEC FTEREXX                                                         
+//SYSTSIN DD *                                                                  
+%FTEREX1 ABT.S1.PROCLIB FTEXML01 MQP2 LCMVS_P -                                 
+     ABT.AB.RGM.RGMD32 -                                                        
+     /int/PGM/100/tcgm/usrdat/rurd -                                       
+     ROLLSLS.txt -                                                              
+     USLCAGEP -                                                                 
+     BSS_TCGMSUITE_P -
+     N                                                            
+//*********************************************************************         
+//IFC332UD EXEC FTEREXX                                                         
+//SYSTSIN DD *                                                                  
+%FTEREX1 ABT.S1.PROCLIB FTEXML01 MQP21 LCMVS_P -                                 
+     ABT.AB.RGM.RGMD33 -                                                        
+     /int/PGM/100/tcgm/usrdat/rurd -                                      
+     RGMTRG.txt -                                                               
+     USLCAGEP -                                                                 
+     BSS_TCGMSUITE_P -
+     N                                                             
+//*********************************************************************         
+//***IFC332.STEPLIB DD DSN=ABT.AB.TESTLIB,DISP=SHR                      00011800
+//***IFC332.RGMD20 DD DSN=ABT.AB.RGM.RGMD20.ORIG(+0),DISP=OLD +I        00011900
+//***IFC332UB.SYSIN  DD  *                                              00012000
+//***$$DD01 COPY  OUT=1,                                                00012100
+//***             IF=(1,EQ,C'2'),                                       00012200
+//***                MOVE=(1,4,1),                                      00012300
+//***                MOVE=(5,2,6)                                       00012400
+//*************************************************                     00012500
+//*  TRANSFER DATA FROM MVS TO AS400 ESSBASE                            00012600
+//*************************************************                     00012700
+//***IFC332UC EXEC  PGM=FTPABT                                          00012800
+//***SYSPRINT DD SYSOUT=*                                               00012900
+//***SYSOUT   DD SYSOUT=*                                               00013000
+//***INPUT    DD  *                                                     00013100
+//***%C                                                                 00013200
+//***%D                                                                 00013300
+//***PUT 'ABT.AB.IFC.RGMD32' DWPROD/ROLLSLS.ROLLSLS                     00013400
+//***QUIT                                                               00013500
+//********************************************************************* 00013600
+//***LOGMSG2   EXEC  PGM=LOGMSG,                                        00013700
+//***             COND=(0,EQ,IFC310UC),PARM=ABEND                       00013800
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                00013900
+//*************************************************                     00014000
+//*  TRANSFER TRIGGER RECORD                                            00014100
+//*************************************************                     00014200
+//***IFC332D EXEC  PGM=FTPABT                                           00014300
+//***SYSPRINT DD SYSOUT=*                                               00014400
+//***SYSOUT   DD SYSOUT=*                                               00014500
+//***INPUT    DD  *                                                     00014600
+//***%C                                                                 00014700
+//***%D                                                                 00014800
+//***PUT 'ABT.AB.IFC.RGMD33' DWPROD/RGMTRG.RGMTRG                       00014900
+//***QUIT                                                               00015000
+//********************************************************************* 00015100
+//***LOGMSG3   EXEC  PGM=LOGMSG,                                        00015200
+//***             COND=(0,EQ,IFC310UD),PARM=ABEND                       00015300
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                00015400
+//*********************************************************************         
+//**E N D    O F    J O B   Q I F C 3 1 0                            ** 00015500

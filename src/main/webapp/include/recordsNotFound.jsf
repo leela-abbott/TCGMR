@@ -1,0 +1,11 @@
+<table cellspacing="0" width="780">
+	<tr>
+		<td>
+			<p class="recordsNotFound">
+				<br>
+				No Records Found Matching Filter Criteria
+				<br>
+			</p>
+		</td>
+	</tr>
+</table>

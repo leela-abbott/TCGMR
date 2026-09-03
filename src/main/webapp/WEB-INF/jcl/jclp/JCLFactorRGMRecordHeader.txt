@@ -1,0 +1,65 @@
+//QRGM30 JOB (RGM,07),'TCGM MAINTENANCE',TYPRUN=SCAN,                           
+//       NOTIFY=T07PID,                                                         
+//       %4,%1,%2                                                               
+/*OUTPUT B01 FORMS=PR08,DEST=R2017                                              
+//R43 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=A                             
+//**R30 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=R                           
+//R30 OUTPUT CLASS=3,WRITER=RGMR01                                              
+/*ROUTE PRINT N1.R2017                                                          
+/*JOBPARM FORMS=LAN1,S=X84A                                                     
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//**NAME:      QRGM30                                                **         
+//**DESC:      TCGM MAINTENANCE                                       **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **        
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **        
+//**04/18/2007 A DORFMAN           CHANGE INFOPAC PRINT TO CLASS=R    **        
+//**                               ADD T07DRC TO NOFITY ON JOB CARD   **        
+//**05/17/2007 A DORFMAN           MOD TO USE PRODUCTION AB FILES     **        
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **        
+//**********************************************************************        
+//RGM330XX PROC CNTL='%6'                                                       
+//**********************************************************************        
+//**NAME:      RGM330XX                                               **        
+//**DESC:      UPDATE LIST FILE DATA                                  **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **        
+//**12/19/2014 R MEINHARDT         DEACTIVATE SEND TO RGM             **        
+//**********************************************************************        
+//**                                                                            
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA TO MVS FROM TCGM                     *         
+//*********************************************************************         
+//RGM330UB EXEC PGM=FTPABT                                                      
+//*                                                                             
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//*                                                                             
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RGM330UB),DISP=SHR   +I                  
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM330UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*********************************************************************         
+//***** E N D   O F   P R O C * RGM330XX * E N D   O F   P R O C ******         
+//**********************************************************************        
+//         PEND                                                                 
+//RGM330XX EXEC RGM330XX,CNTL='%7'                                              
+//RGM330UB.INPUT  DD  *                                                         
+%8                                                                              
+%9                                                                              
+cd %B/RGM                                                                       
+GET RGMEXPORT.rgm.processed 'ABT.AB.IFC.RGMD95' (REPLACE                        
+DELETE '%B/RGM/RGMEXPORT.rgm.processed'                                         
+QUIT                                                                            
+//**********************************************************************        
+//**E N D    O F    J O B      Q R G M 3 0                            **        
+//**********************************************************************        

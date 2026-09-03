@@ -1,0 +1,83 @@
+//QIFC303  JOB (IFC,07),'BP COST UPLD ',TYPRUN=SCAN,                            
+//          %4,%5                                                               
+/*ROUTE PRINT R2017                                                             
+/*JOBPARM FORMS=LANB                                                            
+/*OUTPUT R01 DEST=RMT2017,FORMS=X200                                            
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//** NAME:      QIFC303                                               **        
+//** AUTHOR:    A DORFMAN                                             **        
+//** DATE:      10/05/2005                                            **        
+//** DESC:      BP COST UPLOAD                                        **        
+//** MOD HISTORY                                                      **        
+//** DATE       NAME                DESCRIPTION                       **        
+//** ========== =================== ================================= **        
+//** 10/05/2005 A DORFMAN           ORIGINAL                          **        
+//** 04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE   **        
+//** 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **       
+//** 12/19/2014 R MEINHARDT         DEACTIVATE FOR TCGM.               **       
+//**********************************************************************        
+//IFC303XX PROC SEC='AI.INT',CNTL='%6',TYP='XXXXXXXX'                           
+//**********************************************************************        
+//**NAME:      IFC303XX                                               **        
+//**DATE:      10/26/2005                                             **        
+//**DESC:      UPLOAD TREE DATA FROM TCGM                             **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== ================================== **        
+//**10/26/2005 A DORFMAN           ORIGINAL                           **        
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **        
+//**********************************************************************        
+//*                                                                             
+//**********************************************************************        
+//* *** DELETE OLD FILE                                               **        
+//**********************************************************************        
+//IFC303UA EXEC PGM=IEFBR14                                                     
+//DD1      DD  DSN=ABT.&SEC..SYSTREE1.&TYP,                                     
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM FILE SHARE VIA FTP            
+//***** A) TRANSFER SALES HISTORY EXTRACT                                       
+//*********************************************************************         
+//IFC303UB    EXEC PGM=FTPABT                                                   
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(IFC303UB),DISP=SHR                       
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,IFC303UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//**********************************************************************        
+//* *** SORT FILE BY END, SUP, AND RPT DATA                            *        
+//**********************************************************************        
+//IFC303UC EXEC PGM=SORT                                                        
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//SORTIN   DD  DSN=ABT.&SEC..SYSTREE1.EXT1,DISP=SHR  +I                         
+//SORTOUT  DD  DSN=ABT.&SEC..SYSTREE1.&TYP,                +O                   
+//             DISP=(NEW,CATLG,DELETE),                                         
+//             STORCLAS=BASE,                                                   
+//             MGMTCLAS=STDPROD,                                                
+//             SPACE=(22650,(500,50),RLSE),                                     
+//             DCB=(LRECL=148,RECFM=FB,BLKSIZE=0)                               
+//SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(IFC303UC),DISP=SHR                       
+//*********************************************************************         
+//LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,IFC303UC),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(SORTMSG),DISP=SHR                           
+//*********************************************************************         
+//******* END OF PROC ******  I F C 3 0 3 X X ****** END OF PROC ******         
+//*********************************************************************         
+//         PEND                                                                 
+//IFC303XX EXEC IFC303XX,CNTL='%7',TYP='%1'                                     
+//IFC303UB.INPUT DD *                                                           
+%8                                                                              
+%9                                                                              
+cd %B/BPC                                                                       
+GET SYSTREE1.bpc.processed 'ABT.AI.INT.SYSTREE1.EXT1' (REPLACE                  
+DELETE %B/BPC/SYSTREE1.bpc.processed                                            
+QUIT                                                                            
+//IFC303UC.SYSIN DD *                                                           
+  SORT FIELDS=(1,21,CH,A,64,3,CH,A)                                             
+//**********************************************************************        
+//** E N D    O F     J O B   Q I F C 3 0 3                           **        
+//**********************************************************************        

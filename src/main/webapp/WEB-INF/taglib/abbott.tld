@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>abbott</short-name>
+	<uri>/WEB-INF/taglib/abbott.tld</uri>
+	<display-name>Abbott Tag Library</display-name>
+	<description>Functionality for Abbott applications</description>
+
+	<tag>	
+		<name>checkLogon</name>
+		<tag-class>abbott.customTags.CheckLogonTag</tag-class>
+		<body-content>empty</body-content>
+		<display-name>Check Logon</display-name>
+		<description>
+			Validate that there is a currently logged on user, by checking for
+			the existence of a session-scope bean under the specified name.
+			If there is no such bean, forward control to the specified page,
+			which will typically be a logon form.
+			name - Name of the session-scope bean to check for [user]
+			page - Context-relative path to the logon page [/logon.jsp]
+		</description>
+		<attribute>
+			<name>beanName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				The name of the bean to locate in the session.
+			</description>
+		</attribute>
+		<attribute>
+			<name>forwardPage</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>
+				The page to forward to if the session scoped bean is not located.
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>securePage</name>
+		<tag-class>abbott.customTags.SecurePageTag</tag-class>
+		<body-content>JSP</body-content>
+		<display-name>Secure Page</display-name>
+		<description>
+			 Title: SecurePageTag
+			 Description: This tag will expect to take a minimum access level and the user's
+			 current access level and will determine if the user has rights to the given page or section of a page.
+
+			 If the user does not have rights and has specified a forwardPage value, the tag will forward to the page.
+			 If the user does not have rights and has not specified a forwardPage value, the tag will simply not display
+			 the body content
+
+			 If the user does have rights the page and/or body content found within the tag will be displayed.
+
+			 If you wish to use this tag to control access to an entire page then make sure you supply a forwardPage value
+			 If you only wish to hide or display the body content of a tag do not supply a forwardPage value
+
+			 The tag will take some constants to determine how the comparison should be performed.
+
+			 Comparisions will be performed for the following based on the comparisionType passed in.  It is assumed that
+			 the accessLevels will be numeric.  Your application may need to store int values with the string constants
+			 that describe your application roles.
+
+			 The default comparison type is ==.
+
+			 userAccessLevel == requiredAccessLevel
+			 userAccessLevel != requiredAccessLevel
+			 userAccessLevel &lt; requiredAccessLevel
+			 userAccessLevel &lt;= requiredAccessLevel
+			 userAccessLevel &gt; requiredAccessLevel
+			 userAccessLevel &gt;= requiredAccessLevel
+
+			 Copyright: Copyright (c) 2002
+			 Company: Abbott Laboratories
+
+			 author Dave FIelds
+			 version 1.0
+		</description>
+		<attribute>
+			<name>comparisonType</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>requiredAccessLevel</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>userAccessLevel</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>forwardPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>row</name>
+		<tag-class>abbott.customTags.RowTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			Format a HTML Table Row (i.e.  TR tag)
+		</description>
+		<attribute>
+			<name>oddColor</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>evenColor</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		
+		<attribute>
+			<name>rowNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>oddStyleClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>evenStyleClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>align</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>valign</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onblur</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onfocus</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onkeydown</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onkeypress</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onkeyup</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onmousedown</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onmousemove</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onmouseout</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onmouseover</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>onmouseup</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>styleClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

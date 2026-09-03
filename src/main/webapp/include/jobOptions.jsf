@@ -1,0 +1,19 @@
+<nested:define id="destinationList" property="destinationList" />
+<html:hidden property="jobName" /><html:hidden property="cmd" />
+<table class="tableJob" cellspacing=0  >
+  <tr valign="middle">
+   <td class="tdJobHeader" >Job Options</td>
+   <td width=10 class="tdJobOption" >&nbsp;</td>
+    <td class="tdJobOption" >
+       <html:checkbox property="chkImmediate" />Run Job Immediate
+    </td>
+       <td width=180 class="tdJobOption" >&nbsp;</td>
+    <td class="tdJobOption" >
+        <html:select property="selReportDest" styleClass="smNormal" value="G"><><html:options property="value" labelProperty="label" collection="destinationList"  /></html:select>
+    </td>
+    <td class="tdJobOption" >
+        <html:checkbox property="chkRestrict" /> Restrict Output     
+<!-- 	<html:text property="numCopies" value="1" size="3" maxlength="3"  styleClass="smNormal" /> Copies -->
+    </td>
+  </tr>
+ </table>

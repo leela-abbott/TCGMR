@@ -1,0 +1,49 @@
+<table border="0" width="300" cellpadding="0" cellspacing="0" height="0%">
+	<br>
+	<tr>
+		<td width="0%">&nbsp;
+			<span id="prevPageDiv">
+				<nested:equal property="pagingFilter.dispPrevPage" value="true">
+					<a href="javascript:checkFilterDirtyFlag(document.bpcsTranForm,'prevpage');">
+						<img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
+					</a>
+				</nested:equal>
+			</span>
+		</td>
+		<td nowrap width="1%">
+			<div class="pagingInfo" id="pagingDiv">
+				<nested:notEqual property="bpcsTranListSize" value="0">
+					<nested:nest property="pagingFilter">
+						<nested:hidden property="startRecord" />
+						<nested:hidden property="recordsToRetrieve" />
+						<nested:hidden property="totalRecordsInSet" />
+						<nested:write property="startRecord" />-<nested:write property="endRecordForDisplay"/>/<nested:write property="totalRecordsInSet" />&nbsp;
+					</nested:nest>
+				</nested:notEqual>
+			</div>
+		</td>
+		<td width="0%">&nbsp;
+			<span id="nextPageDiv">
+				<nested:equal property="pagingFilter.dispNextPage" value="true" >
+					<a href="javascript:checkFilterDirtyFlag(document.bpcsTranForm,'nextpage');">
+						<img src="images/btnPageRight.png" border="0" alt="Next Page" />
+					</a>
+				</nested:equal>
+			</span>
+		</td>
+		<nested:nest property="pagingFilter">
+		<td width="160">
+		     <div class="fltrTblHdng">
+			Record&nbsp;#&nbsp;
+			<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+			onkeyup="return autoTab(this, 7, event);"  onchange="javascript:document.getElementById('pagingFilter.recordNumberInSet').value =(this.value);"/>
+		     </div>
+		</td>
+			
+		 </nested:nest>
+		 <td width="0%">
+			 <a href="javascript:changeCmdAndSubmit(document.bpcsTranForm,'selectedrecordpage');">
+			 <img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
+		 </td>
+	</tr>
+</table>

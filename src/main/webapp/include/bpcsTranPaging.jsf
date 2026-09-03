@@ -1,0 +1,139 @@
+<% // Sridevi.K 7-12-05 imports and code added%>
+<%@ page import="abbott.ai.tcgm.TCGMConstants" %>
+<%@ page import="abbott.ai.tcgm.entities.TCGMState" %>
+<%
+		TCGMState state = (TCGMState)request.getSession().getAttribute(TCGMConstants.SESSION_NAME_STATE);
+		if(state == null)
+		{
+			state = new TCGMState();
+		}
+%>
+<% // Sridevi.K 7-12-05 End of imports and code %>
+
+<table border="0" width="780" cellpadding="0" cellspacing="0" height="0%">
+	<tr>
+		<td width="0%">&nbsp;
+			<span id="prevPageDiv">
+				<nested:equal property="pagingFilter.dispPrevPage" value="true">
+					<a href="javascript:checkFilterDirtyFlag(document.bpcsTranForm,'prevpage');">
+						<img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
+					</a>
+				</nested:equal>
+			</span>
+		</td>
+		<td nowrap width="1%">
+			<div class="pagingInfo" id="pagingDiv">
+				<nested:notEqual property="bpcsTranListSize" value="0">
+					<nested:nest property="pagingFilter">
+						<nested:hidden property="startRecord" />
+						<nested:hidden property="recordsToRetrieve" />
+						<nested:hidden property="totalRecordsInSet" />
+						<nested:write property="startRecord" />-<nested:write property="endRecordForDisplay"/>/<nested:write property="totalRecordsInSet" />&nbsp;
+					</nested:nest>
+				</nested:notEqual>
+			</div>
+		</td>
+		<td width="0%">&nbsp;
+			<span id="nextPageDiv">
+				<nested:equal property="pagingFilter.dispNextPage" value="true" >
+					<a href="javascript:checkFilterDirtyFlag(document.bpcsTranForm,'nextpage');">
+						<img src="images/btnPageRight.png" border="0" alt="Next Page" />
+					</a>
+				</nested:equal>
+			</span>
+		</td>
+		<nested:nest property="pagingFilter">
+			<td width="160">
+			<div class="fltrTblHdng">
+			Record&nbsp;#&nbsp;
+			<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+			onkeyup="return autoTab(this, 7, event);"  onchange="javascript:document.getElementById('pagingFilter.recordNumberInSet').value =(this.value);"/>
+			</td>
+			</div>
+		 </nested:nest>
+		 <td width="0%">
+			 <a href="javascript:changeCmdAndSubmit(document.bpcsTranForm,'selectedrecordpage');">
+			 <img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
+		 </td>
+		<td rowspan="2" width="100%" class="right" valign="top">
+			<span id="modelDsp">
+				<nested:define id="factorModels" property="models" />
+			
+				<% // Sridevi.K 7-12-05:  Call the removeOptions script onfocus event. So, add this as attribute to the html select tag%>
+				<html:select name="bpcsTranForm" property="modelSelected" size="1" onfocus='<%="javascript:removeOption(this,\'"+ state.getCurrentModelName() +"\');" %>' >
+				<%//Sridevi.K End .. %>
+				
+					<option value="none">&lt;none&gt;</option>
+					<html:options property="modelId" labelProperty="name" collection="factorModels" />
+				</html:select>
+			</span>
+		</td>
+		<% 
+				if ((TCGMUser.getRole().getAccessLevel()) != (Role.Query.getAccessLevel())) { %>
+		<td class="pagingBtns">
+			<span id ="copySelDiv">
+				<a href="javascript:checkCopy(document.bpcsTranForm.modelSelected.value,document.bpcsTranForm,'copyselected','bpcsTranCopy.do');">
+					<img src="images/btnCopySelected.png" border="0" alt="Copy Selected"/></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id ="delSelDiv">
+				<a href="javascript:confirmDelete(document.bpcsTranForm,'deleteselected','bpcsTranDelete.do');">
+					<img src="images/btnDeleteSelected.png" border="0" alt="Delete Selected"/></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id = "pubSelDiv">
+				<a href="javascript:checkPublish(document.bpcsTranForm,'publishselected','bpcsTranPublish.do');">
+					<img src="images/btnPublishSelected.png" border="0" alt="Publish Selected" /></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id = "saveDiv" class="hidden">
+				<a href="javascript:chgActCmdSubmit(document.bpcsTranForm,'saveselected','bpcsTranSave.do');">
+					<img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
+			</span>
+		</td>
+		<%}%>
+	</tr>
+	<% 
+				if ((TCGMUser.getRole().getAccessLevel()) != (Role.Query.getAccessLevel())) { %>
+	<tr>
+	 <td colspan="6" class="pagingBtns">&nbsp;
+		<span id = "pubSelDiv">
+			<a href="javascript:checkPublish(document.bpcsTranForm,'unpublishselected','bpcsTranPublish.do');">
+				<img src="images/btnUnpublishSelected.png" border="0" alt="Unpublish Selected" /></a>
+		</span>&nbsp;&nbsp;
+		<span id = "pubAllDiv">
+			<a href="javascript:checkPublish(document.bpcsTranForm,'unpublishall','bpcsTranPublish.do');">
+				<img src="images/btnUnpublishAll.png" border="0" alt=Unpublish All" /></a>
+		</span>
+	 </td>
+
+		<td class="pagingBtns">
+			<span id = "copyAllDiv">
+				<a href="javascript:checkCopy(document.bpcsTranForm.modelSelected.value,document.bpcsTranForm,'copyall','bpcsTranCopy.do');">
+					<img src="images/btnCopyAll.png" border="0" alt="Copy All" /></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id = "delAllDiv">
+				<a href="javascript:confirmDelete(document.bpcsTranForm,'deleteall','bpcsTranDelete.do');">
+					<img src="images/btnDeleteAll.png" border="0" alt="Delete All" /></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id = "pubAllDiv">
+				<a href="javascript:checkPublish(document.bpcsTranForm,'publishall','bpcsTranPublish.do');">
+					<img src="images/btnPublishAll.png" border="0" alt="Publish All" /></a>
+			</span>
+		</td>
+		<td class="pagingBtns">
+			<span id = "cancelDiv" class="hidden">
+				<a href="javascript:chgActCmdSubmit(document.bpcsTranForm,'cancel','bpcsTranMaint.do');">
+					<img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
+			</span>
+		</td>
+	</tr>
+	<%}%>
+</table>

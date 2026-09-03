@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.0//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_0.dtd">
+<struts-config>
+	<form-beans type="abbott.ai.tcgm.action.form.TCGMForm">
+		<form-bean name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" />
+		<form-bean name="asrTranForm" type="abbott.ai.tcgm.action.form.AsrTranForm" />
+		<form-bean name="bpcsForm" type="abbott.ai.tcgm.action.form.BpcsForm" />
+		<form-bean name="bpcsTranForm" type="abbott.ai.tcgm.action.form.BpcsTranForm" />
+		<form-bean name="bpcRevForm" type="abbott.ai.tcgm.action.form.BpcRevForm" />
+		<form-bean name="bpcRevTranForm" type="abbott.ai.tcgm.action.form.BpcRevTranForm" />
+		<form-bean name="bpcExForm" type="abbott.ai.tcgm.action.form.BpcExForm" />
+		<form-bean name="bpXTrnFrm" type="abbott.ai.tcgm.action.form.BpcExTranForm" />
+		<form-bean name="affBpcForm" type="abbott.ai.tcgm.action.form.AffBpcForm" />
+		<form-bean name="createAnalysisModelForm" type="abbott.ai.tcgm.action.form.CreateAnalysisModelForm" />
+		<form-bean name="createCostExchModelForm" type="abbott.ai.tcgm.action.form.CreateCostExchModelForm" />
+		<form-bean name="createFactorModelForm" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" />
+		<form-bean name="createPerpetualModelForm" type="abbott.ai.tcgm.action.form.CreatePerpetualModelForm" />
+		<form-bean name="deferredMarginForm" type="abbott.ai.tcgm.action.form.DeferredMarginForm" />
+		<form-bean name="dummyForm" type="abbott.ai.tcgm.action.form.DummyForm" />
+		<form-bean name="exchExposureForm" type="abbott.ai.tcgm.action.form.ExchExposureForm" />
+		<form-bean name="essbaseMgmtForm" type="abbott.ai.tcgm.action.form.EssbaseMgmtForm" />
+		<form-bean name="mngFactorsForm" type="abbott.ai.tcgm.action.form.MngFactorsForm" />
+		<form-bean name="loginForm" type="abbott.ai.tcgm.action.form.LoginForm" />
+		<form-bean name="mngAnalysisModelsForm" type="abbott.ai.tcgm.action.form.MngAnalysisModelsForm" />
+		<form-bean name="mngCostExchModelsForm" type="abbott.ai.tcgm.action.form.MngCostExchModelsForm" />
+		<form-bean name="mngFactorModelsForm" type="abbott.ai.tcgm.action.form.MngFactorModelsForm" />
+		<form-bean name="mngPerpetualModelsForm" type="abbott.ai.tcgm.action.form.MngPerpetualModelsForm" />
+		<form-bean name="mngRateSets" type="abbott.ai.tcgm.action.form.MngRateSetsForm" />
+		<form-bean name="mngCostExchDataForm" type="abbott.ai.tcgm.action.form.MngCostExchDataForm" />
+		<form-bean name="mngUnitsForm" type="abbott.ai.tcgm.action.form.MngUnitsForm" />
+		<form-bean name="notesForm" type="abbott.ai.tcgm.action.form.NotesForm" />
+		<form-bean name="notesTranForm" type="abbott.ai.tcgm.action.form.NotesTranForm" />
+		<form-bean name="processForm" type="abbott.ai.tcgm.action.form.ProcessForm" />
+		<form-bean name="rateDataForm" type="abbott.ai.tcgm.action.form.RateDataForm" />
+		<form-bean name="rateDataTranForm" type="abbott.ai.tcgm.action.form.RateDataTranForm" />
+		<form-bean name="rateExForm" type="abbott.ai.tcgm.action.form.RateExForm" />
+		<form-bean name="rateExTranForm" type="abbott.ai.tcgm.action.form.RateExTranForm" />
+		<form-bean name="reportMenuForm" type="abbott.ai.tcgm.action.form.ReportMenuForm" />
+		<form-bean name="userForm" type="abbott.ai.tcgm.action.form.UserForm" />
+		<form-bean name="rptUserForm" type="abbott.ai.tcgm.action.form.RptUserForm" />
+		<form-bean name="currencyCodeForm" type="abbott.ai.tcgm.action.form.CurrencyCodeForm" />
+		<form-bean name="affCstCurForm" type="abbott.ai.tcgm.action.form.AffCstCurForm" />
+		<form-bean name="mngReportJobsForm" type="abbott.ai.tcgm.action.form.MngReportJobsForm" />
+		<form-bean name="prMfgForm" type="abbott.ai.tcgm.action.form.PRMfgForm" />
+		<form-bean name="miscReportsForm" type="abbott.ai.tcgm.action.form.MiscReportsForm" />
+		<form-bean name="mngDaemonsForm" type="abbott.ai.tcgm.action.form.MngDaemonsForm" />
+		<form-bean name="miscAnalysisForm" type="abbott.ai.tcgm.action.form.MiscAnalysisForm" />
+		<form-bean name="dataTransfersForm" type="abbott.ai.tcgm.action.form.DataTransfersForm" />
+		<form-bean name="mngDataFeedLogForm" type="abbott.ai.tcgm.action.form.MngDataFeedLogForm" />
+		<form-bean name="activeDirSearchForm" type="abbott.ai.tcgm.action.form.ActiveDirSearchForm" />
+		<form-bean name="salesTypeForm" type="abbott.ai.tcgm.action.form.SalesTypeForm" />
+		<form-bean name="affCodeForm" type="abbott.ai.tcgm.action.form.AffAreaDivForm" />
+		<form-bean name="affasrForm" type="abbott.ai.tcgm.action.form.AsrUsageForm" />		
+		<form-bean name="mainForm" type="abbott.ai.tcgm.action.form.MainForm" />		
+		<form-bean name="fileUploadForm" type="abbott.ai.tcgm.action.form.FileUploadForm" />
+		<form-bean name="deleteFileForm" type="abbott.ai.tcgm.action.form.DeleteFileForm" />	
+	</form-beans>
+	<global-forwards type="org.apache.struts.action.ActionForward">
+		<forward name="exception" path="/jsp/exception.jsp" />
+		<forward name="login" path="/jsp/login.jsp" />
+		<forward name="selectModel" path="/mngFactorModels.do" redirect="false" />
+		<forward name="selectRateSet" path="/openMngRateSets.do" />
+		<forward name="restrictions" path="/jsp/restrictions.jsp" />
+		<forward name="admin" path="/userMaint.do" />		
+		<forward name="main" path="/main.do" />		
+	</global-forwards>
+	<action-mappings type="abbott.ai.tcgm.action.TCGMActionMapping">
+	<action name="loginForm" path="/tcgmAjax" scope="session" type="abbott.ai.tcgm.action.TCGMAjax" input="/jsp/burstMaint.jsp" parameter="method" validate="false">
+			<forward name="failure" path="/jsp/login.jsp"></forward>
+			<forward name="success" path="/jsp/login.jsp"></forward>
+		</action>
+		<action path="/main" type="abbott.ai.tcgm.action.Main" name="mainForm" scope="session" input="/jsp/login.jsp" validate="true">
+						<forward name="success" path="/jsp/index.jsp" />
+						<forward name="failure" path="/openLogin.do" />
+					</action>	
+				<action path="/fileUpload" type="abbott.ai.tcgm.action.FileUpload" name="fileUploadForm" scope="session" input="/jsp/fileUpload.jsp" validate="true">
+				        <forward name="success" path="/jsp/fileUpload.jsp"></forward>
+				        <forward name="failure" path="/openLogin.do"></forward>
+			     </action>
+			     <action path="/deleteFile" type="abbott.ai.tcgm.action.DeleteFile" name="deleteFileForm" scope="session" input="/jsp/deleteFile.jsp" validate="true">
+				        <forward name="success" path="/jsp/deleteFile.jsp"></forward>
+				        <forward name="failure" path="/openLogin.do"></forward>
+	     </action>
+
+                <action path="/affasrFormUpload" type="abbott.ai.tcgm.action.asr.AsrUsageUpload" name="affasrForm" input="/jsp/asrUsage.jsp" scope="session">
+			<forward name="success" path="/jsp/asrUsage.jsp" redirect="false" />
+		</action>
+
+               <action path="/affasrFormDownLoad" type="abbott.ai.tcgm.action.asr.AsrUsageDownload" name="affasrForm" input="/jsp/asrUsage.jsp" scope="session">
+			<forward name="success" path="/jsp/asrUsage.jsp" redirect="false" />
+		</action>
+	     
+		<action path="/affAsrMaint" type="abbott.ai.tcgm.action.asr.AsrUsageMaint" name="affasrForm" input="/jsp/asrUsage.jsp" scope="session">
+			<forward name="success" path="/jsp/asrUsage.jsp" redirect="false" />
+		</action>
+		<action path="/affAsrSave" type="abbott.ai.tcgm.action.asr.AsrUsageCopy" name="affasrForm" scope="session" input="/jsp/asrUsage.jsp" validate="true">
+			<forward name="success" path="/jsp/asrUsage.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+
+                <!-- ASRData Fetching Start-->
+		
+		<action path="/affAsrDataFetched" type="abbott.ai.tcgm.action.asr.AsrUsageDataFetch" name="affasrForm" scope="session" input="/jsp/asrUsage.jsp" validate="true">
+			<forward name="success" path="/jsp/asrUsage.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		
+		<!-- ASRData Fetching End-->
+
+		<action path="/affAsrDelete" type="abbott.ai.tcgm.action.asr.AsrUsageDelete" name="affasrForm" scope="session" input="/jsp/asrUsage.jsp" validate="true">
+			<forward name="success" path="/jsp/asrUsage.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>	  	  	
+		<action path="/affAreaMaint" type="abbott.ai.tcgm.action.AffAreaDivMaint" name="affCodeForm" input="/jsp/affList.jsp" scope="session">
+			<forward name="success" path="/jsp/affList.jsp" redirect="false" />
+		</action>	    
+	    <action path="/errorReport" type="abbott.ai.tcgm.action.LogReportAction" name="processForm" scope="session" input="/jsp/jobMgmt.jsp" validate="true">
+			<forward name="success" path="/jsp/logReport.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action> 
+		<action path="/generateReport" type="abbott.ai.tcgm.action.GenerateReport" name="processForm" scope="session" input="/jsp/jobMgmt.jsp" validate="true">
+			<forward name="success" path="/jsp/generateReport.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrDelete" type="abbott.ai.tcgm.action.asr.AsrDelete" name="asrForm" scope="session" input="/jsp/asr.jsp" validate="true">
+			<forward name="success" path="/jsp/asr.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrMaintenance" type="abbott.ai.tcgm.action.asr.AsrMaint" name="asrForm" scope="session" input="/jsp/asr.jsp" validate="true">
+			<forward name="success" path="/jsp/asr.jsp" />
+			<forward name="advancedfilter" path="/jsp/asrMaintAdvFilter.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+
+		<action path="/asrSave" type="abbott.ai.tcgm.action.asr.AsrSave" name="asrForm" scope="session" input="/jsp/asr.jsp" validate="true">
+			<forward name="success" path="/jsp/asr.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrTranDelete" type="abbott.ai.tcgm.action.asr.AsrTranDelete" name="asrTranForm" scope="session" input="/jsp/asrTran.jsp" validate="true">
+			<forward name="success" path="/jsp/asrTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrTranMaintenance" type="abbott.ai.tcgm.action.asr.AsrTranMaint" name="asrTranForm" scope="session" input="/jsp/asrTran.jsp" validate="true">
+			<forward name="success" path="/jsp/asrTran.jsp" />
+			<forward name="advancedfilter" path="/jsp/asrTranMaintAdvFilter.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrTranPublish" type="abbott.ai.tcgm.action.asr.AsrTranPublish" name="asrTranForm" scope="session" input="/jsp/asrTran.jsp" validate="true">
+			<forward name="success" path="/jsp/asrTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/asrTranSave" type="abbott.ai.tcgm.action.asr.AsrTranSave" name="asrTranForm" scope="session" input="/jsp/asrTran.jsp" validate="true">
+			<forward name="success" path="/jsp/asrTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/bpcExSave" type="abbott.ai.tcgm.action.bpcex.BpcExSave" name="bpcExForm" scope="session" input="/jsp/bpcEx.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcEx.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExDelete" type="abbott.ai.tcgm.action.bpcex.BpcExDelete" name="bpcExForm" scope="session" input="/jsp/bpcEx.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcEx.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExMaint" type="abbott.ai.tcgm.action.bpcex.BpcExMaint" name="bpcExForm" scope="session" input="/jsp/bpcEx.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcEx.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcExMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExUpdate" type="abbott.ai.tcgm.action.bpcex.BpcExUpdate" name="bpcExForm" scope="session" input="/jsp/bpcEx.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcEx.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExTranDelete" type="abbott.ai.tcgm.action.bpcex.BpcExTranDelete" name="bpXTrnFrm" scope="session" input="/jsp/bpcExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcExTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExTranMaint" type="abbott.ai.tcgm.action.bpcex.BpcExTranMaint" name="bpXTrnFrm" scope="session" input="/jsp/bpcExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcExTran.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcExTranMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExTranPublish" type="abbott.ai.tcgm.action.bpcex.BpcExTranPublish" name="bpXTrnFrm" scope="session" input="/jsp/bpcExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcExTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcExTranSave" type="abbott.ai.tcgm.action.bpcex.BpcExTranSave" name="bpXTrnFrm" scope="session" input="/jsp/bpcExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcExTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsMaint" type="abbott.ai.tcgm.action.bpc.BpcsMaint" name="bpcsForm" scope="session" input="/jsp/bpcs.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcs.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcsMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsSave" type="abbott.ai.tcgm.action.bpc.BpcsSave" name="bpcsForm" scope="session" input="/jsp/bpcs.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcs.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/bpcsDelete" type="abbott.ai.tcgm.action.bpc.BpcsDelete" name="bpcsForm" scope="session" input="/jsp/bpcs.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcs.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsUpdate" type="abbott.ai.tcgm.action.bpc.BpcsUpdate" name="bpcsForm" scope="session" input="/jsp/bpcs.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcs.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsTranMaint" type="abbott.ai.tcgm.action.bpc.BpcsTranMaint" name="bpcsTranForm" scope="session" input="/jsp/bpcsTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcsTran.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcsTranMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsTranDelete" type="abbott.ai.tcgm.action.bpc.BpcsTranDelete" name="bpcsTranForm" scope="session" input="/jsp/bpcsTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcsTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsTranPublish" type="abbott.ai.tcgm.action.bpc.BpcsTranPublish" name="bpcsTranForm" scope="session" input="/jsp/bpcsTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcsTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcsTranSave" type="abbott.ai.tcgm.action.bpc.BpcsTranSave" name="bpcsTranForm" scope="session" input="/jsp/bpcsTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcsTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevSave" type="abbott.ai.tcgm.action.bpcrev.BpcRevSave" name="bpcRevForm" scope="session" input="/jsp/bpcRev.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRev.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevDelete" type="abbott.ai.tcgm.action.bpcrev.BpcRevDelete" name="bpcRevForm" scope="session" input="/jsp/bpcRev.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRev.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevMaint" type="abbott.ai.tcgm.action.bpcrev.BpcRevMaint" name="bpcRevForm" scope="session" input="/jsp/bpcRev.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRev.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcRevMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevTranDelete" type="abbott.ai.tcgm.action.bpcrev.BpcRevTranDelete" name="bpcRevTranForm" scope="session" input="/jsp/bpcRevTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRevTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevTranMaint" type="abbott.ai.tcgm.action.bpcrev.BpcRevTranMaint" name="bpcRevTranForm" scope="session" input="/jsp/bpcRevTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRevTran.jsp" />
+			<forward name="advancedfilter" path="/jsp/bpcRevTranMaintAdvFilter.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevTranPublish" type="abbott.ai.tcgm.action.bpcrev.BpcRevTranPublish" name="bpcRevTranForm" scope="session" input="/jsp/bpcRevTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRevTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/bpcRevTranSave" type="abbott.ai.tcgm.action.bpcrev.BpcRevTranSave" name="bpcRevTranForm" scope="session" input="/jsp/bpcRevTran.jsp" validate="true">
+			<forward name="success" path="/jsp/bpcRevTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/affBpcSave" type="abbott.ai.tcgm.action.affbpc.AffBpcSave" name="affBpcForm" scope="session" input="/jsp/affBpc.jsp" validate="true">
+			<forward name="success" path="/jsp/affBpc.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/affBpcDelete" type="abbott.ai.tcgm.action.affbpc.AffBpcDelete" name="affBpcForm" scope="session" input="/jsp/affBpc.jsp" validate="true">
+			<forward name="success" path="/jsp/affBpc.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		
+		<action path="/affBpcUpload" type="abbott.ai.tcgm.action.affbpc.AffBpcUpload" name="affBpcForm" scope="session" input="/jsp/affBpc.jsp" validate="true">
+			<forward name="success" path="/jsp/affBpc.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		
+		<action path="/affBpcMaint" type="abbott.ai.tcgm.action.affbpc.AffBpcMaint" name="affBpcForm" scope="session" input="/jsp/affBpc.jsp" validate="true">
+			<forward name="success" path="/jsp/affBpc.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/affBpcUpdate" type="abbott.ai.tcgm.action.affbpc.AffBpcUpdate" name="affBpcForm" scope="session" input="/jsp/affBpc.jsp" validate="true">
+			<forward name="success" path="/jsp/affBpc.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/notesDelete" type="abbott.ai.tcgm.action.notes.NotesDelete" name="notesForm" scope="session" input="/jsp/notesMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesMaint.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesMaint" type="abbott.ai.tcgm.action.notes.NotesMaint" name="notesForm" scope="session" input="/jsp/notesMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesMaint.jsp" />
+			<forward name="advancedfilter" path="/jsp/notesMaintAdvFilter.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesSave" type="abbott.ai.tcgm.action.notes.NotesSave" name="notesForm" scope="session" input="/jsp/notesMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesMaint.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesTranDelete" type="abbott.ai.tcgm.action.notes.NotesTranDelete" name="notesTranForm" scope="session" input="/jsp/notesTranMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesTranMaint.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesTranMaint" type="abbott.ai.tcgm.action.notes.NotesTranMaint" name="notesTranForm" scope="session" input="/jsp/notesTranMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesTranMaint.jsp" />
+			<forward name="advancedfilter" path="/jsp/notesTranMaintAdvFilter.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesTranPublish" type="abbott.ai.tcgm.action.notes.NotesTranPublish" name="notesTranForm" scope="session" input="/jsp/notesTranMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesTranMaint.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/notesTranSave" type="abbott.ai.tcgm.action.notes.NotesTranSave" name="notesTranForm" scope="session" input="/jsp/notesTranMaint.jsp" validate="true">
+			<forward name="success" path="/jsp/notesTranMaint.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/login" type="abbott.ai.tcgm.action.Login" name="loginForm" scope="request" input="/jsp/login.jsp" validate="true">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+			<forward name="rptuser" path="/ActiveDirSearch.do?cmd=view" redirect="true" />
+		</action>
+		<action path="/openLogin" type="abbott.ai.tcgm.action.DefaultForward" name="loginForm" scope="request" validate="false">
+			<set-property property="loginRequired" value="false" />
+			<forward name="success" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataDelete" type="abbott.ai.tcgm.action.ratedata.RateDataDelete" name="rateDataForm" scope="session" input="/jsp/rateData.jsp" validate="true">
+			<forward name="success" path="/jsp/rateData.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataMaint" type="abbott.ai.tcgm.action.ratedata.RateDataMaint" name="rateDataForm" scope="session" input="/jsp/rateData.jsp" validate="true">
+			<forward name="success" path="/jsp/rateData.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataSave" type="abbott.ai.tcgm.action.ratedata.RateDataSave" name="rateDataForm" scope="session" input="/jsp/rateData.jsp" validate="true">
+			<forward name="success" path="/jsp/rateData.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateDataUpdate" type="abbott.ai.tcgm.action.ratedata.RateDataUpdate" name="rateDataForm" scope="session" input="/jsp/rateData.jsp" validate="true">
+			<forward name="success" path="/jsp/rateData.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataTranMaint" type="abbott.ai.tcgm.action.ratedata.RateDataTranMaint" name="rateDataTranForm" scope="session" input="/jsp/rateDataTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateDataTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataTranDelete" type="abbott.ai.tcgm.action.ratedata.RateDataTranDelete" name="rateDataTranForm" scope="session" input="/jsp/rateDataTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateDataTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataTranPublish" type="abbott.ai.tcgm.action.ratedata.RateDataTranPublish" name="rateDataTranForm" scope="session" input="/jsp/rateDataTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateDataTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/rateDataTranSave" type="abbott.ai.tcgm.action.ratedata.RateDataTranSave" name="rateDataTranForm" scope="session" input="/jsp/rateDataTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateDataTran.jsp" />
+			<forward name="failure" path="/jsp/login.jsp" />
+		</action>
+		<action path="/scAffiliateImport" type="abbott.ai.tcgm.action.affbpc.AffBpcMaint">
+			<forward name="success" path="/processMgmt.do" />
+			<forward name="failure" path="/openMngFactorModels.do" />
+		</action>		
+		<action path="/changeJobStatus" type="abbott.ai.tcgm.action.ChangeJobStatus" name="processForm" scope="request">
+			<forward name="success" path="/processMgmt.do" redirect="true" />
+		</action>
+		
+		<!--Sridevi.K 7-21-2005 redirect is changed to false when the forward is failure-->
+		<action path="/createFactorModel" type="abbott.ai.tcgm.action.CreateFactorModel" name="createFactorModelForm" scope="request">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+			<forward name="failure" path="/mngFactorModels.do" redirect="false" />
+		</action>
+		<!--Sridevi.K 7-21-2005 redirect is changed to false when the forward is failure-->
+		
+		<action path="/deleteAnalysisModel" type="abbott.ai.tcgm.action.DeleteModel" name="mngAnalysisModelsForm" scope="request">
+			<forward name="success" path="/mngAnalysisModels.do" redirect="true" />
+			<forward name="failure" path="/mngAnalysisModels.do" redirect="true" />
+		</action>
+
+		<!--Brian D 9-07-2005 Add close function to Analysis Model Mngmnt-->
+		<action path="/closeAnalysisModel" type="abbott.ai.tcgm.action.CloseModel" name="mngAnalysisModelsForm" scope="request">
+			<forward name="success" path="/mngAnalysisModels.do" redirect="true" />
+			<forward name="failure" path="/mngAnalysisModels.do" redirect="true" />
+		</action>
+
+
+		<!--Brian D 9-07-2005 Add compact function to Analysis Mngmnt-->
+		<action path="/compactAnalysisModel" type="abbott.ai.tcgm.action.CompactModel" name="mngAnalysisModelsForm" scope="request">
+			<forward name="success" path="/mngAnalysisModels.do" redirect="true" />
+			<forward name="failure" path="/mngAnalysisModels.do" redirect="true" />
+		</action>				
+
+		<action path="/deleteCostExchModel" type="abbott.ai.tcgm.action.DeleteModel" name="mngCostExchModelsForm" scope="request">
+			<forward name="success" path="/mngCostExchModels.do" redirect="true" />
+			<forward name="failure" path="/mngCostExchModels.do" />
+		</action>
+		<action path="/deleteFactorModel" type="abbott.ai.tcgm.action.DeleteModel" name="mngFactorModelsForm" scope="request">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+			<forward name="failure" path="/mngFactorModels.do" />
+		</action>
+		<action path="/deletePerpetualModel" type="abbott.ai.tcgm.action.DeleteModel" name="mngPerpetualModelsForm" scope="request">
+			<forward name="success" path="/mngPerpetualModels.do" redirect="true" />
+			<forward name="failure" path="/mngPerpetualModels.do" redirect="true" />
+		</action>
+		
+
+		<!--Brian D 9-07-2005 Add close function to Perpetual Model Mngmnt-->
+		<action path="/closePerpetualModel" type="abbott.ai.tcgm.action.CloseModel" name="mngPerpetualModelsForm" scope="request">
+			<forward name="success" path="/mngPerpetualModels.do" redirect="true" />
+			<forward name="failure" path="/mngPerpetualModels.do" redirect="true" />
+		</action>
+
+		<!--Brian D 9-07-2005 Add compact function to Perpetual Mngmnt-->
+		<action path="/compactPerpetualModel" type="abbott.ai.tcgm.action.CompactModel" name="mngPerpetualModelsForm" scope="request">
+			<forward name="success" path="/mngPerpetualModels.do" redirect="true" />
+			<forward name="failure" path="/mngPerpetualModels.do" redirect="true" />
+		</action>				
+		
+		<action path="/deleteJob" type="abbott.ai.tcgm.action.DeleteJob" name="processForm" scope="request">
+			<forward name="success" path="/processMgmt.do" redirect="true" />
+		</action>
+		<action path="/deleteUnitSet" name="mngUnitsForm" scope="request" type="abbott.ai.tcgm.action.DeleteDataset">
+			<forward name="success" path="/mngUnits.do" redirect="true" />
+		</action>
+		
+		<action path="/saveDataSet" name="mngUnitsForm" scope="request" type="abbott.ai.tcgm.action.SaveDataSet">
+			<forward name="success" path="/mngUnits.do" redirect="true" />
+		</action>
+		<action path="/printDataSet" name="mngUnitsForm" scope="request" type="abbott.ai.tcgm.action.PrintDataSet">
+			<forward name="success" path="/mngUnits.do" redirect="true" />
+		</action>
+		
+		<action path="/deleteCostExchData" name="mngCostExchDataForm" scope="request" type="abbott.ai.tcgm.action.DeleteDataset">
+			<forward name="success" path="/mngCostExchData.do" redirect="true" />
+		</action>
+		<action path="/fetchUnits" name="mngUnitsForm" scope="request" type="abbott.ai.tcgm.action.FetchUnits">
+			<forward name="success" path="/mngUnits.do" redirect="true" />
+		</action>
+		<action path="/fetchCostExchData" name="mngCostExchDataForm" scope="request" type="abbott.ai.tcgm.action.FetchCostExchData"  validate="false" attribute="mngCostExchDataForm">
+			<forward name="success" path="/mngCostExchData.do" redirect="false" />
+		</action>		
+		<action path="/createAnalysisModel" type="abbott.ai.tcgm.action.CreateAnalysisModel" name="createAnalysisModelForm"  input="/jsp/createAnalysisModel.jsp" validate="false" attribute="createAnalysisModelForm" scope="session">
+			<forward name="success" path="/mngAnalysisModels.do" redirect="true" />
+			<forward name="input" path="/jsp/createAnalysisModel.jsp" redirect="false" />
+		</action>
+		<action path="/createCostExchModel" type="abbott.ai.tcgm.action.CreateCostExchModel" name="createCostExchModelForm" validate="true" input="/jsp/createCostExchModel.jsp" scope="request" attribute="createCostExchModelForm">
+			<forward name="success" path="/mngCostExchModels.do" redirect="true" />
+			<forward name="input" path="/jsp/createCostExchModel.jsp" redirect="false" />
+		</action>
+		<action path="/createPerpetualModel" type="abbott.ai.tcgm.action.CreatePerpetualModel" name="createPerpetualModelForm" validate="true" input="/jsp/createPerpetualModel.jsp" attribute="createPerpetualModelForm" scope="request">
+			<forward name="input" path="/jsp/createPerpetualModel.jsp" redirect="false" />
+			<forward name="success" path="/mngPerpetualModels.do" redirect="true" />
+			<forward name="failure" path="/createPerpetualModel.do" redirect="true" />	
+		</action>
+		<action path="/miscReports" type="abbott.ai.tcgm.action.MiscReports" scope="session" validate="false" name="miscReportsForm" attribute="miscReportsForm" input="/jsp/miscReports.jsp">
+			<forward name="success" path="/jsp/miscReports.jsp" />
+			<forward name="input" path="/jsp/miscReports.jsp" redirect="false" />
+		</action>
+		<action path="/mngAnalysisModels" type="abbott.ai.tcgm.action.MngAnalysisModels" name="mngAnalysisModelsForm" validate="false" scope="session">
+			<forward name="success" path="/jsp/mngAnalysisModels.jsp" redirect="false" />
+		</action>
+		<action path="/mngCostExchModels" type="abbott.ai.tcgm.action.MngCostExchModels" name="mngCostExchModelsForm" validate="false">
+			<forward name="success" path="/jsp/mngCostExchModels.jsp" />
+		</action>
+		<action path="/mngFactorModels" type="abbott.ai.tcgm.action.MngFactorModels" name="mngFactorModelsForm" validate="false">
+			<forward name="success" path="/jsp/mngFactorModels.jsp" />
+		</action>
+		<action path="/mngPerpetualModels" type="abbott.ai.tcgm.action.MngPerpetualModels" name="mngPerpetualModelsForm" validate="false">
+			<forward name="success" path="/jsp/mngPerpetualModels.jsp" />
+		</action>
+		<action path="/mngUnits" type="abbott.ai.tcgm.action.MngUnits" name="mngUnitsForm" validate="false">
+			<forward name="success" path="/jsp/mngUnits.jsp" />
+		</action>
+		<action path="/mngCostExchData" type="abbott.ai.tcgm.action.MngCostExchData" name="mngCostExchData" validate="false">
+			<forward name="success" path="/jsp/mngCostExchData.jsp" />
+		</action>
+		<action path="/openEssbaseMgmt" type="abbott.ai.tcgm.action.DefaultForward" name="essbaseMgmtForm" scope="request">
+			<forward name="success" path="/jsp/essbaseMgmt.jsp" />
+		</action>
+		<action path="/mngFactors" type="abbott.ai.tcgm.action.MngFactors" name="mngFactorsForm" scope="session" attribute="mngFactorsForm" input="/jsp/mngFactors.jsp" >
+			<forward name="success" path="/jsp/mngFactors.jsp" />
+		</action>
+		<action path="/openReporting" type="abbott.ai.tcgm.action.DefaultForward">
+			<forward name="success" path="/jsp/reportMenu.jsp" />
+		</action>
+		<action path="/viewReport" type="abbott.ai.tcgm.action.ViewReport" parameter="reportId">
+			<forward name="failure" path="/jsp/sessionExpired.jsp" redirect="false" />
+		</action>
+		<action path="/initiateEssbase" type="abbott.ai.tcgm.action.InitiateEssbase" name="essbaseMgmtForm" scope="request">
+			<forward name="success" path="/openEssbaseMgmt.do" />
+		</action>
+		<action path="/processMgmt" type="abbott.ai.tcgm.action.ProcessMgmt" name="processForm" scope="request">
+			<forward name="success" path="/jsp/jobMgmt.jsp" />
+		</action>
+		<action path="/printReport" type="abbott.ai.tcgm.action.PrintReport" />
+		<action path="/schedulerCommand" type="abbott.ai.tcgm.action.SchedulerCommand">
+			<forward name="success" path="/processMgmt.do" redirect="true" />
+		</action>
+		<action path="/updateModelSelection" type="abbott.ai.tcgm.action.UpdateModelSelection" name="mngFactorModelsForm" scope="request">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+		</action>
+		<action path="/openMngRateSets" type="abbott.ai.tcgm.action.ratedata.OpenMngRateSets" name="mngRateSets" scope="session" input="/jsp/rateDataSelectCreate.jsp">
+			<forward name="success" path="/jsp/rateDataSelectCreate.jsp" />
+			<forward name="failure" path="/jsp/rateDataSelectCreate.jsp" />
+		</action>
+		<action path="/saveRateSet" type="abbott.ai.tcgm.action.ratedata.SaveRateSet" name="mngRateSets" scope="session" input="/jsp/rateDataSelectCreate.jsp" validate="true">
+			<forward name="success" path="/openMngRateSets.do" />
+			<forward name="failure" path="/openMngRateSets.do" />
+		</action>
+		<action path="/deleteRateSet" type="abbott.ai.tcgm.action.ratedata.DeleteRateSet" name="mngRateSets" validate="true" input="/jsp/rateDataSelectCreate.jsp" scope="session">
+			<forward name="success" path="/openMngRateSets.do" redirect="false" />
+			<forward name="failure" path="/openMngRateSets.do" redirect="false" />
+		</action>
+		<action path="/renameRateSet" type="abbott.ai.tcgm.action.ratedata.RenameRateSet" name="mngRateSets" input="/jsp/rateDataSelectCreate.jsp" scope="session">
+			<forward name="success" path="/jsp/rateDataSelectCreate.jsp" redirect="false" />
+			<forward name="failure" path="/openMngRateSets.do" redirect="false" />
+		</action>
+		<action path="/maintRateSet" type="abbott.ai.tcgm.action.ratedata.MaintRateSet" name="mngRateSets" input="/jsp/rateDataSelectCreate.jsp">
+			<forward name="success" path="/rateDataMaint.do" redirect="false" />
+			<forward name="failure" path="/openMngRateSets.do" redirect="false" />
+		</action>
+		<action path="/rateExDelete" type="abbott.ai.tcgm.action.rateex.RateExDelete" name="rateExForm" scope="session" input="/jsp/rateEx.jsp" validate="true">
+			<forward name="success" path="/jsp/rateEx.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExMaint" type="abbott.ai.tcgm.action.rateex.RateExMaint" name="rateExForm" scope="session" input="/jsp/rateEx.jsp" validate="true">
+			<forward name="success" path="/jsp/rateEx.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExSave" type="abbott.ai.tcgm.action.rateex.RateExSave" name="rateExForm" scope="session" input="/jsp/rateEx.jsp" validate="true">
+			<forward name="success" path="/jsp/rateEx.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExTranDelete" type="abbott.ai.tcgm.action.rateex.RateExTranDelete" name="rateExTranForm" scope="session" input="/jsp/rateExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateExTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExTranMaint" type="abbott.ai.tcgm.action.rateex.RateExTranMaint" name="rateExTranForm" scope="session" input="/jsp/rateExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateExTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExTranPublish" type="abbott.ai.tcgm.action.rateex.RateExTranPublish" name="rateExTranForm" scope="session" input="/jsp/rateExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateExTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/rateExTranSave" type="abbott.ai.tcgm.action.rateex.RateExTranSave" name="rateExTranForm" scope="session" input="/jsp/rateExTran.jsp" validate="true">
+			<forward name="success" path="/jsp/rateExTran.jsp" />
+			<forward name="failure" path="/openLogin.do" />
+		</action>
+		<action path="/userMaint" type="abbott.ai.tcgm.action.user.UserMaint" name="userForm" input="/jsp/userList.jsp" scope="session">
+			<forward name="success" path="/jsp/userList.jsp" redirect="false" />
+		</action>
+		<action path="/editUser" type="abbott.ai.tcgm.action.user.EditUser" name="userForm" input="/jsp/userList.jsp" scope="session">
+			<forward name="success" path="/jsp/userList.jsp" redirect="false" />
+		</action>
+		<action path="/saveUser" type="abbott.ai.tcgm.action.user.SaveUser" name="userForm" input="/jsp/userList.jsp" scope="session">
+			<forward name="success" path="/jsp/userList.jsp" redirect="false" />
+		</action>
+		<action path="/deleteUser" type="abbott.ai.tcgm.action.user.DeleteUser" name="userForm" input="/jsp/userList.jsp">
+			<forward name="success" path="/jsp/userList.jsp" redirect="false" />
+		</action>
+		<action path="/rptUserMaint" type="abbott.ai.tcgm.action.user.RptUserMaint" name="rptUserForm" input="/jsp/rptUserCreate.jsp" scope="session">
+			<forward name="success" path="/jsp/rptUserCreate.jsp" redirect="false" />
+			<forward name="appsuccess" path="/jsp/appUserCreate.jsp" redirect="false" />
+			<forward name="filter" path="/jsp/rptUserFilter.jsp">	</forward>	
+			<forward name="burst" path="/jsp/burstMaint.jsp">	</forward>
+			<forward name="usersview" path="/jsp/cognosUsersView.jsp"> </forward>
+			<forward name="users" path="/jsp/cognosUsers.jsp">	</forward>
+			<forward name="datausersView" path="/jsp/dataUsersView.jsp">	</forward>
+			<forward name="datausers" path="/jsp/reportUsers.jsp">	</forward>
+		</action>
+		<action path="/editRptUser" type="abbott.ai.tcgm.action.user.EditRptUser" name="rptUserForm" input="/jsp/rptUserList.jsp" scope="session">
+			<forward name="success" path="/jsp/rptUserList.jsp" redirect="false" />
+		</action>
+		<action path="/saveRptUser" type="abbott.ai.tcgm.action.user.SaveRptUser" name="rptUserForm" input="/jsp/rptUserList.jsp" scope="session">
+			<forward name="success" path="/jsp/rptUserList.jsp" redirect="false" />
+		</action>
+		<action path="/deleteRptUser" type="abbott.ai.tcgm.action.user.DeleteRptUser" name="rptUserForm" input="/jsp/rptUserList.jsp">
+			<forward name="success" path="/jsp/rptUserList.jsp" redirect="false" />
+		</action>
+		<action path="/currencyCodeMaint" type="abbott.ai.tcgm.action.currency.CurrencyCodeMaint" name="currencyCodeForm" input="/jsp/currencyList.jsp" scope="session">
+			<forward name="success" path="/jsp/currencyList.jsp" redirect="false" />
+		</action>
+		<action path="/editCurrencyCode" type="abbott.ai.tcgm.action.currency.EditCurrencyCode" name="currencyCodeForm" input="/jsp/currencyList.jsp" scope="session">
+			<forward name="success" path="/jsp/currencyList.jsp" redirect="false" />
+		</action>
+		<action path="/saveCurrencyCode" type="abbott.ai.tcgm.action.currency.SaveCurrencyCode" name="currencyCodeForm" input="/jsp/currencyList.jsp" scope="session">
+			<forward name="success" path="/jsp/currencyList.jsp" redirect="false" />
+		</action>
+		<action path="/notesTranCopy" type="abbott.ai.tcgm.action.notes.NotesTranCopy" name="notesTranForm" input="/jsp/notesTranMaint.jsp">
+			<forward name="success" path="/jsp/notesTranMaint.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/asrTranCopy" type="abbott.ai.tcgm.action.asr.AsrTranCopy" name="asrTranForm" input="/jsp/asrTran.jsp" scope="session">
+			<forward name="success" path="/jsp/asrTran.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/bpcExTranCopy" type="abbott.ai.tcgm.action.bpcex.BpcExTranCopy" name="bpXTrnFrm" input="/jsp/bpcExTran.jsp">
+			<forward name="success" path="/jsp/bpcExTran.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/bpcRevTranCopy" type="abbott.ai.tcgm.action.bpcrev.BpcRevTranCopy" name="bpcRevTranForm" input="/jsp/bpcRevTran.jsp">
+			<forward name="success" path="/jsp/bpcRevTran.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/rateExTranCopy" type="abbott.ai.tcgm.action.rateex.RateExTranCopy" name="rateExTranForm" input="/jsp/rateExTran.jsp">
+			<forward name="success" path="/jsp/rateExTran.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/bpcsTranCopy" type="abbott.ai.tcgm.action.bpc.BpcsTranCopy" name="bpcsTranForm" input="/jsp/bpcsTran.jsp">
+			<forward name="success" path="/jsp/bpcsTran.jsp" redirect="false" />
+			<forward name="failure" path="/openLogin.do" redirect="false" />
+		</action>
+		<action path="/deleteCurrencyCode" type="abbott.ai.tcgm.action.currency.DeleteCurrencyCode" name="currencyCodeForm" input="/jsp/currencyList.jsp">
+			<forward name="success" path="/jsp/currencyList.jsp" redirect="false" />
+		</action>
+		<action path="/affCstCurMaint" type="abbott.ai.tcgm.action.affcstcur.AffCstCurMaint" name="affCstCurForm" input="/jsp/affCstCurList.jsp" scope="session">
+			<forward name="success" path="/jsp/affCstCurList.jsp" redirect="false" />
+		</action>
+		<action path="/editAffCstCur" type="abbott.ai.tcgm.action.affcstcur.EditAffCstCur" name="affCstCurForm" input="/jsp/affCstCurList.jsp" scope="session">
+			<forward name="success" path="/jsp/affCstCurList.jsp" redirect="false" />
+		</action>
+		<action path="/saveAffCstCur" type="abbott.ai.tcgm.action.affcstcur.SaveAffCstCur" name="affCstCurForm" input="/jsp/affCstCurList.jsp" scope="session">
+			<forward name="success" path="/jsp/affCstCurList.jsp" redirect="false" />
+		</action>
+		<action path="/deleteAffCstCur" type="abbott.ai.tcgm.action.affcstcur.DeleteAffCstCur" name="affCstCurForm" input="/jsp/affCstCurList.jsp">
+			<forward name="success" path="/jsp/affCstCurList.jsp" redirect="false" />
+		</action>
+		<action path="/reorderJobQue" type="abbott.ai.tcgm.action.ReorderJobQue" name="processForm" scope="request">
+			<forward name="success" path="/processMgmt.do" redirect="true" />
+		</action>
+		<action path="/prMfgMaint" type="abbott.ai.tcgm.action.prmfg.PRMfgMaint" name="prMfgForm" input="/jsp/prMfgList.jsp" scope="session">
+			<forward name="success" path="/jsp/prMfgList.jsp" redirect="false" />
+		</action>
+		<action path="/savePRMfg" type="abbott.ai.tcgm.action.prmfg.SavePRMfg" name="prMfgForm" input="/jsp/prMfgList.jsp" scope="session">
+			<forward name="success" path="/jsp/prMfgList.jsp" redirect="false" />
+		</action>
+		<action path="/deletePRMfg" type="abbott.ai.tcgm.action.prmfg.DeletePRMfg" name="prMfgForm" input="/jsp/prMfgList.jsp">
+			<forward name="success" path="/jsp/prMfgList.jsp" redirect="false" />
+		</action>
+		<action path="/mngReportJobs" type="abbott.ai.tcgm.action.MngReportJobs" name="mngReportJobsForm">
+			<forward name="success" path="/jsp/mngReportJobs.jsp" redirect="false" />
+		</action>
+		<action path="/logout" type="abbott.ai.tcgm.action.Logout" />
+		<action path="/closeModel" type="abbott.ai.tcgm.action.CloseModel" parameter="modelId" name="mngFactorModelsForm" validate="false">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+			<forward name="failure" path="/mngFactorModels.do" redirect="false" />			
+		</action>
+		<action path="/openModel" type="abbott.ai.tcgm.action.OpenModel" parameter="modelId" name="mngFactorModelsForm" validate="false">
+			<forward name="success" path="/mngFactorModels.do?showModels=closed" redirect="true" />
+			<forward name="failure" path="/mngFactorModels.do?showModels=closed" redirect="false" />			
+		</action>
+		<action path="/compactModel" type="abbott.ai.tcgm.action.CompactModel" parameter="modelId" name="mngFactorModelsForm" validate="false">
+			<forward name="success" path="/mngFactorModels.do" redirect="true" />
+			<forward name="failure" path="/mngFactorModels.do" redirect="false" />			
+		</action>		
+		<action path="/mngDaemons" validate="false" type="abbott.ai.tcgm.action.MngDaemons" name="mngDaemonsForm" attribute="mngDaemonsForm" scope="request">
+			<forward name="success" path="/jsp/mngDaemons.jsp" redirect="false" />
+		</action>
+		<action path="/miscAnalysis" type="abbott.ai.tcgm.action.MiscAnalysis" scope="session" attribute="miscAnalysisForm" validate="false" name="miscAnalysisForm" input="/jsp/miscAnalysis.jsp">
+			<forward name="success" path="/jsp/miscAnalysis.jsp" redirect="false" />
+			<forward name="input" path="/jsp/miscAnalysis.jsp" redirect="false" />
+		</action>
+		<action path="/dataTransfers" type="abbott.ai.tcgm.action.DataTransfers" name="dataTransfersForm" scope="session" attribute="dataTransfersForm">
+			<forward name="success" path="/jsp/dataTransfers.jsp" redirect="false" />	
+			<forward name="input" path="/jsp/dataTransfers.jsp" redirect="false" />			
+		</action>
+		<action path="/insufficientPrivelage" forward="/jsp/insufficientPrivelage.jsp">
+			<forward name="success" path="/jsp/insufficientPrivelage.jsp" redirect="true" />
+		</action>
+		<action path="/mngDataFeedLog" type="abbott.ai.tcgm.action.MngDataFeedLog" name="mngDataFeedLogForm" validate="false" attribute="mngDataFeedLogForm" scope="request">
+			<forward name="success" path="/jsp/mngDataFeedLog.jsp" redirect="false" />
+		</action>
+	    <action path="/ActiveDirSearch" type="abbott.ai.tcgm.action.ActiveDirSearch" name="activeDirSearchForm" scope="session" input="/jsp/activeDirSearch.jsp" validate="true">
+            <forward name="success" path="/jsp/activeDirSearch.jsp" />
+            <forward name="appsuccess" path="/jsp/activeDirSearchApp.jsp" />
+            <forward name="rptUser" path="/jsp/rptUserCreate.jsp"/>
+            <forward name="appUser" path="/jsp/appUserCreate.jsp"/>
+        </action>	
+        <action path="/salesTypeMaint" type="abbott.ai.tcgm.action.salestype.SalesTypeMaint" name="salesTypeForm" input="/jsp/salesTypeList.jsp" scope="session">
+			<forward name="success" path="/jsp/salesTypeList.jsp" redirect="false" />
+		</action>
+		<action path="/editSalesType" type="abbott.ai.tcgm.action.salestype.EditSalesType" name="salesTypeForm" input="/jsp/salesTypeList.jsp" scope="session">
+			<forward name="success" path="/jsp/salesTypeList.jsp" redirect="false" />
+		</action>
+		<action path="/saveSalesType" type="abbott.ai.tcgm.action.salestype.SaveSalesType" name="salesTypeForm" input="/jsp/salesTypeList.jsp" scope="session">
+			<forward name="success" path="/jsp/salesTypeList.jsp" redirect="false" />
+		</action>
+		<action path="/deleteSalesType" type="abbott.ai.tcgm.action.salestype.DeleteSalesType" name="salesTypeForm" input="/jsp/salesTypeList.jsp">
+			<forward name="success" path="/jsp/salesTypeList.jsp" redirect="false" />
+		</action>
+	</action-mappings>
+</struts-config>

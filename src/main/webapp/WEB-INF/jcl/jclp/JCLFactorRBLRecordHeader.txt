@@ -1,0 +1,193 @@
+//QRBL30 JOB (RBL,07),'TCGM MAINTENANCE',  
+// NOTIFY=TDETJB,                                    
+// %4,%1,%2                                                      
+/*OUTPUT B01 FORMS=PR08,DEST=R2017                                           
+//R43 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=A   
+//**R30 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=R                           
+//R30 OUTPUT CLASS=3,WRITER=RBLR01                                              
+/*ROUTE PRINT N1.R2017                                                           
+/*JOBPARM FORMS=LAN1,S=X90B                                                            
+/*RESOURCE  C=1,T=0,XPR                                                             
+//**********************************************************************        
+//**NAME:      QRBL30                                                 **        
+//**DESC:      TCGM MAINTENANCE                                       **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **  
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **  
+//**04/18/2007 A DORFMAN           CHANGE INFOPAC PRINT TO CLASS=R    ** 
+//**                               ADD T07DRC TO NOFITY ON JOB CARD   **  
+//**05/17/2007 A DORFMAN           MOD TO USE PRODUCTION AB FILES     **
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **
+//**09/22/2015 M STITES   REPLACE FTP WITH MQFTE                      **              
+//**********************************************************************
+//**********************************************************************
+//* INSTREAM PROC DEFINITION STARTS HERE                               *
+//**********************************************************************        
+//*RBL330XX PROC SEC='%6',CNTL='%6'  
+//RBL330XX PROC CNTL='%6'                                              
+//**********************************************************************        
+//**NAME:      RBL030XX                                               **        
+//**DESC:      UPDATE LIST FILE DATA                                  **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGNAL                            **        
+//**********************************************************************        
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA TO MVS FROM TCGM                     *
+//* FTP HAS BEEN REPLACED BY MQFTE                                    *          
+//*********************************************************************         
+//*RBL330UB EXEC PGM=FTPABT                                                      
+//*      INCLUDE MEMBER=SYSOUTDD                                                 
+//*INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RBL330UB),DISP=SHR   +I                  
+//*********************************************************************         
+//*LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//*             COND=(0,EQ,RBL330UB),PARM=ABEND                                  
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR
+//************************************************************************
+//*  DELETE THE PREVIOUS FACTOR FILE FROM THE MAINFRAME SO THAT THE 
+//*  PATH IS CLEAR FOR MQFTE TO SEND THE NEW FILE TO MAINFRAME
+//************************************************************************
+//RBL330UY EXEC PGM=IEFBR14                                          
+//DD1      DD DSN=ABT.AB.IFC.RBLD95,
+//            DISP=(MOD,DELETE,DELETE),SPACE=(TRK,0),
+//            MGMTCLAS=WORK,STORCLAS=BASE            
+//************************************************************************
+//* SINCE THE FACTOR FILE IS NOW TRANSFERRED TO MAINFRAME VIA A MQFTE
+//* OUTBOX, THERE MAY BE A DELAY FROM WHEN THIS JCL IS SUBMITTED TO WHEN
+//* THE FILE IS MQFTE'D FROM TCGM TO MAINFRAME.  (THIS JCL IS SUBMITTED
+//* IMMEDIATELY AND THE MQFTE PROCESS CAN TAKE UP TO 5 MINUTES TO SEND
+//* THE FILE).  THIS AOPBATCH STEP WILL DELAY THIS JOB FROM RUNNING
+//* THE NEXT STEPS FOR THE SPECIFIED NUMBER OF SECONDS.
+//*************************************************************************   
+//RBL330UZ EXEC PGM=AOPBATCH,PARM='sh /bin/sleep 600'
+//SYSOUT   DD  SYSOUT=*                             
+//STDERR   DD  SYSOUT=*                             
+//STDIN    DD  DUMMY                              
+//*****************************************************************             
+//* COPY LIST FILE TO A BACKUP FILE                               *             
+//*****************************************************************             
+//RBL330UA EXEC PGM=ASYNCOPY,REGION=4096K                                        
+//DD01     DD  DSN=VSAMU.AB.RBL.RBLD53,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//DD01O    DD  DSN=ABT.AB.IFC.RBLD53.COPY(+1),                    +O          
+//             DISP=(NEW,CATLG,DELETE),                                         
+//             MGMTCLAS=STDPROD,STORCLAS=BASE,                                  
+//             SPACE=(21000,(2500,250),RLSE),                                   
+//             DCB=(MODEL,RECFM=FB,LRECL=535,BLKSIZE=0)                         
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//SYSTOTAL DD  SYSOUT=*                                                 00103000
+//SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(RBL330UA),DISP=SHR        +I             
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RBL330UA),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR
+//**********************************************************************
+//* WE WILL REMOVE THESE STEPS AND SUBMIT A SECOND QRBL30 JOB THAT WILL
+//* EXECUTE RGM100/RGM150 PROGRAM.  THIS METHOD WILL PREVENT DATASET CONTENTION
+//* WHEN MQFTE TRIES TO SEND A NEW RGMD95 FILE TO MAINFRAME
+//*********************************************************************
+//RBL330UD EXEC PGM=ASYNCOPY                           
+//DD01     DD DSN=ABT.DV.SORTCARD(RBL330UD),DISP=SHR   
+//DD01O    DD SYSOUT=(B,INTRDR)                        
+//  INCLUDE MEMBER=SYSOUTDD                            
+//SYSTOTAL DD SYSOUT=*                                       
+//***************************************************************RGM100         
+//**  RGM100 - LIST FILE UPDATE PROGRAM
+//**  COMMENTING OUT THIS STEP FOR NOW AND HAVING IT EXECUTED BY A 
+//**  SECOND JOB SUBMITTED BY INTERNAL READER.  THIS WILL ELIMINATE THE
+//*   DATASET CONTENTION BETWEEN MQFTE AND THE QRBL30 JOB WHEN MQFTE
+//**  TRIES TO ALLOCATE THE RBLD95 DATASET
+//*********************************************************************  
+//*********************************************************************
+//*RGM100   EXEC PGM=RGM100,REGION=8000K         
+//*STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//*         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                                      
+//*RGMD01   DD  DSN=VSAMU.&SEC..RBL.RBLD01,DISP=SHR,                  +I         
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGMD05   DD  DSN=VSAME.&SEC..RGM.RGMD05,DISP=SHR,                  +I         
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGMD53   DD  DSN=VSAMU.&SEC..RBL.RBLD53,DISP=OLD,                  +U         
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*RGMD90   DD  DSN=ABT.&SEC..RGM.RGMD90(0),DISP=OLD                  +I         
+//*RGMD95   DD  DSN=ABT.%7.IFC.RBLD95,DISP=SHR                        +I            
+//*SORTWK01 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*SORTWK02 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*SORTWK03 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*SORTWK04 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*SORTWK05 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*SORTWK06 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//*RGMR50   DD  SYSOUT=(3,RGMR50)                +O                              
+//*RGMSRTDD DD  SYSOUT=*                                                         
+//*     INCLUDE MEMBER=SYSOUTDD
+//***************************************************************RGM100         
+//**  RGM150 - LIST FILE UPDATE PROGRAM
+//**  COMMENTING OUT THIS STEP FOR NOW AND HAVING IT EXECUTED BY A 
+//**  SECOND JOB SUBMITTED BY INTERNAL READER.  THIS WILL ELIMINATE THE
+//*   DATASET CONTENTION BETWEEN MQFTE AND THE QRBL30 JOB WHEN MQFTE
+//**  TRIES TO ALLOCATE THE RBLD95 DATASET
+//*********************************************************************          
+//***************************************************************RGM150         
+//*RGM150   EXEC PGM=RGM150                                                      
+//*********************************************************************         
+//*STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//*         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                                      
+//*RGMD01   DD  DSN=VSAMU.&SEC..RBL.RBLD01,DISP=SHR,                +I           
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGMD53   DD  DSN=VSAMU.&SEC..RBL.RBLD53,DISP=SHR,                +I           
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*SORTWK01 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*SORTWK02 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*SORTWK03 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*SORTWK04 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*SORTWK05 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*SORTWK06 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//*RGMR54   DD  SYSOUT=(3,RMGR54)               +O                               
+//*     INCLUDE MEMBER=SYSOUTDD                                                  
+//*********************************************************************         
+//***** E N D   O F   P R O C * RBL330XX * E N D   O F   P R O C ******         
+//**********************************************************************        
+//         PEND                                                                 
+//*RBL330XX EXEC RBL330XX,SEC='%7',CNTL='%7'
+//RBL330XX EXEC RBL330XX,CNTL='%7'
+//*************************************************************************
+//*  THIS FTP OVERRIDE HAS BEEN REPLACED BY MQFTE
+//**********************************************************************      
+//*RBL330UB.INPUT  DD  *                                                         
+//*%8                                                                     
+//*%9                                                                 
+//*cd %B/RBL                                                              
+//*GET RBLEXPORT.rbl.processed 'ABT.AB.IFC.RBLD95' (REPLACE  
+//*DELETE '%B/RBL/RBLEXPORT.rbl.processed'                   
+//*QUIT                                                                            
+//RBL330UA.DD01   DD  DSN=VSAMU.AB.RBL.RBLD53,DISP=SHR, +I                     
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RBL330UA.SYSIN  DD  *                                                         
+$$DD01 COPY OUT=0
+//**************************************************************************
+//*  THE FOLLOWING OVERRIDES FOR THE ABOVE INSTREAM PROC  ARE NOW INCORPORATED
+//*  INTO THE SECOND QRBL30 JOB THAT IS SUBMITTED BY THE INTERNAL READER
+//**************************************************************************   
+//*RGM100.RGMD01 DD DSN=VSAMU.AB.RBL.RBLD01,DISP=SHR,      +I                    
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGM100.RGMD05 DD DSN=VSAME.AB.RGM.RGMD05,DISP=SHR,      +I                    
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGM100.RGMD53   DD  DSN=VSAMU.AB.RBL.RBLD53,DISP=OLD, +U                     
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*RGM100.RGMD90 DD DSN=ABT.AB.RGM.RGMD90(0),DISP=OLD      +I                    
+//*RGM100.RGMD95 DD DSN=ABT.AB.IFC.RBLD95,DISP=SHR      +I                       
+//*RGM100.RGMR50 DD SYSOUT=(,),OUTPUT=(*.R43,*.R30) +O                           
+//*RGM150.RGMD01 DD DSN=VSAME.AB.RGM.RGMD01,DISP=SHR,      +I                    
+//*             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//*RGM150.RGMD53 DD DSN=VSAMU.AB.RBL.RBLD53,DISP=SHR,    +I                     
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*RGM150.RGMR54   DD  DUMMY                           +O                    
+//********************************************************************** 
+//* E N D    O F    J O B      Q R B L 3 0                            **        
+//**********************************************************************        

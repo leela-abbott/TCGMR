@@ -1,0 +1,50 @@
+<bean:define id="reportList" name="reportMenuForm" property="reportList" />
+<bean:define id="destinationList" name="reportMenuForm" property="destinationList" />
+<table width="400" border="0" cellpadding="2" cellspacing="2" >
+  <tr>
+    <td align="center" class="tableHeading">Available Reports</td>
+    <td colspan="2" width=200 align="center" class="tableHeading">Print & Display Options</td>
+  </tr>
+  <tr valign="top">
+    <td rowspan="4" >
+        <div align="center">
+        <html:select property="selReport" size="6">
+            <html:options property="id" labelProperty="displayName" collection="reportList" />
+        </html:select>
+   </div>
+       </td>
+    <td colspan="2" width=200 valign="top"><div align="center">
+        <a href="javascript:checkRestriction('RUN')"><img src="images/btnRun.png" border=0 width="80" height="20"></a></div></td>
+  </tr>
+  <tr valign="top">
+    <td width="100" valign="top" class="smNormal">
+          <html:checkbox property="chkImmediate" value="true" />Immediate<br>
+          <html:select property="selReportDest">
+                   <html:options property="value" labelProperty="label" collection="destinationList" />
+          </html:select>
+              </td>
+              <td width="100" valign="top" class="smNormal">
+              <html:checkbox property="chkRestrict" value="true" />Restrict<br>
+              <html:text property="numCopies" value="1" size="3" maxlength="3" /> Copies</td>
+  </tr>
+  <tr>
+    <td colspan="2" width=200><div align="center"><a href="javascript:checkRestriction('PRINT')"><img src="images/btnPrint.png" border=0 width="80" height="20"></a></div></td>
+  </tr>
+</table>
+<html:hidden property="cmd" />
+<html:hidden property="reportHandler" />
+
+<script>
+function checkRestriction(cmd) {
+    if (document.forms[0].selReport.value == "") {
+        alert("You must select a report.");
+        return;
+    }
+    document.forms[0].cmd.value = cmd;
+    document.forms[0].action=document.forms[0].reportHandler.value;
+    document.forms[0].submit();
+}
+</script>
+
+
+

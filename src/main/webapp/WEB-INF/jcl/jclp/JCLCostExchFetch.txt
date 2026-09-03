@@ -1,0 +1,154 @@
+//QIFC300   JOB  (IFC,07),'RATE/COSTEX DNLD',TYPRUN=SCAN,                       
+//          %4,                                                                 
+//          %5                                                                  
+/*RESOURCE  C=5,T=1                                                             
+/*ROUTE  PRINT N1.R2017                                                         
+/*JOBPARM  FORMS=LANB                                                           
+//**********************************************************************        
+//**NAME:      QIFC300                                                **        
+//**DATE:      09/23/2005                                             **        
+//**DESC:      DOWNLOAD COST EXCHANGE, RATE DATA TO TCGM              **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== ================================== **        
+//**09/23/2005 A DORFMAN           ORIGINAL                           **        
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **        
+//**04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE    **        
+//**12/29/2014 R MEINHARDT         DEACTIVATE FOR ABT TCGM.           **        
+//**********************************************************************        
+//IFC300XX PROC SEC='%6',CNTL='%6',CYCLE='0105'                                 
+//**********************************************************************        
+//**NAME:      IFC300XX                                               **        
+//**DATE:      09/23/2005                                             **        
+//**DESC:      DOWNLOAD COST EXCHANGE, RATE DATA TO TCGM              **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== ================================== **        
+//**09/23/2005 A DORFMAN           ORIGINAL                                     
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **        
+//**10/14/2011 P DURKEE   TURNED OF THE RGLD01 FEED TO ORACLE         **        
+//**********************************************************************        
+//*                                                                             
+//**********************************************************************        
+//* *** DELETE OLD FILES, IF EXISTING                                 **        
+//**********************************************************************        
+//IFC300UA EXEC PGM=IEFBR14                                                     
+//DD1      DD  DSN=ABT.&SEC..IFC.RGMB20,                                        
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD2      DD  DSN=ABT.&SEC..IFC.RGLB01,                                        
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD3      DD  DSN=ABT.&SEC..IFC.IFCD01.EXT1,                                   
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD4      DD  DSN=ABT.&SEC..IFC.IFCD01.EXT2,                                   
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD5      DD  DSN=ABT.&SEC..IFC.IFCD20.EXT1,                                   
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD6      DD  DSN=ABT.&SEC..IFC.IFCD12.EXT1,                                   
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//DD7      DD  DSN=ABT.&SEC..IFC.IFCD13.EXT1,                                   
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//**********************************************************************        
+//* *** COPY VSAM FILE TO SEQUENTIAL FILE                              *        
+//**********************************************************************        
+//IFC300UB EXEC PGM=ASYNCOPY                                                    
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//DD01     DD  DSN=VSAM.AB.RGL.RGLD01,DISP=SHR,            +I                   
+//             AMP=('BUFND=12','BUFNI=4','BUFSP=64000')                         
+//DD01O    DD  DSN=ABT.&SEC..IFC.IFCD01.EXT1,              +O                   
+//             DISP=(NEW,CATLG,DELETE),                                         
+//             STORCLAS=BASE,                                                   
+//             MGMTCLAS=STDPROD,                                                
+//             SPACE=(22650,(500,50),RLSE),                                     
+//             DCB=(LRECL=906,RECFM=FB,BLKSIZE=0)                               
+//SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(IFC300UB),DISP=SHR                       
+//*********************************************************************         
+//*LOGMSG1   EXEC  PGM=LOGMSG,                                                  
+//*             COND=(0,EQ,IFC300UB),PARM=ABEND                                 
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR                          
+//********************************************************************          
+//* *** EXTRACT DATA TO SEND FROM MVS TO TCGM                        *          
+//* *** PARM = AAA,BB,CCCC                                           *          
+//* ***  WHERE AAA = 'XA ' CONSTANT                                  *          
+//* ***  WHERE BBB = 'RGM' OR 'RCT'  (FOR SALES OR COST)             *          
+//* ***  WHERE CCCC= REQUESTED TIME PERIOD IN YYMM FORMAT IT 0501    *          
+//********************************************************************          
+//IFC300   EXEC    PGM=IFC300,PARM='XA ,RGM,&CYCLE'                             
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                                      
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//RGMD20I  DD  DSN=ABT.&SEC..RGM.RGMD20.ORIG(0),DISP=OLD +I                     
+//RGMD20O  DD  DSN=ABT.&SEC..IFC.IFCD20.EXT1,            +O                     
+//         DISP=(NEW,CATLG,DELETE),                                             
+//         STORCLAS=BASE,                                                       
+//         MGMTCLAS=STDPROD,                                                    
+//         SPACE=(23452,(500,50),RLSE),                                         
+//         DCB=(RECFM=FB,LRECL=367,BLKSIZE=0)                                   
+//RGLD01I  DD  DSN=ABT.&SEC..IFC.IFCD01.EXT1,            +I                     
+//         DISP=SHR                                                             
+//RGLD01O  DD  DSN=ABT.&SEC..IFC.IFCD01.EXT2,            +O                     
+//         DISP=(NEW,CATLG,DELETE),                                             
+//         STORCLAS=BASE,                                                       
+//         MGMTCLAS=STDPROD,                                                    
+//         SPACE=(23283,(100,10),RLSE),                                         
+//         DCB=(RECFM=FB,LRECL=200,BLKSIZE=0)                                   
+//IFCD12   DD  DSN=ABT.&SEC..IFC.IFCD12.EXT1,            +I                     
+//         DISP=(NEW,CATLG,DELETE),                                             
+//         STORCLAS=BASE,                                                       
+//         MGMTCLAS=STDPROD,                                                    
+//         SPACE=(24000,(10,1),RLSE),                                           
+//         DCB=(RECFM=FB,LRECL=80,BLKSIZE=0)                                    
+//IFCD13   DD  DSN=ABT.&SEC..IFC.IFCD13.EXT1,            +O                     
+//         DISP=(NEW,CATLG,DELETE),                                             
+//         STORCLAS=BASE,                                                       
+//         MGMTCLAS=STDPROD,                                                    
+//         SPACE=(24000,(10,1),RLSE),                                           
+//         DCB=(RECFM=FB,LRECL=80,BLKSIZE=0)                                    
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM FILE SHARE VIA FTP            
+//***** A) TRANSFER SALES HISTORY EXTRACT                                       
+//*********************************************************************         
+//IFC300UC    EXEC PGM=FTPABT                                                   
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(IFC300UC),DISP=SHR                       
+//*********************************************************************         
+//*LOGMSG2   EXEC  PGM=LOGMSG,                                                  
+//*             COND=(0,EQ,IFC300UC),PARM=ABEND                                 
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                          
+//*********************************************************************         
+//******* END OF PROC ******  I F C 3 0 0 X X ****** END OF PROC ******         
+//*********************************************************************         
+//         PEND                                                                 
+//IFC300XX EXEC IFC300XX,SEC='%6',CNTL='%7',CYCLE=%1                            
+//IFC300UB.SYSIN    DD  *                                                       
+$$DD01 COPY OUT=0                                                               
+//IFC300UC.INPUT    DD  *                                                       
+%8                                                                              
+%9                                                                              
+PUT 'ABT.AB.IFC.IFCD20.EXT1' %A/COST_EXCHANGE/%1.COSTEX                         
+cd %A/COST_EXCHANGE                                                             
+QUIT                                                                            
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM FILE SHARE VIA FTP            
+//***** A) TRANSFER RATE DATA                                                   
+//*********************************************************************         
+//*IFC300UD    EXEC PGM=FTPABT                                                  
+//*IFC300UB.SYSIN    DD  *                                                      
+//*$$DD01 COPY OUT=0                                                            
+//*IFC300UD.INPUT    DD  *                                                      
+//*%8                                                                           
+//*%9                                                                           
+//*PUT 'ABT.AB.IFC.IFCD01.EXT2' %A/COST_EXCHANGE/%1.RGLD01                      
+//*cd %A/COST_EXCHANGE                                                          
+//*QUOTE SITE CHMOD 744 %1.RGLD01                                               
+//*QUIT                                                                         
+//*                                                                             
+//*********************************************************************         
+//*LOGMSG3   EXEC  PGM=LOGMSG,                                                  
+//*             COND=(0,EQ,IFC300UD),PARM=ABEND                                 
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                          
+/*                                                                              
+//*********************************************************************         
+//******* END OF JOB  ******  Q I F C 3 0 0   ****** END OF JOB  ******         
+//*********************************************************************         

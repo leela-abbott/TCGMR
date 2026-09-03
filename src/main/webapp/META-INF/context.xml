@@ -1,0 +1,16 @@
+<Context docBase="TCGM" path="/tcgm" reloadable="true" source="org.eclipse.jst.jee.server:TCGM">
+	<Resource
+	    name="jdbc/tcgm"
+	    auth="Container"
+	    type="javax.sql.DataSource"
+	    maxTotal="50"
+	    maxIdle="30"
+	    maxWaitMillis="10000"
+	    username="tcgm"
+	    password="temp#1234"
+	    driverClassName="oracle.jdbc.OracleDriver"
+	    url="jdbc:oracle:thin:@CUQ113320D.oneabbott.com:1534:D1FCTCGM"
+	    factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+	/>
+    <Environment name="TCGM_ENV_VAR" type="java.lang.String" value="Dev"/>     	
+</Context>

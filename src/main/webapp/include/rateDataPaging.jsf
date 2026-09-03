@@ -1,0 +1,65 @@
+<table border="0" width="780" cellspacing="0" height="0%">
+	<tr>
+		<td width="0%"> 
+			<span id="prevPageDiv">
+				<nested:equal property="pagingFilter.dispPrevPage" value="true">
+					<a href="javascript:checkFilterDirtyFlag(document.rateDataForm,'prevpage');" >
+						<img src="images/btnPageLeft.png" border="0" alt="Previous Page" /></a>
+				</nested:equal>
+			</span>
+		</td>
+		<td nowrap width="1%">
+			<div class="pagingInfo" id="pagingDiv">
+				<nested:notEqual property="rateDataListSize" value="0">
+					<nested:nest property="pagingFilter">
+						<nested:hidden property="startRecord" />
+						<nested:hidden property="recordsToRetrieve" />
+						<nested:hidden property="totalRecordsInSet" />
+						<nested:write property="startRecord" />-<nested:write property="endRecordForDisplay"/>/<nested:write property="totalRecordsInSet" /> 
+					</nested:nest>
+				</nested:notEqual>
+			</div>
+		</td>
+		<td width="0%"> 
+			<span id="nextPageDiv">
+				<nested:equal property="pagingFilter.dispNextPage" value="true" >
+					<a href="javascript:checkFilterDirtyFlag(document.rateDataForm,'nextpage');">
+						<img src="images/btnPageRight.png" border="0" alt="Next Page" /></a>
+				</nested:equal>
+			</span>
+		</td>
+		<nested:nest property="pagingFilter">
+		<td width="160">
+		<div class="fltrTblHdng">
+		Record # 
+		<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+		 onkeyup="return autoTab(this, 7, event);" />
+		</td>
+		</div>
+		</nested:nest>
+		<td width="0%">
+		<a href="javascript:changeCmdAndSubmit(document.rateDataForm,'selectedrecordpage');">
+		<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
+		</td>
+		<td class="right">
+			<span id ="delSelDiv">
+				<a href="javascript:chgActCmdSubmit(document.rateDataForm,'deleteselected','rateDataDelete.do');">
+					<img src="images/btnDeleteSelected.png" border="0" alt="Delete Selected"/></a>
+			</span>
+			<span id ="delAllDiv">
+				<a href="javascript:chgActCmdSubmit(document.rateDataForm,'deleteall','rateDataDelete.do');">
+					<img src="images/btnDeleteAll.png" border="0" alt="Delete All" /></a>
+			</span>
+		</td>
+		<td class="right">
+			<span id = "saveDiv" class="hidden">
+				<a href="javascript:chgActCmdSubmit(document.rateDataForm,'saveselected','rateDataSave.do');">
+					<img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
+			</span>
+			<span id = "cancelDiv" class="hidden">
+				<a href="javascript:chgActCmdSubmit(document.rateDataForm,'cancel','rateDataMaint.do');">
+					<img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
+			</span>
+		</td>
+	</tr>
+</table>
