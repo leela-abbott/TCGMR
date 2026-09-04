@@ -1,0 +1,122 @@
+//QRTC357 JOB (RTC,07),'INVENTORY FILE',   DOWNLOAD RTCD61 DATA                 
+// %4,%5                                                     
+/*ROUTE PRINT R2017                                                             
+/*JOBPARM FORMS=LANB                                                          
+/*RESOURCE C=1,T=1,K=RT
+//JOBLIB JCLLIB ORDER=(ABT.AB.PROCLIB,ABT.DV.PROCLIB)                                                          
+//********************************************************************          
+//*  NAME:    QRTC357                                                *          
+//*  DATE:    10/07/2005                                             *          
+//*  AUTHOR:  A DORFMAN                                              *          
+//*  DESC:                                                           *          
+//*  CREATES INVENTORY FILE FORMATTED FOR ESSBASE LOADING            *          
+//*  WHERE:                                                          *          
+//*         YYYY IS THE FISCAL YEAR FOR WHICH THE DATA IS DOWNLOADED *          
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                  *          
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                   *          
+//*  MOD HISTORY                                                     *          
+//*  DATE       NAME             DESCRIPTION                         *          
+//*  ========== ================ =================================== *          
+//*  10/07/2005 A DORFMAN        ORIGINAL                            *  
+//*  10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION  *          
+//********************************************************************          
+//*RTC357XX PROC PARM057='1999V2',SEC='%6',CNTL='%6'                             
+//********************************************************************          
+//*  CREATES INVENTORY FILE FORMATTED FOR ESSBASE LOADING                       
+//*  WHERE:                                                                     
+//*         YYYY IS THE FISCAL YEAR FOR WHICH THE DATA IS DOWNLOADED            
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                             
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                              
+//********************************************************************          
+//***RTC357UA EXEC  PGM=IEFBR14                                                    
+//***RTCD61   DD DSN=ABT.&SEC..RTC.RTCD61,DISP=(MOD,DELETE),                       
+//***            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//***RTCD62   DD DSN=ABT.&SEC..RTC.RTCD62,DISP=(MOD,DELETE),                       
+//***            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//**********************************************************************        
+//***IFC357   EXEC PGM=IFC357,REGION=2048K,PARM=&PARM057                           
+//***STEPLIB  DD DSN=ABT.AB.DUMMYLIB,DISP=SHR                                      
+//***         DD DSN=ABT.AB.PERMLIB,DISP=SHR                                       
+//***RTCD20   DD DSN=ABT.&SEC..RTC.RTCD20(+0),DISP=OLD              +I             
+//***RTCD61   DD DSN=ABT.&SEC..RTC.RTCD61,                          +0             
+//***            DISP=(NEW,CATLG,DELETE),                                          
+//***            STORCLAS=BASE,                                                    
+//***            MGMTCLAS=STDPROD,                                                 
+//***            SPACE=(23976,(100,10),RLSE),                                      
+//***            DCB=(RECFM=FB,LRECL=30,BLKSIZE=0)                                 
+//***SYSOUT   DD SYSOUT=*                                                          
+//***ABENDAID DD SYSOUT=A                                                          
+//***ABNLTERM DD SYSOUT=*                                                          
+//***SYSUDUMP DD SYSOUT=(A,,DUMP)                                                  
+//***SORTWK01 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//***SORTWK02 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//***SORTWK03 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//***SORTWK04 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//***SORTWK05 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//***SORTWK06 DD UNIT=SYSDA,SPACE=(CYL,(05,01))                                    
+//*********************************************************************         
+//**   CREATE AS400 TRIGGER RECORD                                   **         
+//*********************************************************************         
+//***RTC357UB EXEC PGM=FILEAID                                             00007   
+//***SYSPRINT DD  SYSOUT=*                                                 00011   
+//***ABENDAID DD  SYSOUT=*                                                 00011   
+//***SYSLIST  DD  SYSOUT=*                                                 00012   
+//***SYSTOTAL DD  SYSOUT=*                                                 00013   
+//***DD01     DD  DSN=ABT.&SEC..RTC.RTCD61,DISP=SHR                                
+//***DD01O    DD  DSN=ABT.&SEC..RTC.RTCD62,                                        
+//***             DISP=(,CATLG,DELETE),                                            
+//***             STORCLAS=BASE,                                                   
+//***             MGMTCLAS=STDPROD,                                                
+//***             SPACE=(24000,(10,1),RLSE),                                       
+//***             DCB=(RECFM=FB,LRECL=11,BLKSIZE=0)                                 
+//**** BUILD TRIGGER RECORD FOR AS400 PROCEDURE                                    
+//***SYSIN  DD  DSN=ABT.&CNTL..SORTCARD(RTC057UA),DISP=SHR                         
+//*********************************************************************         
+//***LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//***             COND=(0,EQ,RTC357UB),PARM=ABEND                                  
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR                           
+//*********************************************************************         
+//******* END OF PROC ******  R T C 3 5 7 X X ****** END OF PROC ******         
+//*********************************************************************         
+//***         PEND                                                                 
+//RTC357XX EXEC RTC357XX,PARM057='%1%2%3',FILE='%Y',GEN='(%Z)',
+// SEC='%6',CNTL='%7' 
+//***IFC357.STEPLIB DD DSN=ABT.%7.TESTLIB,DISP=SHR                                 
+//***RTC357UB.SYSIN  DD  *                                                         
+//***$$DD01 COPY  OUT=1,                                                 00010000
+//***         IF=(1,EQ,C'2'),                                            00020000
+//***            MOVE=(1,4,1),                                           00030000
+//***            MOVE=(5,2,6)                                            00040000
+//*************************************************                             
+//*  TRANSFER DATA FROM MVS TO AS400 ESSBASE                                    
+//*************************************************                             
+//***RTC357UC EXEC  PGM=FTPABT                                                     
+//***SYSPRINT DD SYSOUT=*                                                          
+//***SYSOUT   DD SYSOUT=*                                                          
+//***INPUT    DD  *                                                                
+//***%C                                                                            
+//***%D                                                            
+//***PUT 'ABT.AB.RTC.RTCD61' DWPROD/RTCINV.RTCINV                                    
+//***QUIT                                                                            
+//*********************************************************************         
+//***LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//***             COND=(0,EQ,RTC357UC),PARM=ABEND                                  
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*************************************************                             
+//*  TRANSFER TRIGGER RECORD                                                    
+//*************************************************                             
+//***RTC357UD EXEC  PGM=FTPABT                                                     
+//***SYSPRINT DD SYSOUT=*                                                          
+//***SYSOUT   DD SYSOUT=*                                                          
+//***INPUT    DD  *                                                                
+//***%C                                                                            
+//***%D                                                            
+//***PUT 'ABT.AB.RTC.RTCD62' DWPROD/RTCTRG.RTCTRG                                    
+//***QUIT                                                                            
+//*********************************************************************         
+//***LOGMSG3   EXEC  PGM=LOGMSG,                                                   
+//***             COND=(0,EQ,RTC357UD),PARM=ABEND                                  
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*********************************************************************         
+//**E N D    O F    J O B   Q R T C 3 5 7                            **         
+//*********************************************************************         

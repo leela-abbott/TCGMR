@@ -1,0 +1,77 @@
+//QRGM325 JOB (RGM,07),'PACK CODE LOAD',                                        
+// %4,%5                                                
+/*ROUTE PRINT R2017                                                             
+/*JOBPARM FORMS=LANB,S=X84A                                                     
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//**NAME:      QRGM325                                                **        
+//**DESC:      PACK CODES DOWNLOAD TO TCGM                            **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/27/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/27/2005 A DORFMAN           ORIGINAL                           **  
+//**04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE    **        
+//**********************************************************************        
+//RGM325XX PROC SEC='%6',CNTL='%6'                                              
+//**********************************************************************        
+//**NAME:      RGM325XX                                               **        
+//**DESC:      PACK FILE UPLOAD                                       **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      10/17/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**10/17/2005 A DORFMAN           ORIGINAL                           **        
+//**********************************************************************        
+//RGM325UA EXEC  PGM=IEFBR14                                                    
+//DD1      DD DSN=ABT.&SEC..RGMD90.EXT1,DISP=(MOD,DELETE),                      
+//            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//**********************************************************************        
+//*  COPY TEST TABLES TO SEQUENTIAL FILE                               *        
+//**********************************************************************        
+//RGM325UB EXEC  PGM=ASYNCOPY                                                    
+//DD01     DD DSN=ABT.&SEC..RGM.RGMD90(+0),DISP=SHR       +I                    
+//DD01O    DD DSN=ABT.&SEC..RGMD90.EXT1,                 +O                     
+//            DISP=(NEW,CATLG,DELETE),                                          
+//            STORCLAS=BASE,                                                    
+//            MGMTCLAS=INTERIM,                                                 
+//            SPACE=(24000,(500,50),RLSE),                                      
+//            DCB=(RECFM=FB,LRECL=80,BLKSIZE=0)                                 
+//*                                                                             
+//SYSTOTAL DD SYSOUT=*                                                          
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//*                                                                             
+//SYSIN    DD DSN=ABT.&CNTL..SORTCARD(RGM325UB),DISP=SHR                        
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM325UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(VSUTILIT),DISP=SHR                          
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO ORACLE FILE SHARE VIA FTP          
+//*********************************************************************         
+//RGM325UC EXEC PGM=FTPABT                                                      
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RGM325UC),DISP=SHR   +I                  
+//*********************************************************************         
+//LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM325UC),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//**********************************************************************        
+//**E N D    O F    P R O C    R G M 3 2 5 XX                         **        
+//**********************************************************************        
+//         PEND                                                                 
+//RGM325XX EXEC RGM325XX,SEC='%7',CNTL='%7'                                     
+//RGM325UB.SYSIN DD *                                                           
+$$DD01 COPY OUT=0                                                               
+//RGM325UC.INPUT DD *                                                           
+%8                                                                       
+%9                                                             
+PUT 'ABT.%7.RGMD90.EXT1' '%A/PACK_CODES/pack.master.D90'  
+cd %A/PACK_CODES
+QUOTE SITE CHMOD 744 pack.master.D90                    
+QUIT                                                                            
+//**********************************************************************        
+//**E N D    O F    J O B      Q R G M 3 2 5                          **        
+//**********************************************************************        

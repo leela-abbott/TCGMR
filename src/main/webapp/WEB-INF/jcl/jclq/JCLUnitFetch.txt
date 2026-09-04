@@ -1,0 +1,89 @@
+//QIFC309  JOB (IFC,07),'UNIT FETCH     ',                                      
+//  %4,%5                                                    
+/*RESOURCE C=1,T=1                                                              
+/*JOBPARM FORMS=LANB                                                            
+/*ROUTE  PRINT RMT2017                                                          
+//*********************************************************************         
+//*** NAME:   QIFC309                                               ***         
+//*** DATE:   09/26/2005                                            ***         
+//*** AUTHOR: A DORFMAN                                             ***         
+//*** DESC:   GET UNIT DATA                                         ***         
+//*** MOD HISTORY                                                   ***         
+//*** DATE       NAME               DESCRIPTION                     ***         
+//*** ========== ================== ==============================  ***         
+//*** 09/26/2005 A DORFMAN          orignal                         ***    
+//*** 03/10/2007 A DORFMAN          Eliminate write of RGMD20       ***  
+//*** 04/02/2007 A Dorfman          Fix FTP error                   *** 
+//*** 04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE*** 
+//*** 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION***         
+//*********************************************************************         
+//*                                                                             
+//IFC309XX PROC NODE='XA ',SYSTEM=XXX,CYCLE=XXXXX,SEC='%6',CNTL='%6'    00010014
+//********************************************************************* 00050100
+//*** NAME:   IFC309XX                                              *** 00050202
+//*** DATE:   09/26/2005                                            *** 00050300
+//*** AUTHOR: A DORFMAN                                             *** 00050400
+//*** DESC:   GET UNIT DATA                                         *** 00050500
+//*** MOD HISTORY                                                   *** 00050600
+//*** DATE       NAME               DESCRIPTION                     *** 00050700
+//*** ========== ================== ==============================  *** 00050800
+//*** 09/26/2005 A DORFMAN          ORIGINAL                        *** 00050900
+//********************************************************************* 00051000
+//********************************************************************* 00052000
+//* *** ALLOCATE AND/OR EMPTY TEMPORARY DATASET FOR FTP                 00053000
+//********************************************************************* 00054000
+//IFC309UA EXEC PGM=IEFBR14                                             00055002
+//DD1      DD  DSN=ABT.&SEC..IFC.RBLB20,                                00056000
+//        DISP=(MOD,DELETE),                                            00057000
+//        UNIT=SYSDA,SPACE=(TRK,1)                                      00058000
+//DD2      DD  DSN=ABT.&SEC..IFC.RBLB20.EXT1,                           00058100
+//        DISP=(MOD,DELETE),                                            00058200
+//        UNIT=SYSDA,SPACE=(TRK,1)                                      00058300
+//********************************************************************  00059000
+//* *** FORMAT UNIT SALES  AND  CREATE CONTROL STATEMENTS FOR TRANSFER  00059100
+//********************************************************************  00059200
+//IFC309   EXEC    PGM=IFC309,REGION=512K,PARM='&NODE,&SYSTEM,&CYCLE'   00059302
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                             00059400
+//         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                              00059500
+//*                                                                     00059600
+//         INCLUDE MEMBER=SYSOUTDD                                      00059700
+//*                                                                     00059800
+//RBBD20   DD DSN=%E,DISP=SHR                                           00059914
+//IFCD01   DD  DSN=ABT.&SEC..IFC.RBLB20,                                00060000
+//         DISP=(NEW,CATLG,DELETE),                                     00060100
+//         STORCLAS=BASE,                                               00060200
+//         MGMTCLAS=STDPROD,                                            00060300
+//         SPACE=(15416,(500,50),RLSE),                                 00060400
+//         DCB=(RECFM=FB,LRECL=232,BLKSIZE=0)                           00060500
+//IFCD02   DD  DSN=ABT.&SEC..IFC.RBLB20.EXT1,                           00061000
+//         DISP=(NEW,CATLG,DELETE),                                     00061100
+//         STORCLAS=BASE,                                               00061200
+//         MGMTCLAS=STDPROD,                                            00061300
+//         SPACE=(24000,(10,1),RLSE),                                   00061400
+//         DCB=(RECFM=FB,LRECL=80,BLKSIZE=0)                            00061500
+//********************************************************************  00064000
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM ORACLE                00065000
+//********************************************************************  00066000
+//IFC309UB EXEC  PGM=FTPABT                                             00067003
+//*                                                                     00067100
+//         INCLUDE MEMBER=SYSOUTDD                                      00067200
+//*                                                                     00067300
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(IFC309UB),DISP=SHR               00069204
+//********************************************************************* 00069300
+//LOGMSG1   EXEC  PGM=LOGMSG,                                           00069400
+//             COND=(0,EQ,IFC309UB),PARM=ABEND                          00069503
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                   00069600
+//*****************************************************************     00070700
+//***** END OF PROC ****** I F C 3 0 9 X X ****** END OF PROC *****     00071000
+//*****************************************************************     00080000
+//         PEND                                                                 
+//IFC309XX EXEC IFC309XX,SYSTEM=%1,CYCLE=%2,SEC='%6'                       
+//IFC309UB.INPUT DD *                                                           
+%8                                                                     
+%9                                                                 
+PUT 'ABT.%6.IFC.RBLB20' '%A/UNITS/%2.UNITS'                               
+QUIT                                                                            
+//*****************************************************************             
+//***** END OF JOB  ****** Q I F C 3 0 9   ****** END OF JOB  *****             
+//*****************************************************************             
+

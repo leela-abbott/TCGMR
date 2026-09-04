@@ -1,0 +1,116 @@
+//QRTC02 JOB (RTC,07),'TCGM MAINTENANCE',   
+// NOTIFY=TDETJB,                                    
+// %4,%1,%2                                                     
+/*ROUTE PRINT N1.R2017                                                          
+/*JOBPARM FORMS=LAN1,S=X84A                                                     
+/*RESOURCE  C=1,T=0                                                             
+/*OUTPUT B01 FORMS=PR08,DEST=R2017                                          
+//R43 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=A  
+//**R30 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=R                             
+//R30 OUTPUT CLASS=3,WRITER=RTCR01                                              
+//**********************************************************************        
+//**NAME:      QRTC30                                                **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DESC:      TCGM MAINTENANCE                                       **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **   
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **   
+//**04/18/2007 A DORFMAN           CHANGE INFOPAC PRINT TO CLASS=R    ** 
+//**                               ADD T07DRC TO NOFITY ON JOB CARD   **   
+//**05/17/2007 A DORFMAN           MOD TO USE PRODUCTION AB FILES     **
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **         
+//*************************************************************RTC009XX         
+//RTC309XX PROC SEC='%6',CNTL='%6'                                              
+//**********************************************************************        
+//**NAME:      RTC309XX                                               **        
+//**DESC:      UPDATE LIST FILE DATA                                  **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **       
+//**********************************************************************        
+//**                                                                            
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA TO MVS FROM TCGM                     *         
+//*********************************************************************         
+//RTC309UB EXEC PGM=FTPABT                                                      
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RTC309UB),DISP=SHR   +I                  
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RTC309UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*****************************************************************             
+//* COPY LIST FILE TO A BACKUP FILE                               *             
+//*****************************************************************             
+//RTC309UC EXEC PGM=ASYNCOPY,REGION=4096K                                        
+//DD01     DD  DSN=VSAMU.AB.RTC.RTCD53,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//DD01O    DD  DSN=ABT.AB.RTC.RTCD53.COPY(+1),                    +O          
+//             DISP=(NEW,CATLG,DELETE),                                         
+//             MGMTCLAS=STDPROD,STORCLAS=BASE,                                  
+//             SPACE=(21000,(2500,250),RLSE),                                   
+//             DCB=(MODEL,RECFM=FB,LRECL=535,BLKSIZE=0)                         
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//SYSTOTAL DD  SYSOUT=*                                                 00103000
+//SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(RTC309UC),DISP=SHR        +I             
+//*********************************************************************         
+//LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RTC309UC),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR                           
+//***************************************************************RTC100         
+//**  RTC100 - LIST FILE UPDATE PROGRAM                              **         
+//*********************************************************************         
+//RTC100   EXEC PGM=RTC100,REGION=8000K                                         
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//         DD  DSN=ABT.AB.PERMLIB,DISP=SHR                                      
+//RGMD01   DD  DSN=VSAMU.&SEC..RTC.RTCD01,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGMD05   DD  DSN=VSAME.&SEC..RGM.RGMD05,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGMD53   DD  DSN=VSAMU.&SEC..RTC.RTCD53,DISP=OLD,                  +U         
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RGMD90   DD  DSN=ABT.AB.RGM.RGMD90(0),DISP=SHR             +I                 
+//RGMD95   DD  DSN=ABT.&SEC..RTC.RTCD95,DISP=SHR                  +IO           
+//SORTWK01 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK02 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK03 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK04 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK05 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK06 DD  UNIT=SYSDA,SPACE=(CYL,15)               EM                       
+//RGMR50   DD  SYSOUT=(3,RGMR50)                +O                              
+//RGMSRTDD DD  SYSOUT=*                                                         
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//**********************************************************************        
+//**E N D    O F    P R O C   R T C 3 0 9 X X                         **        
+//**********************************************************************        
+//         PEND                                                                 
+//RTC309XX EXEC RTC309XX,SEC='%7',CNTL='%7'                                     
+//RTC309UB.INPUT  DD  *                                                         
+%8                                                                     
+%9                                                                 
+cd %B/RTC                                                                 
+GET RTCEXPORT.rtc.processed 'ABT.AB.RTC.RTCD95' (REPLACE    
+DELETE '%B/RTC/RTCEXPORT.rtc.processed'                  
+QUIT                                                                            
+//RTC309UC.DD01   DD  DSN=VSAMU.AB.RTC.RTCD53,DISP=SHR, +I                     
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RTC309UC.SYSIN  DD  *                                                         
+$$DD01 COPY OUT=0                                                               
+//RTC100.RGMD01 DD DSN=VSAMU.AB.RTC.RTCD01,DISP=SHR,      +I                    
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RTC100.RGMD05 DD DSN=VSAME.AB.RGM.RGMD05,DISP=SHR,      +I                    
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RTC100.RGMD53   DD  DSN=VSAMU.AB.RTC.RTCD53,DISP=OLD, +U                     
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RTC100.RGMD90 DD DSN=ABT.AB.RGM.RGMD90(0),DISP=SHR      +I                    
+//RTC100.RGMD95 DD DSN=ABT.AB.RTC.RTCD95,DISP=SHR         +I                    
+//RTC100.RGMR50 DD SYSOUT=(,),OUTPUT=(*.R43,*.R30) +O                                                
+//**********************************************************************        
+//**E N D    O F    J O B      Q R T C 0 2                            **        
+//**********************************************************************        

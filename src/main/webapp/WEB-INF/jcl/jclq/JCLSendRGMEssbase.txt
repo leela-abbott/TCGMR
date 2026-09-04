@@ -1,0 +1,110 @@
+//QIFC332 JOB (IFC,07),'SALES FILE',   DOWNLOAD DATA TO ESSBASE                 
+// %4,%5
+/*ROUTE PRINT R2017                                                             
+/*JOBPARM FORMS=LANB                                                          
+/*RESOURCE C=1,T=1,K=RT
+//JOBLIB JCLLIB ORDER=(ABT.AB.PROCLIB,ABT.DV.PROCLIB)                
+//********************************************************************          
+//*  NAME:    QIFC332                                                *          
+//*  DATE:    11/22/2006                                             *          
+//*  AUTHOR:  A DORFMAN                                              *          
+//*  DESC:                                                           *          
+//*  CREATES SALES FILE FORMATTED FOR ESSBASE LOADING                *          
+//*  WHERE:                                                          *          
+//*         MM   IS THE REQUESTED MONTH FOR THE DOWNLOADED DATA      *          
+//*         YYYY IS THE FISCAL YEAR FOR THE DOWNLOADED DATA          *          
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                  *          
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                   *          
+//*  MOD HISTORY                                                     *          
+//*  DATE       NAME             DESCRIPTION                         *          
+//*  ========== ================ =================================== *          
+//*  11/22/2006 A DORFMAN        ORIGINAL                            * 
+//* 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION   *           
+//********************************************************************          
+//***IFC332XX PROC PARM031='122005V1',SEC='%6',CNTL='%6'                           
+//********************************************************************          
+//*  CREATES SALES DATA FORMATTED FOR ESSBASE LOADING                *          
+//*  WHERE:                                                          *          
+//*         MM   IS THE REQUESTED MONTH                              *          
+//*         YYYY IS THE FISCAL YEAR FOR WHICH THE DATA IS DOWNLOADED *          
+//*         VV   IS THE VERSION OF DATA DOWNLOADED,                  *          
+//*                 WHEN V1=NOV, V2=APR AND V3=SEP                   *          
+//********************************************************************          
+//***IFC332UA EXEC  PGM=IEFBR14                                                    
+//***RGMD32   DD DSN=ABT.&SEC..IFC.RGMD32,DISP=(MOD,DELETE),                       
+//***            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//***RGMD33   DD DSN=ABT.&SEC..IFC.RGMD33,DISP=(MOD,DELETE),                       
+//***            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//**********************************************************************        
+//***IFC332   EXEC PGM=IFC332,REGION=2048K,PARM=&PARM031                           
+//***STEPLIB  DD DSN=ABT.AB.DUMMYLIB,DISP=SHR                                      
+//***         DD DSN=ABT.AB.PERMLIB,DISP=SHR                                       
+//***RGMD20   DD DSN=ABT.&SEC..RGM.RGMD20.ORIG(+0),DISP=OLD         +I             
+//***RGMD32   DD DSN=ABT.&SEC..IFC.RGMD32,                          +0             
+//***            DISP=(NEW,CATLG,DELETE),                                          
+//***            STORCLAS=BASE,                                                    
+//***            MGMTCLAS=STDPROD,                                                 
+//***            SPACE=(27200,(2000,200),RLSE),                                    
+//***            DCB=(RECFM=FB,LRECL=213,BLKSIZE=0) 
+//****    AS400 TRIGGER RECORD                                                    **   
+//***RGMD33    DD  DSN=ABT.&SEC..IFC.RGMD33,                         +0                                       
+//***             DISP=(,CATLG,DELETE),                                            
+//***             STORCLAS=BASE,                                                   
+//***             MGMTCLAS=STDPROD,                                                
+//***             SPACE=(24000,(10,1),RLSE),                                       
+//***             DCB=(RECFM=FB,LRECL=11,BLKSIZE=0) 
+//*                                                                             
+//***         INCLUDE MEMBER=SYSOUTDD                                              
+//*                                                                             
+//***SORTWK01 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//***SORTWK02 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//***SORTWK03 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//***SORTWK04 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//***SORTWK05 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//***SORTWK06 DD UNIT=SYSDA,SPACE=(CYL,(12,01))                                    
+//*********************************************************************         
+//******* END OF PROC ******  I F C 3 1 0 X X ****** END OF PROC ******         
+//*********************************************************************         
+//***         PEND                                                                 
+//IFC332XX EXEC IFC332XX,PARM031='%1%2%3%Y',CNTL='%7',SEC='%6' 
+//IFC332.RGMD20 DD DSN=ABT.AB.RGM.RGMD20.CAL(0),DISP=OLD                   
+//***IFC332.STEPLIB DD DSN=ABT.%7.TESTLIB,DISP=SHR                                 
+//***IFC332.RGMD20 DD DSN=ABT.AB.RGM.RGMD20.ORIG(+0),DISP=OLD +I                   
+//***IFC332UB.SYSIN  DD  *                                                         
+//***$$DD01 COPY  OUT=1,                                              
+//***             IF=(1,EQ,C'2'),                                              
+//***                MOVE=(1,4,1),                                          
+//***                MOVE=(5,2,6)                                           
+//*************************************************                             
+//*  TRANSFER DATA FROM MVS TO AS400 ESSBASE                                    
+//*************************************************                             
+//***IFC332UC EXEC  PGM=FTPABT                                                     
+//***SYSPRINT DD SYSOUT=*                                                          
+//***SYSOUT   DD SYSOUT=*                                                          
+//***INPUT    DD  *                                                                
+//***%C                                                                            
+//***%D                                                            
+//***PUT 'ABT.%7.IFC.RGMD32' DWPROD/ROLLSLS.ROLLSLS                                  
+//***QUIT                                                                            
+//*********************************************************************         
+//***LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//***             COND=(0,EQ,IFC310UC),PARM=ABEND                                  
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*************************************************                             
+//*  TRANSFER TRIGGER RECORD                                                    
+//*************************************************                             
+//***IFC332D EXEC  PGM=FTPABT                                                     
+//***SYSPRINT DD SYSOUT=*                                                          
+//***SYSOUT   DD SYSOUT=*                                                          
+//***INPUT    DD  *                                                                
+//***%C                                                                            
+//***%D                                                            
+//***PUT 'ABT.%7.IFC.RGMD33' DWPROD/RGMTRG.RGMTRG                                    
+//***QUIT                                                                            
+//*********************************************************************         
+//***LOGMSG3   EXEC  PGM=LOGMSG,                                                   
+//***             COND=(0,EQ,IFC310UD),PARM=ABEND                                  
+//***SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*********************************************************************         
+//**E N D    O F    J O B   Q I F C 3 1 0                            **         
+//********************************************************************         

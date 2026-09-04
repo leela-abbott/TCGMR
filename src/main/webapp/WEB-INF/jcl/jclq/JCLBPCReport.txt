@@ -1,0 +1,147 @@
+//QIFC301  JOB (IFC,07),'BP COST RPT  ',                                        
+//          %4,%5                                            
+/*ROUTE PRINT R2017                                                             
+/*JOBPARM FORMS=LANB                                                            
+/*OUTPUT R01 DEST=RMT2017,FORMS=X200                                            
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//** NAME:      QIFC301                                               **        
+//** AUTHOR:    A DORFMAN                                             **        
+//** DATE:      10/05/2005                                            **        
+//** DESC:      BP COST REPORT                                        **        
+//** MOD HISTORY                                                      **        
+//** DATE       NAME                DESCRIPTION                       **        
+//** ========== =================== ================================= **        
+//** 10/05/2005 A DORFMAN           ORIGINAL                          **  
+//** 04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE   ** 
+//** 10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION   **         
+//**********************************************************************        
+//IFC303XX PROC SEC='AI.INT',CNTL='%6',TYP='XXXXXXXX'                           
+//**********************************************************************        
+//**NAME:      IFC303XX                                               **        
+//**DATE:      10/26/2005                                             **        
+//**DESC:      UPLOAD TREE DATA FROM TCGM                             **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== ================================== **        
+//**10/26/2005 A DORFMAN           ORIGINAL                           **        
+//**********************************************************************        
+//*                                                                             
+//**********************************************************************        
+//* *** DELETE OLD FILE                                               **        
+//**********************************************************************        
+//IFC303UA EXEC PGM=IEFBR14                                                     
+//DD1      DD  DSN=ABT.&SEC..SYSTREE1.&TYP,                                     
+//        DISP=(MOD,DELETE,DELETE),UNIT=SYSDA,SPACE=(TRK,1)                     
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO TCGM FILE SHARE VIA FTP            
+//***** A) TRANSFER SALES HISTORY EXTRACT                                       
+//*********************************************************************         
+//IFC303UB    EXEC PGM=FTPABT                                                   
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(IFC303UB),DISP=SHR                       
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,IFC303UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//**********************************************************************        
+//* *** SORT FILE BY END, SUP, AND RPT DATA                            *        
+//**********************************************************************        
+//IFC303UC EXEC PGM=SORT                                                        
+//         INCLUDE MEMBER=SYSOUTDD                                              
+//SORTIN   DD  DSN=ABT.&SEC..SYSTREE1.EXT1,DISP=SHR  +I                         
+//SORTOUT  DD  DSN=ABT.&SEC..SYSTREE1.&TYP,                +O                   
+//             DISP=(NEW,CATLG,DELETE),                                         
+//             STORCLAS=BASE,                                                   
+//             MGMTCLAS=STDPROD,                                                
+//             SPACE=(22650,(500,50),RLSE),                                     
+//             DCB=(LRECL=148,RECFM=FB,BLKSIZE=0)                               
+//SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(IFC303UC),DISP=SHR                       
+//*********************************************************************         
+//LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,IFC303UC),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(SORTMSG),DISP=SHR                           
+//*********************************************************************         
+//******* END OF PROC ******  I F C 3 0 3 X X ****** END OF PROC ******         
+//*********************************************************************         
+//         PEND                                                                 
+//IFC303XX EXEC IFC303XX,CNTL='%7',TYP='%2'                                     
+//IFC303UB.INPUT DD *                                                           
+%8
+%9 
+cd %B/BPC                                                                   
+GET SYSTREE1.bpc2.processed 'ABT.AI.INT.SYSTREE1.EXT1' (REPLACE   
+DELETE '%B/BPC/SYSTREE1.bpc2.processed'               
+QUIT                                                                            
+//IFC303UC.SYSIN DD *                                                           
+  SORT FIELDS=(1,21,CH,A,64,3,CH,A)                                                       
+//IFC301X1 PROC SEC='%6',CNTL='%6'                                      00010001
+//**********************************************************************        
+//*  NAME:      IFC301XX                                              **        
+//*  DATE:      10/05/2005                                            **        
+//*  AUTHOR:    A DORFMAN                                             **        
+//*  DESC:      BP COST SAS REPORT                                    **        
+//*  MOD HISTORY                                                      **        
+//*  DATE       NAME             DESCRIPTION                          **        
+//*  ========== ================ ==================================== *M        
+//*  10/05/2005 A DORFMAN        ORIGINAL                             **        
+//**********************************************************************        
+//**                                                                            
+//**********************************************************************        
+//*         DELETE TEMPORARY WORK FILES                                         
+//**********************************************************************        
+//IFC301UA EXEC PGM=IEFBR14                                                     
+//SCRATCH  DD DSN=ABT.&SEC..RGM.FACTOR,DISP=(MOD,DELETE),                       
+//            UNIT=SYSDA,SPACE=(TRK,(0))                                        
+//**********************************************************************        
+//*  CREATE EMPTY SAS LIBRARY                                                   
+//**********************************************************************        
+//IFC301UB EXEC PGM=FILEAID                                                     
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//SYSTOTAL DD SYSOUT=*                                                          
+//DD01     DD DUMMY                                                             
+//DD01O    DD DSN=ABT.&SEC..RGM.FACTOR,DISP=(NEW,CATLG,DELETE),                 
+//            DCB=(RECFM=FS,LRECL=0,BLKSIZE=0),                                 
+//            UNIT=SYSDA,SPACE=(CYL,(100,10),RLSE)                              
+//SYSIN    DD DSN=ABT.&CNTL..SORTCARD(IFC301UB),DISP=SHR                        
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,IFC301UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR                           
+//*****************************************************************             
+//**E N D    O F    P R O C    I F C 3 0 1 X 1                   **             
+//*****************************************************************             
+//         PEND                                                                 
+//IFC301X1 EXEC IFC301X1,SEC='%7',CNTL='%7'                                     
+//IFC301UB.SYSIN    DD *                                                        
+$$DD01 COPY OUT=0                                                               
+//IFC301X2 EXEC ABTSAS,NAME=IFC301,SEC=AB,SORT=6,SEC2='AI.INT',               
+//        WORK='5000,5000',                                                     
+//        OPTIONS='NOSOURCE ',                                                  
+//        OPTIONA='SYSPARM=''''%1'''''                                          
+//SAS.DUMMY DD DUMMY                                                            
+//SAS.SYSOUT    DD SYSOUT=*                                                     
+//SAS.SYSPRINT  DD SYSOUT=*                                                     
+//SAS.SYSUDUMP  DD SYSOUT=(A,,DUMP)                                             
+//SAS.ABENDAID  DD SYSOUT=A                                                     
+//SAS.ABNLTERM  DD SYSOUT=*                                                     
+//SAS.RGMD01   DD DSN=VSAME.AB.RGM.RGMD01,DISP=SHR,         +I                  
+//         AMP=('BUFND=12','BUFNI=4','BUFSP=64000')                             
+//SAS.RGMD05   DD DSN=VSAME.AB.RGM.RGMD05,DISP=SHR,         +I                  
+//         AMP=('BUFND=12','BUFNI=4','BUFSP=64000')                             
+//SAS.RGMD06   DD DSN=ABT.AB.RGM.RGMD06,DISP=SHR            +I                  
+//SAS.RGMD20   DD DSN=ABT.AB.RGM.RGMD20.ORIG(+0),DISP=SHR   +I                  
+//SAS.RGLD01   DD DSN=VSAM.AB.RGL.RGLD01,DISP=SHR,          +I                  
+//         AMP=('BUFND=12','BUFNI=4','BUFSP=64000')                             
+//SAS.RGMD90   DD DSN=ABT.&SEC2..MBMSPACK,DISP=SHR             +I               
+//SAS.RGMCUR   DD DSN=ABT.&SEC2..CURRENCY.CODES,DISP=SHR       +I               
+//SAS.TCGMTREE DD DSN=ABT.&SEC2..SYSTREE1.%2,DISP=SHR          +I               
+//IFCR301I OUTPUT CLASS=3,WRITER=IFCR301                 +O                     
+//IFCR301P OUTPUT CLASS=P,WRITER=IFCR301                 +O                     
+//IFCR301R OUTPUT CLASS=3,WRITER=RGMR01                     +O                  
+//SAS.IFCR301 DD SYSOUT=(,),
+//      OUTPUT=(*.IFCR301R,*.IFCR301P,*.IFCR301I)        REPORT                
+//**********************************************************************        
+//** E N D    O F     J O B   Q I F C 3 0 1                           **        
+//**********************************************************************        

@@ -1,0 +1,142 @@
+//QRGM30 JOB (RGM,07),'TCGM MAINTENANCE',   
+// NOTIFY=TDETJB,                                   
+// %4,%1,%2                                                     
+/*OUTPUT B01 FORMS=PR08,DEST=R2017                                            
+//R43 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=A 
+//**R30 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=R                              
+//R30 OUTPUT CLASS=3,WRITER=RGMR01                                              
+/*ROUTE PRINT N1.R2017                                                          
+/*JOBPARM FORMS=LAN1,S=X84A                                                     
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//**NAME:      QRGM30                                                **        
+//**DESC:      TCGM MAINTENANCE                                       **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **   
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **  
+//**04/18/2007 A DORFMAN           CHANGE INFOPAC PRINT TO CLASS=R    ** 
+//**                               ADD T07DRC TO NOFITY ON JOB CARD   **  
+//**05/17/2007 A DORFMAN           MOD TO USE PRODUCTION AB FILES     **          
+//**********************************************************************        
+//RGM330XX PROC SEC='%6',CNTL='%6'                                              
+//**********************************************************************        
+//**NAME:      RGM330XX                                               **        
+//**DESC:      UPDATE LIST FILE DATA                                  **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/29/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/29/2005 A DORFMAN           ORIGINAL                           **        
+//**********************************************************************        
+//**                                                                            
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA TO MVS FROM TCGM                     *         
+//*********************************************************************         
+//RGM330UB EXEC PGM=FTPABT                                                      
+//*                                                                             
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//*                                                                             
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RGM330UB),DISP=SHR   +I                  
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM330UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//*****************************************************************             
+//*                                                               *             
+//* COPY LIST FILE TO A BACKUP FILE                               *             
+//*****************************************************************             
+//*RGM330UC EXEC PGM=ASYNCOPY ,REGION=4096K                                        
+//*DD01     DD  DSN=VSMT.AB.RGM.RGMD53,DISP=SHR,                  +I         
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*DD01O    DD  DSN=ABT.AB.IFC.RGMD53.COPY(+1),                   +O          
+//*             DISP=(NEW,CATLG,DELETE),                                         
+//*             MGMTCLAS=STDPROD,STORCLAS=BASE,                                  
+//*             SPACE=(21000,(2500,250),RLSE),                                   
+//*             DCB=(MODEL,RECFM=FB,LRECL=535,BLKSIZE=0)                         
+//*     INCLUDE MEMBER=SYSOUTDD                                                  
+//*SYSTOTAL DD  SYSOUT=*                                                 00103000
+//*SYSIN    DD  DSN=ABT.&CNTL..SORTCARD(RGM330UC),DISP=SHR        +I             
+//*                                                                             
+//*********************************************************************         
+//*LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//*             COND=(0,EQ,RGM330UC),PARM=ABEND                                  
+//*SYSIN     DD  DSN=ABT.AB.SORTCARD(FAIDMSG),DISP=SHR                           
+//***************************************************************RGM100         
+//RGM100   EXEC PGM=RGM100,REGION=8000K                                         
+//*********************************************************************         
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//         DD  DSN=ABT.DV.TESTLIB,DISP=SHR                                      
+//RGMD01   DD  DSN=VSMT.&SEC..RGM.RGMD01.AI,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGMD05   DD  DSN=VSAME.&SEC..RGM.RGMD05,DISP=SHR,                  +I         
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGMD53   DD  DSN=VSAME.&SEC..RGM.RGMD53,DISP=OLD,                  +U         
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RGMD90   DD  DSN=ABT.&SEC..RGM.RGMD90(0),DISP=OLD                  +I         
+//RGMD95   DD  DSN=ABT.&SEC..IFC.RGMD95,DISP=SHR                    +IO           
+//SORTWK01 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK02 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK03 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK04 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK05 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//SORTWK06 DD  UNIT=SYSDA,SPACE=(CYL,15)                                        
+//RGMR50   DD  SYSOUT=(3,RGMR50)                +O                              
+//RGMSRTDD DD  SYSOUT=*                                                         
+//*                                                                             
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//*                                                                             
+//***************************************************************RGM150         
+//RGM150   EXEC PGM=RGM150                                                      
+//*********************************************************************         
+//STEPLIB  DD  DSN=ABT.AB.DUMMYLIB,DISP=SHR                                     
+//         DD  DSN=ABT.DV.TESTLIB,DISP=SHR                                      
+//RGMD01   DD  DSN=VSAME.&SEC..RGM.RGMD01.AI,DISP=SHR,                +I           
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGMD53   DD  DSN=VSAME.&SEC..RGM.RGMD53,DISP=SHR,                +I           
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//SORTWK01 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//SORTWK02 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//SORTWK03 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//SORTWK04 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//SORTWK05 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//SORTWK06 DD  UNIT=SYSDA,SPACE=(CYL,10)                                        
+//RGMR54   DD  SYSOUT=(3,RMGR54)               +O                               
+//     INCLUDE MEMBER=SYSOUTDD                                                  
+//*********************************************************************         
+//***** E N D   O F   P R O C * RGM330XX * E N D   O F   P R O C ******         
+//**********************************************************************        
+//         PEND                                                                 
+//RGM330XX EXEC RGM330XX,SEC='%7',CNTL='%7'                                     
+//RGM330UB.INPUT  DD  *                                                         
+%8
+%9                                                                 
+cd %B/RGM                                                                
+GET RGMEXPORT.RGM.PROCESSED 'ABT.DV.IFC.RGMD95' (REPLACE)           mod 
+DELETE '%B/RGM/RGMEXPORT.RGM.PROCESSED'              
+QUIT                                                                            
+//*RGM330UC.DD01   DD  DSN=VSMT.AB.RGM.RGMD53,DISP=SHR,              +I   mod                    
+//*             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//*RGM330UC.SYSIN  DD  *                                                         
+//*$$DD01 COPY OUT=0                                                               
+//RGM100.RGMD01 DD DSN=VSMT.AB.RGM.RGMD01.AI,DISP=SHR,            +I    mod                
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGM100.RGMD05 DD DSN=VSMT.AB.RGM.RGMD05,DISP=SHR,                +I    mod                    
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGM100.RGMD53   DD  DSN=VSMT.AB.RGM.RGMD53,DISP=OLD,              +U   mod                     
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RGM100.RGMD90 DD DSN=T07PID.AB.RGM.RGMD90.CONVERT,DISP=OLD +I  mod                   
+//RGM100.RGMD95 DD DSN=ABT.AB.IFC.RGMD95,DISP=SHR               +I                         
+//RGM100.RGMR50 DD SYSOUT=(,),OUTPUT=(*.R43,*.R30) +O                           
+//RGM150.RGMD01 DD DSN=VSMT.AB.RGM.RGMD01.AI,DISP=SHR,      +I  mod                   
+//             AMP=('AMORG,BUFND=9,BUFNI=1')                                    
+//RGM150.RGMD53 DD DSN=VSMT.AB.RGM.RGMD53,DISP=SHR,          +I  mod                    
+//             AMP=('AMORG,BUFND=2,BUFNI=4')                                    
+//RGM150.RGMR54   DD  DUMMY                           +O                                 
+//**********************************************************************        
+//**E N D    O F    J O B      Q R G M 3 0                            **        
+//**********************************************************************        

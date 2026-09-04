@@ -1,0 +1,80 @@
+//QRGM301 JOB (RGM,07),'PROD HEADER LOAD',                                      
+// %4,%5                                                     
+/*ROUTE PRINT N1.R2017                                                        
+/*JOBPARM FORMS=LANB,S=X84A                                                     
+/*RESOURCE  C=1,T=0                                                             
+//**********************************************************************        
+//**NAME:      QRGM301                                                **        
+//**DESC:      HEADER FILE UPLOAD FOR PRODUCTION                      **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/27/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/27/2005 A DORFMAN           ORIGINAL                           **    
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **  
+//**04/20/2007 A DORFMAN           CHANGE FORMS=LANB FOR LANDSCAPE    **       
+//**********************************************************************        
+//RGM320XX PROC VSAM1='VSAME.AB',SEC1='%6',SEC2='RGM',                          
+//         CNTL='AB'                                                            
+//**********************************************************************        
+//**NAME:      RGM320XX                                               **        
+//**DESC:      LABEL FILE UPLOAD FOR TEST OR PRODUCTION               **        
+//**AUTHOR:    A DORFMAN                                              **        
+//**DATE:      09/27/2005                                             **        
+//**MOD HISTORY                                                       **        
+//**DATE       NAME                DESCRIPTION                        **        
+//**========== =================== =================================  **        
+//**09/27/2005 A DORFMAN           ORIGINAL                           **
+//**10/14/2011 P DURKEE   UPDATED LRECL'S FOR 'R' SYSTEM EXPANSION    **          
+//**********************************************************************        
+//RGM320UA EXEC  PGM=IEFBR14                                                    
+//DD1      DD DSN=ABT.&SEC1..RGMD28,DISP=(MOD,DELETE),                          
+//            UNIT=SYSDA,SPACE=(TRK,1)                                          
+//**********************************************************************        
+//*  COPY TEST TABLES TO SEQUENTIAL FILE                               *        
+//**********************************************************************        
+//RGM320UB EXEC  PGM=IDCAMS                                                     
+//RGMD05   DD DSN=&VSAM1..&SEC2..RGMD05,DISP=SHR,          +I                   
+//            AMP=('BUFND=12','BUFNI=4','BUFSP=64000')                          
+//RGMD28   DD DSN=ABT.&SEC1..RGMD28,                      +O                    
+//            DISP=(NEW,CATLG,DELETE),                                          
+//            STORCLAS=BASE,                                                    
+//            MGMTCLAS=INTERIM,                                                 
+//            SPACE=(23450,(500,50),RLSE),                                      
+//            DCB=(RECFM=FB,LRECL=70,BLKSIZE=0)                                 
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//SYSIN    DD DSN=ABT.&CNTL..SORTCARD(RGM320UB),DISP=SHR                        
+//*********************************************************************         
+//LOGMSG1   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM320UB),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(VSUTILIT),DISP=SHR                          
+//*********************************************************************         
+//* *** UTILITY TO TRANSFER DATA FROM MVS TO ORACLE FILE SHARE VIA FTP          
+//*********************************************************************         
+//RGM320UC EXEC PGM=FTPABT                                                      
+//      INCLUDE MEMBER=SYSOUTDD                                                 
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RGM320UC),DISP=SHR   +I                  
+//*********************************************************************         
+//LOGMSG2   EXEC  PGM=LOGMSG,                                                   
+//             COND=(0,EQ,RGM320UC),PARM=ABEND                                  
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                           
+//**********************************************************************        
+//**E N D    O F    P R O C    R G M 3 2 0 XX                         **        
+//**********************************************************************        
+//         PEND                                                                 
+//RGM320XX EXEC RGM320XX,VSAM1='VSAME.AB',SEC1='%7',SEC2='RGM',                 
+//         CNTL='%7'                                                            
+//RGM320UB.SYSIN    DD  *                                                       
+  REPRO -                                                                       
+  INFILE(RGMD05) OUTFILE(RGMD28) SKIP(1)                                                
+//RGM320UC.INPUT    DD  *                                                       
+%8                                                                       
+%9 
+PUT 'ABT.%7.RGMD28' '%A/LIST_LABELS/PROD.D05'  
+cd %A/LIST_LABELS
+QUOTE SITE CHMOD 744 PROD.D05                           
+QUIT                                                                            
+//**********************************************************************        
+//**E N D    O F    J O B      Q R G M 3 0 1                          **        
+//**********************************************************************        

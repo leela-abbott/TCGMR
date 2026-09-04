@@ -1,0 +1,65 @@
+//QRBB03 JOB (RBB,07),'TCGM MAINTENANCE',                               
+// NOTIFY=TDETJB,                                                       
+// MSGCLASS=R,USER=B07RGMT,PASSWORD=                                    
+/*ROUTE PRINT N1.R2017                                                  
+/*JOBPARM FORMS=LAN1,S=X84A                                             
+/*RESOURCE  C=1,T=0                                                     
+/*OUTPUT B01 FORMS=PR08,DEST=R2017                                      
+//R43 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=A                     
+//**R30 OUTPUT COPIES=1,DEST=R2017,FORMS=PR08,CLASS=R                   
+//R30 OUTPUT CLASS=3,WRITER=RBBR01                                      
+//**********************************************************************
+//**NAME:      QRBB30                                                 **
+//**DESC:      TCGM MAINTENANCE                                       **
+//**AUTHOR:    A DORFMAN                                              **
+//**DATE:      09/29/2005                                             **
+//**MOD HISTORY                                                       **
+//**DATE       NAME                DESCRIPTION                        **
+//**========== =================== =================================  **
+//**09/29/2005 A DORFMAN           ORIGINAL                           **
+//**04/02/2007 A DORFMAN           CHANGE PRINTER TO RMT2017          **
+//**04/18/2007 A DORFMAN           CHANGE INFOPAC PRINT TO CLASS=R    **
+//**                               ADD T07DRC TO NOFITY ON JOB CARD   **
+//**05/17/2007 A DORFMAN           MOD TO USE PRODUCTION AB FILES     **
+//**********************************************************************
+//RBB330XX PROC CNTL='DV'                                               
+//**********************************************************************
+//**NAME:      RBB010XX                                               **
+//**DESC:      UPDATE LIST FILE DATA                                  **
+//**AUTHOR:    A DORFMAN                                              **
+//**DATE:      09/29/2005                                             **
+//**MOD HISTORY                                                       **
+//**DATE       NAME                DESCRIPTION                        **
+//**========== =================== =================================  **
+//**09/29/2005 A DORFMAN           ORIGINAL                           **
+//**********************************************************************
+//********************************************************************* 
+//* *** UTILITY TO TRANSFER DATA TO MVS FROM TCGM                     * 
+//********************************************************************* 
+//RBB330UB EXEC PGM=FTPABT                                              
+//*                                                                     
+//      INCLUDE MEMBER=SYSOUTDD                                         
+//*                                                                     
+//INPUT    DD  DSN=ABT.&CNTL..SORTCARD(RBB330UB),DISP=SHR   +I          
+//********************************************************************* 
+//LOGMSG1   EXEC  PGM=LOGMSG,                                           
+//             COND=(0,EQ,RBB330UB),PARM=ABEND                          
+//SYSIN     DD  DSN=ABT.AB.SORTCARD(UTILITY),DISP=SHR                   
+//********************************************************************* 
+//***** E N D   O F   P R O C * RBB330XX * E N D   O F   P R O C ****** 
+//*****    THIS IS FOR DEV ONLY TO TEST FTP ONLY                        
+//********************************************************************* 
+//********************************************************************* 
+//         PEND                                                         
+//RBB330XX EXEC RBB330XX,CNTL='DV'                                      
+//RBB330UB.INPUT  DD  *                                                 
+UAPD5004D           
+svc-tcgm Summer2014                                          
+CD /TCGMManageData/EXPORTS/RBB                                         
+GET RBBEXPORT.rbb.processed 'ABT.DV.RBB.RBBD95' (REPLACE               
+DELETE '/TCGMManageData/EXPORTS/RBB/RBBEXPORT.rbb.processed'           
+QUIT 
+//**********************************************************************
+//**E N D    O F    J O B      Q R B B 3 0                            **
+//**********************************************************************                                                                  
+ 	                                                 
