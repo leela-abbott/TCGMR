@@ -926,7 +926,9 @@
 			<result name="success">/jsp/mngReportJobs.jsp</result>
 		</action>
 
-		<action name="logout" class="abbott.ai.tcgm.action.Logout" />
+		<action name="logout" class="abbott.ai.tcgm.action.Logout" >
+		<result name="success" type="redirectAction">login</result>
+		</action>
 
 		<action name="closeModel"
 			class="abbott.ai.tcgm.action.CloseModel">

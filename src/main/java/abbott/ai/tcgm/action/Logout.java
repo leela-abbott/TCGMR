@@ -1,62 +1,55 @@
 package abbott.ai.tcgm.action;
 
-import org.apache.struts.action.*;
-//import org.apache.log4j.*;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.ServletRequestAware;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import java.io.*;
-
-//import abbott.ai.tcgm.action.form.*;
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.data.*;
-//import abbott.ai.tcgm.entities.*;
-//import abbott.ai.tcgm.helpers.*;
-//import abbott.ai.tcgm.exception.*;
+import abbott.ai.tcgm.entities.User;
+
 /**
  * <p>Title: TCGM</p>
- * <p>Description: Provides the login routine for the application</p>
- * <p>Copyright: Copyright (c) 2002</p>
+ * <p>Description: Upgraded Struts 7.3.0 Session Termination Handler Action</p>
  * <p>Company: Abbott Laboratories</p>
- * @author David Fields
- * @version 1.0
+ * @version 7.3.0
  */
-public class Logout extends TCGMAction
-{
-	/**
-	 * Default Constructor
-	 */
-	public Logout()
-	{
-		super();
-	}
+public class Logout extends ActionSupport implements ServletRequestAware {
 
-	/**
-	 *
-	 * @param mapping ActionMapping
-	 * @param form ActionForm
-	 * @param request HttpServletRequest
-	 * @param response HttpServletResponse
-	 * @return the page or action to forward control to
-	 * @throws IOException
-	 * @throws ServletException
-	 */
-	public ActionForward perform(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws IOException, ServletException
-	{
+    private static final long serialVersionUID = 3L;
+    private HttpServletRequest request;
 
-        // Attempt to close the cached connection
-        if ( this.isSessionValid(request) )
-            SQLUtil.closeCachedConnection( this.getUserToken(request) );
+    /**
+     * Default Constructor
+     */
+    public Logout() {
+    }
 
-        // Clear all session information
-        request.getSession().invalidate();
+    @Override
+    public void withServletRequest(HttpServletRequest request) {
+        this.request = request;
+    }
 
-        // Set message
-		this.errors.clear();
-        errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("success.logout"));
-		saveErrors(request,errors);
+    @Override
+    public String execute() throws Exception {
+        HttpSession session = request.getSession(false);
 
-		// Forward back to the login page.
-		return mapping.findForward( TCGMConstants.G_FORWARD_LOGIN );
-	}
+        if (session != null) {
+            User user = (User) session.getAttribute(TCGMConstants.SESSION_NAME_USER);
+            if (user != null) {
+                try {
+                	SQLUtil.closeCachedConnection(user.getUserToken());
+                } catch (Exception e) {
+                    System.out.println("Exception closing cached database session connection: " + e);
+                }
+            }
+
+            session.invalidate();
+        }
+
+        addActionMessage(getText("success.logout"));
+
+        return SUCCESS; 
+    }
 }
