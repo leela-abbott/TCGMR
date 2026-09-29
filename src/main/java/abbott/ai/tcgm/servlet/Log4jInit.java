@@ -1,80 +1,70 @@
 package abbott.ai.tcgm.servlet;
 
-import org.apache.log4j.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.*;
-//import abbott.ai.tcgm.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
 
-/**
- * <p>Title: TCGM</p>
- * <p>Description: Initializes Log4J</p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott International</p>
- * @author Dave FIelds
- * @version 1.0
- */
-public class Log4jInit extends HttpServlet
-{
-	private static Logger myLogger = Logger.getLogger( "Log4jInit" );
-	/**
-	 * Default Constructor
-	 */
-	public Log4jInit()
-	{
-	}
+public class Log4jInit extends HttpServlet {
 
-	/**
-	 * Initialize the servlet
-	 * @throws ServletException
-	 */
-	public void init(ServletConfig config) throws ServletException
-	{
-		ServletContext context = config.getServletContext();
-		String path =  context.getRealPath("\\");
-		String file = config.getInitParameter("log4j-init-file");
+    private static final long serialVersionUID = 1L;
+    private static final Logger myLogger = LogManager.getLogger("Log4jInit");
 
-		// add / to path if not there for weblogic...
-		if (!path.endsWith("\\") ) path = path + "\\";
+    public Log4jInit() {
+        super();
+    }
 
-		// if the log4j-init-file is not set, then no point in trying
-		if(file != null)
-		{
-			PropertyConfigurator.configure(path + file);
-			//PropertyConfigurator.configure(iStream.toString());
-		}
-		else
-		{
-			myLogger.error("\n\npath:" + path);
-			myLogger.error("file: " + file);
-			myLogger.error(path + file+"\n\n");
-			throw new ServletException("Unable to locate \"LOG4J-INIT-FILE\" ");
-		}
-	}
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        ServletContext context = config.getServletContext();
+        String basePath = context.getRealPath("/");
+        String initFile = config.getInitParameter("log4j-init-file");
 
-	/**
-	 * @param request HttpServletRequest object
-	 * @param response HttpServletResponse object
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-	}
+        if (basePath == null) {
+            basePath = "";
+        }
 
-	/**
-	 * @param request HttpServletRequest object
-	 * @param response HttpServletResponse object
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-	}
+        if (!basePath.endsWith(File.separator)) {
+            basePath = basePath + File.separator;
+        }
 
-	public void destroy()
-	{
+        if (initFile != null) {
+            String fullPath = basePath + initFile.replace("\\", File.separator).replace("/", File.separator);
+            File log4jFile = new File(fullPath);
 
-	}
+            if (log4jFile.exists()) {
+                LoggerContext loggerContext = (LoggerContext) LogManager.getContext(false);
+                loggerContext.setConfigLocation(log4jFile.toURI());
+            } else {
+                System.err.println("Log4jInit ERROR: Configuration file not found at " + fullPath);
+                throw new ServletException("Unable to locate Log4j configuration file at: " + fullPath);
+            }
+        } else {
+            myLogger.error("path: " + basePath);
+            myLogger.error("file: " + initFile);
+            throw new ServletException("Unable to locate \"log4j-init-file\" init-param");
+        }
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 }

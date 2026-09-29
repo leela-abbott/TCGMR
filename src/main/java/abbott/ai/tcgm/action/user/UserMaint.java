@@ -1,7 +1,6 @@
 package abbott.ai.tcgm.action.user;
 
 import org.apache.struts.action.*;
-//import org.apache.log4j.*;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -9,19 +8,10 @@ import java.io.*;
 
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.action.form.*;
-//import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.helpers.*;
 import abbott.ai.tcgm.exception.*;
-//import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.action.*;
-/**
- * <p>Title: TCGM</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott Laboratories</p>
- * @author David Fields
- * @version 1.0
- */
+
 public class UserMaint extends TCGMAction
 {
 	/**

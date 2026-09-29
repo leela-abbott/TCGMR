@@ -1,90 +1,59 @@
 package abbott.ai.tcgm.servlet;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.*;
-import abbott.ai.tcgm.*;
-import abbott.ai.tcgm.data.*;
-import java.io.*;
-import org.apache.log4j.Logger;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import abbott.ai.tcgm.AppConst;
+import abbott.ai.tcgm.data.DatasetConst;
+import abbott.ai.tcgm.data.SQLUtil;
 import abbott.ai.tcgm.process.DaemonMngr;
 
-/**
- * <p>Title: TCGM</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott International</p>
- * @author Dave Fields
- * @version 1.0
- */
+public class TCGMInit extends HttpServlet {
 
-public class TCGMInit extends HttpServlet
-{
-	private static Logger logger = null;
+    private static final long serialVersionUID = 1L;
+    private static final Logger logger = LogManager.getLogger(TCGMInit.class);
 
-	/**
-	 * Initialize the servlet
-	 */
+    public TCGMInit() {
+        super();
+    }
 
-	public void init(ServletConfig config) throws ServletException
-	{
-		// init the dataset id object
-		DatasetConst dsConst = DatasetConst.getInstance();
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        DatasetConst dsConst = DatasetConst.getInstance();
 
-		try
-		{
-			dsConst.init();
-			AppConst.init(config);
-			SQLUtil.init(config);
-			DaemonMngr.init(config);
-			
-			
-				DaemonMngr dm = DaemonMngr.getInstance();				
-				dm.startProcessScheduler();
-				dm.startProcessSchedulerMonitor();
-				dm.startDataFeedMonitor();
-	        
-				
-	        
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error Initializing TCGM Application: " + e.getMessage() );
-			throw new ServletException(e);
-		}
-	}
+        try {
+            dsConst.init();
+            AppConst.init(config);
+            SQLUtil.init(config);
+            DaemonMngr.init(config);
+            
+            DaemonMngr dm = DaemonMngr.getInstance();                
+            dm.startProcessScheduler();
+            dm.startProcessSchedulerMonitor();
+            dm.startDataFeedMonitor();
+            
+        } catch(Exception e) {
+            System.err.println("Error Initializing TCGM Application: " + e.getMessage());
+            throw new ServletException(e);
+        }
+    }
 
-	/**
-	 * Default Constructor
-	 */
-	public TCGMInit()
-	{
-		this.logger = Logger.getLogger(this.getClass());
-	}
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
 
-	/**
-	 *
-	 * @param request HttpServletRequest object
-	 * @param response HttpServletResponse object
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-	}
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    }
 
-	/**
-	 *
-	 * @param request HttpServletRequest object
-	 * @param response HttpServletResponse object
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-	}
-
-	public void destroy()
-	{
-		logger = null;
-	}
+    @Override
+    public void destroy() {
+        super.destroy();
+    }
 }
