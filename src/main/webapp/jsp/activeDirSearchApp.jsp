@@ -1,223 +1,227 @@
-<%! String pageTitle = "App User Search & Selection Screen"; %>
+<%! String pageTitle = "Report User Search & Selection Screen"; %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/include/header.jsf" %>
 
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="javascript:setFocus('usId');">
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
-	
-<jsp:useBean id="activeDirSearchForm" scope="session" class="abbott.ai.tcgm.action.form.ActiveDirSearchForm" />
-<nested:form name="activeDirSearchForm" type="abbott.ai.tcgm.action.form.ActiveDirSearchForm" method="post" action="/ActiveDirSearch.do">
-  <nested:hidden property="cmd" />
-   <nested:hidden property="cmd2" />
-<table width="650" height="77" align="center" >
+<head>
+    <style>
+        /* Modern CSS Buttons matching the corporate TCGM application spec */
+        .tcgm-btn {
+            display: inline-block;
+            padding: 5px 16px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #123456 !important;
+            text-decoration: none;
+            background: linear-gradient(to bottom, #ffe880 0%, #ffcd3c 100%);
+            border: 1px solid #cca11f;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            cursor: pointer;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.1s ease-in-out;
+        }
+        .tcgm-btn:hover {
+            background: linear-gradient(to bottom, #ffed96 0%, #ffd455 100%);
+            border-color: #b88f14;
+        }
+        .tcgm-btn:active {
+            background: #ffcd3c;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
 
-          <tr>
-            <td width=100></td>
-            <td height="33"><label align="left" class="commandOptionLabel">UserId</label></td>
-            <td><label>
-              <input name="usId" type="text" value="" id="usIdTextField" size="25" class="mntLeft" onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}">
-            </label></td>
-          </tr>
-          <tr>
-            <td width=100></td>
-            <td height="33"><label align="left" class="commandOptionLabel">Last Name</label></td>
-            <td><label>
-              <input name="lastName" type="text" id="lastNameTextField" size="25" class="mntLeft" onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}">
-            </label></td>
-          </tr>    
-          <tr>
-          <td width=100></td>
-            <td width="102" height="36" align="left" class="commandOptionLabel"><label>First Name</label></td>
-            <td ><label>
-              <input name="firstName" type="text" id="firstNameTextField" size="25" class="mntLeft" onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}">
-            </label></td>
-          </tr>
+        /* Form element styling reflecting modern layout guidelines */
+        .tcgm-input-text {
+            border: 1px solid #b8d4f0;
+            padding: 4px;
+            font-family: Arial, sans-serif;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .tcgm-grid-input {
+            border: 1px solid #dcdcdc;
+            padding: 3px;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            border-radius: 2px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .commandOptionLabel {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333333;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
+    <%@ include file="/include/masthead.jsf" %>
+    <%@ include file="/include/errorDisplay.jsf" %>
+
+    <!-- Struts 2 Migrated Form Architecture mapping directly to the new action intercept points -->
+    <s:form method="post" name="activeDirSearchForm" id="activeDirSearchForm" action="ActiveDirSearch.action" theme="simple">
+        
+        <!-- Standardized OGNL Field Bindings -->
+        <s:hidden name="cmd" id="cmd" />
+        <s:hidden name="cmd2" id="cmd2" />
+
+        <table style="width: 650px; margin: 20px auto; border-collapse: collapse;">
+            <tr>
+                <td style="width: 100px;">&nbsp;</td>
+                <td style="height: 33px; width: 120px;" class="commandOptionLabel"><label for="usIdTextField">UserId</label></td>
+                <td>
+                    <s:textfield name="usId" id="usIdTextField" size="25" cssClass="tcgm-input-text" 
+                                 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td style="height: 33px;" class="commandOptionLabel"><label for="lastNameTextField">Last Name</label></td>
+                <td>
+                    <s:textfield name="lastName" id="lastNameTextField" size="25" cssClass="tcgm-input-text" 
+                                 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
+                </td>
+            </tr>    
+            <tr>
+                <td>&nbsp;</td>
+                <td style="height: 36px;" class="commandOptionLabel"><label for="firstNameTextField">First Name</label></td>
+                <td>
+                    <s:textfield name="firstName" id="firstNameTextField" size="25" cssClass="tcgm-input-text" 
+                                 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: center; padding-top: 15px;">
+                    <button type="button" name="searchButton" id="searchButton" class="tcgm-btn" 
+                            onClick="javascript:chgActCmdSubmit(document.activeDirSearchForm,'Get','ActiveDirSearch.action');">Get Users</button>
+                </td>
+            </tr>
+        </table>
+        
+        <br>
+
+        <!-- Condition evaluation layer using clean JSTL expressions pulled from modern Action variables -->
+        <c:if test="${action.activeDirUserListSize != 0 && not empty action.activeDirUserList}">
+            
+            <%-- Contextual Button Render Condition checking list capacity variables safely via EL --%>
+            <c:if test="${action.activeDirUserListSize > 10}">
+                <table align="center" style="margin-bottom: 10px;">
+                    <tr>
+                        <td>
+                            <button type="button" class="tcgm-btn" onClick="javascript:checkSelect();">Select User</button>
+                        </td>
+                    </tr>
+                </table>
+            </c:if>
+
+            <!-- Modernized Results Grid satisfying HTML5 criteria -->
+            <table style="width: 760px; margin: 10px auto; border-collapse: collapse; border-spacing: 0;">
+                <tr class="fltrTblHdng" style="background-color: #b4d8f4; font-weight: bold; color: Navy; text-align: left;">
+                    <th style="width: 40px; padding: 6px; text-align: center;">&nbsp;</th>
+                    <th style="width: 80px; padding: 6px;">User ID</th>
+                    <th style="width: 100px; padding: 6px;">First Name</th>
+                    <th style="width: 100px; padding: 6px;">Last Name</th>
+                    <th style="width: 80px; padding: 6px;">UPI</th>
+                    <th style="width: 80px; padding: 6px;">Division</th>
+                    <th style="width: 80px; padding: 6px;">Type</th>
+                    <th style="width: 140px; padding: 6px;">Email</th>
+                </tr>
                 
-          
+                <!-- Native Thread-Safe Iterator handling structural data index populations safely -->
+                <c:forEach items="${action.activeDirUserList}" var="activeBean" varStatus="status">  
+                    <tr id="mntRow" class="${status.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
+                        <td style="padding: 6px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="blnSelected" value="<c:out value='${activeBean.userId}'/>" 
+                                   onclick="document.getElementById('selectUserButtonBottom').focus();"/>
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].userId" value="%{#attr.activeBean.userId}" maxlength="30" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].firstName" value="%{#attr.activeBean.firstName}" maxlength="30" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].lastName" value="%{#attr.activeBean.lastName}" maxlength="30" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].abtNotesId" value="%{#attr.activeBean.abtNotesId}" maxlength="50" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].division" value="%{#attr.activeBean.division}" maxlength="50" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].employeeType" value="%{#attr.activeBean.employeeType}" maxlength="50" cssClass="tcgm-grid-input" />
+                        </td>
+                        <td style="padding: 4px;">
+                            <s:textfield name="activeDirUserListItem[%{#status.index}].email" value="%{#attr.activeBean.email}" maxlength="50" cssClass="tcgm-grid-input" />
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>     
+           
+            <table align="center" style="margin-top: 10px;">
+                <tr>
+                    <td>
+                        <button type="button" id="selectUserButtonBottom" class="tcgm-btn" onClick="javascript:checkSelect();">Select User</button>
+                    </td>
+                </tr>
+            </table>
+        </c:if> 
+    </s:form>
+    <script type="text/javascript">
+        // Core framework initialization hook
+        setFocus('usIdTextField');
 
-    <tr>
+        /**
+         * Validates radio collection selections and dispatches payload values
+         */
+        function checkSelect(){
+            var radioObj = document.activeDirSearchForm.blnSelected;
+            var radioLength;
+            var flag = false;
+            var objvalue;
+            
+            if (radioObj != null) {
+                radioLength = radioObj.length;   
+                
+                // Handles edge-case where the grid returns exactly one row item
+                if (radioLength == undefined) {
+                    if (radioObj.checked) {
+                        chgActCmdSubmit(document.activeDirSearchForm, 'select', 'ActiveDirSearch.action');         
+                    } else {
+                        alert('Please Select a User');
+                    }
+                } else {        
+                    // Iterates across multiple collection entities to capture selected value
+                    for (var i = 0; i < radioLength; i++) {
+                        if (radioObj[i].checked) {
+                            flag = true;
+                            objvalue = radioObj[i].value;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        chgActCmdSubmit(document.activeDirSearchForm, 'select', 'ActiveDirSearch.action');
+                    } else {
+                        alert('Please Select a User');
+                    }
+                }   
+            }
+        }
 
-      <td align="center" colspan=3>
-        <input type="button" name="searchButton" id="searchButton" value="Get Users" onClick="javascript:chgActCmdSubmit(document.activeDirSearchForm,'AppGet','ActiveDirSearch.do');">
-	 </td>
-    </tr>
-</table>
-<br>
-   <nested:notEqual property="activeDirUserListSize" value="0">
-   		<%if(activeDirSearchForm.getActiveDirUserListSize()>10){%>
-   			  <table align="center">
-		         <tr>
-		            <td><input type="button" name="selectUserButton" id="selectUserButton" value="Select User" onClick = "javascript:checkSelect();"> </td>
-		           <!-- <td><input type="button" name="cancelButton" id="cancelButton" value="Cancel" onclick="javascript:callCancel();">  </td> -->
-		         </tr>
-		      </table>
-   		<%}%>
-      <table width="426" align="center" cellpadding="1" cellspacing="1">
-        <tr class="mntTblHdng" bgcolor="#99CCFF">
-          <th width="57" >
-            <div align="center"><span class="style5">
-            </span><span class="style5"></span></div>            <span class="style5"><label></label>
-            </span> </th>
-            <th width="60" align="left">User ID</th>
-            <th width="92" align="left">First Name</th>
-            <th width="96" align="left">Last Name</th>
-            <th width="60" align="left">UPI</th>
-            <th width="50" align="left">Division</th>
-            <th width="60" align="left">Type</th>
-            <th width="60" align="left">Email</th>
-          </tr>
-			
-			 <% int rowNumber=0; %>
-			 <c:forEach items="${sessionScope.activeDirSearchForm.activeDirUserList}"
-			       var="activeBean"
-	               varStatus="activeStatus">  
-	               <% String activeDirUserListItemArray = "activeDirUserListItem[" + rowNumber +"]."; %>
-	               <% String tmpProperty = "" ; %>
-	        
-	        <tr>
-          <td>
-   			<% tmpProperty = activeDirUserListItemArray + "blnSelected"; %>			
-			<INPUT type="radio" name="blnSelected" value='<c:out value="${activeBean.userId}"/>' onclick="document.getElementById('selectUserButton').focus();"/>
-          </td>
-            <td><% tmpProperty = activeDirUserListItemArray + "userId" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="30" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "firstName" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="30" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "lastName" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="30" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "abtNotesId" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="50" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "division" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="50" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "employeeType" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="50" styleClass="mntLeft"/></td>
-            <td><% tmpProperty = activeDirUserListItemArray + "email" ; %>
-            <html:text property="<%=tmpProperty%>" maxlength="50" styleClass="mntLeft"/></td>
-          </tr>
-          	 <% rowNumber++; %>
-           </c:forEach>
-           </table>     
-       
-      <table align="center">
-         <tr>
-            <td><input type="button" name="selectUserButton" id="selectUserButton" value="Select User" onClick = "javascript:checkSelect();"> </td>
-           <!-- <td><input type="button" name="cancelButton" id="cancelButton" value="Cancel" onclick="javascript:callCancel();">  </td> -->
-         </tr>
-      </table>
-	</nested:notEqual> 
-	
-	
-	<br><br>
-	<hr>
-	<font face="Arial" size=2 color=blue>	Existing TCGM Application Users : </font>
-	<br>
-	
-	<table width="760" cellspacing="0" cellpadding="5">
-			
-			<tr class="fltrTblHdng">
-				
-				<td>User Id</td>
-				<td>First Name</td>
-				<td>Last Name</td>
-				<td>Phone</td>
-				<td>UPI</td>
-				<td>&nbsp;Role</td>
-				<td>&nbsp;Email</td>
-			</tr>
-	
-	<nested:hidden property="userListSize" />	
-			<nested:notEqual property="userListSize" value="0">
-			  <% int rowNumber=0; %>
+        /**
+         * Cancels transaction operations and redirects back to base user view split
+         */
+        function callCancel(){
+            chgActCmdSubmit(document.activeDirSearchForm, 'maint_create', 'rptUserMaint.action');
+        }
+    </script>
 
-				<c:forEach var="userBean" items="${activeDirSearchForm.userlist}"  varStatus="userStatus">
-		               			
-				<abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow" rowNum="<%= rowNumber %>" id="mntRow">	
-
-						<td class="mntLeft">
-							<c:out value="${userBean.userid}" />
-						</td>		
-						<td class="mntLeft">
-							<c:out value="${userBean.firstName}" />
-						</td>
-						<td class="mntLeft">
-							<c:out value="${userBean.lastName}" />
-						</td>
-
-						<td class="mntLeft">
-							<c:out value="${userBean.phone}" />
-						</td>
-						
-						<td class="mntLeft">
-							<c:out value="${userBean.abtNotesId}" />
-						</td>
-
-						<td class="mntCenter">
-							&nbsp;&nbsp;<c:out value="${userBean.userRole}" />
-						</td>
-
-						<td class="mntLeft">
-							&nbsp;&nbsp;<c:out value="${userBean.email}" />
-						</td>
-
-					</abbott:row>
-		  	<% rowNumber++; %>			
-				</c:forEach>	
-				
-			</nested:notEqual>
-		</table>
-		<nested:equal property="userListSize" value="0">
-			<%@ include file="/include/recordsNotFound.jsf" %>
-		</nested:equal>
-		
-</nested:form>
-
-<script language="JavaScript1.2" type="text/javascript">
-		setFocus('usIdTextField');
-</script>
-<SCRIPT type="text/javascript" language="JAVASCRIPT">
-
-function checkSelect(){
-var radioObj=document.activeDirSearchForm.blnSelected;
-var radioLength;
-var flag;
-var objvalue;
-   if(radioObj!=null){
- 	radioLength = radioObj.length;   
-	if(radioLength == undefined)
-	{
-	
-		if(radioObj.checked){
-			javascript:chgActCmdSubmit(document.activeDirSearchForm,'appselect','ActiveDirSearch.do');			
-			//window.close();
-			}
-		else{
-			alert('Please Select a User');
-			flag=false;
-			}
-	}
-	else{		
-		for(var i = 0; i < radioLength; i++) {
-			if(radioObj[i].checked) {
-				flag=true;
-				objvalue=radioObj[i].value;
-			}
-		}
-		if(flag){
-			//window.opener.document.getElementById( "userid" ).value=objvalue;
-			javascript:chgActCmdSubmit(document.activeDirSearchForm,'appselect','ActiveDirSearch.do');
-			//window.close();
-			
-		}else{
-			alert('Please Select a User');
-		}
-	}	
-}
-}
-function callCancel(){
-
-		javascript:chgActCmdSubmit(document.activeDirSearchForm,'maint_create','rptUserMaint.do');
-	}
-
-</SCRIPT>
-
-<%@ include file="/include/footer.jsf" %>
+    <%@ include file="/include/footer.jsf" %>
+</body>
+</html>
+    

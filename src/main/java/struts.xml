@@ -770,14 +770,12 @@
 			</action> <action name="deleteUser" class="abbott.ai.tcgm.action.user.DeleteUser"> 
 			<result name="input">/jsp/userList.jsp</result> <result name="success">/jsp/userList.jsp</result> 
 			</action> -->
-		<!-- 1. userMaint Mapping (Calls default execute method) -->
 		<action name="userMaint"
 			class="abbott.ai.tcgm17.action.user.UserMaintAction">
 			<result name="input">/jsp/userList.jsp</result>
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
 
-		<!-- 2. editUser Mapping -->
 		<action name="editUser"
 			class="abbott.ai.tcgm17.action.user.UserMaintAction" method="edit">
 			<result name="input">/jsp/userList.jsp</result>

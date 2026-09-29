@@ -77,7 +77,7 @@ style1,				// Properties Array - this is set higher up, as above
 //,"Import/Export","show-menu=ImportExport",,"",1
 ,"App Security","show-menu=Admin",,"",1
 ,"Reports Security","show-menu=AppAdmin",,"",1
-,"Main Menu","main.do",,"Main Menu",1 // "Description Text", "URL", "Alternate URL", "Status", "Separator Bar"
+,"Main Menu","main.action",,"Main Menu",1 // "Description Text", "URL", "Alternate URL", "Status", "Separator Bar"
 ])
 
 	addmenu(menu=["ModelMgmt",
@@ -85,58 +85,58 @@ style1,				// Properties Array - this is set higher up, as above
 	,"Maintenance","show-menu=ModelMaintenance",,,1
 	,"Rate Models","show-menu=RateMgmt",,,1
 	,"_______________", "",,,1
-	,"Select Factor Model","mngFactorModels.do",,,1
+	,"Select Factor Model","mngFactorModels.action",,,1
 
 	])
 		addmenu(menu=["ModelMaintenance",
 		,,170,1,"",style1,,"left",effect,,,,,,,,,,,,
-		,"ASR Data","asrMaintenance.do",,,0
-		,"ASR Maintenance","asrTranMaintenance.do",,,0
-		,"BPC Data","bpcsMaint.do",,,0
-		,"BPC Maintenance","bpcsTranMaint.do",,,0
-		,"BPC Revision Data","bpcRevMaint.do",,,0
-		,"BPC Revision Maint","bpcRevTranMaint.do",,,0
-		,"BPC Exception Data","bpcExMaint.do",,,0
-		,"BPC Exception Maint","bpcExTranMaint.do",,,0
-//		,"Rate Exception Data","rateExMaint.do",,,0
-//		,"Rate Exception Maint","rateExTranMaint.do",,,0
-		,"Notes Data","notesMaint.do",,,0
-		,"Notes Maintenance","notesTranMaint.do",,,0
+		,"ASR Data","asrMaintenance.action",,,0
+		,"ASR Maintenance","asrTranMaintenance.action",,,0
+		,"BPC Data","bpcsMaint.action",,,0
+		,"BPC Maintenance","bpcsTranMaint.action",,,0
+		,"BPC Revision Data","bpcRevMaint.action",,,0
+		,"BPC Revision Maint","bpcRevTranMaint.action",,,0
+		,"BPC Exception Data","bpcExMaint.action",,,0
+		,"BPC Exception Maint","bpcExTranMaint.action",,,0
+//		,"Rate Exception Data","rateExMaint.action",,,0
+//		,"Rate Exception Maint","rateExTranMaint.action",,,0
+		,"Notes Data","notesMaint.action",,,0
+		,"Notes Maintenance","notesTranMaint.action",,,0
 		])
 
 	 addmenu(menu=["RateMgmt",
 	  ,,170,1,"",style1,,"left",effect,,,,,,,,,,,,
-	  ,"Select","openMngRateSets.do",,,1
-	  ,"Rate Data","rateDataMaint.do",,,0
-	  ,"Rate Maint","rateDataTranMaint.do",,,0
+	  ,"Select","openMngRateSets.action",,,1
+	  ,"Rate Data","rateDataMaint.action",,,0
+	  ,"Rate Maint","rateDataTranMaint.action",,,0
 	  ])
 
 
 
 addmenu(menu=["Production",
 28,,170,1,"",style1,,"left",effect,,,,,,,,,,,,
-,"Factors", "mngFactors.do",,,1
-,"Factor Analysis","mngAnalysisModels.do",,,1
-,"Perpetual","mngPerpetualModels.do",,,1
-,"Mgn Bill Exch Flex","mngCostExchModels.do",,,1
-,"Misc. Analysis","miscAnalysis.do",,,1
-,"Misc. Reports","miscReports.do",,,1
+,"Factors", "mngFactors.action",,,1
+,"Factor Analysis","mngAnalysisModels.action",,,1
+,"Perpetual","mngPerpetualModels.action",,,1
+,"Mgn Bill Exch Flex","mngCostExchModels.action",,,1
+,"Misc. Analysis","miscAnalysis.action",,,1
+,"Misc. Reports","miscReports.action",,,1
 ])
 
 addmenu(menu=["Jobs",
 28,,140,1,"",style1,,"",effect,,,,,,,,,,,,
-,"Manage Jobs", "processMgmt.do",,,1
-,"Job Reports", "mngReportJobs.do",,,1
+,"Manage Jobs", "processMgmt.action",,,1
+,"Job Reports", "mngReportJobs.action",,,1
 
 ])
 
    addmenu(menu=["ImportExport",
    28,,140,1,"",style1,,"",effect,,,,,,,,,,,,
-   ,"Unit Data", "mngUnits.do",,,1
- //  ,"Mgn Bill Exch Flex Data", "mngCostExchData.do",,,1
-   ,"Affiliate BPC Import","affBpcMaint.do",,,1
-   ,"Data Transfers", "dataTransfers.do",,,1
-	,"Transfer Log", "mngDataFeedLog.do",,,1   
+   ,"Unit Data", "mngUnits.action",,,1
+ //  ,"Mgn Bill Exch Flex Data", "mngCostExchData.action",,,1
+   ,"Affiliate BPC Import","affBpcMaint.action",,,1
+   ,"Data Transfers", "dataTransfers.action",,,1
+	,"Transfer Log", "mngDataFeedLog.action",,,1   
 	])
 
 
@@ -144,37 +144,37 @@ addmenu(menu=["Jobs",
 
 addmenu(menu=["Admin",
 	28,,107,1,"",style1,,"left",effect,,,,,,,,,,,,
-	,"Add User","ActiveDirSearch.do?cmd=appview",,,1
-	,"User Deletion","userMaint.do",,,1
-//	,"User LookUp","ActiveDirSearch.do?cmd=view",,,1
-//	,"Add Report User","rptUserMaint.do?cmd=maint_create",,,1
-//	,"Report User Search / Delete","rptUserMaint.do?cmd=filter",,,1
-//	,"Add Affiliate / Sector / Area","rptUserMaint.do?cmd=burst",,,1
-//	,"Cognos User List","rptUserMaint.do?cmd=users",,,1
-//	,"Currency Codes","currencyCodeMaint.do",,,1
-//	,"Aff Cst Cur","affCstCurMaint.do",,,1
-//	,"PR Mfg","prMfgMaint.do",,,1
-//	,"Essbase&nbsp;Mgmt", "openEssbaseMgmt.do",,,1
-//	,"Manage Daemons", "mngDaemons.do",,,1
+	,"Add User","ActiveDirSearch.action?cmd=appview",,,1
+	,"User Deletion","userMaint.action",,,1
+//	,"User LookUp","ActiveDirSearch.action?cmd=view",,,1
+//	,"Add Report User","rptUserMaint.action?cmd=maint_create",,,1
+//	,"Report User Search / Delete","rptUserMaint.action?cmd=filter",,,1
+//	,"Add Affiliate / Sector / Area","rptUserMaint.action?cmd=burst",,,1
+//	,"Cognos User List","rptUserMaint.action?cmd=users",,,1
+//	,"Currency Codes","currencyCodeMaint.action",,,1
+//	,"Aff Cst Cur","affCstCurMaint.action",,,1
+//	,"PR Mfg","prMfgMaint.action",,,1
+//	,"Essbase&nbsp;Mgmt", "openEssbaseMgmt.action",,,1
+//	,"Manage Daemons", "mngDaemons.action",,,1
 ])
 
 
 addmenu(menu=["AppAdmin",
 	28,,180,1,"",style1,,"left",effect,,,,,,,,,,,,
-//	,"User Maintenance","userMaint.do",,,1
-	,"Add User","ActiveDirSearch.do?cmd=view",,,1
-//	,"Add User","rptUserMaint.do?cmd=maint_create",,,1
-	,"User Search / Delete","rptUserMaint.do?cmd=filter",,,1
-	,"Add Division /Area / Sector / Affiliate","rptUserMaint.do?cmd=burst",,,1
-	,"Cognos User List","rptUserMaint.do?cmd=usersView",,,1
-	,"Database User List","rptUserMaint.do?cmd=datausersView",,,1
-//	,"Active Affiliate","rptUserMaint.do?cmd=activeaff",,,1
-	,"FileUpload", "fileUpload.do",,,1
-	,"DeleteFile", "deleteFile.do?cmd=dir",,,1
-//	,"Aff Cst Cur","affCstCurMaint.do",,,1
-//	,"PR Mfg","prMfgMaint.do",,,1
-//	,"Essbase&nbsp;Mgmt", "openEssbaseMgmt.do",,,1
-//	,"Manage Daemons", "mngDaemons.do",,,1
+//	,"User Maintenance","userMaint.action",,,1
+	,"Add User","ActiveDirSearch.action?cmd=view",,,1
+//	,"Add User","rptUserMaint.action?cmd=maint_create",,,1
+	,"User Search / Delete","rptUserMaint.action?cmd=filter",,,1
+	,"Add Division /Area / Sector / Affiliate","rptUserMaint.action?cmd=burst",,,1
+	,"Cognos User List","rptUserMaint.action?cmd=usersView",,,1
+	,"Database User List","rptUserMaint.action?cmd=datausersView",,,1
+//	,"Active Affiliate","rptUserMaint.action?cmd=activeaff",,,1
+	,"FileUpload", "fileUpload.action",,,1
+	,"DeleteFile", "deleteFile.action?cmd=dir",,,1
+//	,"Aff Cst Cur","affCstCurMaint.action",,,1
+//	,"PR Mfg","prMfgMaint.action",,,1
+//	,"Essbase&nbsp;Mgmt", "openEssbaseMgmt.action",,,1
+//	,"Manage Daemons", "mngDaemons.action",,,1
 ])
 
 dumpmenus()

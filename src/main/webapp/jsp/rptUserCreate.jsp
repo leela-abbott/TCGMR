@@ -1,468 +1,449 @@
 <%! String pageTitle = "Report User Creation"; %>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="javascript:disableList();">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/include/header.jsf" %>
-<SCRIPT type="text/javascript" language="JAVASCRIPT">
-function disableList()
-	{	
-	   	document.getElementById("areaCode").disabled=true;
-	   	document.getElementById("affCode").disabled=true;
-	   	document.getElementById("secCode").disabled=true;
-	   	document.getElementById("affCodeLst").disabled=true;
-	   	document.getElementById("secCodeLst").disabled=true;
-	   	document.getElementById("areaCodeLst").disabled=true;
-	   	document.getElementById("userid").style.backgroundColor="#E6E6E6";
-	   	document.getElementById("firstName").style.backgroundColor="#E6E6E6";
-	   	document.getElementById("lastName").style.backgroundColor="#E6E6E6";
-	  	document.getElementById("areaDiv").style.display ='none';
-	  	document.getElementById("affDiv").style.display ='none';
-	  	document.getElementById("secDiv").style.display ='none';
-	}
-function enableList(){
-//alert(document.getElementById("role").value);
-		if (document.getElementById("role").value=='Area')
-	  	{
-	  		document.getElementById("areaCode").disabled=false;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").value=-1;		   	
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").value=-1;
-		   	document.getElementById("division").disabled=false;
-		   	document.getElementById("affCodeLst").disabled=true;
-		   	document.getElementById("secCodeLst").disabled=true;
-		   	document.getElementById("areaCodeLst").disabled=false;
-		   	removeAllOptions(document.getElementById("areaCodeLst"));
-  		  	document.getElementById("areaDiv").style.display ='';
-		  	document.getElementById("affDiv").style.display ='none';
-		  	document.getElementById("secDiv").style.display ='none';
-		  	removeAllOptions(document.getElementById("areaCode"));
-	  	}
-	  	else if (document.getElementById("role").value=='Affiliate')
-	  	{
-		  	document.getElementById("areaCode").value=-1;	  	
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=false;
-		    document.getElementById("secCode").value=-1;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").value=-1;
-		   	document.getElementById("division").disabled=false;
-		   	document.getElementById("secCodeLst").disabled=true;
-		   	document.getElementById("affCodeLst").disabled=false;
-		   	removeAllOptions(document.getElementById("affCodeLst"));
-		   	document.getElementById("areaCodeLst").disabled=true;
-  		  	document.getElementById("areaDiv").style.display ='none';
-		  	document.getElementById("affDiv").style.display ='';
-		  	document.getElementById("secDiv").style.display ='none';
-		  	removeAllOptions(document.getElementById("affCode"));
-	  	}
-	  	else if (document.getElementById("role").value=='Sector')
-	  	{
-		  	document.getElementById("areaCode").value=-1;	  	
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").value=-1;	  		
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=false;
-		   	document.getElementById("division").value=-1;		   	
-		   	document.getElementById("division").disabled=false;
-		   	document.getElementById("affCodeLst").disabled=true;
-		   	document.getElementById("secCodeLst").disabled=false;
-		   	removeAllOptions(document.getElementById("secCodeLst"));
-		   	document.getElementById("areaCodeLst").disabled=true;
-  		  	document.getElementById("areaDiv").style.display ='none';
-		  	document.getElementById("affDiv").style.display ='none';
-		  	document.getElementById("secDiv").style.display ='';		   	
-		  	removeAllOptions(document.getElementById("secCode"));
-	 	}else if(document.getElementById("role").value=='D')
-	  	{
-		  	document.getElementById("areaCode").value=-1;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("secCode").value=-1;
-		   	document.getElementById("division").value=-1;
 
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").disabled=false;
-		   	document.getElementById("affCodeLst").disabled=true;
-		   	document.getElementById("secCodeLst").disabled=true;
-		   	document.getElementById("areaCodeLst").disabled=true;
-  		  	document.getElementById("areaDiv").style.display ='none';
-		  	document.getElementById("affDiv").style.display ='none';
-		  	document.getElementById("secDiv").style.display ='none';		   	
-	  	}else {
-		  	document.getElementById("areaCode").value=-1;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("secCode").value=-1;
-		   	document.getElementById("division").value=-1;
+<head>
+    <style>
+        .tcgm-btn {
+            display: inline-block;
+            padding: 5px 18px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #123456 !important;
+            text-decoration: none;
+            background: linear-gradient(to bottom, #ffe880 0%, #ffcd3c 100%);
+            border: 1px solid #cca11f;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            cursor: pointer;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            transition: all 0.1s ease-in-out;
+        }
+        .tcgm-btn:hover {
+            background: linear-gradient(to bottom, #ffed96 0%, #ffd455 100%);
+            border-color: #b88f14;
+        }
+        .tcgm-btn:active {
+            background: #ffcd3c;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .tcgm-input-readonly {
+            border: 1px solid #b8d4f0;
+            background-color: #e6e6e6;
+            color: #555555;
+            padding: 4px;
+            width: 240px;
+            font-family: Arial, sans-serif;
+            border-radius: 3px;
+        }
+        .tcgm-select {
+            border: 1px solid #b8d4f0;
+            padding: 4px;
+            width: 246px;
+            font-family: Arial, sans-serif;
+            border-radius: 3px;
+        }
+        .commandOptionLabel {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333333;
+        }
+    </style>
+</head>
 
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").disabled=true;
-		   	document.getElementById("affCodeLst").disabled=true;
-		   	document.getElementById("secCodeLst").disabled=true;
-		   	document.getElementById("areaCodeLst").disabled=true;
-		   	document.getElementById("division").disabled=true;
-  		  	document.getElementById("areaDiv").style.display ='none';
-		  	document.getElementById("affDiv").style.display ='none';
-		  	document.getElementById("secDiv").style.display ='none';		   	
-	  	}
-}	
-function add(){
-		javascript:chgActCmdSubmit(document.userForm,'view','ActiveDirSearch.do');
-		//window.showModalDialog('/GPS/ActiveDirSearch.do?cmd=view',"name","dialogWidth:500px;dialogHeight:500px");
-		//window.open('/GPS/ActiveDirSearch.do?cmd=view','Notification');
-	}
-function saveForm(form, cmd, action){
-		
-		
-		if(document.getElementById("role").value=='-1'){
-			alert('Please select Role');
-			return false;
-		}
-		if(document.getElementById("role").value=='Area'||document.getElementById("role").value=='Affiliate'
-    		||document.getElementById("role").value=='Sector'||document.getElementById("role").value=='D'){
-				if(document.getElementById("division").value=='-1'){
-					alert('Please select Division');
-					return false;
-				}
-		}
-		if (document.getElementById("role").value=='Area')
-	  	{
-	  		if(document.getElementById("areaCodeLst").options.length < 1){
-			alert('Please select Area');
-			return false;
-			}
-	  		form.selDesc.value = form.areaCode[form.areaCode.selectedIndex].text;
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
+    <%@ include file="/include/masthead.jsf" %>
+    <%@ include file="/include/errorDisplay.jsf" %>
 
-			var areaCodeList = "";
-            var areaListSel = document.getElementById("areaCodeLst");
+    <script type="text/javascript">
+        function disableList() {   
+            document.getElementById("areaCode").disabled = true;
+            document.getElementById("affCode").disabled = true;
+            document.getElementById("secCode").disabled = true;
+            document.getElementById("affCodeLst").disabled = true;
+            document.getElementById("secCodeLst").disabled = true;
+            document.getElementById("areaCodeLst").disabled = true;
+            document.getElementById("areaDiv").style.display = 'none';
+            document.getElementById("affDiv").style.display = 'none';
+            document.getElementById("secDiv").style.display = 'none';
+        }
+
+        function enableList() {
+            var roleVal = document.getElementById("role").value;
+            if (roleVal == 'Area') {
+                document.getElementById("areaCode").disabled = false;
+                document.getElementById("affCode").value = -1;
+                document.getElementById("affCode").disabled = true;
+                document.getElementById("secCode").value = -1;               
+                document.getElementById("secCode").disabled = true;
+                document.getElementById("division").value = -1;
+                document.getElementById("division").disabled = false;
+                document.getElementById("affCodeLst").disabled = true;
+                document.getElementById("secCodeLst").disabled = true;
+                document.getElementById("areaCodeLst").disabled = false;
+                removeAllOptions(document.getElementById("areaCodeLst"));
+                document.getElementById("areaDiv").style.display = '';
+                document.getElementById("affDiv").style.display = 'none';
+                document.getElementById("secDiv").style.display = 'none';
+                removeAllOptions(document.getElementById("areaCode"));
+            }
+            else if (roleVal == 'Affiliate') {
+                document.getElementById("areaCode").value = -1;      
+                document.getElementById("areaCode").disabled = true;
+                document.getElementById("affCode").disabled = false;
+                document.getElementById("secCode").value = -1;
+                document.getElementById("secCode").disabled = true;
+                document.getElementById("division").value = -1;
+                document.getElementById("division").disabled = false;
+                document.getElementById("secCodeLst").disabled = true;
+                document.getElementById("affCodeLst").disabled = false;
+                removeAllOptions(document.getElementById("affCodeLst"));
+                document.getElementById("areaCodeLst").disabled = true;
+                document.getElementById("areaDiv").style.display = 'none';
+                document.getElementById("affDiv").style.display = '';
+                document.getElementById("secDiv").style.display = 'none';
+                removeAllOptions(document.getElementById("affCode"));
+            }
+            else if (roleVal == 'Sector') {
+                document.getElementById("areaCode").value = -1;      
+                document.getElementById("areaCode").disabled = true;
+                document.getElementById("affCode").value = -1;          
+                document.getElementById("affCode").disabled = true;
+                document.getElementById("secCode").disabled = false;
+                document.getElementById("division").value = -1;         
+                document.getElementById("division").disabled = false;
+                document.getElementById("affCodeLst").disabled = true;
+                document.getElementById("secCodeLst").disabled = false;
+                removeAllOptions(document.getElementById("secCodeLst"));
+                document.getElementById("areaCodeLst").disabled = true;
+                document.getElementById("areaDiv").style.display = 'none';
+                document.getElementById("affDiv").style.display = 'none';
+                document.getElementById("secDiv").style.display = '';           
+                removeAllOptions(document.getElementById("secCode"));
+            } else if (roleVal == 'D') {
+                document.getElementById("areaCode").value = -1;
+                document.getElementById("affCode").value = -1;
+                document.getElementById("secCode").value = -1;
+                document.getElementById("division").value = -1;
+                document.getElementById("areaCode").disabled = true;
+                document.getElementById("affCode").disabled = true;
+                document.getElementById("secCode").disabled = true;
+                document.getElementById("division").disabled = false;
+                document.getElementById("affCodeLst").disabled = true;
+                document.getElementById("secCodeLst").disabled = true;
+                document.getElementById("areaCodeLst").disabled = true;
+                document.getElementById("areaDiv").style.display = 'none';
+                document.getElementById("affDiv").style.display = 'none';
+                document.getElementById("secDiv").style.display = 'none';           
+            } else {
+                document.getElementById("areaCode").value = -1;
+                document.getElementById("affCode").value = -1;
+                document.getElementById("secCode").value = -1;
+                document.getElementById("division").value = -1;
+                document.getElementById("areaCode").disabled = true;
+                document.getElementById("affCode").disabled = true;
+                document.getElementById("secCode").disabled = true;
+                document.getElementById("division").disabled = true;
+                document.getElementById("affCodeLst").disabled = true;
+                document.getElementById("secCodeLst").disabled = true;
+                document.getElementById("areaCodeLst").disabled = true;
+                document.getElementById("areaDiv").style.display = 'none';
+                document.getElementById("affDiv").style.display = 'none';
+                document.getElementById("secDiv").style.display = 'none';           
+            }
+        }   
+
+        function add() {
+            chgActCmdSubmit(document.userForm, 'view', 'ActiveDirSearch.action');
+        }
+
+        function saveForm(form, cmd, action) {
+            if (document.getElementById("role").value == '-1') {
+                alert('Please select Role');
+                return false;
+            }
+            if (document.getElementById("role").value == 'Area' || document.getElementById("role").value == 'Affiliate'
+                || document.getElementById("role").value == 'Sector' || document.getElementById("role").value == 'D') {
+                if (document.getElementById("division").value == '-1') {
+                    alert('Please select Division');
+                    return false;
+                }
+            }
+            if (document.getElementById("role").value == 'Area') {
+                if (document.getElementById("areaCodeLst").options.length < 1) {
+                    alert('Please select Area');
+                    return false;
+                }
+                form.selDesc.value = form.areaCode[form.areaCode.selectedIndex].text;
+                var areaCodeList = "";
+                var areaListSel = document.getElementById("areaCodeLst");
+                for (var j = 0; j < areaListSel.options.length; j++) {
+                    areaCodeList = areaCodeList + areaListSel.options[j].value + "|" + areaListSel.options[j].text + "*";
+                }
+                form.areaCodeList.value = areaCodeList.substring(0, areaCodeList.lastIndexOf("*"));
+            }
+                        if (document.getElementById("role").value == 'Affiliate') {
+                if (document.getElementById("affCodeLst").options.length < 1) {
+                    alert('Please select Affiliate');
+                    return false;
+                }
+                form.selDesc.value = form.affCode[form.affCode.selectedIndex].text;
+                var affCodeList = "";
+                var affListSel = document.getElementById("affCodeLst");
+                for (var j = 0; j < affListSel.options.length; j++) {
+                    affCodeList = affCodeList + affListSel.options[j].value + "|" + affListSel.options[j].text + "*";
+                }
+                form.affCodeList.value = affCodeList.substring(0, affCodeList.lastIndexOf("*"));
+            }
+            if (document.getElementById("role").value == 'Sector') {
+                if (document.getElementById("secCodeLst").options.length < 1) {
+                    alert('Please select Sector');
+                    return false;
+                }      
+                form.selDesc.value = form.secCode[form.secCode.selectedIndex].text;
+                var secCodeList = "";
+                var secListSel = document.getElementById("secCodeLst");
+                for (var j = 0; j < secListSel.options.length; j++) {
+                    secCodeList = secCodeList + secListSel.options[j].value + "|" + secListSel.options[j].text + "*";
+                }
+                form.secCodeList.value = secCodeList.substring(0, secCodeList.lastIndexOf("*"));
+            }
+            chgActCmdSubmit(form, cmd, action);
+        }   
+
+        function addList(list, selList) {
+            var affList = document.getElementById(list);
+            var affListSel = document.getElementById(selList);
+            var statusFlag = false;
+            for (var i = 0; i < affList.options.length; i++) {
+                if (affList.options[i].selected) {
+                    for (var j = 0; j < affListSel.options.length; j++) {
+                        if (affList.options[i].value == affListSel.options[j].value) {
+                            statusFlag = true;
+                        }
+                    }
+                    if (!statusFlag) {
+                        addOptions(document.getElementById(selList), affList.options[i].text, affList.options[i].value)
+                    }
+                    statusFlag = false; 
+                }
+            }
+        }
+
+        function removeAllOptions(selectbox) {
+            for (var i = selectbox.options.length - 1; i >= 0; i--) {
+                selectbox.remove(i);
+            }
+        }
+         
+        function removeList(selList) {
+            var affList = document.getElementById(selList);
+            for (var i = affList.options.length - 1; i >= 0; i--) {
+                if (affList.options[i].selected) {
+                    affList.remove(i);
+                }
+            }
+        }
+         
+        function addOptions(selectbox, text, value) {
+            var optn = document.createElement("OPTION");
+            optn.text = trim(text);
+            optn.value = trim(value);
+            selectbox.options.add(optn);
+        }
+
+        function trim(stringToTrim) {
+            return stringToTrim.replace(/^\s+|\s+$/g, "");
+        }
+
+        function callValues() {
+            var divVal = document.getElementById('division').value;
+            var roleVal = document.getElementById('role').value;
+            if (divVal != '-1' && roleVal == 'Area') {
+                retrieveURL('./tcgmAjax.action?cascadingCmd=BurstArea&cascadingVal=' + divVal, 'userForm', 'areaCode');
+            }
+            else if (divVal != '-1' && roleVal == 'Affiliate') {
+                retrieveURL('./tcgmAjax.action?cascadingCmd=BurstAff&cascadingVal=' + divVal, 'userForm', 'affCode');
+            }
+            else if (divVal != '-1' && roleVal == 'Sector') {
+                retrieveURL('./tcgmAjax.action?cascadingCmd=BurstSector&cascadingVal=' + divVal, 'userForm', 'secCode');
+            }
+            else {
+                removeAllOptions(document.getElementById("areaCode"));
+                removeAllOptions(document.getElementById("affCode"));
+                removeAllOptions(document.getElementById("secCode"));
+            }
+        }
+    </script>
+
+    <s:form method="post" name="userForm" id="userForm" action="rptUserMaint.action" theme="simple">
+        
+        <s:hidden name="cmd" id="cmd" />
+        <s:hidden name="selDesc" id="selDesc" />
+        <s:hidden name="affCodeList" id="affCodeList" />
+        <s:hidden name="secCodeList" id="secCodeList" />
+        <s:hidden name="areaCodeList" id="areaCodeList" />
+
+        <table style="width: 700px; margin: 20px auto; border-collapse: collapse;" border="0" align="center">
+            <tr>
+                <td style="width: 120px; padding: 6px;" class="commandOptionLabel"><strong>User Id</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.userid" id="userid" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Last Name</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.lastName" id="lastName" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+                        <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>First Name</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.firstName" id="firstName" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Email</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.email" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>UPI</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.abtNotesId" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr> 
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.empDivision" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr> 
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Type</strong></td>
+                <td style="padding: 6px;">
+                    <s:textfield name="rptUser.employeeType" readonly="true" cssClass="tcgm-input-readonly" />
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Role</strong></td>
+                <td style="padding: 6px;">
+                    <s:select name="rptUser.role" id="role" cssClass="tcgm-select" onchange="enableList()"
+                              list="#{'HQS':'HQ Supervisor', 'HQC':'HQ Consumer', 'DALL':'All Divisions', 'D':'Division', 'Area':'Area', 'Sector':'Sector', 'Affiliate':'Affiliate'}" 
+                              headerKey="-1" headerValue="Select One" />
+                </td> 
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
+                <td style="padding: 6px;">
+                    <s:select name="rptUser.division" id="division" cssClass="tcgm-select" onchange="callValues()"
+                              list="divCollection" headerKey="-1" headerValue="Select One" />
+                </td> 
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
             
-	  		 for(var j=0;j<areaListSel.options.length;j++){
-									 		 
-			 		 areaCodeList = areaCodeList+areaListSel.options[j].value+"|"+areaListSel.options[j].text+"*";
+            <tbody id="areaDiv" style="display:none">
+                <tr>
+                    <td style="padding: 6px;" class="commandOptionLabel"><strong>Area</strong></td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.areaCode" id="areaCode" multiple="true" size="12" 
+                                  style="width:240px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                    <td style="text-align: center; vertical-align: middle; padding: 0 10px;">
+                        <button type="button" class="tcgm-btn" style="margin-bottom: 10px; width: 110px;" onclick="addList('areaCode','areaCodeLst');">Insert &gt;&gt;</button>
+                        <br>
+                        <button type="button" class="tcgm-btn" style="width: 110px;" onclick="removeList('areaCodeLst');">&lt;&lt; Remove</button>
+                    </td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.areaCodeList" id="areaCodeLst" multiple="true" size="12" 
+                                  style="width:220px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                </tr>
+            </tbody>
+                        <tbody id="affDiv" style="display:none">
+                <tr>
+                    <td style="padding: 6px;" class="commandOptionLabel"><strong>Affiliate</strong></td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.affCode" id="affCode" multiple="true" size="12" 
+                                  style="width:240px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                    <td style="text-align: center; vertical-align: middle; padding: 0 10px;">
+                        <button type="button" class="tcgm-btn" style="margin-bottom: 10px; width: 110px;" onclick="addList('affCode','affCodeLst');">Insert &gt;&gt;</button>
+                        <br>
+                        <button type="button" class="tcgm-btn" style="width: 110px;" onclick="removeList('affCodeLst');">&lt;&lt; Remove</button>
+                    </td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.affCodeList" id="affCodeLst" multiple="true" size="12" 
+                                  style="width:220px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                </tr>
+            </tbody>
 
-	 		 }//end of for j
-	  		form.areaCodeList.value = areaCodeList.substring(0,areaCodeList.lastIndexOf("*"));
-			
-	  	}
-	  	if (document.getElementById("role").value=='Affiliate')
-	  	{
-		  	
-	  		if(document.getElementById("affCodeLst").options.length < 1){
-			alert('Please select Affiliate');
-			return false;
-			}
-	  		form.selDesc.value = form.affCode[form.affCode.selectedIndex].text;
-	  		
-	  		var affCodeList = "";
-            var affListSel = document.getElementById("affCodeLst");
+            <tbody id="secDiv" style="display:none">   
+                <tr>
+                    <td style="padding: 6px;" class="commandOptionLabel"><strong>Sector</strong></td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.secCode" id="secCode" multiple="true" size="12" 
+                                  style="width:240px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                    <td style="text-align: center; vertical-align: middle; padding: 0 10px;">
+                        <button type="button" class="tcgm-btn" style="margin-bottom: 10px; width: 110px;" onclick="addList('secCode','secCodeLst');">Insert &gt;&gt;</button>
+                        <br>
+                        <button type="button" class="tcgm-btn" style="width: 110px;" onclick="removeList('secCodeLst');">&lt;&lt; Remove</button>
+                    </td>
+                    <td style="padding: 6px;">
+                        <s:select name="rptUser.secCodeList" id="secCodeLst" multiple="true" size="12" 
+                                  style="width:220px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
+                    </td> 
+                </tr>
+            </tbody>
             
-	  		 for(var j=0;j<affListSel.options.length;j++){
-			 		 
-			 		 affCodeList = affCodeList+affListSel.options[j].value+"|"+affListSel.options[j].text+"*";
-	 		 }//end of for j
+            <tr>
+                <td colspan="4" style="height: 15px;">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <table align="center" style="border-spacing: 10px 0;">
+                        <tr>
+                            <td>
+                                <button type="button" id="addButton" class="tcgm-btn" onclick="add();">LookUp</button>
+                            </td>
+                            <td>
+                                <button type="button" id="saveButton" class="tcgm-btn" onclick="saveForm(document.userForm,'save','rptUserMaint.action');">Save</button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        
+        <input type="hidden" name="cmd2" id="cmd2" value="creation">
+    </s:form>
 
-	  		form.affCodeList.value = affCodeList.substring(0,affCodeList.lastIndexOf("*"));
-	  		//alert(form.affCodeList.value);
-	  	}
-	  	if (document.getElementById("role").value=='Sector')
-	  	{
-	  		if(document.getElementById("secCodeLst").options.length < 1){
-			alert('Please select Sector');
-			return false;
-			}	  	
-	  		form.selDesc.value = form.secCode[form.secCode.selectedIndex].text;
-	  		var secCodeList = "";
-            var secListSel = document.getElementById("secCodeLst");
+    <%@ include file="/include/footer.jsf" %>
+</body>
+</html>
             
-	  		 for(var j=0;j<secListSel.options.length;j++){
-			 		 
-			 		 secCodeList = secCodeList+secListSel.options[j].value+"|"+secListSel.options[j].text+"*";
-	 		 }//end of for j
-
-	  		form.secCodeList.value = secCodeList.substring(0,secCodeList.lastIndexOf("*"));
-	  		//alert(form.secCodeList.value);
-	  	}
-	  	//alert(form.selDesc.value);
-	  	//alert(action);
-	  	//return false;
-		chgActCmdSubmit(form, cmd, action);
-}	
- function addList(list, selList)
- {
- 
-	 var affList = document.getElementById(list);
- 	 var affListSel = document.getElementById(selList);
- 	 var statusFlag = false;
-	 for(var i=0;i<affList.options.length;i++){
-		 if(affList.options[i].selected){
-	 		 for(var j=0;j<affListSel.options.length;j++){
-			 		 if(affList.options[i].value==affListSel.options[j].value) {
-				 		 statusFlag=true;
-			 		 }
-	 		 }//end of for j
-	 		 if(!statusFlag){
-			 	addOptions(document.getElementById(selList),affList.options[i].text,affList.options[i].value)
-			 }
-			 statusFlag=false; 
-		}
- 	 }//end of for i
- 	 	
- }
- function removeAllOptions(selectbox)
-{
-	var i;
-	for(i=selectbox.options.length-1;i>=0;i--)
-	{
-		selectbox.remove(i);
-	}
-}
- 
- function removeList(selList)
- {
- 
-	 var affList = document.getElementById(selList);
-	 //alert(affList.options.length);
-	 for(var i=affList.options.length-1;i>=0;i--){
-	 		// alert(affList.options[i].text);
- 			 //alert(affList.options[i].value);
-		 if(affList.options[i].selected){
-				// alert(affList.options[i].text);
-		 		 //alert(affList.options[i].value);
-		 affList.remove(i);
-		 }
- 	}
- 	 	
- }
- 
- function addOptions(selectbox,text,value)
-{
-	var optn = document.createElement("OPTION");
-	optn.text = trim(text);
-	optn.value = trim(value);
-	selectbox.options.add(optn);
-}
-function trim(stringToTrim) {
-	return stringToTrim.replace(/^\s+|\s+$/g,"");
-}
-function callValues()
-{
-	if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Area'){
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstArea&cascadingVal='+document.getElementById('division').value,'userForm','areaCode');
-	}
-	else if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Affiliate')
-	{
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstAff&cascadingVal='+document.getElementById('division').value,'userForm','affCode');
-	}
-	else if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Sector')
-	{
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstSector&cascadingVal='+document.getElementById('division').value,'userForm','secCode');
-	}
-	else
-	{
-	removeAllOptions(document.getElementById("areaCode"));
-	removeAllOptions(document.getElementById("affCode"));
-	removeAllOptions(document.getElementById("secCode"));
-	}
-}
-</SCRIPT>
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
-<bean:define id="RptUser" name="RptUser" scope="session" type="abbott.ai.tcgm.entities.RptUser" />	
-	<nested:form method="post" name="userForm" type="abbott.ai.tcgm.action.form.RptUserForm" action="/rptUserMaint.do" scope="session">
-		<nested:hidden property="cmd" />
-		<nested:hidden property="selDesc" />
-		<nested:hidden property="affCodeList" />
-		<nested:hidden property="secCodeList" />
-		<nested:hidden property="areaCodeList" />
-
-  <table width="700" align="center" border=0>
-    <tr>
-      <td width="89" class="commandOptionLabel"><strong>
-      <span class="mntLeft" >User ID</span>
-      </strong></td>
-      <%String tmpProperty = "rptUser.userid";%>
-<!-- onblur="style.backgroundColor='gray'; style.color='black'" onfocus="style.backgroundColor='gray'; style.color='black'" -->      
-      <td ><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft"  styleId="userid" readonly="true" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-     <%tmpProperty = "rptUser.lastName";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >Last Name</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft"  styleId="lastName" readonly="true" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-    <%tmpProperty = "rptUser.firstName";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >First Name</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft"  styleId="firstName" readonly="true" /></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-     <%tmpProperty = "rptUser.email";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >Email</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft" readonly="true" /></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-     <%tmpProperty = "rptUser.abtNotesId";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >UPI</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft" readonly="true" /></td>
-      <td>&nbsp;</td>
-    </tr> 
-    <tr>
-     <%tmpProperty = "rptUser.empDivision";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >Division</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft" readonly="true" /></td>
-      <td>&nbsp;</td>
-    </tr> 
-    <tr>
-     <%tmpProperty = "rptUser.employeeType";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >Type</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft" readonly="true" /></td>
-      <td>&nbsp;</td>
-    </tr> 
-    <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Role</span></strong></td>
-		 <%tmpProperty = "rptUser.role";%>
-		<td>
-			<html:select property="<%=tmpProperty%>" onchange="javascript:enableList()" styleId="role">
-              <option value="-1">Select One</option>
-              <option value="HQS">HQ Supervisor</option>
-              <option value="HQC">HQ Consumer</option>
-              <option value="DALL">All Divisions</option>              
-              <option value="D">Division</option>
-              <option value="Area">Area</option>
-              <option value="Sector">Sector</option>
-              <option value="Affiliate">Affiliate</option>
-            </html:select>
-         </td> 
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-      </tr>
-<bean:define id="divCollection" name="RptUser" property="div" type="java.util.HashMap"/>
-      <tr>
-         <td class="commandOptionLabel"><strong><span class="mntLeft">Division</span></strong></td>
-		 <%tmpProperty = "rptUser.division";%>
-		<td>
-			<html:select property="<%=tmpProperty%>" styleId="division" onchange="javascript:callValues()">
-            <!--  <option value="All">All</option> -->
-              <option value="-1">Select One</option>              
-				<html:options property="value" labelProperty="key" collection="divCollection" />
-              </html:select>
-         </td> 
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-    </tr>
-    <tbody id="areaDiv" style="display:none">
-     <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Area</span></strong></td>
-		 
-		<td>
-		<bean:define id="areaCollection" name="RptUser" property="areas" type="java.util.HashMap"/>
-		 <%tmpProperty = "rptUser.areaCode";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:240px;border: 1px;" styleId="areaCode"  styleClass="commandOption">
-      	<!-- <option value="-1">Select One</option> --> 
-
-		</nested:select>
-       	</td> 
-	  	<TD align="center">
-			<input type=button value="    Insert >>  " onclick="javacript:addList('areaCode','areaCodeLst');" tabindex="4">
-			<BR>
-			<BR>
-			<input type=button value="<< Remove"  onclick="javacript:removeList('areaCodeLst');" tabindex="5">
-		</td>
-  		<td>
-		<%tmpProperty = "rptUser.areaCodeList";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:220px;border: 1px;" styleId="areaCodeLst"  styleClass="commandOption"> 
-        		
-		</nested:select>
-         </td> 
-    </tr>
-    </tbody>
-    <tbody id="affDiv" style="display:none">
-     <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Affiliate</span></strong></td>
-		<td>
-		<bean:define id="affCollection" name="RptUser" property="affiliates" type="java.util.HashMap"/>
-		 <%tmpProperty = "rptUser.affCode";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:240px;border: 1px;" styleId="affCode"  styleClass="commandOption"> 
-        <!-- <option value="-1">Select One</option> -->
-
-		</nested:select>
-         </td> 
-		<TD align="center">
-			<input type=button value="    Insert >>  " onclick="javacript:addList('affCode','affCodeLst');" tabindex="4">
-			<BR>
-			<BR>
-			<input type=button value="<< Remove"  onclick="javacript:removeList('affCodeLst');" tabindex="5">
-		</td>
-  		<td>
-		<%tmpProperty = "rptUser.affCodeList";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:220px;border: 1px;" styleId="affCodeLst"  styleClass="commandOption"> 
-        		
-		</nested:select>
-         </td> 
-    </tr>
-     </tbody>
-    <tbody id="secDiv" style="display:none">   
-    
-   <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Sector</span></strong></td>
-		<td>
-		<bean:define id="secCollection" name="RptUser" property="sectors" type="java.util.HashMap"/>
-		<%tmpProperty = "rptUser.secCode";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:240px;border: 1px;" styleId="secCode" styleClass="commandOption"> 
-        <!-- <option value="-1">Select One</option> -->
-
-		</nested:select>
-         </td> 
-		<TD align="center">
-			<input type=button value="    Insert >>  " onclick="javacript:addList('secCode','secCodeLst');" tabindex="4">
-			<BR>
-			<BR>
-			<input type=button value="<< Remove"  onclick="javacript:removeList('secCodeLst');" tabindex="5">
-		</td>
-  		<td>
-		<%tmpProperty = "rptUser.secCodeList";%>
-		<nested:select  property="<%=tmpProperty%>" multiple="yes" size="12" style="width:220px;border: 1px;" styleId="secCodeLst"  styleClass="commandOption"> 
-        		
-		</nested:select>
-         </td> 
-    </tr>
-  </tbody>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td colspan="4">   <table align="center">
-        <tr>
-          <td>
-            <input type="button" name="addButton" id="addButton" value="LookUp"  onClick = "javascript:add();">
-          </td>
-          <td>        
-        <td>
-            <input type="button" name="saveButton" id="saveButton" value="Save"  onClick = "javascript:saveForm(document.userForm,'save','rptUserMaint.do');">
-          </td>
-	   <!--  <td>
-            <input type="button" name="button2" id="button2" value="Reset" onClick = "javascript:chgActCmdSubmit(document.userForm,'Reset','rptUserMaint.do');">
-          </td>
-    	 <td>
-            <input type="button" name="removeButton" id="removeButton" value="Remove"  onClick = "javascript:saveForm(document.userForm,'remove','rptUserMaint.do');">
-          </td>          -->
-		<td>&nbsp;</td>
-        </tr>
-      </table>
-      </td>
-    </tr>
-  </table>
- <input type="hidden" name="cmd2"  value="creation">
-</nested:form>
-
-<%@ include file="/include/footer.jsf" %>

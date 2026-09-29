@@ -44,7 +44,6 @@ public class UserMaintAction extends TCGMAction {
         }
     }
 
-    // --- Action 1: userMaint Mapping Entry ---
     public String execute() {
         if (!this.isSessionValid()) {
             return LOGIN;
@@ -65,7 +64,6 @@ public class UserMaintAction extends TCGMAction {
         }
     }
 
-    // --- Action 2: editUser Mapping Entry ---
     public String edit() {
         if (!this.isSessionValid()) {
             return LOGIN;
