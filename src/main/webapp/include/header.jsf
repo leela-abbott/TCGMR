@@ -27,7 +27,8 @@
     <c:choose>
         <%-- 1. Administrator Menu Selection (Access Level 3) --%>
         <c:when test='${sessionScope.TCGMUser.role.accessLevel == 3 || sessionScope.TCGMUser.role.name == "TCGM_ADMIN"}'>
-            <script type="text/javascript" src="include/menu_admin.js"></script>
+           <%-- <script type="text/javascript" src="include/menu_admin.js"></script> --%>
+			    <%@ include file="../jsp/menu_admin.jsp" %>
         </c:when>
         
         <%-- 2. Operator or Query Menu Selection (Access Level 1 or 5) --%>
