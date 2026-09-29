@@ -8,7 +8,8 @@
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.action.extension" value="action,do" />
 
-	<package name="tcgm-default" extends="struts-default" namespace="/">
+	<package name="tcgm-default" extends="struts-default"
+		namespace="/">
 
 		<global-results>
 			<result name="exception">/jsp/exception.jsp</result>
@@ -30,7 +31,7 @@
 			<result name="success">/jsp/login.jsp</result>
 		</action>
 
-		<action name="main" class="abbott.ai.tcgm.action.Main">
+		<action name="main" class="abbott.ai.tcgm17.action.Main">
 			<result name="input">/jsp/login.jsp</result>
 			<result name="success">/jsp/index.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
@@ -409,7 +410,7 @@
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
-		<action name="login" class="abbott.ai.tcgm.action.Login">
+		<action name="login" class="abbott.ai.tcgm17.action.Login">
 			<result name="input">/jsp/login.jsp</result>
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="rptuser" type="redirectAction">
@@ -760,26 +761,39 @@
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
+		<!-- <action name="userMaint" class="abbott.ai.tcgm.action.user.UserMaint"> 
+			<result name="input">/jsp/userList.jsp</result> <result name="success">/jsp/userList.jsp</result> 
+			</action> <action name="editUser" class="abbott.ai.tcgm.action.user.EditUser"> 
+			<result name="input">/jsp/userList.jsp</result> <result name="success">/jsp/userList.jsp</result> 
+			</action> <action name="saveUser" class="abbott.ai.tcgm.action.user.SaveUser"> 
+			<result name="input">/jsp/userList.jsp</result> <result name="success">/jsp/userList.jsp</result> 
+			</action> <action name="deleteUser" class="abbott.ai.tcgm.action.user.DeleteUser"> 
+			<result name="input">/jsp/userList.jsp</result> <result name="success">/jsp/userList.jsp</result> 
+			</action> -->
+		<!-- 1. userMaint Mapping (Calls default execute method) -->
 		<action name="userMaint"
-			class="abbott.ai.tcgm.action.user.UserMaint">
+			class="abbott.ai.tcgm17.action.user.UserMaintAction">
 			<result name="input">/jsp/userList.jsp</result>
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
 
+		<!-- 2. editUser Mapping -->
 		<action name="editUser"
-			class="abbott.ai.tcgm.action.user.EditUser">
+			class="abbott.ai.tcgm17.action.user.UserMaintAction" method="edit">
 			<result name="input">/jsp/userList.jsp</result>
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
 
+		<!-- 3. saveUser Mapping -->
 		<action name="saveUser"
-			class="abbott.ai.tcgm.action.user.SaveUser">
+			class="abbott.ai.tcgm17.action.user.UserMaintAction" method="save">
 			<result name="input">/jsp/userList.jsp</result>
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
 
+		<!-- 4. deleteUser Mapping -->
 		<action name="deleteUser"
-			class="abbott.ai.tcgm.action.user.DeleteUser">
+			class="abbott.ai.tcgm17.action.user.UserMaintAction" method="delete">
 			<result name="input">/jsp/userList.jsp</result>
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
@@ -926,8 +940,8 @@
 			<result name="success">/jsp/mngReportJobs.jsp</result>
 		</action>
 
-		<action name="logout" class="abbott.ai.tcgm.action.Logout" >
-		<result name="success" type="redirectAction">login</result>
+		<action name="logout" class="abbott.ai.tcgm17.action.Logout">
+			<result name="success" type="redirectAction">login</result>
 		</action>
 
 		<action name="closeModel"

@@ -136,11 +136,7 @@ public class UserForm extends TCGMForm
 	{
 		return this.getUserlist().size();
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @return User
-	 */
+
 	public User getUserToEdit()
 	{
 		if(this.userToEdit == null)
@@ -157,35 +153,15 @@ public class UserForm extends TCGMForm
 	{
 		this.userToEdit = userToEdit;
 	}
-	/*****************************************************************************************/
 
-	/*****************************************************************************************/
-	/**
-	 * The reset method is called by the action servlet on every request.  The reset
-	 * method is intended to set all properties to their default values.  After they are set
-	 * to their defaults then they will be populuated with values in the request/session.
-	 * For checkboxes it is not possible to detect if they are unchecked because they do
-	 * not get posted when unchecked.
-	 *
-	 * @param mapping Struts Action Mapping
-	 * @param request HttpServletRequest
-	 */
 	public void reset(ActionMapping mapping, HttpServletRequest request)
 	{
 		this.setSearchObject(new User());//ok to reset this as a new object.  The values are available in fields on the jsp page.
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @param mapping ActionMapping
-	 * @param request HttpServletRequest
-	 * @return ActionErrors
-	 */
+
 	public ActionErrors validate(ActionMapping mapping,HttpServletRequest request)
 	{
 		ActionErrors errors = new ActionErrors();
-
-		//put validation code here...
 
 		if(errors.empty())
 		{
@@ -196,11 +172,7 @@ public class UserForm extends TCGMForm
 			return errors;
 		}
 	}
-	/**
-	 *
-	 * @param mapping ActionMapping
-	 * @param request HttpServletRequest
-	 */
+
 	public void processCmd(ActionMapping mapping,HttpServletRequest request)
 	{
 		if(this.getCmd().equals(TCGMConstants.URL_PARM_VAL_CANCEL))
@@ -210,13 +182,6 @@ public class UserForm extends TCGMForm
 		}
 	}
 
-	/**
-	 * Indicates if the screen should allow the user id to be edited.  For a new user the text box should
-	 * allow entry.  For an existing user it should not.  This will keep users from messing up their own id
-	 * which must match the id in Oracle.  If the id is entered and saved wrong, the record will need to be deleted
-	 * and recreated.  There are only 5 cols to fill in so this should not be a problem.
-	 * @return
-	 */
 	public boolean getUseridEdit()
 	{
 		//if the user info id is blank that means the field should not be disabled so return false.
@@ -229,11 +194,7 @@ public class UserForm extends TCGMForm
 			return true;
 		}
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @return
-	 */
+
 	public boolean getDspSaveCanBtn()
 	{
 		boolean retVal = false;
@@ -248,19 +209,12 @@ public class UserForm extends TCGMForm
 		}
 		return retVal;
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @return
-	 */
+
 	public User getCurrUser()
 	{
 		return this.currUser;
 	}
-	/**
-	 *
-	 * @param currUser
-	 */
+
 	public void setCurrUser(User currUser)
 	{
 		this.currUser = currUser;

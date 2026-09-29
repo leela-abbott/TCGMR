@@ -1,46 +1,57 @@
 <%@ page errorPage="/jsp/exception.jsp" %>
 <%@ page import="abbott.ai.tcgm.entities.Role" %>
-
-<%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-template.tld" prefix="template" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-nested.tld" prefix="nested" %>
-<%@ taglib uri="/WEB-INF/taglib/c.tld" prefix="c" %>
-<%@ taglib uri="/WEB-INF/taglib/c-rt.tld" prefix="c-rt" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib uri="/WEB-INF/taglib/abbott.tld" prefix="abbott" %>
 
-<jsp:useBean id="TCGMConstants" class="abbott.ai.tcgm.TCGMConstants" scope="session" />
-<jsp:useBean id="DBConst" class="abbott.ai.tcgm.data.DBConst" scope="session" />
+<!-- Fixes the compilation error by exposing the session variable directly to JSTL -->
+<s:set var="TCGMUser" value="#session['TCGMUser']" scope="page" />
 
+<s:set var="TCGMConstants" value="#session['abbott.ai.tcgm.TCGMConstants']" scope="session" />
+<s:set var="DBConst" value="#session['abbott.ai.tcgm.data.DBConst']" scope="session" />
+
+<%-- Handle Session Authentication Checking via Custom Taglib --%>
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 
-<bean:define id="TCGMUser" name="TCGMUser" scope="session" type="abbott.ai.tcgm.entities.User" />
-
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>
-			<%=pageTitle%>
-		</title>
-		<script language="JavaScript" src="include/common.js" type=text/javascript></script>
-		<% // Added by Udaya B Aravapalli on 01/12/2006 to restrict access based on roles.-- Start %>
-     <% if ((TCGMUser.getRole().getAccessLevel()) == (Role.Administrator.getAccessLevel())) { %>
-		<script language="JavaScript" src="include/menu_admin.js" type=text/javascript></script>
-     <% } else  if ((TCGMUser.getRole().getAccessLevel()) == (Role.Operator.getAccessLevel()) || (TCGMUser.getRole().getAccessLevel()) == (Role.Query.getAccessLevel())) { %>
-		<script language="JavaScript" src="include/menu_operator.js" type=text/javascript></script>
-     <% } else  if ((TCGMUser.getRole().getAccessLevel()) == (Role.RptAdmin.getAccessLevel())) { %>
-		<script language="JavaScript" src="include/menu_rptadmin.js" type=text/javascript></script>
-     <% } else { %>
-		<script language="JavaScript" src="include/menu_supervisor.js" type=text/javascript></script>
-		 <% } %>     
-		<% // Added by Udaya B Aravapalli on 01/12/2006 to restrict access based on roles.-- End %>		 
-		<script language="JavaScript" src="include/mmenu.js" type=text/javascript></script>
+<head>
+    <meta charset="ISO-8859-1">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title><%= pageTitle %></title>
+    
+    <script type="text/javascript" src="include/common.js"></script>
 
-		<script language="JavaScript" src="include/AnchorPosition.js" type=text/javascript></script>
-		<script language="JavaScript" src="include/PopupWindow.js" type=text/javascript></script>
-		<script language="JavaScript" src="include/popupInit.js" type=text/javascript></script>
+    <!-- Dynamic Role-Based Menu Script Injector Engine -->
+    <c:choose>
+        <%-- 1. Administrator Menu Selection (Access Level 3) --%>
+        <c:when test='${sessionScope.TCGMUser.role.accessLevel == 3 || sessionScope.TCGMUser.role.name == "TCGM_ADMIN"}'>
+            <script type="text/javascript" src="include/menu_admin.js"></script>
+        </c:when>
+        
+        <%-- 2. Operator or Query Menu Selection (Access Level 1 or 5) --%>
+        <c:when test='${sessionScope.TCGMUser.role.accessLevel == 1 || sessionScope.TCGMUser.role.accessLevel == 5 || sessionScope.TCGMUser.role.name == "TCGM_OPERATOR" || sessionScope.TCGMUser.role.name == "TCGM_QUERY"}'>
+            <script type="text/javascript" src="include/menu_operator.js"></script>
+        </c:when>
+        
+        <%-- 3. Report Administrator Menu Selection (Access Level 4) --%>
+        <c:when test='${sessionScope.TCGMUser.role.accessLevel == 4 || sessionScope.TCGMUser.role.name == "TCGM_RPTADMIN"}'>
+            <script type="text/javascript" src="include/menu_rptadmin.js"></script>
+        </c:when>
+        
+        <%-- 4. Default Fallback Supervisor Menu Selection --%>
+        <c:otherwise>
+            <script type="text/javascript" src="include/menu_supervisor.js"></script>
+        </c:otherwise>
+    </c:choose>
 
-		<link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-				<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-	</head>
+    <!-- Core Dropdown and Structural Overlay Popup Helper Scripts -->
+    <script type="text/javascript" src="include/mmenu.js"></script>
+    <script type="text/javascript" src="include/AnchorPosition.js"></script>
+    <script type="text/javascript" src="include/PopupWindow.js"></script>
+    <script type="text/javascript" src="include/popupInit.js"></script>
+
+    <!-- Master Corporate Style Sheet Bindings Mapping -->
+    <link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
+</head>

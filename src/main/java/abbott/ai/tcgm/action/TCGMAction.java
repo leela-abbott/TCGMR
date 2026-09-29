@@ -1,13 +1,15 @@
 package abbott.ai.tcgm.action;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionError;
-import org.apache.struts.action.ActionErrors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.action.ServletRequestAware;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.TCGMUtil;
@@ -23,387 +25,212 @@ import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.ModelMngr;
 
-/**
- * <p>Title: TCGM</p>
- * <p>Description: Base class for all actions in the TCGM application</p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott Laboratories</p>
- * @author David Fields
- * @version 1.0
- */
-public class TCGMAction extends Action
-{
-	protected String forward;
-	protected static Logger logger = null;
-	protected ActionErrors errors = new ActionErrors();
-	protected final String className = this.getClass().getName();
+public class TCGMAction extends ActionSupport implements ServletRequestAware {
 
-	/**
-	 * Default Constructor
-	 */
-	public TCGMAction()
-	{
-		super();
-		this.logger = Logger.getLogger(this.getClass());
-	}
+    private static final long serialVersionUID = 1L;
+    
+    protected String forward;
+    protected static Logger logger = LogManager.getLogger(TCGMAction.class);
+    protected final String className = this.getClass().getName();
+    protected HttpServletRequest request;
 
+    public TCGMAction() {
+        super();
+    }
 
-	/**
-	 * Checks to see if the user session is valid, otherwise returns the action mapping to Login page
-	 * Returns a ActionMapping to indicate invalid User Session<br>
-	 * @param request HttpServletRequest
-	 * @return true if TCGM_USER is found in the session
-	 */
-	protected boolean isSessionValid(HttpServletRequest request)
-	{
-		boolean isSessionValid = true;
-		if ( request.getSession().getAttribute(TCGMConstants.SESSION_NAME_USER) == null)
-		{
-			isSessionValid = false;
-			errors = new ActionErrors();
-			errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.user.session.invalid"));
-			this.forward = TCGMConstants.G_FORWARD_LOGIN;
-			this.saveErrors(request,errors);
-		}
-		return isSessionValid;
-	}
+    @Override
+    public void withServletRequest(HttpServletRequest request) {
+        this.request = request;
+    }
 
-	/**
-	 *
-	 * @param request HttpServletRequest
-	 * @return true if a model has been selected
-	 */
-	protected boolean isModelSelected(HttpServletRequest request)
-	{
-		boolean isModelSelected = true;
-		if(this.getState(request).getCurrentModelName().equals(TCGMConstants.NONE_SELECTED))
-		{
-			isModelSelected = false;
-// Alex Winter 06/17/05 fix duplicate messages - start
-			if(this.errors.empty())
-			{
-				this.errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.model.none_selected"));
-			}
-// Alex Winter 06/17/05 fix duplicate messages - end
-			this.setForward(TCGMConstants.G_FORWARD_SELECT_MODEL);
-			this.saveErrors(request, errors);
-		}
-		return isModelSelected;
-	}
+    protected boolean isSessionValid() {
+        if (this.request == null) {
+            return false;
+        }
+        HttpSession session = this.request.getSession(false);
+        if (session == null || session.getAttribute(TCGMConstants.SESSION_NAME_USER) == null) {
+            addActionError(getText("error.user.session.invalid"));
+            this.forward = TCGMConstants.G_FORWARD_LOGIN;
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 *
-	 * @param request
-	 * @return
-	 */
-// 10-17-03 Returns true if the model the user selected is Open
-	protected boolean isModelOpen(HttpServletRequest request)
-	{
-		boolean isModelOpen = true;
-		if(this.getState(request).getCurrentModelName().equals(TCGMConstants.NONE_SELECTED))
-		{
-			isModelOpen = false;
-			this.errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.model.none_selected"));
-			this.setForward(TCGMConstants.G_FORWARD_SELECT_MODEL);
-			this.saveErrors(request, errors);
-		}
-		else
-		{
-			ModelMngr mm = new ModelMngr();
-			UserToken ut = this.getUserToken(request);
-			String modelId = ((TCGMState) this.getState(request)).getCurrentModelIdString();
-			try
-			{
-				String modelStatus = mm.getModelStatus(ut, modelId).trim();
-				if(!modelStatus.equals("OPEN"))
-				{
-					isModelOpen = false;
-					logger.info("modelStatus = " + modelStatus);
-				}
-			}
-			catch(TCGMException ex)
-			{
-				request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
-				this.setForward(TCGMConstants.G_FORWARD_EXCEPTION);
-			}
-		}
-		return isModelOpen;
-	}
+    protected boolean isModelSelected() {
+        if (!isSessionValid()) return false;
+        
+        if (this.getState().getCurrentModelName().equals(TCGMConstants.NONE_SELECTED)) {
+            if (!hasActionErrors()) {
+                addActionError(getText("error.model.none_selected"));
+            }
+            this.setForward(TCGMConstants.G_FORWARD_SELECT_MODEL);
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 *
-	 * @param request HttpServletRequest
-	 * @return true if a model has been selected
-	 */
-	protected boolean isRateSetSelected(HttpServletRequest request)
-	{
-		boolean isRateSetSelected = true;
-		if(this.getState(request).getCurRateSetName().equals(TCGMConstants.NONE_SELECTED))
-		{
-			isRateSetSelected = false;
-			this.errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.rateset.none_selected"));
-			this.setForward(TCGMConstants.G_FORWARD_SELECT_RATE_SET);
-			this.saveErrors(request, errors);
-		}
-		return isRateSetSelected;
-	}
+    protected boolean isModelOpen() {
+        if (!isSessionValid()) return false;
 
-	/**
-	 *
-	 * @param request
-	 * @return
-	 */
-	protected User getSessionUser(HttpServletRequest request)
-	{
-		return (User)request.getSession().getAttribute(TCGMConstants.SESSION_NAME_USER);
-	}
-	/**
-	 *
-	 * @param request HttpServletRequest
-	 * @return UserToken
-	 */
-	protected UserToken getUserToken(HttpServletRequest request)
-	{
-		return getSessionUser(request).getUserToken();
+        if (this.getState().getCurrentModelName().equals(TCGMConstants.NONE_SELECTED)) {
+            addActionError(getText("error.model.none_selected"));
+            this.setForward(TCGMConstants.G_FORWARD_SELECT_MODEL);
+            return false;
+        } else {
+            ModelMngr mm = new ModelMngr();
+            UserToken ut = this.getUserToken();
+            String modelId = this.getState().getCurrentModelIdString();
+            try {
+                String modelStatus = mm.getModelStatus(ut, modelId).trim();
+                if (!"OPEN".equalsIgnoreCase(modelStatus)) {
+                    logger.info("modelStatus = {}", modelStatus);
+                    return false;
+                }
+            } catch (TCGMException ex) {
+                if (this.request != null) {
+                    this.request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
+                }
+                this.setForward(TCGMConstants.G_FORWARD_EXCEPTION);
+                return false;
+            }
+        }
+        return true;
+    }
 
-	}
+    protected boolean isRateSetSelected() {
+        if (!isSessionValid()) return false;
 
-	/**
-	 *
-	 * @param request HttpServletRequest
-	 * @return TCGMState
-	 */
-	protected TCGMState getState(HttpServletRequest request)
-	{
-		TCGMState state = (TCGMState)request.getSession().getAttribute(TCGMConstants.SESSION_NAME_STATE);
-		if(state == null)
-		{
-			state = new TCGMState();
-		}
-		return state;
-	}
+        if (this.getState().getCurRateSetName().equals(TCGMConstants.NONE_SELECTED)) {
+            addActionError(getText("error.rateset.none_selected"));
+            this.setForward(TCGMConstants.G_FORWARD_SELECT_RATE_SET);
+            return false;
+        }
+        return true;
+    }
 
-		protected boolean isCmdValid(TCGMProductionForm myForm) {
-			if (myForm!=null && !TCGMUtil.isEmpty(myForm.getCmd()) && !myForm.getCmd().equals("CANCEL") )
-				return true;
-			else
-				return false;
-		}
+    protected User getSessionUser() {
+        if (this.request == null) return null;
+        HttpSession session = this.request.getSession(false);
+        return (session != null) ? (User) session.getAttribute(TCGMConstants.SESSION_NAME_USER) : null;
+    }
 
+    protected UserToken getUserToken() {
+        User user = getSessionUser();
+        return (user != null) ? user.getUserToken() : null;
+    }
 
-	/**
-	 * If a url parameter named "cmd" exists this method will return the value assigned to it.
-	 * @param request HttpServletRequest
-	 * @return cmd value
-	 */
-	protected String getCmd(HttpServletRequest request)
-	{
-		String cmd = (String)request.getParameter(TCGMConstants.URL_PARM_CMD);
+    protected TCGMState getState() {
+        if (this.request == null) return new TCGMState();
+        HttpSession session = this.request.getSession();
+        TCGMState state = (TCGMState) session.getAttribute(TCGMConstants.SESSION_NAME_STATE);
+        if (state == null) {
+            state = new TCGMState();
+            session.setAttribute(TCGMConstants.SESSION_NAME_STATE, state);
+        }
+        return state;
+    }
 
-		if(cmd == null)
-		{
-			cmd = "";
-		}
-		return cmd;
-	}
+    protected boolean isCmdValid(TCGMProductionForm myForm) {
+        return myForm != null && !TCGMUtil.isEmpty(myForm.getCmd()) && !"CANCEL".equals(myForm.getCmd());
+    }
 
-	/**
-	 *
-	 * @return page or action to forward to
-	 */
-	protected String getForward()
-	{
-		return this.forward;
-	}
+    protected String getCmd() {
+        if (this.request == null) return "";
+        String cmd = this.request.getParameter(TCGMConstants.URL_PARM_CMD);
+        return (cmd != null) ? cmd : "";
+    }
 
-	/**
-	 *
-	 * @param forward page or action to forward to
-	 */
-	protected void setForward(String forward)
-	{
-		this.forward = forward;
-	}
+    protected String getForward() {
+        return this.forward;
+    }
 
-	/**
-	 *
-	 * @param logger Log4j logger object
-	 */
-	protected void setLogger(Logger logger)
-	{
-		this.logger = logger;
-	}
+    protected void setForward(String forward) {
+        this.forward = forward;
+    }
 
-	/**
-	 *
-	 * @return Log4j logger
-	 */
-	protected Logger getLogger()
-	{
-		return this.logger;
-	}
+    public List<Asr> createEmptyAsrRecs(String modelId, String datasetTableId) throws TCGMException {
+        String methodName = "createEmptyAsrRecs";
+        List<Asr> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++) {
+                Asr asr = new Asr();
+                asr.setModelId(modelId);
+                asr.setDatasetTableId(datasetTableId);
+                list.add(asr);
+            }
+            return list;
+        } catch (Exception e) {
+            throw new TCGMException(this.className, methodName, e.toString());
+        }
+    }
 
-	/**
-	 *
-	 * @param errors ActionErrors
-	 */
-	protected void setErrors(ActionErrors errors)
-	{
-		this.errors = errors;
-	}
+    public List<Bpcs> createEmptyBpcRecs(String modelId, String datasetTableId) throws TCGMException {
+        String methodName = "createEmptyBpcRecs";
+        List<Bpcs> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++) {
+                Bpcs bpcs = new Bpcs();
+                bpcs.setModelId(modelId);
+                bpcs.setDatasetTableId(datasetTableId);
+                bpcs.setBegPeriod("1");
+                bpcs.setEndPeriod("12");
+                list.add(bpcs);
+            }
+            return list;
+        } catch (Exception e) {
+            throw new TCGMException(this.className, methodName, e.toString());
+        }
+    }        
 
-	/**
-	 *
-	 * @return errors
-	 */
-	protected ActionErrors getErrors()
-	{
-		return this.errors;
-	}
-	
-	/**
-	 *
-	 * @return Vector of Asr objects
-	 * @throws TCGMException
-	 */
-	public Vector createEmptyAsrRecs(String modelId, String datasetTableId) throws TCGMException
-	{
-		String methodName = "createEmptyAsrRecs";
+    public List<BpcRev> createEmptyBpcRevRecs(String modelId, String datasetTableId) throws TCGMException {
+        String methodName = "createEmptyBpcRevRecs";
+        List<BpcRev> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++) {
+                BpcRev bpcRev = new BpcRev();
+                bpcRev.setModelId(modelId);
+                bpcRev.setDatasetTableId(datasetTableId);
+                bpcRev.setBegPeriod("1");
+                bpcRev.setEndPeriod("12");
+                list.add(bpcRev);
+            }
+            return list;
+        } catch (Exception e) {
+            throw new TCGMException(this.className, methodName, e.toString());
+        }
+    }            
 
-		Vector vec = new Vector();
+    public List<BpcEx> createEmptyBpcExRecs(String modelId, String datasetTableId) throws TCGMException {
+        String methodName = "createEmptyBpcExRecs";
+        List<BpcEx> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++) {
+                BpcEx bpcEx = new BpcEx();
+                bpcEx.setModelId(modelId);
+                bpcEx.setDatasetTableId(datasetTableId);
+                bpcEx.setBegPeriod("1");
+                bpcEx.setEndPeriod("12");
+                list.add(bpcEx);
+            }
+            return list;
+        } catch (Exception e) {
+            throw new TCGMException(this.className, methodName, e.toString());
+        }
+    }            
 
-		try
-		{
-			for (int i=0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++)
-			{
-				Asr asr = new Asr();
-				asr.setModelId(modelId);
-				asr.setDatasetTableId(datasetTableId);
-				vec.add(asr);
-			}
-			return vec;
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-	}
-	/**
-	 *
-	 * @return Vector of Asr objects
-	 * @throws TCGMException
-	 */
-	public Vector createEmptyBpcRecs(String modelId, String datasetTableId) throws TCGMException
-	{
-		String methodName = "createEmptyBpcRecs";
-
-		Vector vec = new Vector();
-
-		try
-		{
-			for (int i=0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++)
-			{
-				Bpcs bpcs = new Bpcs();
-				bpcs.setModelId(modelId);
-				bpcs.setDatasetTableId(datasetTableId);
-				bpcs.setBegPeriod("1");
-				bpcs.setEndPeriod("12");
-				vec.add(bpcs);
-			}
-			return vec;
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-	}		
-
-	/**
-	 *
-	 * @return Vector of Asr objects
-	 * @throws TCGMException
-	 */
-	public Vector createEmptyBpcRevRecs(String modelId, String datasetTableId) throws TCGMException
-	{
-		String methodName = "createEmptyBpcRecs";
-
-		Vector vec = new Vector();
-
-		try
-		{
-			for (int i=0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++)
-			{
-				BpcRev bpcRev = new BpcRev();
-				bpcRev.setModelId(modelId);
-				bpcRev.setDatasetTableId(datasetTableId);
-				bpcRev.setBegPeriod("1");
-				bpcRev.setEndPeriod("12");
-				vec.add(bpcRev);
-			}
-			return vec;
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-	}			
-
-	/**
-	 *
-	 * @return Vector of Asr objects
-	 * @throws TCGMException
-	 */
-	public Vector createEmptyBpcExRecs(String modelId, String datasetTableId) throws TCGMException
-	{
-		String methodName = "createEmptyExRecs";
-
-		Vector vec = new Vector();
-
-		try
-		{
-			for (int i=0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++)
-			{
-				BpcEx bpcEx = new BpcEx();
-				bpcEx.setModelId(modelId);
-				bpcEx.setDatasetTableId(datasetTableId);
-				bpcEx.setBegPeriod("1");
-				bpcEx.setEndPeriod("12");
-				vec.add(bpcEx);
-			}
-			return vec;
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-	}			
-
-	/**
-	 *
-	 * @return Vector of Asr objects
-	 * @throws TCGMException
-	 */
-	public Vector createEmptyNotesRecs(String modelId, String datasetTableId) throws TCGMException
-	{
-		String methodName = "createEmptyNotesRecs";
-
-		Vector vec = new Vector();
-
-		try
-		{
-			for (int i=0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++)
-			{
-				Notes notes = new Notes();
-				notes.setModelId(modelId);
-				notes.setDatasetTableId(datasetTableId);
-				vec.add(notes);
-			}
-			return vec;
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-	}			
-			
+    public List<Notes> createEmptyNotesRecs(String modelId, String datasetTableId) throws TCGMException {
+        String methodName = "createEmptyNotesRecs";
+        List<Notes> list = new ArrayList<>();
+        try {
+            for (int i = 0; i < TCGMConstants.MAX_RECS_TO_RETRIEVE; i++) {
+                Notes notes = new Notes();
+                notes.setModelId(modelId);
+                notes.setDatasetTableId(datasetTableId);
+                list.add(notes);
+            }
+            return list;
+        } catch (Exception e) {
+            throw new TCGMException(this.className, methodName, e.toString());
+        }
+    }            
 }
