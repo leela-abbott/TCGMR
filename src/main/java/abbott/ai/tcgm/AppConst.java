@@ -135,7 +135,7 @@ public final class AppConst
     /**
      * @param sc
      */
-    public static void init(javax.servlet.ServletConfig sc)
+    public static void init(jakarta.servlet.ServletConfig sc)
     {
         _instance = new AppConst();
         String realPath = sc.getServletContext().getRealPath("\\");
@@ -250,7 +250,7 @@ public final class AppConst
 		myLogger.error( _instance.toString() );
     }
 
-    private static String readParameter(String parmKey, javax.servlet.ServletConfig sc) {
+    private static String readParameter(String parmKey, jakarta.servlet.ServletConfig sc) {
         String parmValue = sc.getInitParameter(parmKey);
         if(parmValue == null || parmValue.trim().equals(""))
         {

@@ -1,10 +1,10 @@
 package abbott.customTags;
 
 import java.io.IOException;
-import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.JspException;
-//import javax.servlet.jsp.tagext.BodyTagSupport;
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspException;
+//import jakarta.servlet.jsp.tagext.BodyTagSupport;
+import jakarta.servlet.jsp.tagext.Tag;
 
 import org.apache.struts.taglib.logic.IterateTag;
 /**
@@ -238,7 +238,7 @@ public final class RowTag extends org.apache.struts.taglib.html.BaseHandlerTag
 	public int doStartTag() throws JspException
 	{
 		// Continue processing this page
-		return (javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_BUFFERED);
+		return (jakarta.servlet.jsp.tagext.BodyTag.EVAL_BODY_BUFFERED);
 	}
 
 	/**

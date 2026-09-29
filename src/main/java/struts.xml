@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+"https://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<!-- Global Constant Configurations -->
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="action,do" />
+
+	<package name="tcgm-default" extends="struts-default" namespace="/">
+
+		<global-results>
+			<result name="exception">/jsp/exception.jsp</result>
+			<result name="login">/jsp/login.jsp</result>
+			<result name="selectModel" type="redirectAction">mngFactorModels</result>
+			<result name="selectRateSet" type="redirectAction">openMngRateSets</result>
+			<result name="restrictions">/jsp/restrictions.jsp</result>
+			<result name="admin" type="redirectAction">userMaint</result>
+			<result name="main" type="redirectAction">main</result>
+		</global-results>
+
+		<action name="openLogin">
+			<result>/jsp/login.jsp</result>
+		</action>
+
+		<action name="tcgmAjax" class="abbott.ai.tcgm.action.TCGMAjax">
+			<result name="input">/jsp/burstMaint.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+			<result name="success">/jsp/login.jsp</result>
+		</action>
+
+		<action name="main" class="abbott.ai.tcgm.action.Main">
+			<result name="input">/jsp/login.jsp</result>
+			<result name="success">/jsp/index.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="fileUpload"
+			class="abbott.ai.tcgm.action.FileUpload">
+			<result name="input">/jsp/fileUpload.jsp</result>
+			<result name="success">/jsp/fileUpload.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="deleteFile"
+			class="abbott.ai.tcgm.action.DeleteFile">
+			<result name="input">/jsp/deleteFile.jsp</result>
+			<result name="success">/jsp/deleteFile.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affasrFormUpload"
+			class="abbott.ai.tcgm.action.asr.AsrUsageUpload">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+		</action>
+
+		<action name="affasrFormDownLoad"
+			class="abbott.ai.tcgm.action.asr.AsrUsageDownload">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+		</action>
+
+		<action name="affAsrMaint"
+			class="abbott.ai.tcgm.action.asr.AsrUsageMaint">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+		</action>
+
+		<action name="affAsrSave"
+			class="abbott.ai.tcgm.action.asr.AsrUsageCopy">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affAsrDataFetched"
+			class="abbott.ai.tcgm.action.asr.AsrUsageDataFetch">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affAsrDelete"
+			class="abbott.ai.tcgm.action.asr.AsrUsageDelete">
+			<result name="input">/jsp/asrUsage.jsp</result>
+			<result name="success">/jsp/asrUsage.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affAreaMaint"
+			class="abbott.ai.tcgm.action.AffAreaDivMaint">
+			<result name="input">/jsp/affList.jsp</result>
+			<result name="success">/jsp/affList.jsp</result>
+		</action>
+
+		<action name="errorReport"
+			class="abbott.ai.tcgm.action.LogReportAction">
+			<result name="input">/jsp/jobMgmt.jsp</result>
+			<result name="success">/jsp/logReport.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="generateReport"
+			class="abbott.ai.tcgm.action.GenerateReport">
+			<result name="input">/jsp/jobMgmt.jsp</result>
+			<result name="success">/jsp/generateReport.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrDelete"
+			class="abbott.ai.tcgm.action.asr.AsrDelete">
+			<result name="input">/jsp/asr.jsp</result>
+			<result name="success">/jsp/asr.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrMaintenance"
+			class="abbott.ai.tcgm.action.asr.AsrMaint">
+			<result name="input">/jsp/asr.jsp</result>
+			<result name="success">/jsp/asr.jsp</result>
+			<result name="advancedfilter">/jsp/asrMaintAdvFilter.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrSave"
+			class="abbott.ai.tcgm.action.asr.AsrSave">
+			<result name="input">/jsp/asr.jsp</result>
+			<result name="success">/jsp/asr.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrTranDelete"
+			class="abbott.ai.tcgm.action.asr.AsrTranDelete">
+			<result name="input">/jsp/asrTran.jsp</result>
+			<result name="success">/jsp/asrTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrTranMaintenance"
+			class="abbott.ai.tcgm.action.asr.AsrTranMaint">
+			<result name="input">/jsp/asrTran.jsp</result>
+			<result name="success">/jsp/asrTran.jsp</result>
+			<result name="advancedfilter">/jsp/asrTranMaintAdvFilter.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrTranPublish"
+			class="abbott.ai.tcgm.action.asr.AsrTranPublish">
+			<result name="input">/jsp/asrTran.jsp</result>
+			<result name="success">/jsp/asrTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrTranSave"
+			class="abbott.ai.tcgm.action.asr.AsrTranSave">
+			<result name="input">/jsp/asrTran.jsp</result>
+			<result name="success">/jsp/asrTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="bpcExSave"
+			class="abbott.ai.tcgm.action.bpcex.BpcExSave">
+			<result name="input">/jsp/bpcEx.jsp</result>
+			<result name="success">/jsp/bpcEx.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcExDelete"
+			class="abbott.ai.tcgm.action.bpcex.BpcExDelete">
+			<result name="input">/jsp/bpcEx.jsp</result>
+			<result name="success">/jsp/bpcEx.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcExMaint"
+			class="abbott.ai.tcgm.action.bpcex.BpcExMaint">
+			<result name="input">/jsp/bpcEx.jsp</result>
+			<result name="success">/jsp/bpcEx.jsp</result>
+			<result name="advancedfilter">/jsp/bpcExMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<!-- <action name="bpcExUpdate" class="abbott.ai.tcgm.action.bpcex.BpcExUpdate"> 
+			<result name="input">/jsp/bpcEx.jsp</result> <result name="success">/jsp/bpcEx.jsp</result> 
+			<result name="failure">/jsp/login.jsp</result> </action> -->
+
+		<action name="bpcExTranDelete"
+			class="abbott.ai.tcgm.action.bpcex.BpcExTranDelete">
+			<result name="input">/jsp/bpcExTran.jsp</result>
+			<result name="success">/jsp/bpcExTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcExTranMaint"
+			class="abbott.ai.tcgm.action.bpcex.BpcExTranMaint">
+			<result name="input">/jsp/bpcExTran.jsp</result>
+			<result name="success">/jsp/bpcExTran.jsp</result>
+			<result name="advancedfilter">/jsp/bpcExTranMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcExTranPublish"
+			class="abbott.ai.tcgm.action.bpcex.BpcExTranPublish">
+			<result name="input">/jsp/bpcExTran.jsp</result>
+			<result name="success">/jsp/bpcExTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcExTranSave"
+			class="abbott.ai.tcgm.action.bpcex.BpcExTranSave">
+			<result name="input">/jsp/bpcExTran.jsp</result>
+			<result name="success">/jsp/bpcExTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsMaint"
+			class="abbott.ai.tcgm.action.bpc.BpcsMaint">
+			<result name="input">/jsp/bpcs.jsp</result>
+			<result name="success">/jsp/bpcs.jsp</result>
+			<result name="advancedfilter">/jsp/bpcsMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsSave"
+			class="abbott.ai.tcgm.action.bpc.BpcsSave">
+			<result name="input">/jsp/bpcs.jsp</result>
+			<result name="success">/jsp/bpcs.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="bpcsDelete"
+			class="abbott.ai.tcgm.action.bpc.BpcsDelete">
+			<result name="input">/jsp/bpcs.jsp</result>
+			<result name="success">/jsp/bpcs.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsUpdate"
+			class="abbott.ai.tcgm.action.bpc.BpcsUpdate">
+			<result name="input">/jsp/bpcs.jsp</result>
+			<result name="success">/jsp/bpcs.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsTranMaint"
+			class="abbott.ai.tcgm.action.bpc.BpcsTranMaint">
+			<result name="input">/jsp/bpcsTran.jsp</result>
+			<result name="success">/jsp/bpcsTran.jsp</result>
+			<result name="advancedfilter">/jsp/bpcsTranMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsTranDelete"
+			class="abbott.ai.tcgm.action.bpc.BpcsTranDelete">
+			<result name="input">/jsp/bpcsTran.jsp</result>
+			<result name="success">/jsp/bpcsTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsTranPublish"
+			class="abbott.ai.tcgm.action.bpc.BpcsTranPublish">
+			<result name="input">/jsp/bpcsTran.jsp</result>
+			<result name="success">/jsp/bpcsTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcsTranSave"
+			class="abbott.ai.tcgm.action.bpc.BpcsTranSave">
+			<result name="input">/jsp/bpcsTran.jsp</result>
+			<result name="success">/jsp/bpcsTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevSave"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevSave">
+			<result name="input">/jsp/bpcRev.jsp</result>
+			<result name="success">/jsp/bpcRev.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevDelete"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevDelete">
+			<result name="input">/jsp/bpcRev.jsp</result>
+			<result name="success">/jsp/bpcRev.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevMaint"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevMaint">
+			<result name="input">/jsp/bpcRev.jsp</result>
+			<result name="success">/jsp/bpcRev.jsp</result>
+			<result name="advancedfilter">/jsp/bpcRevMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevTranDelete"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranDelete">
+			<result name="input">/jsp/bpcRevTran.jsp</result>
+			<result name="success">/jsp/bpcRevTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevTranMaint"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranMaint">
+			<result name="input">/jsp/bpcRevTran.jsp</result>
+			<result name="success">/jsp/bpcRevTran.jsp</result>
+			<result name="advancedfilter">/jsp/bpcRevTranMaintAdvFilter.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevTranPublish"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranPublish">
+			<result name="input">/jsp/bpcRevTran.jsp</result>
+			<result name="success">/jsp/bpcRevTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="bpcRevTranSave"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranSave">
+			<result name="input">/jsp/bpcRevTran.jsp</result>
+			<result name="success">/jsp/bpcRevTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="affBpcSave"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcSave">
+			<result name="input">/jsp/affBpc.jsp</result>
+			<result name="success">/jsp/affBpc.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affBpcDelete"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcDelete">
+			<result name="input">/jsp/affBpc.jsp</result>
+			<result name="success">/jsp/affBpc.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affBpcUpload"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcUpload">
+			<result name="input">/jsp/affBpc.jsp</result>
+			<result name="success">/jsp/affBpc.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="affBpcMaint"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcMaint">
+			<result name="input">/jsp/affBpc.jsp</result>
+			<result name="success">/jsp/affBpc.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="affBpcUpdate"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcUpdate">
+			<result name="input">/jsp/affBpc.jsp</result>
+			<result name="success">/jsp/affBpc.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="notesDelete"
+			class="abbott.ai.tcgm.action.notes.NotesDelete">
+			<result name="input">/jsp/notesMaint.jsp</result>
+			<result name="success">/jsp/notesMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="notesMaint"
+			class="abbott.ai.tcgm.action.notes.NotesMaint">
+			<result name="input">/jsp/notesMaint.jsp</result>
+			<result name="success">/jsp/notesMaint.jsp</result>
+			<result name="advancedfilter">/jsp/notesMaintAdvFilter.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="notesSave"
+			class="abbott.ai.tcgm.action.notes.NotesSave">
+			<result name="input">/jsp/notesMaint.jsp</result>
+			<result name="success">/jsp/notesMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+		<action name="notesTranDelete"
+			class="abbott.ai.tcgm.action.notes.NotesTranDelete">
+			<result name="input">/jsp/notesTranMaint.jsp</result>
+			<result name="success">/jsp/notesTranMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="notesTranMaint"
+			class="abbott.ai.tcgm.action.notes.NotesTranMaint">
+			<result name="input">/jsp/notesTranMaint.jsp</result>
+			<result name="success">/jsp/notesTranMaint.jsp</result>
+			<result name="advancedfilter">/jsp/notesTranMaintAdvFilter.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="notesTranPublish"
+			class="abbott.ai.tcgm.action.notes.NotesTranPublish">
+			<result name="input">/jsp/notesTranMaint.jsp</result>
+			<result name="success">/jsp/notesTranMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="notesTranSave"
+			class="abbott.ai.tcgm.action.notes.NotesTranSave">
+			<result name="input">/jsp/notesTranMaint.jsp</result>
+			<result name="success">/jsp/notesTranMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="login" class="abbott.ai.tcgm.action.Login">
+			<result name="input">/jsp/login.jsp</result>
+			<result name="success" type="redirectAction">mngFactorModels</result>
+			<result name="rptuser" type="redirectAction">
+				<param name="actionName">ActiveDirSearch</param>
+				<param name="cmd">view</param>
+			</result>
+			<result name="main" type="redirectAction">main</result>
+		</action>
+
+		<action name="openLogin"
+			class="abbott.ai.tcgm.action.DefaultForward">
+			<result name="success">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataDelete"
+			class="abbott.ai.tcgm.action.ratedata.RateDataDelete">
+			<result name="input">/jsp/rateData.jsp</result>
+			<result name="success">/jsp/rateData.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataMaint"
+			class="abbott.ai.tcgm.action.ratedata.RateDataMaint">
+			<result name="input">/jsp/rateData.jsp</result>
+			<result name="success">/jsp/rateData.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataSave"
+			class="abbott.ai.tcgm.action.ratedata.RateDataSave">
+			<result name="input">/jsp/rateData.jsp</result>
+			<result name="success">/jsp/rateData.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateDataUpdate"
+			class="abbott.ai.tcgm.action.ratedata.RateDataUpdate">
+			<result name="input">/jsp/rateData.jsp</result>
+			<result name="success">/jsp/rateData.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataTranMaint"
+			class="abbott.ai.tcgm.action.ratedata.RateDataTranMaint">
+			<result name="input">/jsp/rateDataTran.jsp</result>
+			<result name="success">/jsp/rateDataTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataTranDelete"
+			class="abbott.ai.tcgm.action.ratedata.RateDataTranDelete">
+			<result name="input">/jsp/rateDataTran.jsp</result>
+			<result name="success">/jsp/rateDataTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataTranPublish"
+			class="abbott.ai.tcgm.action.ratedata.RateDataTranPublish">
+			<result name="input">/jsp/rateDataTran.jsp</result>
+			<result name="success">/jsp/rateDataTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="rateDataTranSave"
+			class="abbott.ai.tcgm.action.ratedata.RateDataTranSave">
+			<result name="input">/jsp/rateDataTran.jsp</result>
+			<result name="success">/jsp/rateDataTran.jsp</result>
+			<result name="failure">/jsp/login.jsp</result>
+		</action>
+
+		<action name="scAffiliateImport"
+			class="abbott.ai.tcgm.action.affbpc.AffBpcMaint">
+			<result name="success" type="redirectAction">processMgmt</result>
+			<result name="failure" type="redirectAction">openMngFactorModels</result>
+		</action>
+
+		<action name="changeJobStatus"
+			class="abbott.ai.tcgm.action.ChangeJobStatus">
+			<result name="success" type="redirectAction">processMgmt</result>
+		</action>
+
+		<action name="createFactorModel"
+			class="abbott.ai.tcgm.action.CreateFactorModel">
+			<result name="success" type="redirectAction">mngFactorModels</result>
+			<result name="failure" type="chain">mngFactorModels</result>
+		</action>
+
+		<action name="deleteAnalysisModel"
+			class="abbott.ai.tcgm.action.DeleteModel">
+			<result name="success" type="redirectAction">mngAnalysisModels</result>
+			<result name="failure" type="redirectAction">mngAnalysisModels</result>
+		</action>
+
+		<action name="closeAnalysisModel"
+			class="abbott.ai.tcgm.action.CloseModel">
+			<result name="success" type="redirectAction">mngAnalysisModels</result>
+			<result name="failure" type="redirectAction">mngAnalysisModels</result>
+		</action>
+
+		<action name="compactAnalysisModel"
+			class="abbott.ai.tcgm.action.CompactModel">
+			<result name="success" type="redirectAction">mngAnalysisModels</result>
+			<result name="failure" type="redirectAction">mngAnalysisModels</result>
+		</action>
+
+		<action name="deleteCostExchModel"
+			class="abbott.ai.tcgm.action.DeleteModel">
+			<result name="success" type="redirectAction">mngCostExchModels</result>
+			<result name="failure" type="chain">mngCostExchModels</result>
+		</action>
+
+		<action name="deleteFactorModel"
+			class="abbott.ai.tcgm.action.DeleteModel">
+			<result name="success" type="redirectAction">mngFactorModels</result>
+			<result name="failure" type="chain">mngFactorModels</result>
+		</action>
+
+		<action name="deletePerpetualModel"
+			class="abbott.ai.tcgm.action.DeleteModel">
+			<result name="success" type="redirectAction">mngPerpetualModels</result>
+			<result name="failure" type="redirectAction">mngPerpetualModels</result>
+		</action>
+
+		<action name="closePerpetualModel"
+			class="abbott.ai.tcgm.action.CloseModel">
+			<result name="success" type="redirectAction">mngPerpetualModels</result>
+			<result name="failure" type="redirectAction">mngPerpetualModels</result>
+		</action>
+		<action name="compactPerpetualModel"
+			class="abbott.ai.tcgm.action.CompactModel">
+			<result name="success" type="redirectAction">mngPerpetualModels</result>
+			<result name="failure" type="redirectAction">mngPerpetualModels</result>
+		</action>
+
+		<action name="deleteJob"
+			class="abbott.ai.tcgm.action.DeleteJob">
+			<result name="success" type="redirectAction">processMgmt</result>
+		</action>
+
+		<action name="deleteUnitSet"
+			class="abbott.ai.tcgm.action.DeleteDataset">
+			<result name="success" type="redirectAction">mngUnits</result>
+		</action>
+
+		<action name="saveDataSet"
+			class="abbott.ai.tcgm.action.SaveDataSet">
+			<result name="success" type="redirectAction">mngUnits</result>
+		</action>
+
+		<action name="printDataSet"
+			class="abbott.ai.tcgm.action.PrintDataSet">
+			<result name="success" type="redirectAction">mngUnits</result>
+		</action>
+
+		<action name="deleteCostExchData"
+			class="abbott.ai.tcgm.action.DeleteDataset">
+			<result name="success" type="redirectAction">mngCostExchData</result>
+		</action>
+
+		<action name="fetchUnits"
+			class="abbott.ai.tcgm.action.FetchUnits">
+			<result name="success" type="redirectAction">mngUnits</result>
+		</action>
+
+		<action name="fetchCostExchData"
+			class="abbott.ai.tcgm.action.FetchCostExchData">
+			<result name="success" type="chain">mngCostExchData</result>
+		</action>
+
+		<action name="createAnalysisModel"
+			class="abbott.ai.tcgm.action.CreateAnalysisModel">
+			<result name="input">/jsp/createAnalysisModel.jsp</result>
+			<result name="success" type="redirectAction">mngAnalysisModels</result>
+		</action>
+
+		<action name="createCostExchModel"
+			class="abbott.ai.tcgm.action.CreateCostExchModel">
+			<result name="input">/jsp/createCostExchModel.jsp</result>
+			<result name="success" type="redirectAction">mngCostExchModels</result>
+		</action>
+
+		<action name="createPerpetualModel"
+			class="abbott.ai.tcgm.action.CreatePerpetualModel">
+			<result name="input">/jsp/createPerpetualModel.jsp</result>
+			<result name="success" type="redirectAction">mngPerpetualModels</result>
+			<result name="failure" type="redirectAction">createPerpetualModel</result>
+		</action>
+
+		<action name="miscReports"
+			class="abbott.ai.tcgm.action.MiscReports">
+			<result name="input">/jsp/miscReports.jsp</result>
+			<result name="success">/jsp/miscReports.jsp</result>
+		</action>
+
+		<action name="mngAnalysisModels"
+			class="abbott.ai.tcgm.action.MngAnalysisModels">
+			<result name="success">/jsp/mngAnalysisModels.jsp</result>
+		</action>
+
+		<action name="mngCostExchModels"
+			class="abbott.ai.tcgm.action.MngCostExchModels">
+			<result name="success">/jsp/mngCostExchModels.jsp</result>
+		</action>
+
+		<action name="mngFactorModels"
+			class="abbott.ai.tcgm.action.MngFactorModels">
+			<result name="success">/jsp/mngFactorModels.jsp</result>
+		</action>
+
+		<action name="mngPerpetualModels"
+			class="abbott.ai.tcgm.action.MngPerpetualModels">
+			<result name="success">/jsp/mngPerpetualModels.jsp</result>
+		</action>
+
+		<action name="mngUnits" class="abbott.ai.tcgm.action.MngUnits">
+			<result name="success">/jsp/mngUnits.jsp</result>
+		</action>
+
+		<action name="mngCostExchData"
+			class="abbott.ai.tcgm.action.MngCostExchData">
+			<result name="success">/jsp/mngCostExchData.jsp</result>
+		</action>
+
+		<action name="openEssbaseMgmt"
+			class="abbott.ai.tcgm.action.DefaultForward">
+			<result name="success">/jsp/essbaseMgmt.jsp</result>
+		</action>
+
+		<action name="mngFactors"
+			class="abbott.ai.tcgm.action.MngFactors">
+			<result name="input">/jsp/mngFactors.jsp</result>
+			<result name="success">/jsp/mngFactors.jsp</result>
+		</action>
+
+		<action name="openReporting"
+			class="abbott.ai.tcgm.action.DefaultForward">
+			<result name="success">/jsp/reportMenu.jsp</result>
+		</action>
+
+		<action name="viewReport"
+			class="abbott.ai.tcgm.action.ViewReport">
+			<result name="failure">/jsp/sessionExpired.jsp</result>
+		</action>
+
+		<action name="initiateEssbase"
+			class="abbott.ai.tcgm.action.InitiateEssbase">
+			<result name="success" type="redirectAction">openEssbaseMgmt</result>
+		</action>
+
+		<action name="processMgmt"
+			class="abbott.ai.tcgm.action.ProcessMgmt">
+			<result name="success">/jsp/jobMgmt.jsp</result>
+		</action>
+
+		<action name="printReport"
+			class="abbott.ai.tcgm.action.PrintReport" />
+
+		<action name="schedulerCommand"
+			class="abbott.ai.tcgm.action.SchedulerCommand">
+			<result name="success" type="redirectAction">processMgmt</result>
+		</action>
+		<action name="updateModelSelection"
+			class="abbott.ai.tcgm.action.UpdateModelSelection">
+			<result name="success" type="redirectAction">mngFactorModels</result>
+		</action>
+
+		<action name="openMngRateSets"
+			class="abbott.ai.tcgm.action.ratedata.OpenMngRateSets">
+			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="success">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="failure">/jsp/rateDataSelectCreate.jsp</result>
+		</action>
+
+		<action name="saveRateSet"
+			class="abbott.ai.tcgm.action.ratedata.SaveRateSet">
+			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="success" type="redirectAction">openMngRateSets</result>
+			<result name="failure" type="redirectAction">openMngRateSets</result>
+		</action>
+
+		<action name="deleteRateSet"
+			class="abbott.ai.tcgm.action.ratedata.DeleteRateSet">
+			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="success" type="chain">openMngRateSets</result>
+			<result name="failure" type="chain">openMngRateSets</result>
+		</action>
+
+		<action name="renameRateSet"
+			class="abbott.ai.tcgm.action.ratedata.RenameRateSet">
+			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="success">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="failure" type="chain">openMngRateSets</result>
+		</action>
+
+		<action name="maintRateSet"
+			class="abbott.ai.tcgm.action.ratedata.MaintRateSet">
+			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
+			<result name="success" type="chain">rateDataMaint</result>
+			<result name="failure" type="chain">openMngRateSets</result>
+		</action>
+
+		<action name="rateExDelete"
+			class="abbott.ai.tcgm.action.rateex.RateExDelete">
+			<result name="input">/jsp/rateEx.jsp</result>
+			<result name="success">/jsp/rateEx.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExMaint"
+			class="abbott.ai.tcgm.action.rateex.RateExMaint">
+			<result name="input">/jsp/rateEx.jsp</result>
+			<result name="success">/jsp/rateEx.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExSave"
+			class="abbott.ai.tcgm.action.rateex.RateExSave">
+			<result name="input">/jsp/rateEx.jsp</result>
+			<result name="success">/jsp/rateEx.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExTranDelete"
+			class="abbott.ai.tcgm.action.rateex.RateExTranDelete">
+			<result name="input">/jsp/rateExTran.jsp</result>
+			<result name="success">/jsp/rateExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExTranMaint"
+			class="abbott.ai.tcgm.action.rateex.RateExTranMaint">
+			<result name="input">/jsp/rateExTran.jsp</result>
+			<result name="success">/jsp/rateExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExTranPublish"
+			class="abbott.ai.tcgm.action.rateex.RateExTranPublish">
+			<result name="input">/jsp/rateExTran.jsp</result>
+			<result name="success">/jsp/rateExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExTranSave"
+			class="abbott.ai.tcgm.action.rateex.RateExTranSave">
+			<result name="input">/jsp/rateExTran.jsp</result>
+			<result name="success">/jsp/rateExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="userMaint"
+			class="abbott.ai.tcgm.action.user.UserMaint">
+			<result name="input">/jsp/userList.jsp</result>
+			<result name="success">/jsp/userList.jsp</result>
+		</action>
+
+		<action name="editUser"
+			class="abbott.ai.tcgm.action.user.EditUser">
+			<result name="input">/jsp/userList.jsp</result>
+			<result name="success">/jsp/userList.jsp</result>
+		</action>
+
+		<action name="saveUser"
+			class="abbott.ai.tcgm.action.user.SaveUser">
+			<result name="input">/jsp/userList.jsp</result>
+			<result name="success">/jsp/userList.jsp</result>
+		</action>
+
+		<action name="deleteUser"
+			class="abbott.ai.tcgm.action.user.DeleteUser">
+			<result name="input">/jsp/userList.jsp</result>
+			<result name="success">/jsp/userList.jsp</result>
+		</action>
+
+		<action name="rptUserMaint"
+			class="abbott.ai.tcgm.action.user.RptUserMaint">
+			<result name="input">/jsp/rptUserCreate.jsp</result>
+			<result name="success">/jsp/rptUserCreate.jsp</result>
+			<result name="appsuccess">/jsp/appUserCreate.jsp</result>
+			<result name="filter">/jsp/rptUserFilter.jsp</result>
+			<result name="burst">/jsp/burstMaint.jsp</result>
+			<result name="usersview">/jsp/cognosUsersView.jsp</result>
+			<result name="users">/jsp/cognosUsers.jsp</result>
+			<result name="datausersView">/jsp/dataUsersView.jsp</result>
+			<result name="datausers">/jsp/reportUsers.jsp</result>
+		</action>
+
+		<!-- <action name="editRptUser" class="abbott.ai.tcgm.action.user.EditRptUser"> 
+			<result name="input">/jsp/rptUserList.jsp</result> <result name="success">/jsp/rptUserList.jsp</result> 
+			</action> -->
+		<!-- <action name="saveRptUser" class="abbott.ai.tcgm.action.user.SaveRptUser"> 
+			<result name="input">/jsp/rptUserList.jsp</result> <result name="success">/jsp/rptUserList.jsp</result> 
+			</action> -->
+
+		<!-- <action name="deleteRptUser" class="abbott.ai.tcgm.action.user.DeleteRptUser"> 
+			<result name="input">/jsp/rptUserList.jsp</result> <result name="success">/jsp/rptUserList.jsp</result> 
+			</action> -->
+
+		<action name="currencyCodeMaint"
+			class="abbott.ai.tcgm.action.currency.CurrencyCodeMaint">
+			<result name="input">/jsp/currencyList.jsp</result>
+			<result name="success">/jsp/currencyList.jsp</result>
+		</action>
+
+		<action name="editCurrencyCode"
+			class="abbott.ai.tcgm.action.currency.EditCurrencyCode">
+			<result name="input">/jsp/currencyList.jsp</result>
+			<result name="success">/jsp/currencyList.jsp</result>
+		</action>
+
+		<action name="saveCurrencyCode"
+			class="abbott.ai.tcgm.action.currency.SaveCurrencyCode">
+			<result name="input">/jsp/currencyList.jsp</result>
+			<result name="success">/jsp/currencyList.jsp</result>
+		</action>
+
+		<action name="notesTranCopy"
+			class="abbott.ai.tcgm.action.notes.NotesTranCopy">
+			<result name="input">/jsp/notesTranMaint.jsp</result>
+			<result name="success">/jsp/notesTranMaint.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="asrTranCopy"
+			class="abbott.ai.tcgm.action.asr.AsrTranCopy">
+			<result name="input">/jsp/asrTran.jsp</result>
+			<result name="success">/jsp/asrTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="bpcExTranCopy"
+			class="abbott.ai.tcgm.action.bpcex.BpcExTranCopy">
+			<result name="input">/jsp/bpcExTran.jsp</result>
+			<result name="success">/jsp/bpcExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="bpcRevTranCopy"
+			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranCopy">
+			<result name="input">/jsp/bpcRevTran.jsp</result>
+			<result name="success">/jsp/bpcRevTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="rateExTranCopy"
+			class="abbott.ai.tcgm.action.rateex.RateExTranCopy">
+			<result name="input">/jsp/rateExTran.jsp</result>
+			<result name="success">/jsp/rateExTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="bpcsTranCopy"
+			class="abbott.ai.tcgm.action.bpc.BpcsTranCopy">
+			<result name="input">/jsp/bpcsTran.jsp</result>
+			<result name="success">/jsp/bpcsTran.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+		<action name="deleteCurrencyCode"
+			class="abbott.ai.tcgm.action.currency.DeleteCurrencyCode">
+			<result name="input">/jsp/currencyList.jsp</result>
+			<result name="success">/jsp/currencyList.jsp</result>
+		</action>
+
+		<action name="affCstCurMaint"
+			class="abbott.ai.tcgm.action.affcstcur.AffCstCurMaint">
+			<result name="input">/jsp/affCstCurList.jsp</result>
+			<result name="success">/jsp/affCstCurList.jsp</result>
+		</action>
+
+		<action name="editAffCstCur"
+			class="abbott.ai.tcgm.action.affcstcur.EditAffCstCur">
+			<result name="input">/jsp/affCstCurList.jsp</result>
+			<result name="success">/jsp/affCstCurList.jsp</result>
+		</action>
+
+		<action name="saveAffCstCur"
+			class="abbott.ai.tcgm.action.affcstcur.SaveAffCstCur">
+			<result name="input">/jsp/affCstCurList.jsp</result>
+			<result name="success">/jsp/affCstCurList.jsp</result>
+		</action>
+
+		<action name="deleteAffCstCur"
+			class="abbott.ai.tcgm.action.affcstcur.DeleteAffCstCur">
+			<result name="input">/jsp/affCstCurList.jsp</result>
+			<result name="success">/jsp/affCstCurList.jsp</result>
+		</action>
+
+		<action name="reorderJobQue"
+			class="abbott.ai.tcgm.action.ReorderJobQue">
+			<result name="success" type="redirectAction">processMgmt</result>
+		</action>
+
+		<action name="prMfgMaint"
+			class="abbott.ai.tcgm.action.prmfg.PRMfgMaint">
+			<result name="input">/jsp/prMfgList.jsp</result>
+			<result name="success">/jsp/prMfgList.jsp</result>
+		</action>
+
+		<action name="savePRMfg"
+			class="abbott.ai.tcgm.action.prmfg.SavePRMfg">
+			<result name="input">/jsp/prMfgList.jsp</result>
+			<result name="success">/jsp/prMfgList.jsp</result>
+		</action>
+
+		<action name="deletePRMfg"
+			class="abbott.ai.tcgm.action.prmfg.DeletePRMfg">
+			<result name="input">/jsp/prMfgList.jsp</result>
+			<result name="success">/jsp/prMfgList.jsp</result>
+		</action>
+
+		<action name="mngReportJobs"
+			class="abbott.ai.tcgm.action.MngReportJobs">
+			<result name="success">/jsp/mngReportJobs.jsp</result>
+		</action>
+
+		<action name="logout" class="abbott.ai.tcgm.action.Logout" />
+
+		<action name="closeModel"
+			class="abbott.ai.tcgm.action.CloseModel">
+			<result name="success" type="redirectAction">mngFactorModels</result>
+			<result name="failure" type="chain">mngFactorModels</result>
+		</action>
+
+		<action name="openModel"
+			class="abbott.ai.tcgm.action.OpenModel">
+			<result name="success" type="redirectAction">
+				<param name="actionName">mngFactorModels</param>
+				<param name="showModels">closed</param>
+			</result>
+			<result name="failure" type="chain">
+				<param name="actionName">mngFactorModels</param>
+				<param name="showModels">closed</param>
+			</result>
+		</action>
+		<action name="compactModel"
+			class="abbott.ai.tcgm.action.CompactModel">
+			<result name="success" type="redirectAction">mngFactorModels</result>
+			<result name="failure" type="chain">mngFactorModels</result>
+		</action>
+
+		<action name="mngDaemons"
+			class="abbott.ai.tcgm.action.MngDaemons">
+			<result name="success">/jsp/mngDaemons.jsp</result>
+		</action>
+
+		<action name="miscAnalysis"
+			class="abbott.ai.tcgm.action.MiscAnalysis">
+			<result name="input">/jsp/miscAnalysis.jsp</result>
+			<result name="success">/jsp/miscAnalysis.jsp</result>
+		</action>
+
+		<action name="dataTransfers"
+			class="abbott.ai.tcgm.action.DataTransfers">
+			<result name="input">/jsp/dataTransfers.jsp</result>
+			<result name="success">/jsp/dataTransfers.jsp</result>
+		</action>
+
+		<action name="insufficientPrivelage">
+			<result name="success" type="redirectAction">/jsp/insufficientPrivelage.jsp
+			</result>
+		</action>
+
+		<action name="mngDataFeedLog"
+			class="abbott.ai.tcgm.action.MngDataFeedLog">
+			<result name="success">/jsp/mngDataFeedLog.jsp</result>
+		</action>
+
+		<action name="ActiveDirSearch"
+			class="abbott.ai.tcgm.action.ActiveDirSearch">
+			<result name="input">/jsp/activeDirSearch.jsp</result>
+			<result name="success">/jsp/activeDirSearch.jsp</result>
+			<result name="appsuccess">/jsp/activeDirSearchApp.jsp</result>
+			<result name="rptUser">/jsp/rptUserCreate.jsp</result>
+			<result name="appUser">/jsp/appUserCreate.jsp</result>
+		</action>
+
+		<action name="salesTypeMaint"
+			class="abbott.ai.tcgm.action.salestype.SalesTypeMaint">
+			<result name="input">/jsp/salesTypeList.jsp</result>
+			<result name="success">/jsp/salesTypeList.jsp</result>
+		</action>
+
+		<action name="editSalesType"
+			class="abbott.ai.tcgm.action.salestype.EditSalesType">
+			<result name="input">/jsp/salesTypeList.jsp</result>
+			<result name="success">/jsp/salesTypeList.jsp</result>
+		</action>
+
+		<action name="saveSalesType"
+			class="abbott.ai.tcgm.action.salestype.SaveSalesType">
+			<result name="input">/jsp/salesTypeList.jsp</result>
+			<result name="success">/jsp/salesTypeList.jsp</result>
+		</action>
+
+		<action name="deleteSalesType"
+			class="abbott.ai.tcgm.action.salestype.DeleteSalesType">
+			<result name="input">/jsp/salesTypeList.jsp</result>
+			<result name="success">/jsp/salesTypeList.jsp</result>
+		</action>
+
+	</package>
+</struts>
+        

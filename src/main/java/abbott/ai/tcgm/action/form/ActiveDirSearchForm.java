@@ -3,7 +3,7 @@ package abbott.ai.tcgm.action.form;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;

@@ -1,7 +1,7 @@
 package abbott.ai.tcgm.action.form;
 
 import org.apache.struts.action.*;
-import javax.servlet.http.*;
+import jakarta.servlet.http.*;
 /**
  * <p>Title: TCGM</p>
  * <p>Description: Action form for the login page</p>

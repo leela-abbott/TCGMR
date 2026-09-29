@@ -6,8 +6,8 @@ import java.util.Vector;
 import abbott.ai.tcgm.entities.*;
 import org.apache.log4j.*;
 
-import javax.servlet.http.*;
-import javax.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.*;
 import org.apache.struts.action.*;
 /**
  * <p>Title: </p>

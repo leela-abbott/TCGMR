@@ -12,7 +12,6 @@ import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.entities.*;
 
-import org.apache.struts.action.*;
 //import org.apache.log4j.*;
 
 //import abbott.ai.tcgm.action.CreatePerpetualModel;
@@ -32,7 +31,7 @@ public abstract class OracleModelDao extends OracleDao implements ModelDao
 {
   private static Logger myLogger = Logger.getLogger( "ProcessScheduler" );
   protected String parmTable;
-  protected ActionErrors errors = new ActionErrors();
+ // protected ActionErrors errors = new ActionErrors();
   protected OracleModelDao() {}
 
   public abstract int createModel(TCGMModel model, TCGMModel baseModel, ModelCopyOptions options) throws TCGMException;

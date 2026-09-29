@@ -2,8 +2,8 @@ package abbott.ai.tcgm.action.bpc;
 
 import org.apache.struts.action.*;
 //import org.apache.log4j.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import java.io.*;
 import java.util.Vector;
 import abbott.ai.tcgm.*;

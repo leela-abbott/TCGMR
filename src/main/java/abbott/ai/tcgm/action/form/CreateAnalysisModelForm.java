@@ -1,6 +1,6 @@
 package abbott.ai.tcgm.action.form;
-//import javax.servlet.http.*;
-//import javax.servlet.*;
+//import jakarta.servlet.http.*;
+//import jakarta.servlet.*;
 
 import java.util.*;
 

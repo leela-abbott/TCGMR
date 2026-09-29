@@ -1,7 +1,7 @@
 package abbott.ai.tcgm.servlet;
 
-import javax.servlet.http.*;
-import javax.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.*;
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.data.*;
 import java.io.*;

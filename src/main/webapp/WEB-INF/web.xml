@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app>
-  <servlet>
-    <servlet-name>action</servlet-name>
-    <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
-    <init-param>
-      <param-name>validate</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <init-param>
-      <param-name>config</param-name>
-      <param-value>/WEB-INF/struts-config.xml</param-value>
-    </init-param>
-    <init-param>
-      <param-name>application</param-name>
-      <param-value>ApplicationResources</param-value>
-    </init-param>
-    <init-param>
-      <param-name>debug</param-name>
-      <param-value>3</param-value>
-    </init-param>
-    <init-param>
-      <param-name>mapping</param-name>
-      <param-value>abbott.ai.tcgm.action.TCGMActionMapping</param-value>
-    </init-param>
-    <init-param>
-      <param-name>detail</param-name>
-      <param-value>3</param-value>
-    </init-param>
-    <load-on-startup>4</load-on-startup>
-  </servlet>
+<web-app xmlns="https://jakarta.ee"
+         xmlns:xsi="http://w3.org"
+         xsi:schemaLocation="https://jakarta.ee https://jakarta.ee/web-app_5_0.xsd"
+         version="5.0">
+
+  <!-- ==================================================================== -->
+  <!-- 1. FILTERS DEFINITIONS                                               -->
+  <!-- ==================================================================== -->
+  <filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+
+  <!-- ==================================================================== -->
+  <!-- 2. FILTER MAPPINGS                                                   -->
+  <!-- ==================================================================== -->
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- ==================================================================== -->
+  <!-- 3. SERVLET DEFINITIONS                                               -->
+  <!-- ==================================================================== -->
   <servlet>
     <servlet-name>debugjsp</servlet-name>
     <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -39,6 +32,7 @@
     </init-param>
     <load-on-startup>3</load-on-startup>
   </servlet>
+
   <servlet>
     <servlet-name>log4j-init</servlet-name>
     <servlet-class>abbott.ai.tcgm.servlet.Log4jInit</servlet-class>
@@ -48,10 +42,11 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+
   <servlet>
     <servlet-name>tcgm-init</servlet-name>
     <servlet-class>abbott.ai.tcgm.servlet.TCGMInit</servlet-class>
-	<init-param>
+    <init-param>
       <param-name>psSleep</param-name>
       <param-value>5000</param-value>
     </init-param>
@@ -76,8 +71,8 @@
       <param-value>ldapauth.oneabbott.com</param-value>
     </init-param>
     <init-param>
-     <param-name>authenticationBasedn</param-name>
-       <param-value>OU=Users,DC=abbott,DC=corp</param-value>
+      <param-name>authenticationBasedn</param-name>
+      <param-value>OU=Users,DC=abbott,DC=corp</param-value>
     </init-param>
     <init-param>
       <param-name>authenticationUserId</param-name>
@@ -93,7 +88,7 @@
     </init-param>
     <init-param>
       <param-name>reportNetServiceLocator</param-name>
-      <param-value>http://CWA113344D.oneabbott.com:9300/p2pd/servlet/dispatch</param-value>
+      <param-value>http://oneabbott.com</param-value>
     </init-param>        
     <init-param>
       <param-name>reportNetNameSpace</param-name>
@@ -109,7 +104,7 @@
     </init-param> 
     <init-param>
       <param-name>reportsUrl</param-name>
-      <param-value>http://CWA113344D.oneabbott.com:9300/bi/v1/disp</param-value>
+      <param-value>http://oneabbott.com</param-value>
     </init-param>
     <init-param>
       <param-name>reportNetPrinter1</param-name>
@@ -135,7 +130,7 @@
       <param-name>reportNetSectorPath</param-name>
       <param-value>/content/folder[@name='AI TCGM']/folder[@name='Sector']</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>reportNetDIVPath</param-name>
       <param-value>/content/folder[@name='AI TCGM']/folder[@name='DIVISION']</param-value>
     </init-param>    
@@ -167,10 +162,9 @@
       <param-name>reportNetExecutionSequence</param-name>
       <param-value>parallel</param-value>
     </init-param>    
-    
     <init-param>
       <param-name>RSystem Address</param-name>
-      <param-value>mvs.cmis.abbott.com</param-value>
+      <param-value>://abbott.com</param-value>
     </init-param>        
     <init-param>
       <param-name>RSystem Username</param-name>
@@ -285,26 +279,26 @@
       <param-value>E:\\Tcgm_Docs\\</param-value>
     </init-param>
     <init-param>
-	  <param-name>fileUploadDirectory</param-name>
-	  <param-value>E:\\Temp\\Upload\\tcgm</param-value>
+      <param-name>fileUploadDirectory</param-name>
+      <param-value>E:\\Temp\\Upload\\tcgm</param-value>
     </init-param>
-	<init-param>
-	 <param-name>completedJobView</param-name>
-	 <param-value>90</param-value>
+    <init-param>
+      <param-name>completedJobView</param-name>
+      <param-value>90</param-value>
     </init-param>
-   	<init-param>
+    <init-param>
       <param-name>ccshost</param-name>
-      <param-value>uz00028d.oneabbott.com</param-value>
+      <param-value>://oneabbott.com</param-value>
     </init-param>  
-   	<init-param>
+    <init-param>
       <param-name>ccsuser</param-name>
       <param-value>ftpaiusr</param-value>
     </init-param>
-   	<init-param>
+    <init-param>
       <param-name>ccspassword</param-name>
       <param-value>abcd1234</param-value>
     </init-param>
-   	<init-param>
+    <init-param>
       <param-name>ccslocation</param-name>
       <param-value>/devl/ai/usrdat/ccs</param-value>
     </init-param>
@@ -316,7 +310,7 @@
       <param-name>ipsuser</param-name>
       <param-value>ftpaiusr</param-value>
     </init-param>
-   	<init-param>
+    <init-param>
       <param-name>ipspassword</param-name>
       <param-value>abcd1234</param-value>
     </init-param>
@@ -324,103 +318,83 @@
       <param-name>ipslocation</param-name>
       <param-value>/devl/ai/usrdat/ips</param-value>
     </init-param>            
-	<init-param>
+    <init-param>
       <param-name>jclJobLogLoc</param-name>
       <param-value>MSGCLASS=R</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclUserId</param-name>
       <param-value>NOTIFY=TDETJB</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclReadDataSetIden</param-name>
       <param-value>DV</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclDataSetIden</param-name>
       <param-value>DV</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclHostName1</param-name>
       <param-value>UZ00028D</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclUserPass1</param-name>
       <param-value>svc-tcgm Winter_01</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclHostName2</param-name>
       <param-value>AP41</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclUserPass2</param-name>
       <param-value>DTAWHSFTP DATAWHSEIN</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclImportsLoc</param-name>
       <param-value>/TCGMManageDataDev/IMPORTS</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>jclExportsLoc</param-name>
       <param-value>/TCGMManageDataDev/EXPORTS</param-value>
     </init-param>    
     <load-on-startup>2</load-on-startup>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>action</servlet-name>
-    <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
+      <!-- ==================================================================== -->
+  <!-- 4. SERVLET MAPPINGS                                                  -->
+  <!-- ==================================================================== -->
   <servlet-mapping>
     <servlet-name>debugjsp</servlet-name>
     <url-pattern>*.jsp</url-pattern>
   </servlet-mapping>
-    <session-config>
-        <session-timeout>60</session-timeout>
-    </session-config>
+
+  <!-- ==================================================================== -->
+  <!-- 5. STRUCTURAL CONFIGURATIONS                                         -->
+  <!-- ==================================================================== -->
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+
   <welcome-file-list>
-	<welcome-file>jsp/login.jsp</welcome-file>
+    <welcome-file>login.action</welcome-file>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
     <location>/jsp/exception.jsp</location>
   </error-page>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/abbott.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/abbott.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/c-rt.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/c-rt.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/c.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/c.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/struts-bean.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/struts-bean.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/struts-html.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/struts-html.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/struts-logic.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/struts-logic.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/struts-nested.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/struts-nested.tld</taglib-location>
-  </taglib>
-  <taglib>
-    <taglib-uri>/WEB-INF/taglib/struts-template.tld</taglib-uri>
-    <taglib-location>/WEB-INF/taglib/struts-template.tld</taglib-location>
-  </taglib>
+
+  <!-- ==================================================================== -->
+  <!-- 6. RESOURCE REFERENCES                                               -->
+  <!-- ==================================================================== -->
   <resource-ref>
-	<description>TCGM Datasource</description> 
-	<res-ref-name>jdbc/tcgm</res-ref-name> 
-	<res-type>javax.sql.DataSource</res-type> 
-	<res-auth>Container</res-auth> 
+    <description>TCGM Datasource</description> 
+    <res-ref-name>jdbc/tcgm</res-ref-name> 
+    <res-type>jakarta.sql.DataSource</res-type> 
+    <res-auth>Container</res-auth> 
   </resource-ref>  
+
+
 </web-app>

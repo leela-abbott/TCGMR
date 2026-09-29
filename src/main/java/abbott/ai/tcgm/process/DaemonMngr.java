@@ -25,7 +25,7 @@ public class DaemonMngr {
 	
 	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.process.DaemonMngr");
 
-	public static void init(javax.servlet.ServletConfig sc)
+	public static void init(jakarta.servlet.ServletConfig sc)
 	{
 		if(_instance == null)
 		{

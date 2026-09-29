@@ -4,8 +4,8 @@ import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.data.*;
 import org.apache.struts.action.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 import org.apache.log4j.*;
 
 public class MngDataFeedLogForm extends TCGMForm  {

@@ -1,5 +1,5 @@
 package abbott.ai.tcgm.action.form;
-import javax.servlet.http.*;
+import jakarta.servlet.http.*;
 
 import org.apache.struts.action.*;
 

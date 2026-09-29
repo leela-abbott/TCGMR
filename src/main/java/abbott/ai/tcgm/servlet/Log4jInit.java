@@ -1,8 +1,8 @@
 package abbott.ai.tcgm.servlet;
 
 import org.apache.log4j.*;
-import javax.servlet.http.*;
-import javax.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.*;
 //import abbott.ai.tcgm.*;
 import java.io.*;
 

@@ -1,10 +1,10 @@
 package abbott.customTags;
 
 //import java.io.IOException;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.tagext.TagSupport;
-//import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.JspTagException;
+import jakarta.servlet.jsp.tagext.TagSupport;
+//import jakarta.servlet.jsp.PageContext;
 
 /**
 * Check for a valid User logged on in the current session.  If there is no

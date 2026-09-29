@@ -55,7 +55,7 @@ public final class SQLUtil
 
 	private static java.util.HashMap ucMap = new java.util.HashMap();
 
-	public static void init(javax.servlet.ServletConfig sc)
+	public static void init(jakarta.servlet.ServletConfig sc)
 	{
 		if(instance == null)
 		{

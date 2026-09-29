@@ -1,130 +1,157 @@
-/*
- * Created on Apr 23, 2008
- *
- * To change the template for this generated file go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- */
 package abbott.ai.tcgm.action;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.apache.struts2.ActionSupport;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import abbott.ai.tcgm.AppConst;
-import abbott.ai.tcgm.TCGMConstants;
-import abbott.ai.tcgm.action.form.MainForm;
+
 /**
- * @author goshirk
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * <p>Title: TCGM</p>
+ * <p>Description: Consolidated Struts 7.3.0 Main Action and Form Model</p>
+ * <p>Copyright: Copyright (c) 2008, 2026</p>
+ * <p>Company: Abbott Laboratories</p>
+ * @version 7.3.0
  */
-public class Main extends TCGMAction {
-	public Main()
-		{
-			super();
-		}
+public class Main extends ActionSupport {
 
-	public ActionForward perform(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws IOException, ServletException
-		{
-			
-		   MainForm mainForm = (MainForm)form;//cast the form that was passed in to the correct type for this action
-		  
-		   String filePath = AppConst.getSharelocation();//"S:\\MFGACCT\\TCGMTEST\\";
-		   String bulletinMsg="";
-		   ArrayList messageList=new ArrayList();
-		   String line="";
-		   if(mainForm.getCmd().equalsIgnoreCase("") || mainForm.getCmd().equalsIgnoreCase("dir")){
-		   
-		   BufferedReader in=null;
-		   try{
-			 
-			    in = new BufferedReader(new FileReader(AppConst.getSharelocation()+"Bulletin.txt"));
-			   if (!in.ready()){
-				throw new IOException();
-			   }
-			   while ((line = in.readLine()) != null){
-				bulletinMsg=bulletinMsg+" "+line; 
-			   }
-			
-			   in.close();
-			}catch (IOException e)
-				   {
-					   System.out.println(e);
-					   //return null;
-				   }
-				   
-			try{
-			 
-				in = new BufferedReader(new FileReader(AppConst.getSharelocation()+"Messages.txt"));
-				  if (!in.ready()){
-						throw new IOException();
-				   }
-				   while ((line = in.readLine()) != null){
-					messageList.add(line); 
-				   }
-				   in.close();
-				}catch (IOException e)
-				  {
-					System.out.println(e);
-				  }
-		   
-				   
-			mainForm.setBulletinMessage(bulletinMsg);
-			mainForm.setMessageList(messageList);
-			ArrayList dirLst=new ArrayList();
-		   File dir = new File(filePath);
-		   File checkDir=null;
-			String[] dirList = dir.list();
-			if (dirList != null) {				
-				for (int i=0; i<dirList.length; i++) {
-					// Get filename of file or directory
-					String filename = dirList[i];					
-					checkDir=new File(filePath,filename);							            
-					if(checkDir.isDirectory()){						
-						dirLst.add(filename);	
-					}
-					checkDir=null;
-				}
-				mainForm.setDirList(dirLst);
-					
-			}			
-		  
-		   dir=null;
-		   }else{ 
-					String newfilePath=filePath+mainForm.getDirName();	
-					  File dir = new File(newfilePath);
-					  File filesDir=null;
-					  String[] dirList = dir.list();
-					  ArrayList fileLst=new ArrayList();
-					   if (dirList != null) {				
-						   for (int i=0; i<dirList.length; i++) {
-							   // Get filename of file or directory
-							   String filename = dirList[i];					
-							filesDir=new File(newfilePath,filename);							            
-							   if(filesDir.isFile()){						
-								//fileLst.add(filename+" ("+filesDir.length()+" KB)");	
-								fileLst.add(filename);
-							   }
-							filesDir=null;
-						   }
-						   mainForm.setFileList(fileLst);
-					
-					   }			
-		  
-					  dir=null;	
-		   }
-		  this.setForward(TCGMConstants.FORWARD_SUCCESS);
-			return mapping.findForward(this.getForward());
-		}
+    private static final long serialVersionUID = 2L;
 
+    // --- Form Properties (Merged from MainForm) ---
+    private String cmd = "";
+    private String bulletinMessage = "";
+    private String dirName = "";
+    private List<String> messageList = new ArrayList<>();
+    private List<String> dirList = new ArrayList<>();
+    private List<String> fileList = new ArrayList<>();
+
+    /**
+     * Default Constructor
+     */
+    public Main() {
+        // Explicit super() omitted to comply with Java compliance compiler parsing blocks
+    }
+
+    // --- Struts 2/7 Execution Logic (Merged from perform) ---
+    @Override
+    public String execute() throws Exception {
+        String filePath = AppConst.getSharelocation();
+        StringBuilder bulletinMsgBuf = new StringBuilder();
+        List<String> msgList = new ArrayList<>();
+        String line = "";
+
+        if (this.getCmd() == null || this.getCmd().trim().isEmpty() || this.getCmd().equalsIgnoreCase("dir")) {
+            
+            try (BufferedReader in = new BufferedReader(new FileReader(filePath + "Bulletin.txt"))) {
+                while ((line = in.readLine()) != null) {
+                    bulletinMsgBuf.append(" ").append(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading Bulletin.txt: " + e);
+            }
+
+            try (BufferedReader in = new BufferedReader(new FileReader(filePath + "Messages.txt"))) {
+                while ((line = in.readLine()) != null) {
+                    msgList.add(line);
+                }
+            } catch (IOException e) {
+                System.out.println("Error reading Messages.txt: " + e);
+            }
+
+            this.setBulletinMessage(bulletinMsgBuf.toString());
+            this.setMessageList(msgList);
+
+            List<String> dirLst = new ArrayList<>();
+            File dir = new File(filePath);
+            String[] dirContents = dir.list();
+
+            if (dirContents != null) {
+                for (String filename : dirContents) {
+                    File checkDir = new File(filePath, filename);
+                    if (checkDir.isDirectory()) {
+                        dirLst.add(filename);
+                    }
+                }
+                this.setDirList(dirLst);
+            }
+        } else {
+            String newfilePath = filePath + this.getDirName();
+            File dir = new File(newfilePath);
+            String[] dirContents = dir.list();
+            List<String> fileLst = new ArrayList<>();
+
+            if (dirContents != null) {
+                for (String filename : dirContents) {
+                    File filesDir = new File(newfilePath, filename);
+                    if (filesDir.isFile()) {
+                        fileLst.add(filename);
+                    }
+                }
+                this.setFileList(fileLst);
+            }
+        }
+
+        return SUCCESS; 
+    }
+
+
+    public String getCmd() {
+        return this.cmd;
+    }
+
+    @StrutsParameter
+    public void setCmd(String cmd) {
+        this.cmd = cmd;
+    }
+
+    public String getBulletinMessage() {
+        return this.bulletinMessage;
+    }
+
+    @StrutsParameter
+    public void setBulletinMessage(String bulletinMessage) {
+        this.bulletinMessage = bulletinMessage;
+    }
+
+    public String getDirName() {
+        return this.dirName;
+    }
+
+    @StrutsParameter
+    public void setDirName(String dirName) {
+        this.dirName = dirName;
+    }
+
+    public List<String> getMessageList() {
+        return this.messageList;
+    }
+
+    @StrutsParameter(depth = 1)
+    public void setMessageList(List<String> messageList) {
+        this.messageList = messageList;
+    }
+
+    public List<String> getDirList() {
+        return this.dirList;
+    }
+
+    @StrutsParameter(depth = 1)
+    public void setDirList(List<String> dirList) {
+        this.dirList = dirList;
+    }
+
+    public List<String> getFileList() {
+        return this.fileList;
+    }
+
+    @StrutsParameter(depth = 1)
+    public void setFileList(List<String> fileList) {
+        this.fileList = fileList;
+    }
 }

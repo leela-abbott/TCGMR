@@ -3,9 +3,9 @@ package abbott.ai.tcgm.action;
 import java.io.IOException;
 import java.util.Iterator;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.action.form.*;
@@ -139,16 +139,16 @@ public class MiscAnalysis extends TCGMAction
 				}
 
             }
-			// Deferred Margin Summary – COS/Src
+			// Deferred Margin Summary ï¿½ COS/Src
             else if (job.getJobDef().equals(JobDefinition.DFRD_RPT02)) {
 
             }
             /*
-//			Deferred Margin Summary – COS
+//			Deferred Margin Summary ï¿½ COS
 			 else if (job.getJobDef().equals(JobDefinition.DFRD_RPT_SUM_COS)) {
 
 			 }
-//			Deferred Margin Summary – SRC
+//			Deferred Margin Summary ï¿½ SRC
 			 else if (job.getJobDef().equals(JobDefinition.DFRD_RPT_SUM_SRC)) {
 
 			 }*/
