@@ -1,86 +1,82 @@
 <%! String pageTitle = "User Maintenance"; %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/include/header.jsf" %>
 
-<jsp:useBean id="userForm" scope="session" class="abbott.ai.tcgm.action.form.UserForm" />
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
+    <%@ include file="/include/masthead.jsf" %>
+    <%@ include file="/include/errorDisplay.jsf" %>
 
-	<nested:form method="post" name="userForm" type="abbott.ai.tcgm.action.form.UserForm" action="/userMaint.do" scope="session">
-		<nested:hidden property="searchObject.userid" />
-		<nested:hidden property="cmd" />
+    <s:form method="post" name="userForm" id="userForm" action="userMaint.action" theme="simple">
+        
+        <!-- Safe OGNL Nested Dot Notation handling properties bindings -->
+        <s:hidden name="searchObject.userid" id="searchObject_userid" />
+        <s:hidden name="cmd" id="cmd" />
+        <s:hidden name="userListSize" id="userListSize" />
 
-		<table width="760" cellspacing="0" >
-			<tr>
-				<td colspan="8" class="right">
-					<logic:equal name="TCGMUser" property="role.accessLevelString" scope="session" value="<%=Role.Administrator.getAccessLevelString()%>">
-						<a href="javascript:chgActCmdSubmit(document.userForm,'deleteselected','deleteUser.do');">
-							<img src="images/btnDeleteSelected.png" alt="Delete Selected" />
-						</a>
-					</logic:equal>
-				</td>
-			</tr>
-			<tr class="fltrTblHdng">
-				
-				<td>User Id</td>
-				<td>First Name</td>
-				<td>Last Name</td>
-				<td>Phone</td>
-				<td>UPI</td>
-				<td>&nbsp;Role</td>
-				<td>&nbsp;Email</td>
-				<td>
-					<input type="image" src="images/btnCheck.png" alt="Toggle Select All" onClick="return toggleSelectAll('userlist','selected','<%=userForm.getUserListSize()%>');" />
-				</td>
-			</tr>
-			
-			<nested:hidden property="userListSize" />	
-			<nested:notEqual property="userListSize" value="0">
-			  <% int rowNumber=0; %>
+        <!-- Modernized Layout Matrix Table Grid System matching standard metrics -->
+        <table style="width: 760px; border-collapse: collapse; margin-top: 10px;" cellspacing="0">
+            <tr>
+                <td colspan="8" class="right" style="text-align: right; padding-bottom: 10px;">
+                    <!-- Secure Role Evaluation Layer using standard Jakarta Session checks -->
+                    <c:if test='${sessionScope.TCGMUser.role.name == "TCGM_ADMIN" || sessionScope.TCGMUser.role.accessLevel == 3}'>
+                        <a href="javascript:chgActCmdSubmit(document.userForm, 'deleteselected', 'deleteUser.action');">
+                            <img src="images/btnDeleteSelected.png" alt="Delete Selected" style="border: 0;" />
+                        </a>
+                    </c:if>
+                </td>
+            </tr>
+            
+            <tr class="fltrTblHdng" style="background-color: #b4d8f4; font-weight: bold; color: Navy; text-align: left;">
+                <td style="padding: 6px;">User Id</td>
+                <td style="padding: 6px;">First Name</td>
+                <td style="padding: 6px;">Last Name</td>
+                <td style="padding: 6px;">Phone</td>
+                <td style="padding: 6px;">UPI</td>
+                <td style="padding: 6px;">&nbsp;Role</td>
+                <td style="padding: 6px;">&nbsp;Email</td>
+                <td style="padding: 6px; text-align: center;">
+                    <!-- Safe collection calculation pointer trigger -->
+                    <input type="image" src="images/btnCheck.png" alt="Toggle Select All" 
+                           onClick="return toggleSelectAll('userlist', 'selected', '<s:property value="userListSize" />');" />
+                </td>
+            </tr>
 
-				<c:forEach var="userBean" items="${userForm.userlist}"  varStatus="userStatus">
-		               			
-				<abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow" rowNum="<%= rowNumber %>" id="mntRow">	
+            <!-- Evaluates list collections layout state checks -->
+            <s:if test="userListSize != 0 && userlist != null && !userlist.isEmpty()">
+                
+                <!-- Native Thread-Safe Iterator handling sequential index binding loops -->
+                <s:iterator value="userlist" status="status">
+                    <tr id="mntRow" class="<s:property value="#status.even ? 'evenRow' : 'oddRow'" />">
+                        
+                        <!-- Map list index structures natively using Struts 7 tracking tokens -->
+                        <s:hidden name="userlist[%{#status.index}].userinfoid" value="%{userinfoid}" />
+                        
+                        <td class="mntLeft" style="padding: 6px;"><s:property value="userid" /></td>        
+                        <td class="mntLeft" style="padding: 6px;"><s:property value="firstName" /></td>
+                        <td class="mntLeft" style="padding: 6px;"><s:property value="lastName" /></td>
+                        <td class="mntLeft" style="padding: 6px;"><s:property value="phone" /></td>
+                        <td class="mntLeft" style="padding: 6px;"><s:property value="abtNotesId" /></td>
+                        <td class="mntCenter" style="padding: 6px;">&nbsp;&nbsp;<s:property value="userRole" /></td>
+                        <td class="mntLeft" style="padding: 6px;">&nbsp;&nbsp;<s:property value="email" /></td>
+                        
+                        <td class="mntCenter" style="padding: 6px; text-align: center;">
+                            <!-- Bind native selected collection parameters directly into lists index slots -->
+                            <s:checkbox name="userlist[%{#status.index}].selected" fieldValue="true" theme="simple" />
+                        </td>
+                    </tr>
+                </s:iterator>
+                
+            </s:if>
+        </table>
 
-						<input type="hidden" name="userList[<c:out value="${userStatus.index}"/>].userinfoid" value="<c:out value="${userBean.userinfoid}" />">
-						
-						<td class="mntLeft">
-							<c:out value="${userBean.userid}" />
-						</td>		
-						<td class="mntLeft">
-							<c:out value="${userBean.firstName}" />
-						</td>
-						<td class="mntLeft">
-							<c:out value="${userBean.lastName}" />
-						</td>
+        <!-- Render Fallback Elements cleanly if structural record data yields zero elements -->
+        <s:if test="userListSize == 0 || userlist == null || userlist.isEmpty()">
+            <%@ include file="/include/recordsNotFound.jsf" %>
+        </s:if>
 
-						<td class="mntLeft">
-							<c:out value="${userBean.phone}" />
-						</td>
-						
-						<td class="mntLeft">
-							<c:out value="${userBean.abtNotesId}" />
-						</td>
-
-						<td class="mntCenter">
-							&nbsp;&nbsp;<c:out value="${userBean.userRole}" />
-						</td>
-
-						<td class="mntLeft">
-							&nbsp;&nbsp;<c:out value="${userBean.email}" />
-						</td>
-						<td class="mntCenter">
-							<input type="checkbox" name="userList[<c:out value="${userStatus.index}"/>].selected" value="on">
-						</td>
-
-					</abbott:row>
-		  	<% rowNumber++; %>			
-				</c:forEach>	
-				
-			</nested:notEqual>
-		</table>
-		<nested:equal property="userListSize" value="0">
-			<%@ include file="/include/recordsNotFound.jsf" %>
-		</nested:equal>
-	</nested:form>
-<%@ include file="/include/footer.jsf" %>
+    </s:form>
+    <%@ include file="/include/footer.jsf" %>
+</body>
+</html>
