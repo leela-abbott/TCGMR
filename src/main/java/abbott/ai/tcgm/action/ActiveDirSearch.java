@@ -27,16 +27,7 @@ import abbott.ai.tcgm.helpers.UserMngr;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-/*******************************************************************************
 
-* $Abbott: ActiveDirSearch,v 1.0 2007/08/28 11:22:00 $
-* Copyright (C) 2007  Abbott International,. All Rights Reserved.
-* $name:         ActiveDirSearch.java
-* $description:  The ActiveDirSearch.java is the action class for Active Directory
-*				 Search functionality. This single class will handle different actions
-*                performed by the user (Search User(s), Select User(s). Each of these
-* 				 actions will be a seperate method .
-******************************************************************************/
 public class ActiveDirSearch extends TCGMAction
 {
 	/**

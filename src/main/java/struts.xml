@@ -992,8 +992,17 @@
 			<result name="success">/jsp/mngDataFeedLog.jsp</result>
 		</action>
 
-		<action name="ActiveDirSearch"
+<!-- 		<action name="ActiveDirSearch"
 			class="abbott.ai.tcgm.action.ActiveDirSearch">
+			<result name="input">/jsp/activeDirSearch.jsp</result>
+			<result name="success">/jsp/activeDirSearch.jsp</result>
+			<result name="appsuccess">/jsp/activeDirSearchApp.jsp</result>
+			<result name="rptUser">/jsp/rptUserCreate.jsp</result>
+			<result name="appUser">/jsp/appUserCreate.jsp</result>
+		</action> -->
+		
+		 <action name="ActiveDirSearch"
+			class="abbott.ai.tcgm17.action.ActiveDirSearchAction">
 			<result name="input">/jsp/activeDirSearch.jsp</result>
 			<result name="success">/jsp/activeDirSearch.jsp</result>
 			<result name="appsuccess">/jsp/activeDirSearchApp.jsp</result>

@@ -1,12 +1,12 @@
-<%! String pageTitle = "App User Creation"; %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%! String pageTitle = "App User Creation"; %>
 <%@ include file="/include/header.jsf" %>
 
 <head>
     <style>
-        /* Modern CSS Buttons matching the core application spec */
         .tcgm-btn {
             display: inline-block;
             padding: 5px 18px;
@@ -31,8 +31,6 @@
             background: #ffcd3c;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
         }
-
-        /* Standardized form element styling for clean display grid layout */
         .tcgm-input-readonly {
             border: 1px solid #b8d4f0;
             background-color: #f4f7fa;
@@ -62,22 +60,31 @@
     <%@ include file="/include/errorDisplay.jsf" %>
 
     <script type="text/javascript">
-        function add(){
-            chgActCmdSubmit(document.userForm, 'appview', 'ActiveDirSearch.action');
+        function chgActCmdSubmit(cmdValue, targetAction) {
+            document.getElementById('cmd').value = cmdValue;
+            var form = document.getElementById('userForm');
+            form.action = targetAction;
+            form.submit();
         }
-        function saveForm(form, cmd, action){
-            chgActCmdSubmit(form, cmd, action);
+
+        function lookupUser() {
+            chgActCmdSubmit('appview', 'ActiveDirSearch.action');
+        }
+
+        function saveForm() {
+            var roleSelect = document.getElementById('role');
+            if (roleSelect.value === "-1") {
+                alert("Please select a valid Role mapping before saving.");
+                roleSelect.focus();
+                return false;
+            }
+            chgActCmdSubmit('saveAppUser', 'rptUserMaint.action');
         }   
-        function trim(stringToTrim) {
-            return stringToTrim.replace(/^\s+|\s+$/g, "");
-        }
     </script>
 
-    <!-- Struts 2 Migrated Form Structure mapping target .action intercept points -->
-    <s:form method="post" name="userForm" id="userForm" action="rptUserMaint.action" theme="simple">
-        
-        <!-- Migrated Action Form Properties Bindings (Nested properties map to standard dot notation) -->
+    <s:form method="post" name="userForm" id="userForm" action="rptUserMaint" theme="simple">
         <s:hidden name="cmd" id="cmd" />
+        <s:hidden name="cmd2" id="cmd2" value="creation" />
         <s:hidden name="selDesc" id="selDesc" />
         <s:hidden name="affCodeList" id="affCodeList" />
         <s:hidden name="secCodeList" id="secCodeList" />
@@ -111,7 +118,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Email</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.email" readonly="true" cssClass="tcgm-input-readonly" />
+                    <s:textfield name="rptUser.email" id="email" readonly="true" cssClass="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -119,7 +126,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>UPI</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.abtNotesId" readonly="true" cssClass="tcgm-input-readonly" />
+                    <s:textfield name="rptUser.abtNotesId" id="abtNotesId" readonly="true" cssClass="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -127,7 +134,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.division" readonly="true" cssClass="tcgm-input-readonly" />
+                    <s:textfield name="rptUser.division" id="division" readonly="true" cssClass="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -135,7 +142,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Type</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.employeeType" readonly="true" cssClass="tcgm-input-readonly" />
+                    <s:textfield name="rptUser.employeeType" id="employeeType" readonly="true" cssClass="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -143,7 +150,6 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Role</strong></td>
                 <td style="padding: 6px;">
-                    <!-- Migrated Struts 2 select wrapper explicitly configured using inline standard dictionary key-value entries -->
                     <s:select name="rptUser.role" id="role" cssClass="tcgm-select"
                               list="#{'ADMINISTRATOR':'ADMINISTRATOR', 'ANALYST':'ANALYST', 'OPERATOR':'OPERATOR', 'RPT ADMIN':'RPT ADMIN', 'QUERY':'QUERY'}" 
                               headerKey="-1" headerValue="Select One" />
@@ -159,18 +165,16 @@
                     <table align="center" style="border-spacing: 10px 0;">
                         <tr>
                             <td>
-                                <button type="button" id="addButton" class="tcgm-btn" onClick="javascript:add();">LookUp</button>
+                                <button type="button" id="addButton" class="tcgm-btn" onClick="javascript:lookupUser();">LookUp</button>
                             </td>
                             <td>
-                                <button type="button" id="saveButton" class="tcgm-btn" onClick="javascript:saveForm(document.userForm, 'saveAppUser', 'rptUserMaint.action');">Save</button>
+                                <button type="button" id="saveButton" class="tcgm-btn" onClick="javascript:saveForm();">Save</button>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
         </table>
-        
-        <input type="hidden" name="cmd2" id="cmd2" value="creation">
     </s:form>
 
     <%@ include file="/include/footer.jsf" %>

@@ -181,18 +181,7 @@ public class OracleUserDao extends OracleDao implements UserDao
 		this.searchList.add(new Search(DBConst.COL_EMAIL,searchObject.getEmail(),TCGMConstants.ORACLE_LIKE_COMPARISON));
 		this.searchList.add(new Search(DBConst.COL_PHONE,searchObject.getPhone(),TCGMConstants.ORACLE_LIKE_COMPARISON));
 	}
-	/*****************************************************************************************/
-	/**
-	 * This method will be used to convert the "next()" RowSet ojbect to a User object
-	 * The TCGM Role is retrieved from a view in the SYS schema.  The view will only display roles for
-	 * the user that is currently logged in.  Because of this we will not be retrieving the user's role
-	 * for maint screens but we will be retrieving it upon login because it needs to be in the session
-	 * user object.
-	 * @param rs RowSet
-	 * @param getRole boolean Determines if the Role column should be retrieved.  It will not always be available.
-	 * @return User
-	 * @throws TCGMException
-	 */
+
 	public User getUserFromCurrentRow(RowSet rs,boolean getRole) throws TCGMException
 	{
 		String methodName = "getUserFromCurrentRow(RowSet)";

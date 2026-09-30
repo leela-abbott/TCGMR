@@ -27,7 +27,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 45px;
+            height: 32px; /* Reduced height from 45px */
             padding: 0;
             position: relative;
             z-index: 1000;
@@ -44,7 +44,7 @@
             background-color: var(--primary-blue);
             color: var(--yellow-accent);
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px; /* Slightly lowered font size to sit flush in 32px bar */
             padding: 0 15px;
             display: flex;
             align-items: center;
@@ -78,6 +78,7 @@
             cursor: pointer;
             text-align: left;
             line-height: 1.2;
+            white-space: nowrap;
         }
 
         .menu-link:hover {
@@ -147,14 +148,14 @@
             background-color: var(--primary-blue);
             color: #ffffff;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 11px; /* Scaled down slightly to fit smaller bar context */
             font-weight: bold;
-            padding: 0 20px;
-            height: 100%;
-            display: flex;
+            padding: 6px 15px; /* Replaced height: 100% with padding to dynamically fit content */
+            display: inline-flex;
             align-items: center;
-            border-radius: 0 0 0 15px;
+            border-radius: 15px; /* Full 15px rounding */
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .logout-btn:hover {
@@ -170,12 +171,9 @@
             <div class="logo-box">TCGM</div>
             
             <ul class="menu-bar">
-                <!-- Level 1: mainmenu Framework Definitions -->
-
-                <!-- Main Menu Option 1: App Security (Triggers 'Admin' Configurations) -->
                 <li class="menu-item">
-                    <a class="menu-link" onclick="navigate('ActiveDirSearch.action?cmd=appview')">App<br>Security</a>
-                    <ul class="dropdown-menu" style="width: 107px;">
+                    <a class="menu-link" onclick="navigate('ActiveDirSearch.action?cmd=appview')">App Security</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
                         <li><a onclick="navigate('ActiveDirSearch.action?cmd=appview')">Add User</a></li>
                         <li><a onclick="navigate('userMaint.action')">User Deletion</a></li>
                     </ul>
@@ -183,8 +181,8 @@
 
                 <!-- Main Menu Option 2: Reports Security (Triggers 'AppAdmin' Configurations) -->
                 <li class="menu-item">
-                    <a class="menu-link" onclick="navigate('ActiveDirSearch.action?cmd=view')">Reports<br>Security</a>
-                    <ul class="dropdown-menu" style="width: 180px;">
+                    <a class="menu-link" onclick="navigate('ActiveDirSearch.action?cmd=view')">Reports Security</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
                         <li><a onclick="navigate('ActiveDirSearch.action?cmd=view')">Add User</a></li>
                         <li><a onclick="navigate('rptUserMaint.action?cmd=filter')">User Search / Delete</a></li>
                         <li><a onclick="navigate('rptUserMaint.action?cmd=burst')">Add Division /Area / Sector / Affiliate</a></li>
@@ -197,12 +195,12 @@
 
                 <!-- Main Menu Option 3: Model Mgmt Sub-tier (With Level-3 Cascades) -->
                 <li class="menu-item">
-                    <a class="menu-link">Model<br>Mgmt</a>
-                    <ul class="dropdown-menu" style="width: 120px;">
+                    <a class="menu-link">Model Mgmt</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
                         <!-- Cascade Trigger: ModelMaintenance -->
                         <li class="dropdown-item">
                             <a class="has-submenu">Maintenance &raquo;</a>
-                            <ul class="submenu" style="width: 170px;">
+                            <ul class="submenu" style="min-width: 100%; width: max-content;">
                                 <li><a onclick="navigate('asrMaintenance.action')">ASR Data</a></li>
                                 <li><a onclick="navigate('asrTranMaintenance.action')">ASR Maintenance</a></li>
                                 <li><a onclick="navigate('bpcsMaint.action')">BPC Data</a></li>
@@ -215,75 +213,67 @@
                                 <li><a onclick="navigate('notesTranMaint.action')">Notes Maintenance</a></li>
                             </ul>
                         </li>
-                <!-- Cascade Trigger: RateMgmt -->
-                <li class="dropdown-item">
-                    <a class="has-submenu">Rate Models &raquo;</a>
-                    <ul class="submenu" style="width: 170px;">
-                        <li><a onclick="navigate('openMngRateSets.action')">Select</a></li>
-                        <li><a onclick="navigate('rateDataMaint.action')">Rate Data</a></li>
-                        <li><a onclick="navigate('rateDataTranMaint.action')">Rate Maint</a></li>
+                        <li class="dropdown-item">
+                            <a class="has-submenu">Rate Models &raquo;</a>
+                            <ul class="submenu" style="min-width: 100%; width: max-content;">
+                                <li><a onclick="navigate('openMngRateSets.action')">Select</a></li>
+                                <li><a onclick="navigate('rateDataMaint.action')">Rate Data</a></li>
+                                <li><a onclick="navigate('rateDataTranMaint.action')">Rate Maint</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-separator"></li>
+                        <li><a onclick="navigate('mngFactorModels.action')">Select Factor Model</a></li>
                     </ul>
                 </li>
-                <li class="menu-separator"></li>
-                <li><a onclick="navigate('mngFactorModels.action')">Select Factor Model</a></li>
+
+                <!-- Main Menu Option 4: Production Parameters Configuration -->
+                <li class="menu-item">
+                    <a class="menu-link">Production</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
+                        <li><a onclick="navigate('mngFactors.action')">Factors</a></li>
+                        <li><a onclick="navigate('mngAnalysisModels.action')">Factor Analysis</a></li>
+                        <li><a onclick="navigate('mngPerpetualModels.action')">Perpetual</a></li>
+                        <li><a onclick="navigate('mngCostExchModels.action')">Mgn Bill Exch Flex</a></li>
+                        <li><a onclick="navigate('miscAnalysis.action')">Misc. Analysis</a></li>
+                        <li><a onclick="navigate('miscReports.action')">Misc. Reports</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link">Job Que</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
+                        <li><a onclick="navigate('processMgmt.action')">Manage Jobs</a></li>
+                        <li><a onclick="navigate('mngReportJobs.action')">Job Reports</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link">Import/Export</a>
+                    <ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
+                        <li><a onclick="navigate('mngUnits.action')">Unit Data</a></li>
+                        <li><a onclick="navigate('affBpcMaint.action')">Affiliate BPC Import</a></li>
+                        <li><a onclick="navigate('dataTransfers.action')">Data Transfers</a></li>
+                        <li><a onclick="navigate('mngDataFeedLog.action')">Transfer Log</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link" onclick="navigate('main.action')">Main Menu</a>
+                </li>
             </ul>
-        </li>
+        </div>
 
-        <!-- Main Menu Option 4: Production Parameters Configuration -->
-        <li class="menu-item">
-            <a class="menu-link">Production</a>
-            <ul class="dropdown-menu" style="width: 170px;">
-                <li><a onclick="navigate('mngFactors.action')">Factors</a></li>
-                <li><a onclick="navigate('mngAnalysisModels.action')">Factor Analysis</a></li>
-                <li><a onclick="navigate('mngPerpetualModels.action')">Perpetual</a></li>
-                <li><a onclick="navigate('mngCostExchModels.action')">Mgn Bill Exch Flex</a></li>
-                <li><a onclick="navigate('miscAnalysis.action')">Misc. Analysis</a></li>
-                <li><a onclick="navigate('miscReports.action')">Misc. Reports</a></li>
-            </ul>
-        </li>
+        <div style="height: 100%; display: flex; align-items: center; margin-right: 10px;">
+            <a onclick="navigate('logout.action')" class="logout-btn">Log Out</a>
+        </div>
+    </nav>
 
-        <!-- Main Menu Option 5: Job Scheduling Actions -->
-        <li class="menu-item">
-            <a class="menu-link">Job Que</a>
-            <ul class="dropdown-menu" style="width: 140px;">
-                <li><a onclick="navigate('processMgmt.action')">Manage Jobs</a></li>
-                <li><a onclick="navigate('mngReportJobs.action')">Job Reports</a></li>
-            </ul>
-        </li>
-
-        <!-- Main Menu Option 6: Import / Export File Utilities -->
-        <li class="menu-item">
-            <a class="menu-link">Import/Export</a>
-            <ul class="dropdown-menu" style="width: 140px;">
-                <li><a onclick="navigate('mngUnits.action')">Unit Data</a></li>
-                <li><a onclick="navigate('affBpcMaint.action')">Affiliate BPC Import</a></li>
-                <li><a onclick="navigate('dataTransfers.action')">Data Transfers</a></li>
-                <li><a onclick="navigate('mngDataFeedLog.action')">Transfer Log</a></li>
-            </ul>
-        </li>
-
-        <!-- Main Menu Option 7: Root Return -->
-        <li class="menu-item">
-            <a class="menu-link" onclick="navigate('main.action')">Main<br>Menu</a>
-        </li>
-    </ul>
-</div>
-
-<div>
-    <a onclick="navigate('logout.action')" class="logout-btn">Log Out</a>
-</div>
-</nav>
-
-<script type="text/javascript">
-/**
- * Global Interceptor Dispatcher for Navigation Actions
- * Replaces legacy .do hooks with modern Struts2 endpoint targets
- */
-function navigate(targetActionEndpoint) {
-    console.log("Routing execution frame to interceptor map: " + targetActionEndpoint);
-    window.location.href = targetActionEndpoint;
-}
-</script>
+    <script type="text/javascript">
+        function navigate(targetActionEndpoint) {
+            console.log("Routing execution frame to interceptor map: " + targetActionEndpoint);
+            window.location.href = targetActionEndpoint;
+        }
+    </script>
 </body>
 </html>
-                        
+                                
