@@ -5,6 +5,7 @@
 
 <%! String pageTitle = "App User Creation"; %>
 <%@ include file="/include/header.jsf" %>
+<c:set var="pageTitle" value="App User Creation" scope="request" />
 
 <%
     RptUser sessionUser = (RptUser) session.getAttribute("RptUser");
@@ -78,9 +79,8 @@
 </head>
 
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
-    <%@ include file="/include/masthead.jsf" %>
     <%@ include file="/include/errorDisplay.jsf" %>
-
+	<%@ include file="/include/masthead.jsf" %>
     <script type="text/javascript">
         function chgActCmdSubmit(cmdValue, targetAction) {
             document.getElementById('cmd').value = cmdValue;

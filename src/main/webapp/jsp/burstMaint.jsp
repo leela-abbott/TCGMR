@@ -3,10 +3,9 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <%! String pageTitle = "Add Division / Area / Sector / Affiliate"; %>
-
+<c:set var="pageTitle" value="Add Division / Area / Sector / Affiliate" scope="request" />
 <head>
     <style type="text/css">
-        /* Modern corporate button design matching the provided sample image */
         input[type="button"] {
             display: inline-block;
             padding: 6px 22px;
@@ -214,7 +213,7 @@
 </head>
         <body style="margin: 0;" onload="enableList();">
 	<%@ include file="/include/header.jsf"%>
-	<%@ include file="/include/masthead.jsf"%>
+	<%@ include file="/include/masthead.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf"%>
 
 	<s:form method="post" name="userForm" id="userForm"

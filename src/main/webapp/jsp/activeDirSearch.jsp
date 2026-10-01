@@ -139,11 +139,11 @@
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<%@ include file="/include/header.jsf" %>
-	<%@ include file="/include/masthead.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf" %>
+	<%@ include file="/include/masthead.jsf" %>
 	
 <div class="search-container">
-
+	
 	<s:form id="activeDirSearchForm" name="activeDirSearchForm" namespace="/" action="ActiveDirSearch" method="post">
 		<s:hidden name="cmd" id="cmd" />
 		<s:hidden name="cmd2" id="cmd2" />

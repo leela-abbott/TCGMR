@@ -89,7 +89,6 @@
 </head>
 
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
-    <%@ include file="/include/masthead.jsf" %>
     <%@ include file="/include/errorDisplay.jsf" %>
 
     <script type="text/javascript">

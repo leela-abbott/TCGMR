@@ -54,7 +54,6 @@
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <%@ include file="/include/header.jsf" %>
-<%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 
 <div class="process-container">

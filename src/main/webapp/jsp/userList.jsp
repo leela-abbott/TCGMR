@@ -3,6 +3,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ include file="/include/header.jsf" %>
+<c:set var="pageTitle" value="User Maintenance" scope="request" />
 
 <head>
     <style>
@@ -60,9 +61,8 @@
 </head>
 
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;">
-    <%@ include file="/include/masthead.jsf" %>
+	<%@ include file="/include/masthead.jsf" %>
     <%@ include file="/include/errorDisplay.jsf" %>
-
     <s:form method="post" name="userForm" id="userForm" action="userMaint.action" theme="simple">
         
         <!-- Safe OGNL Nested Dot Notation handling properties bindings -->

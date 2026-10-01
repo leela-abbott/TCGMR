@@ -4,7 +4,7 @@
 
 <%! String pageTitle = "App User Search & Selection Screen"; %>
 <%@ include file="/include/header.jsf" %>
-
+<c:set var="pageTitle" value="App User Search & Selection Screen" scope="request" />
 <head>
     <style>
         /* Exact layout button style matching sample image specs */
@@ -104,11 +104,9 @@
         }
     </style>
 </head>
-
 <body style="margin: 0; padding: 0;" onload="javascript:document.getElementById('usIdTextField').focus();">
-	<%@ include file="/include/masthead.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf" %>
-	
+	<%@ include file="/include/masthead.jsf" %>
 <s:form id="activeDirSearchForm" name="activeDirSearchForm" namespace="/" action="ActiveDirSearch" method="post" theme="simple">
   <s:hidden name="cmd" id="cmd" />
   <s:hidden name="cmd2" id="cmd2" />

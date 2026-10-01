@@ -39,14 +39,14 @@
 		</action>
 
 		<action name="fileUpload"
-			class="abbott.ai.tcgm.action.FileUpload">
+			class="abbott.ai.tcgm17.action.FileUploadAction">
 			<result name="input">/jsp/fileUpload.jsp</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
 		<action name="deleteFile"
-			class="abbott.ai.tcgm.action.DeleteFile">
+			class="abbott.ai.tcgm17.action.DeleteFileAction">
 			<result name="input">/jsp/deleteFile.jsp</result>
 			<result name="success">/jsp/deleteFile.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>

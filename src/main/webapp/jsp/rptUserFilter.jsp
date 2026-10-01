@@ -431,7 +431,6 @@ function callValues() {
 <c:set var="TCGMUser" value="${sessionScope.TCGMUser}" scope="session" />
 <c:set var="RptUser" value="${sessionScope.RptUser}" scope="session" />
 
-<%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 
 <div class="search-container">
