@@ -4,7 +4,7 @@
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
  <%@ include file="/include/masthead.jsf" %>
  <%@ include file="/include/errorDisplay.jsf" %>
-<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.do" scope="session">
+<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.action" scope="session">
 
 		<nested:hidden property="cmd" />
 		<nested:hidden property="focusField" />

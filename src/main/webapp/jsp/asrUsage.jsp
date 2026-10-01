@@ -358,7 +358,7 @@ Actual(S)<input type="radio" name="cycle" value="S"/> Prelim(P)<input type="radi
 		        	<% String asrListItemArray = "affBpcListItem[" + rowNumber +"]."; %>
 					
 					<%// String href encapsulates the call to a JavaScript copyRow %>
-					<% String href = "javascript:copyRow(document.affasrForm,'" + rowNumber++ + "','asrMaintenance.do');"; %>										
+					<% String href = "javascript:copyRow(document.affasrForm,'" + rowNumber++ + "','asrMaintenance.action');"; %>										
 					
 					<% // tmpProperty is given a null to set its values compatible to the property%>
 					<% String tmpProperty = "" ; %>

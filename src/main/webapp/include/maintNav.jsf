@@ -1,31 +1,31 @@
 	<table class="mntNav" width="780" cellpadding="0" cellspacing="0">
 		<tr>
 			<td>
-				<a href="asrMaintenance.do" class="mntNav">
+				<a href="asrMaintenance.action" class="mntNav">
 					Asr<br />
-					Data</a>
+					Data1</a>
 			</td>
 
 			<td>
-				<a href="asrTranMaintenance.do" class="mntNav">
+				<a href="asrTranMaintenance.action" class="mntNav">
 					Asr<br />
-					Maint</a>
+					Maint1</a>
 			</td>
 			<td>
-				<a href="bpcsMaint.do" class="mntNav">
+				<a href="bpcsMaint.action" class="mntNav">
 					BPC<br />
-					Data</a>
+					Data1</a>
 			</td>
 			<td>
-				<a href="bpcsTranMaint.do" class="mntNav">
+				<a href="bpcsTranMaint.action" class="mntNav">
 					BPC<br />
-					Maint</a>
+					Maint1</a>
 			</td>
 
 			<td>
-				<a href="bpcRevMaint.do" class="mntNav">
+				<a href="bpcRevMaint.action" class="mntNav">
 					BPC<br />Rev<br />
-					Data</a>
+					Data1</a>
 			</td>
 			<td>
 				<a href="bpcRevTranMaint.do" class="mntNav">

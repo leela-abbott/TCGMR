@@ -65,7 +65,7 @@
 					<img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
 			</span>
 			<span id = "cancelDiv" class="hidden">
-				<a href="javascript:chgActCmdSubmit(document.asrForm,'cancel','asrMaintenance.do');">
+				<a href="javascript:chgActCmdSubmit(document.asrForm,'cancel','asrMaintenance.action');">
 					<img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
 			</span>
 		</td>

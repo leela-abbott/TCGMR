@@ -221,8 +221,8 @@ function PopupWindow_isClicked(e) {
 			return false;
 			}
 		else if (this.use_gebi) {
-			var t = e.originalTarget;
-			while (t.parentNode != null) {
+			var t = e.target || e.srcElement;
+			while (t != null) {
 				if (t.id==this.divName) {
 					return true;
 					}

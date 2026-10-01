@@ -69,6 +69,21 @@ public class TCGMAction extends ActionSupport implements ServletRequestAware {
         }
         return true;
     }
+    
+    protected boolean isModelSelected(HttpServletRequest request)
+	{
+		boolean isModelSelected = true;
+		if (this.getState(request).getCurrentModelName().equals(TCGMConstants.NONE_SELECTED))
+		{
+			isModelSelected = false;
+			if (this.getActionErrors().isEmpty())
+			{
+				this.addActionError(getText("error.model.none_selected"));
+			}
+			this.setForward(TCGMConstants.G_FORWARD_SELECT_MODEL);
+		}
+		return isModelSelected;
+	}
 
     protected boolean isModelOpen() {
         if (!isSessionValid()) return false;
@@ -135,6 +150,16 @@ public class TCGMAction extends ActionSupport implements ServletRequestAware {
         }
         return state;
     }
+    
+    protected TCGMState getState(HttpServletRequest request)
+	{
+		TCGMState state = (TCGMState) request.getSession().getAttribute(TCGMConstants.SESSION_NAME_STATE);
+		if (state == null)
+		{
+			state = new TCGMState();
+		}
+		return state;
+	}
 
     protected boolean isCmdValid(TCGMProductionForm myForm) {
         return myForm != null && !TCGMUtil.isEmpty(myForm.getCmd()) && !"CANCEL".equals(myForm.getCmd());

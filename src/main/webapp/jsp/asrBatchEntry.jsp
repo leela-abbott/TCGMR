@@ -6,7 +6,7 @@
 	<%@ include file="/include/masthead.jsf" %>
 	<%@ include file="/include/maintNav.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf" %>	
-	<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.do" scope="session">
+	<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.action" scope="session">
 		<nested:hidden property="cmd" />
 		<nested:hidden property="focusField" />
 		<nested:hidden property="rowToCopy" />
@@ -98,7 +98,7 @@
 		        	<% String asrListItemArray = "asrListItem[" + rowNumber +"]."; %>
 					
 					<%// String href encapsulates the call to a JavaScript copyRow %>
-					<% String href = "javascript:copyRow(document.asrForm,'" + rowNumber++ + "','asrMaintenance.do');"; %>										
+					<% String href = "javascript:copyRow(document.asrForm,'" + rowNumber++ + "','asrMaintenance.action');"; %>										
 					
 					<% // tmpProperty is given a null to set its values compatible to the property%>
 					<% String tmpProperty = "" ; %>

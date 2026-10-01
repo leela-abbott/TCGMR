@@ -1,7 +1,5 @@
 <%! String pageTitle="Select or Create Model";%>
 <%@ include file="/include/header.jsf" %>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-
 <%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
@@ -11,8 +9,115 @@
 <jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
 <!-- end -->
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>TCGM Factor model</title>
+    <script type="text/javascript" src="include/common.js"></script>
+   <script type="text/javascript" language=javascript>
+	function getForm() {
+		return document.getElementById('mngFactorModelsForm');
+	}
 
-<s:form name="mngFactorModelsForm" action="" type="abbott.ai.tcgm.action.form.MngFactorModelsForm">
+	function deleteModel(modelid, modelname) {
+		if ( confirm("Are you sure that you would like to delete " + modelname + "?\nThis will delete all attributes and can not be undone.") ) {
+			if(confirm("ARE YOU SURE to delete " + modelname + "?") ){
+				var form = getForm();
+				document.getElementById('modelSelected').value = modelid;
+				changeActionAndSubmit(form, "deleteFactorModel.do");
+			}
+		}
+	}
+
+	function closeModel(modelid, modelname) {
+		if ( confirm("Are you sure that you would like to close " + modelname + "?") ) {
+			var form = getForm();
+			document.getElementById('modelSelected').value = modelid;
+			document.getElementById('showModels').value = 'open';
+			changeActionAndSubmit(form, "closeModel.do");
+		}
+	}
+
+	function openModel(modelid, modelname) {
+		
+		if ( confirm("Are you sure that you would like to open " + modelname + "?") ) {
+			var form = getForm();
+			document.getElementById('modelSelected').value = modelid;
+			document.getElementById('showModels').value = 'closed';
+			changeActionAndSubmit(form, "openModel.action");
+			
+			
+		}
+	}
+
+	function compactModel(modelid, modelname) {
+		if ( confirm("Are you sure that you would like to compact " + modelname + "?\nAll temporary data and reports will be deleted.") ) {
+			var form = getForm();
+			document.getElementById('modelSelected').value = modelid;
+			changeActionAndSubmit(form, "compactModel.do");
+		}
+	}
+
+	function selectModel(modelid, modelname) {
+		var form = getForm();
+		document.getElementById('modelSelected').value = modelid;
+		changeActionAndSubmit(form, "updateModelSelection.do");
+	}
+
+	<%//Sridevi.K 06/05/2005 New script for fixing the empty description field while creating a model starts here.%>
+	function createModel() {
+		var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+		var check = true;
+		var createForm = document.getElementById('createFactorModelForm');
+		for (var i = 0; i < createForm.elements['createModelName'].value.length; i++) {
+			if (iChars.indexOf(createForm.elements['createModelName'].value.charAt(i)) != -1) {
+				alert ("The Model name you eneterd has special characters. \n Please remove them and try again.");
+				check = false;
+			}
+		}
+		if ( emptyAlert('Description', createForm.elements['createModelDesc']) && check) {
+			createForm.submit();
+		}
+	}
+	<%//Sridevi.K New script ends here 06/05/2005%>
+
+	function showClosedModelDetails(stat) {
+		var form = getForm();
+		document.getElementById('showModels').value = stat;
+		form.action = 'mngFactorModels.do';
+		form.submit();
+	}
+
+</script>
+
+</head>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<s:actionerror />
+<s:if test="hasActionErrors()">
+    <div class="error">
+        <s:actionerror />
+    </div>
+</s:if>
+
+<s:if test="hasFieldErrors()">
+    <div class="error">
+        <s:fielderror />
+    </div>
+</s:if>
+
+<s:if test="hasActionMessages()">
+    <div class="message">
+        <s:actionmessage />
+    </div>
+</s:if>
+
+
+
+<s:form name="mngFactorModelsForm" id="mngFactorModelsForm" action="" type="abbott.ai.tcgm.action.form.MngFactorModelsForm">
+
   <c:set var="monthListNumber" value="${monthListNumber}" />
   <table width="684" cellpadding="2">
   
@@ -75,7 +180,11 @@
 				<a class="CmdSm" href='javascript:compactModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Compact</a>
 			</abbott:securePage> -->
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Open</a>
+			
+			
+			<%-- <a class="CmdSm" href="#" onclick="openModel(<c:out value="${closedModels.modelId}" />, '<c:out value="${closedModels.name}" />'); return false;"> OpenAA1</a> --%>
+			
+				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >OpenAA</a>
 			</abbott:securePage>
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
 				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del</a>
@@ -98,8 +207,8 @@
 		</c:if>
 		
   </table>
-  <html:hidden property="modelSelected" />
-  	<nested:text property="showModels" maxlength="8" styleClass="hidden" />	
+  <input type="hidden" id="modelSelected" name="modelSelected" value="" />
+  <input type="hidden" id="showModels" name="showModels" value="open" />
 </s:form>
 
 <br>
@@ -214,73 +323,5 @@
 	 
   </abbott:securePage>
 
-<script language=javascript>
-	function deleteModel(modelid, modelname)
-	 {
-		if ( confirm("Are you sure that you would like to delete " + modelname + "?\nThis will delete all attributes and can not be undone.") ) {
-			if(confirm("ARE YOU SURE to delete " + modelname + "?") ){
-				document.forms.mngFactorModelsForm.modelSelected.value=modelid;
-				changeActionAndSubmit(document.forms.mngFactorModelsForm, "deleteFactorModel.do")
-			}
-		}
-	}
 
-	function closeModel(modelid, modelname)
-	 {
-		 if ( confirm("Are you sure that you would like to close " + modelname + "?") ) {
-			 document.forms.mngFactorModelsForm.modelSelected.value=modelid;
-			 document.forms.mngFactorModelsForm.showModels.value = 'open';
-			 changeActionAndSubmit(document.forms.mngFactorModelsForm, "closeModel.do")
-		 }
-	}
-
-	function openModel(modelid, modelname)
-	 {
-		 if ( confirm("Are you sure that you would like to open " + modelname + "?") ) {
-			 document.forms.mngFactorModelsForm.modelSelected.value=modelid;
-			 document.forms.mngFactorModelsForm.showModels.value = 'closed';
-			 changeActionAndSubmit(document.forms.mngFactorModelsForm, "openModel.do")
-		 }
-	}
-
-	function compactModel(modelid, modelname)
-	 {
-		 if ( confirm("Are you sure that you would like to compact " + modelname + "?\nAll temporary data and reports will be deleted.") ) {
-			 document.forms.mngFactorModelsForm.modelSelected.value=modelid;
-			 changeActionAndSubmit(document.forms.mngFactorModelsForm, "compactModel.do")
-		 }
-	}
-
-	function selectModel(modelid, modelname)
-	{
-		document.forms.mngFactorModelsForm.modelSelected.value=modelid;
-		changeActionAndSubmit(document.forms.mngFactorModelsForm, "updateModelSelection.do")
-	}
-	
-	<%//Sridevi.K 06/05/2005 New script for fixing the empty description field while creating a model starts here.%>
-	function createModel()
-	 {
-		var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
-		var check = true;
-	    for (var i = 0; i < document.forms.createFactorModelForm.createModelName.value.length; i++) 
-	    {
-	  	if (iChars.indexOf(document.forms.createFactorModelForm.createModelName.value.charAt(i)) != -1) 
-	  	{
-		  	alert ("The Model name you eneterd has special characters. \n Please remove them and try again.");
-		  	check = false;
-	  	}
-	  	}
-		if ( emptyAlert('Description', document.createFactorModelForm.createModelDesc) && check) {
-		 
-			 document.createFactorModelForm.submit();
-		 }
-	}
-	<%//Sridevi.K New script ends here 06/05/2005%>
-	function showClosedModelDetails(stat) {
-		document.forms.mngFactorModelsForm.showModels.value = stat;
-		document.mngFactorModelsForm.action = 'mngFactorModels.do';
-		document.mngFactorModelsForm.submit();
-		}	
-
-</script>
 <%@ include file="/include/footer.jsf" %>

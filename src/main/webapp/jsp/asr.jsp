@@ -1,12 +1,18 @@
 <a name="FilterView"></a>
 <%! String pageTitle = "ASR Data"; %>
 <%@ include file="/include/header.jsf" %>
+
 <jsp:useBean id="asrForm" scope="session" class="abbott.ai.tcgm.action.form.AsrForm" />
+<!-- Added for -->
+<abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
+<jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
+<jsp:useBean id="DBConst"  scope="session" type="abbott.ai.tcgm.data.DBConst" />
+<!-- end -->
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  >
 	<%@ include file="/include/masthead.jsf" %>
 	<%@ include file="/include/maintNav.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf" %>	
-	<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.do" scope="session">
+	<nested:form method="post" name="asrForm" type="abbott.ai.tcgm.action.form.AsrForm" action="/asrMaintenance.action" scope="session">
 		<nested:hidden property="cmd" />
 		<nested:hidden property="focusField" />
 		<nested:hidden property="rowToCopy" />
@@ -15,9 +21,9 @@
 		<table width="780" cellspacing="0">
 			<tr class="fltrTblHdng">
 			<nested:hidden property="asrErrorListSize" />
-			<nested:notEqual property="asrErrorListSize" value="0">
+			<c:if test="${asrErrorListSize != '0'}">>
 			 	<td rowspan="2">Errors</td>
-			</nested:notEqual>
+			</c:if>
 				<td rowspan="2">Prod<br>Orig</td>
 				<td rowspan="2">Rpt<br>Aff</td>
 				<td rowspan="2">Inv<br>Cd</td>
@@ -45,11 +51,11 @@
 			<% String submitFilter = "submitFilter(document.asrForm,'filter', event);"; %>
 			<tr class="oddRowCenter">
 				<nested:hidden property="asrErrorListSize" />
-				<nested:notEqual property="asrErrorListSize" value="0">
+				<c:if test="${asrErrorListSize != '0'}">>
 					<td>
 						<input type=checkbox name=errs value="on" onClick="javascript:changeCmdAndSubmit(document.asrForm,'filter');">
 					</td>
-				</nested:notEqual>
+				</c:if>
 			<nested:nest property="searchObject">
 				<nested:hidden property="modelId" />
 				<nested:hidden property="datasetTableId" />
@@ -340,7 +346,7 @@
 						<img src="images/btnSave.png" alt="Save" /></a>
 					<a href="javascript:chgActCmdSubmit(document.asrForm,'massupdate','asrSave.do');">
 						<img src="images/btnMassUpdate.png" alt="Apply Changes to all records based on Filter criteria" /></a>
-					<a href="javascript:chgActCmdSubmit(document.asrForm,'clearaddnew','asrMaintenance.do');" >
+					<a href="javascript:chgActCmdSubmit(document.asrForm,'clearaddnew','asrMaintenance.action');" >
 						<img src="images/btnClear.png" alt="Clear"/></a>
 				</td>
 				<%
@@ -361,27 +367,27 @@
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_PROD_ORIGIN%>');" >
 						Prod<br>Orig<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_PROD_ORIGIN%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_PROD_ORIGIN%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td rowspan="2">
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_AFF%>');" >
 						Rpt<br>Aff<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_AFF%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_AFF%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td rowspan="2">
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_INV_CD%>');" >
 						Inv<br>Cd<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_INV_CD%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_INV_CD%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td colspan="4">
@@ -391,18 +397,18 @@
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_AFF%>');" >
 						Supp<br>Aff<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_AFF%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_AFF%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td rowspan="2">
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_INV_CD%>');" >
 						Inv<br>Cd<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_INV_CD%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_INV_CD%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td colspan="4">
@@ -412,18 +418,18 @@
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_USAGE_FAC%>');" >
 						Usage<br>Factor<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_USAGE_FAC%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_USAGE_FAC%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td rowspan="2">
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_KEY%>');" >
 						Sup<br>Key<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_KEY%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_KEY%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td rowspan="2" valign="middle">
@@ -436,78 +442,78 @@
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_LIST%>');" >
 						List<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_LIST%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_LIST%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td> 	
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_LABEL%>');" >
 						Label<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_LABEL%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_LABEL%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_SIZE%>');" >
 						Size<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_SIZE%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_SIZE%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_RPT_PACK%>');" >
 						Pack<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_RPT_PACK%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_RPT_PACK%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_LIST%>');" >
 						List<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_LIST%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_LIST%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_LABEL%>');" >
 						Label<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_LABEL%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_LABEL%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_SIZE%>');" >
 						Size<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_SIZE%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_SIZE%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 				<td>
 					<a class="mntSort"
 						href="javascript:chgSrtSubEbcdic(document.asrForm,'<%=DBConst.COL_SUP_PACK%>');" >
 						Pack<br>
-						<nested:equal property="sortObject.sortColumn" value="<%=DBConst.COL_SUP_PACK%>" >
+						<c:if test="${sortObject.sortColumn == '<%=DBConst.COL_SUP_PACK%>'}"> >
 							<img alt="<%=asrForm.getSortObject().getSortImgAltTxt()%>" src="<%=asrForm.getSortObject().getSortImg()%>" align="center" />
-						</nested:equal>
+						</c:if>
 					</a>
 				</td>
 			</tr>	
 				
 			<nested:hidden property="asrListSize" />			
-			<nested:notEqual property="asrListSize" value="0">				
+			<c:if test="${asrListSize != '0'}">>				
 				<% int rowNumber=0; %>	
 				<%// used the JSTL c:forEach tag to loop through asrList %>
 				<c:forEach items="${sessionScope.asrForm.asrList}"
@@ -521,7 +527,7 @@
 		        	<% String asrListItemArray = "asrListItem[" + rowNumber +"]."; %>
 					
 					<%// String href encapsulates the call to a JavaScript copyRow %>
-					<% String href = "javascript:copyRow(document.asrForm,'" + rowNumber++ + "','asrMaintenance.do');"; %>										
+					<% String href = "javascript:copyRow(document.asrForm,'" + rowNumber++ + "','asrMaintenance.action');"; %>										
 					
 					<% // tmpProperty is given a null to set its values compatible to the property%>
 					<% String tmpProperty = "" ; %>
@@ -681,11 +687,11 @@
 						<div name="navigation" id="navigation" class="hidden">
 							<%@ include file="/include/asrPaging.jsf" %>
 						</div>
-			</nested:notEqual>
+			</c:if>
 		</table>
-		<nested:equal property="asrListSize" value="0">
+		<c:if test="${asrListSize == '0'}">>
 			<%@ include file="/include/recordsNotFound.jsf" %>
-		</nested:equal>
+		</c:if>
 		<hr />
 	</nested:form>
 	<script language="JavaScript1.2" type="text/javascript">
