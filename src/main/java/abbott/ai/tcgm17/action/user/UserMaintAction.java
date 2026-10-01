@@ -2,6 +2,8 @@ package abbott.ai.tcgm17.action.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
+
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.action.TCGMAction;
@@ -122,7 +124,6 @@ public class UserMaintAction extends TCGMAction {
         }
     }
 
-    // --- Action 4: deleteUser Mapping Entry ---
     public String delete() {
         if (!this.isSessionValid()) {
             return LOGIN;
@@ -131,8 +132,7 @@ public class UserMaintAction extends TCGMAction {
         UserToken userToken = this.getUserToken();
         UserMngr userMngr = new UserMngr();
         try {
-            // Pack the elements into a Vector instance to fulfill legacy helper constraints
-            java.util.Vector<User> vectorUserList = new java.util.Vector<>(this.getUserlist());
+            Vector<User> vectorUserList = new Vector<>(this.getUserlist());
             
             int adminCode = userMngr.deleteUsers(userToken, vectorUserList);
             if (adminCode == 1) {
@@ -185,6 +185,7 @@ public class UserMaintAction extends TCGMAction {
         this.currUser = currUser;
     }
 
+    @StrutsParameter(depth = 1)
     public User getSearchObject() {
         if (this.searchObject == null) this.searchObject = new User();
         return searchObject;
@@ -215,6 +216,7 @@ public class UserMaintAction extends TCGMAction {
         this.userToEdit = userToEdit;
     }
 
+    @StrutsParameter(depth = 2)
     public List<User> getUserlist() {
         if (this.userlist == null) this.userlist = new ArrayList<>();
         return userlist;

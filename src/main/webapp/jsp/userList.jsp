@@ -106,6 +106,8 @@
                     <tr id="mntRow" class="${status.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
                         
                         <td class="mntLeft" style="padding: 6px;">
+                            <!-- Critical parameters securely mapped for form submission -->
+                            <input type="hidden" name="userlist[${status.index}].userid" value="<c:out value='${userItem.userid}' />" />
                             <input type="hidden" name="userlist[${status.index}].userinfoid" value="<c:out value='${userItem.userinfoid}' />" />
                             <c:out value="${userItem.userid}" />
                         </td>        
