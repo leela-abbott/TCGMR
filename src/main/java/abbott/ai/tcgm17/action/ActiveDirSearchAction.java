@@ -3,28 +3,26 @@ package abbott.ai.tcgm17.action;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import org.apache.struts2.ActionSupport;
-import org.apache.struts2.interceptor.parameter.StrutsParameter;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.action.ServletRequestAware;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.ServletRequestAware;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.TCGMUtil;
 import abbott.ai.tcgm.data.DBConst;
 import abbott.ai.tcgm.entities.ActiveDirSearchDtlBean;
+import abbott.ai.tcgm.entities.RptUser;
 import abbott.ai.tcgm.entities.Sort;
 import abbott.ai.tcgm.entities.User;
-import abbott.ai.tcgm.entities.RptUser;
-import abbott.ai.tcgm.entities.ActiveAffMaint;
 import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.ActiveDirSearchMngr;
 import abbott.ai.tcgm.helpers.RptUserMngr;
 import abbott.ai.tcgm.helpers.UserMngr;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public class ActiveDirSearchAction extends TCGMAction implements ServletRequestAware {
 
@@ -265,12 +263,12 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
         }
     }
 
-    private boolean isSessionValid(HttpServletRequest request) {
-        return true;
-    }
+//    protected boolean isSessionValid(HttpServletRequest request) {
+//        return true;
+//    }
 
-    private String getUserToken(HttpServletRequest request) {
-        return "";
+    protected UserToken getUserToken(HttpServletRequest request) {
+        return getUserToken();
     }
 
     public String getCmd() { return cmd; }

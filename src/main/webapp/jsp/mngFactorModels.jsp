@@ -109,7 +109,7 @@
   <s:form name="createFactorModelForm" action="/createFactorModel" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" >
   <c:set var="factorModels" value="${factorModels}" />
 <c:if test="${showModels == 'open'}">
-CCC
+
 	<table width="598" class="tableCommand">
 	  <tr>
 		<td colspan="6" nowrap class="tableHeading">Create New Model</td>
