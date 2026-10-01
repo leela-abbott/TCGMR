@@ -1,13 +1,13 @@
 package abbott.ai.tcgm.action.form;
-import jakarta.servlet.http.*;
-import jakarta.servlet.*;
-import org.apache.struts.action.*;
+import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
+
+import abbott.ai.tcgm.TCGMUtil;
 //import java.util.Vector;
 import abbott.ai.tcgm.entities.TCGMModel;
-import abbott.ai.tcgm.exception.*;
-import abbott.ai.tcgm.*;
-import abbott.ai.tcgm.data.*;
-import org.apache.log4j.*;
+import abbott.ai.tcgm.exception.TCGMException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -48,30 +48,38 @@ public abstract class TCGMCreateModelForm extends TCGMForm {
     }
 
 
-    public ActionErrors validate(ActionMapping mapping,HttpServletRequest request) {
+//    public ActionErrors validate(ActionMapping mapping,HttpServletRequest request) {
+//
+//        // if cmd is empty this form is clean and should not be validated
+//        if ( TCGMUtil.isEmpty( this.getCmd() ) ) return null;
+//
+//        ActionErrors errors = new ActionErrors();
+//
+//        /*try {
+//
+//            ModelDao md = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getModelDao( SQLUtil.getOracleAdmin(), this.getModelType() );
+//
+//            if ( md.exists( this.getModelName() ) ) {
+//                errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.model.create.duplicate"));
+//            }
+//
+//        }
+//        catch (TCGMException tex) {
+//            // severe exceptions only
+//            myLogger.error("Exception validating form input for model type: " + this.getModelType().toString(), tex);
+//        }*/
+//        if ( errors.empty() )
+//            return null;
+//        else
+//            return errors;
+//    }
+    
+    
+    public void validate() {
 
         // if cmd is empty this form is clean and should not be validated
-        if ( TCGMUtil.isEmpty( this.getCmd() ) ) return null;
-
-        ActionErrors errors = new ActionErrors();
-
-        /*try {
-
-            ModelDao md = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getModelDao( SQLUtil.getOracleAdmin(), this.getModelType() );
-
-            if ( md.exists( this.getModelName() ) ) {
-                errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.model.create.duplicate"));
-            }
-
-        }
-        catch (TCGMException tex) {
-            // severe exceptions only
-            myLogger.error("Exception validating form input for model type: " + this.getModelType().toString(), tex);
-        }*/
-        if ( errors.empty() )
-            return null;
-        else
-            return errors;
+        if ( TCGMUtil.isEmpty( this.getCmd() ) ) return;
+       
     }
 
     public void reset(ActionMapping mapping, HttpServletRequest request) {

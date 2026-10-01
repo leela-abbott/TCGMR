@@ -3,12 +3,11 @@ package abbott.ai.tcgm17.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.ActionContext;
 import org.apache.struts2.ActionSupport;
+import org.apache.struts2.StrutsStatics;
 import org.apache.struts2.action.ServletRequestAware;
 
 import abbott.ai.tcgm.TCGMConstants;
@@ -24,6 +23,8 @@ import abbott.ai.tcgm.entities.User;
 import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.ModelMngr;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public class TCGMAction extends ActionSupport implements ServletRequestAware {
 
@@ -118,6 +119,11 @@ public class TCGMAction extends ActionSupport implements ServletRequestAware {
         User user = getSessionUser();
         return (user != null) ? user.getUserToken() : null;
     }
+    
+    protected UserToken getUserToken(HttpServletRequest request)
+	{
+		return getSessionUser(request).getUserToken();
+	}
 
     protected TCGMState getState() {
         if (this.request == null) return new TCGMState();
@@ -232,5 +238,27 @@ public class TCGMAction extends ActionSupport implements ServletRequestAware {
         } catch (Exception e) {
             throw new TCGMException(this.className, methodName, e.toString());
         }
-    }            
+    } 
+    
+    protected HttpServletRequest getRequest()
+	{
+		return (HttpServletRequest) ActionContext.getContext().get(StrutsStatics.HTTP_REQUEST);
+	}
+    
+    protected boolean isSessionValid(HttpServletRequest request)
+	{
+		boolean isSessionValid = true;
+		if (request.getSession().getAttribute(TCGMConstants.SESSION_NAME_USER) == null)
+		{
+			isSessionValid = false;
+			this.addActionError(getText("error.user.session.invalid"));
+			this.forward = TCGMConstants.G_FORWARD_LOGIN;
+		}
+		return isSessionValid;
+	}
+    
+    protected User getSessionUser(HttpServletRequest request)
+	{
+		return (User) request.getSession().getAttribute(TCGMConstants.SESSION_NAME_USER);
+	}
 }

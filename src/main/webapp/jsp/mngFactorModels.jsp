@@ -4,9 +4,16 @@
 
 <%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
-<html:form name="mngFactorModelsForm" action="" type="abbott.ai.tcgm.action.form.MngFactorModelsForm">
-  <nested:define id="monthListNumber" property="monthListNumber" />
+<%@ taglib prefix="s" uri="/struts-tags"%>
 
+<!-- Added for -->
+<abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
+<jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
+<!-- end -->
+
+
+<s:form name="mngFactorModelsForm" action="" type="abbott.ai.tcgm.action.form.MngFactorModelsForm">
+  <c:set var="monthListNumber" value="${monthListNumber}" />
   <table width="684" cellpadding="2">
   
 	<tr>
@@ -22,59 +29,65 @@
 	  <td width="55" class="tableEntry" >Year</td>
 	  <td width="383" class="tableEntry">Description</td>
 	</tr>
-	<nested:equal property="showModels" value="open">
-	<logic:iterate id="models" name="mngFactorModelsForm" scope="request" property="models" type="abbott.ai.tcgm.entities.FactorModel" >
-	  <tr>
-		<td height="23" colspan=2 class=right >&nbsp;
-			<!-- <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
-				<a class="CmdSm" href='javascript:compactModel(<bean:write name="models" property="modelId"  />, "<bean:write name="models" property="name"  />")' >Compact</a>
-			</abbott:securePage> -->
-			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				<a class="CmdSm" href='javascript:closeModel(<bean:write name="models" property="modelId"  />, "<bean:write name="models" property="name"  />")' >Close</a>
-			</abbott:securePage>
-			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<bean:write name="models" property="modelId"  />, "<bean:write name="models" property="name"  />")' >Del</a>
-			</abbott:securePage>
-		</td>
-		<td >
-			<a href='javascript:selectModel(<bean:write name="models" property="modelId" />)' >
-		  <bean:write name="models" property="name"  />
-		  </a>
-		</td>
-		<td class="commandOptionLabel"><bean:write name="models" property="modelCycleLongName" /></td>
-		<td class="commandOptionLabel"><bean:write name="models" property="modelYear" /></td>
-		<td class="commandOptionLabel"><bean:write name="models" property="desc" /></td>
-	  </tr>
-	 
-		</logic:iterate>
+	
+	<%-- AAAA: <%=TCGMUser.getRole().getAccessLevel()%>
+	BBB  : <%=Role.Analyst.getAccessLevel()%> --%>
+	
+	<c:if test="${showModels == 'open'}">
+	
+		<c:forEach var="models" items="${requestScope.mngFactorModelsForm.models}">
+		  <tr>
+			<td height="23" colspan=2 class=right >&nbsp;
+				<!-- <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
+					<a class="CmdSm" href='javascript:compactModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Compact</a>
+				</abbott:securePage> -->
+				<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
+					<a class="CmdSm" href='javascript:closeModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Close</a>
+				</abbott:securePage>
+				<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
+					&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Del</a>
+				</abbott:securePage>
+			</td>
+			<td >
+				<a href='javascript:selectModel(<c:out value="${models.modelId}" />)' >
+			  <c:out value="${models.name}" />
+			  </a>
+			</td>
+			<td class="commandOptionLabel"><c:out value="${models.modelCycleLongName}" /></td>
+			<td class="commandOptionLabel"><c:out value="${models.modelYear}" /></td>
+			<td class="commandOptionLabel"><c:out value="${models.desc}" /></td>
+		  </tr>
+	     </c:forEach>
+		
 		<td height="23" colspan=3 class=right >&nbsp;
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
 				<a class="CmdSm" href='javascript:showClosedModelDetails("closed")' >Show Closed Models</a>
 			</abbott:securePage>
 		</td>
 		
-		</nested:equal>	
-	<nested:notEqual property="showModels" value="open">
-	<logic:iterate id="closedModels" name="mngFactorModelsForm" scope="request" property="closedModels" type="abbott.ai.tcgm.entities.FactorModel" >
+	</c:if>	
+	<c:if test="${showModels != 'open'}">
+	
+	<c:forEach var="closedModels" items="${requestScope.mngFactorModelsForm.closedModels}">
 	  <tr>
 		<td height="23" colspan=2 class=right >&nbsp;
 			<!-- <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
-				<a class="CmdSm" href='javascript:compactModel(<bean:write name="closedModels" property="modelId"  />, "<bean:write name="closedModels" property="name"  />")' >Compact</a>
+				<a class="CmdSm" href='javascript:compactModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Compact</a>
 			</abbott:securePage> -->
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				<a class="CmdSm" href='javascript:openModel(<bean:write name="closedModels" property="modelId"  />, "<bean:write name="closedModels" property="name"  />")' >Open</a>
+				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Open</a>
 			</abbott:securePage>
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<bean:write name="closedModels" property="modelId"  />, "<bean:write name="closedModels" property="name"  />")' >Del</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del</a>
 			</abbott:securePage>
 		</td>
-		<td class="commandOptionLabel"> <bean:write name="closedModels" property="name"/></td>
-		<td class="commandOptionLabel"><bean:write name="closedModels" property="modelCycleLongName" /></td>
-		<td class="commandOptionLabel"><bean:write name="closedModels" property="modelYear" /></td>
-		<td class="commandOptionLabel"><bean:write name="closedModels" property="desc" /></td>
+		<td class="commandOptionLabel"> <c:out value="${closedModels.name}" /></td>
+		<td class="commandOptionLabel"><c:out value="${closedModels.modelCycleLongName}" /></td>
+		<td class="commandOptionLabel"><c:out value="${closedModels.modelYear}" /></td>
+		<td class="commandOptionLabel"><c:out value="${closedModels.desc}" /></td>
 	  </tr>
 	  
-		</logic:iterate>
+		</c:forEach>
 
 		<td height="23" colspan=3 class=right >&nbsp;
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
@@ -82,20 +95,21 @@
 			</abbott:securePage>
 		</td>
 
-		</nested:notEqual>
+		</c:if>
 		
   </table>
   <html:hidden property="modelSelected" />
   	<nested:text property="showModels" maxlength="8" styleClass="hidden" />	
-</html:form>
+</s:form>
 
 <br>
 
 <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
  	
-  <html:form name="createFactorModelForm" action="/createFactorModel" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" >
-  <nested:define property="factorModels" id="factorModels" />
-<nested:equal property="showModels" value="open">
+  <s:form name="createFactorModelForm" action="/createFactorModel" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" >
+  <c:set var="factorModels" value="${factorModels}" />
+<c:if test="${showModels == 'open'}">
+
 	<table width="598" class="tableCommand">
 	  <tr>
 		<td colspan="6" nowrap class="tableHeading">Create New Model</td>
@@ -195,8 +209,8 @@
 <!-- Sridevi.K New code that is replaced for the above submit is added on 06/05/05 ends here -->
 	  </tr>
 	</table>
-	 </nested:equal>
-  </html:form>
+	 </c:if>
+  </s:form>
 	 
   </abbott:securePage>
 

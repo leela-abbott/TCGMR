@@ -1,9 +1,9 @@
 package abbott.ai.tcgm.action.form;
 
-import org.apache.struts.action.*;
-import java.util.*;
-import abbott.ai.tcgm.entities.*;
-import java.io.*;
+import java.io.Serializable;
+import java.util.Vector;
+
+import abbott.ai.tcgm.entities.Option;
 /**
  * <p>Title: TCGM</p>
  * <p>Description: </p>
@@ -12,7 +12,7 @@ import java.io.*;
  * @author David Fields
  * @version 1.0
  */
-public class TCGMForm extends ActionForm implements Serializable
+public class TCGMForm implements Serializable
 {
 	protected static final String BR = "<BR />";
 	protected final String className = this.getClass().getName();

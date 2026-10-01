@@ -1,12 +1,16 @@
 package abbott.ai.tcgm.action.form;
 import java.util.ArrayList;
-import abbott.ai.tcgm.exception.*;
-import abbott.ai.tcgm.entities.*;
-import abbott.ai.tcgm.data.*;
-import org.apache.struts.action.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import org.apache.log4j.*;
+
+import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
+
+import abbott.ai.tcgm.data.DaoFactory;
+import abbott.ai.tcgm.data.DataFeedLogDao;
+import abbott.ai.tcgm.data.SQLUtil;
+import abbott.ai.tcgm.entities.DataFeedLogEntry;
+import abbott.ai.tcgm.exception.TCGMException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class MngDataFeedLogForm extends TCGMForm  {
     ArrayList logentrylist = new ArrayList(20);
