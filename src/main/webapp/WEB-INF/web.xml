@@ -4,25 +4,16 @@
          xsi:schemaLocation="https://jakarta.ee https://jakarta.ee/web-app_5_0.xsd"
          version="5.0">
 
-  <!-- ==================================================================== -->
-  <!-- 1. FILTERS DEFINITIONS                                               -->
-  <!-- ==================================================================== -->
   <filter>
     <filter-name>struts2</filter-name>
     <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
   </filter>
 
-  <!-- ==================================================================== -->
-  <!-- 2. FILTER MAPPINGS                                                   -->
-  <!-- ==================================================================== -->
   <filter-mapping>
     <filter-name>struts2</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- ==================================================================== -->
-  <!-- 3. SERVLET DEFINITIONS                                               -->
-  <!-- ==================================================================== -->
   <servlet>
     <servlet-name>debugjsp</servlet-name>
     <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -46,7 +37,54 @@
   <servlet>
     <servlet-name>tcgm-init</servlet-name>
     <servlet-class>abbott.ai.tcgm.servlet.TCGMInit</servlet-class>
+      <init-param>
+      <param-name>validate</param-name>
+      <param-value>true</param-value>
+    </init-param>
     <init-param>
+      <param-name>config</param-name>
+      <param-value>/WEB-INF/struts-config.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>application</param-name>
+      <param-value>ApplicationResources</param-value>
+    </init-param>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>3</param-value>
+    </init-param>
+    <init-param>
+      <param-name>mapping</param-name>
+      <param-value>abbott.ai.tcgm.action.TCGMActionMapping</param-value>
+    </init-param>
+    <init-param>
+      <param-name>detail</param-name>
+      <param-value>3</param-value>
+    </init-param>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>debugjsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+      <param-name>jspCompilerPlugin</param-name>
+      <param-value>com.borland.jbuilder.webserverglue.tomcat.jsp.JasperSunJavaCompiler</param-value>
+    </init-param>
+    <load-on-startup>3</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>log4j-init</servlet-name>
+    <servlet-class>abbott.ai.tcgm.servlet.Log4jInit</servlet-class>
+    <init-param>
+      <param-name>log4j-init-file</param-name>
+      <param-value>/WEB-INF/log4j.properties</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>tcgm-init</servlet-name>
+    <servlet-class>abbott.ai.tcgm.servlet.TCGMInit</servlet-class>
+	<init-param>
       <param-name>psSleep</param-name>
       <param-value>5000</param-value>
     </init-param>
@@ -71,8 +109,8 @@
       <param-value>ldapauth.oneabbott.com</param-value>
     </init-param>
     <init-param>
-      <param-name>authenticationBasedn</param-name>
-      <param-value>OU=Users,DC=abbott,DC=corp</param-value>
+     <param-name>authenticationBasedn</param-name>
+       <param-value>OU=Users,DC=abbott,DC=corp</param-value>
     </init-param>
     <init-param>
       <param-name>authenticationUserId</param-name>
@@ -88,7 +126,7 @@
     </init-param>
     <init-param>
       <param-name>reportNetServiceLocator</param-name>
-      <param-value>http://oneabbott.com</param-value>
+      <param-value>http://CWA113344D.oneabbott.com:9300/p2pd/servlet/dispatch</param-value>
     </init-param>        
     <init-param>
       <param-name>reportNetNameSpace</param-name>
@@ -104,7 +142,7 @@
     </init-param> 
     <init-param>
       <param-name>reportsUrl</param-name>
-      <param-value>http://oneabbott.com</param-value>
+      <param-value>http://CWA113344D.oneabbott.com:9300/bi/v1/disp</param-value>
     </init-param>
     <init-param>
       <param-name>reportNetPrinter1</param-name>
@@ -130,7 +168,7 @@
       <param-name>reportNetSectorPath</param-name>
       <param-value>/content/folder[@name='AI TCGM']/folder[@name='Sector']</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>reportNetDIVPath</param-name>
       <param-value>/content/folder[@name='AI TCGM']/folder[@name='DIVISION']</param-value>
     </init-param>    
@@ -162,9 +200,10 @@
       <param-name>reportNetExecutionSequence</param-name>
       <param-value>parallel</param-value>
     </init-param>    
+    
     <init-param>
       <param-name>RSystem Address</param-name>
-      <param-value>://abbott.com</param-value>
+      <param-value>mvs.cmis.abbott.com</param-value>
     </init-param>        
     <init-param>
       <param-name>RSystem Username</param-name>
@@ -279,26 +318,26 @@
       <param-value>E:\\Tcgm_Docs\\</param-value>
     </init-param>
     <init-param>
-      <param-name>fileUploadDirectory</param-name>
-      <param-value>E:\\Temp\\Upload\\tcgm</param-value>
+	  <param-name>fileUploadDirectory</param-name>
+	  <param-value>E:\\Temp\\Upload\\tcgm</param-value>
     </init-param>
-    <init-param>
-      <param-name>completedJobView</param-name>
-      <param-value>90</param-value>
+	<init-param>
+	 <param-name>completedJobView</param-name>
+	 <param-value>90</param-value>
     </init-param>
-    <init-param>
+   	<init-param>
       <param-name>ccshost</param-name>
-      <param-value>://oneabbott.com</param-value>
+      <param-value>uz00028d.oneabbott.com</param-value>
     </init-param>  
-    <init-param>
+   	<init-param>
       <param-name>ccsuser</param-name>
       <param-value>ftpaiusr</param-value>
     </init-param>
-    <init-param>
+   	<init-param>
       <param-name>ccspassword</param-name>
       <param-value>abcd1234</param-value>
     </init-param>
-    <init-param>
+   	<init-param>
       <param-name>ccslocation</param-name>
       <param-value>/devl/ai/usrdat/ccs</param-value>
     </init-param>
@@ -310,7 +349,7 @@
       <param-name>ipsuser</param-name>
       <param-value>ftpaiusr</param-value>
     </init-param>
-    <init-param>
+   	<init-param>
       <param-name>ipspassword</param-name>
       <param-value>abcd1234</param-value>
     </init-param>
@@ -318,46 +357,46 @@
       <param-name>ipslocation</param-name>
       <param-value>/devl/ai/usrdat/ips</param-value>
     </init-param>            
-    <init-param>
+	<init-param>
       <param-name>jclJobLogLoc</param-name>
       <param-value>MSGCLASS=R</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclUserId</param-name>
       <param-value>NOTIFY=TDETJB</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclReadDataSetIden</param-name>
       <param-value>DV</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclDataSetIden</param-name>
       <param-value>DV</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclHostName1</param-name>
       <param-value>UZ00028D</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclUserPass1</param-name>
       <param-value>svc-tcgm Winter_01</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclHostName2</param-name>
       <param-value>AP41</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclUserPass2</param-name>
       <param-value>DTAWHSFTP DATAWHSEIN</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclImportsLoc</param-name>
       <param-value>/TCGMManageDataDev/IMPORTS</param-value>
     </init-param>
-    <init-param>
+	<init-param>
       <param-name>jclExportsLoc</param-name>
       <param-value>/TCGMManageDataDev/EXPORTS</param-value>
-    </init-param>    
+    </init-param>
     <load-on-startup>2</load-on-startup>
   </servlet>
       <!-- ==================================================================== -->

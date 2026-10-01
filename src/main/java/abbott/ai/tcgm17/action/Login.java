@@ -15,7 +15,7 @@ import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.helpers.*;
 import abbott.ai.tcgm.exception.*;
 
-public class Login extends ActionSupport implements ServletRequestAware {
+public class Login extends TCGMAction implements ServletRequestAware {
 
 	private static final long serialVersionUID = 1L;
 	

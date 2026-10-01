@@ -1,9 +1,31 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="abbott.ai.tcgm.entities.RptUser" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <%! String pageTitle = "App User Creation"; %>
 <%@ include file="/include/header.jsf" %>
+
+<%
+    RptUser sessionUser = (RptUser) session.getAttribute("RptUser");
+    String displayUserId = "";
+    String displayLastName = "";
+    String displayFirstName = "";
+    String displayEmail = "";
+    String displayUpi = "";
+    String displayDivision = "";
+    String displayType = "";
+
+    if (sessionUser != null) {
+        displayUserId = (sessionUser.getUserid() != null) ? sessionUser.getUserid() : "";
+        displayLastName = (sessionUser.getLastName() != null) ? sessionUser.getLastName() : "";
+        displayFirstName = (sessionUser.getFirstName() != null) ? sessionUser.getFirstName() : "";
+        displayEmail = (sessionUser.getEmail() != null) ? sessionUser.getEmail() : "";
+        displayUpi = (sessionUser.getAbtNotesId() != null) ? sessionUser.getAbtNotesId() : "";
+        displayDivision = (sessionUser.getDivision() != null) ? sessionUser.getDivision() : ((sessionUser.getEmpDivision() != null) ? sessionUser.getEmpDivision() : "");
+        displayType = (sessionUser.getEmployeeType() != null) ? sessionUser.getEmployeeType() : "";
+    }
+%>
 
 <head>
     <style>
@@ -71,6 +93,7 @@
             chgActCmdSubmit('appview', 'ActiveDirSearch.action');
         }
 
+        // Validates input fields and triggers standard save endpoint
         function saveForm() {
             var roleSelect = document.getElementById('role');
             if (roleSelect.value === "-1") {
@@ -83,18 +106,18 @@
     </script>
 
     <s:form method="post" name="userForm" id="userForm" action="rptUserMaint" theme="simple">
-        <s:hidden name="cmd" id="cmd" />
-        <s:hidden name="cmd2" id="cmd2" value="creation" />
-        <s:hidden name="selDesc" id="selDesc" />
-        <s:hidden name="affCodeList" id="affCodeList" />
-        <s:hidden name="secCodeList" id="secCodeList" />
-        <s:hidden name="areaCodeList" id="areaCodeList" />
+        <input type="hidden" name="cmd" id="cmd" value="" />
+        <input type="hidden" name="cmd2" id="cmd2" value="creation" />
+        <input type="hidden" name="selDesc" id="selDesc" value="" />
+        <input type="hidden" name="affCodeList" id="affCodeList" value="" />
+        <input type="hidden" name="secCodeList" id="secCodeList" value="" />
+        <input type="hidden" name="areaCodeList" id="areaCodeList" value="" />
 
-        <table style="width: 700px; margin: 20px auto; border-collapse: collapse;" border="0" align="center">
+        <table style="width: 700px; margin: 20px auto; border-collapse: collapse;" border="0">
             <tr>
                 <td style="width: 120px; padding: 6px;" class="commandOptionLabel"><strong>User Id</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.userid" id="userid" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.userid" id="userid" value="<%=displayUserId%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -102,7 +125,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Last Name</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.lastName" id="lastName" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.lastName" id="lastName" value="<%=displayLastName%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -110,7 +133,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>First Name</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.firstName" id="firstName" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.firstName" id="firstName" value="<%=displayFirstName%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -118,7 +141,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Email</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.email" id="email" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.email" id="email" value="<%=displayEmail%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -126,7 +149,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>UPI</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.abtNotesId" id="abtNotesId" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.abtNotesId" id="abtNotesId" value="<%=displayUpi%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -134,7 +157,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.division" id="division" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.division" id="division" value="<%=displayDivision%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -142,7 +165,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Type</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.employeeType" id="employeeType" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.employeeType" id="employeeType" value="<%=displayType%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -162,7 +185,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <table align="center" style="border-spacing: 10px 0;">
+                    <table style="border-spacing: 10px 0; margin-left: auto; margin-right: auto;">
                         <tr>
                             <td>
                                 <button type="button" id="addButton" class="tcgm-btn" onClick="javascript:lookupUser();">LookUp</button>

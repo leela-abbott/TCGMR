@@ -60,7 +60,7 @@
             color: #333333;
         }
         .tcgm-input-box {
-            width: 180px !important; /* Fixed width to prevent global theme override expansion */
+            width: 180px !important;
             border: 1px solid #cccccc; 
             padding: 5px; 
             border-radius: 3px;
@@ -71,6 +71,19 @@
         .tcgm-button-row {
             text-align: center;
             padding-top: 25px;
+        }
+        .tcgm-results-table {
+            width: 100%;
+            max-width: 950px;
+            margin: 15px auto;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        .tcgm-results-table td {
+            padding: 8px;
+            border: 1px solid #dcdcdc;
+            text-align: left;
         }
     </style>
 </head>
@@ -125,46 +138,43 @@
 		      </table>
    		</c:if>
    		
-      <table width="100%" align="center" cellpadding="1" cellspacing="1" style="max-width: 900px; margin: 10px auto;">
+      <table class="tcgm-results-table">
         <tr class="mntTblHdng" bgcolor="#99CCFF">
-          <th width="40">
-            <div align="center"><span class="style5"></span><span class="style5"></span></div>
-            <span class="style5"><label></label></span> 
-          </th>
-          <th align="left">User ID</th>
-          <th align="left">First Name</th>
-          <th align="left">Last Name</th>
-          <th align="left">UPI</th>
-          <th align="left">Division</th>
-          <th align="left">Type</th>
-          <th align="left">Email</th>
+          <th width="40" style="padding: 8px;">&nbsp;</th>
+          <th align="left" style="padding: 8px;">User ID</th>
+          <th align="left" style="padding: 8px;">First Name</th>
+          <th align="left" style="padding: 8px;">Last Name</th>
+          <th align="left" style="padding: 8px;">UPI</th>
+          <th align="left" style="padding: 8px;">Division</th>
+          <th align="left" style="padding: 8px;">Type</th>
+          <th align="left" style="padding: 8px;">Email</th>
         </tr>
 			
         <c:forEach items="${activeDirUserList}" var="activeBean" varStatus="activeStatus">  
-          <tr>
-            <td>
+          <tr bgcolor="${activeStatus.index % 2 == 0 ? '#ffffff' : '#f9f9f9'}">
+            <td align="center">
               <input type="radio" name="blnSelected" value="<c:out value='${activeBean.userId}'/>" onclick="document.getElementById('selectUserButton').focus();"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].userId" value="%{#attr.activeBean.userId}" maxlength="30" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.userId}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].firstName" value="%{#attr.activeBean.firstName}" maxlength="30" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.firstName}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].lastName" value="%{#attr.activeBean.lastName}" maxlength="30" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.lastName}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].abtNotesId" value="%{#attr.activeBean.abtNotesId}" maxlength="50" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.abtNotesId}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].division" value="%{#attr.activeBean.division}" maxlength="50" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.division}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].employeeType" value="%{#attr.activeBean.employeeType}" maxlength="50" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.employeeType}"/>
             </td>
             <td>
-              <s:textfield name="activeDirUserList[%{#activeStatus.index}].email" value="%{#attr.activeBean.email}" maxlength="50" cssClass="mntLeft" style="width: 95%; box-sizing: border-box;" />
+              <c:out value="${activeBean.email}"/>
             </td>
           </tr>
         </c:forEach>
@@ -276,4 +286,3 @@ function callCancel(){
 </script>
 
 <%@ include file="/include/footer.jsf" %>
-            

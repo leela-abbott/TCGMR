@@ -174,12 +174,25 @@ public class OracleUserDao extends OracleDao implements UserDao
 	{
 		this.searchList = new Vector();
 
-		//need to build a search object and then loop through it to get the clause.
-		this.searchList.add(new Search(DBConst.COL_USERNAME,searchObject.getUserid(),TCGMConstants.ORACLE_EQUALS_COMPARISON));
-		this.searchList.add(new Search(DBConst.COL_FIRST_NAME,searchObject.getFirstName(),TCGMConstants.ORACLE_LIKE_COMPARISON));
-		this.searchList.add(new Search(DBConst.COL_LAST_NAME,searchObject.getLastName(),TCGMConstants.ORACLE_LIKE_COMPARISON));
-		this.searchList.add(new Search(DBConst.COL_EMAIL,searchObject.getEmail(),TCGMConstants.ORACLE_LIKE_COMPARISON));
-		this.searchList.add(new Search(DBConst.COL_PHONE,searchObject.getPhone(),TCGMConstants.ORACLE_LIKE_COMPARISON));
+		if (searchObject.getUserid() != null && !searchObject.getUserid().trim().isEmpty()) {
+			this.searchList.add(new Search(DBConst.COL_USERNAME, searchObject.getUserid(), TCGMConstants.ORACLE_EQUALS_COMPARISON));
+		}
+		
+		if (searchObject.getFirstName() != null && !searchObject.getFirstName().trim().isEmpty()) {
+			this.searchList.add(new Search(DBConst.COL_FIRST_NAME, searchObject.getFirstName(), TCGMConstants.ORACLE_LIKE_COMPARISON));
+		}
+		
+		if (searchObject.getLastName() != null && !searchObject.getLastName().trim().isEmpty()) {
+			this.searchList.add(new Search(DBConst.COL_LAST_NAME, searchObject.getLastName(), TCGMConstants.ORACLE_LIKE_COMPARISON));
+		}
+		
+		if (searchObject.getEmail() != null && !searchObject.getEmail().trim().isEmpty()) {
+			this.searchList.add(new Search(DBConst.COL_EMAIL, searchObject.getEmail(), TCGMConstants.ORACLE_LIKE_COMPARISON));
+		}
+		
+		if (searchObject.getPhone() != null && !searchObject.getPhone().trim().isEmpty()) {
+			this.searchList.add(new Search(DBConst.COL_PHONE, searchObject.getPhone(), TCGMConstants.ORACLE_LIKE_COMPARISON));
+		}
 	}
 
 	public User getUserFromCurrentRow(RowSet rs,boolean getRole) throws TCGMException

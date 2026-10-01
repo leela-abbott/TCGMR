@@ -90,10 +90,25 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
     private String performView(String action) {
         try {
             UserMngr userMngr = new UserMngr();
-            String userId = this.getUserToken(request);
-            String userPassword = ""; 
-            UserToken token = new UserToken(userId, userPassword);
-            this.setUserlist(userMngr.getUsers(token, this.getSearchObject(), this.getSortObject()));
+            
+            if (this.searchObject == null) {
+                this.searchObject = new User();
+            }
+            this.searchObject.setUserid(this.getUsId());
+            this.searchObject.setLastName(this.getLastName());
+            this.searchObject.setFirstName(this.getFirstName());
+
+            HttpSession session = request.getSession(false);
+            UserToken token = null;
+            if (session != null && session.getAttribute(TCGMConstants.SESSION_NAME_USER) != null) {
+                User loggedInUser = (User) session.getAttribute(TCGMConstants.SESSION_NAME_USER);
+                token = new UserToken(loggedInUser.getUserid(), loggedInUser.getPassword());
+            } else {
+                token = new UserToken("", "");
+            }
+
+            User emptyCriteria = new User();
+            this.setUserlist(userMngr.getUsers(token, emptyCriteria, this.getSortObject()));
         } catch (TCGMException tcgme) {
             logger.error(tcgme.toString(), tcgme);
             request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, tcgme);
@@ -115,13 +130,33 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
         try {
             String namesToSortBy[] = { "sn", "givenName", "cn", "mail", "userPrincipalName" };
             boolean sortAscending[] = { true, true, true, true, false };
-            this.setActiveDirUserList(activeDirSearchMgr.getUserList(this.getFirstName(), this.getLastName(), this.getUsId(), namesToSortBy, sortAscending));
+            
+            // Fetch results list
+            ArrayList searchResults = activeDirSearchMgr.getUserList(this.getFirstName(), this.getLastName(), this.getUsId(), namesToSortBy, sortAscending);
+            this.setActiveDirUserList(searchResults);
+
+            // FIX: Persist list into session so it survives stateless round-trips
+            HttpSession session = request.getSession(true);
+            session.setAttribute("ACTIVE_DIR_USER_LIST_SESSION", searchResults);
 
             UserMngr userMngr = new UserMngr();
-            String userId = this.getUserToken(request);
-            String userPassword = "";
-            UserToken token = new UserToken(userId, userPassword);
-            this.setUserlist(userMngr.getUsers(token, this.getSearchObject(), this.getSortObject()));
+            if (this.searchObject == null) {
+                this.searchObject = new User();
+            }
+            this.searchObject.setUserid(this.getUsId());
+            this.searchObject.setLastName(this.getLastName());
+            this.searchObject.setFirstName(this.getFirstName());
+
+            UserToken token = null;
+            if (session != null && session.getAttribute(TCGMConstants.SESSION_NAME_USER) != null) {
+                User loggedInUser = (User) session.getAttribute(TCGMConstants.SESSION_NAME_USER);
+                token = new UserToken(loggedInUser.getUserid(), loggedInUser.getPassword());
+            } else {
+                token = new UserToken("", "");
+            }
+
+            User emptyCriteria = new User();
+            this.setUserlist(userMngr.getUsers(token, emptyCriteria, this.getSortObject()));
 
             if (action.equalsIgnoreCase("rpt")) {
                 return SUCCESS;
@@ -171,7 +206,6 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
 
     private String performAppUserSelect(String userId) {
         ActiveDirSearchMngr activeDirSearchMgr = new ActiveDirSearchMngr();
-
         RptUser userBean = new RptUser();
         userBean.setAffCode("-1");
         userBean.setSecCode("-1");
@@ -180,7 +214,16 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
         userBean.setSectors(new HashMap());
         userBean.setAreas(new HashMap());
 
-        ActiveDirSearchDtlBean activeDirSearchDtlBean = activeDirSearchMgr.getSelectedUser(this.getActiveDirUserList(), userId);
+        // FIX: Extract the cached populated user list context out of the session state
+        HttpSession session = request.getSession(false);
+        ArrayList cachedList = null;
+        if (session != null && session.getAttribute("ACTIVE_DIR_USER_LIST_SESSION") != null) {
+            cachedList = (ArrayList) session.getAttribute("ACTIVE_DIR_USER_LIST_SESSION");
+        } else {
+            cachedList = this.getActiveDirUserList();
+        }
+
+        ActiveDirSearchDtlBean activeDirSearchDtlBean = activeDirSearchMgr.getSelectedUser(cachedList, userId);
         userBean.setUserid(userId);
         userBean.setFirstName(activeDirSearchDtlBean.getFirstName());
         userBean.setLastName(activeDirSearchDtlBean.getLastName());
@@ -192,8 +235,10 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
         userBean.setSecCode("-1");
 
         this.setRptUser(userBean);
-        request.getSession().setAttribute("RptUser", userBean);
-        request.getSession().setAttribute("userForm", this);
+        if (session != null) {
+            session.setAttribute("RptUser", userBean);
+            session.setAttribute("userForm", this);
+        }
         return "appUser";
     }
 
