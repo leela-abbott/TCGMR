@@ -2,13 +2,16 @@ package abbott.ai.tcgm.action.form;
 
 
 import java.util.Vector;
-//import java.util.Iterator;
-import abbott.ai.tcgm.entities.*;
-import org.apache.log4j.*;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.*;
-import org.apache.struts.action.*;
+import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
+
+//import java.util.Iterator;
+import abbott.ai.tcgm.entities.Option;
+import abbott.ai.tcgm.entities.ReportPrintRequest;
+import abbott.ai.tcgm.entities.ReportRestriction;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 /**
  * <p>Title: </p>
  * <p>Description: </p>

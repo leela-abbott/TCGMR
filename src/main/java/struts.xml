@@ -616,7 +616,7 @@
 		</action>
 
 		<action name="mngFactorModels"
-			class="abbott.ai.tcgm.action.MngFactorModels">
+			class="abbott.ai.tcgm17.action.MngFactorModels">
 			<result name="success">/jsp/mngFactorModels.jsp</result>
 		</action>
 

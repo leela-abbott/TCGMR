@@ -53,7 +53,7 @@
     <s:form action="login.action" method="post" id="mainForm" theme="simple">
 
         <!-- 100% Full-Width Base Grid Table Layout Matrix -->
-        <table style="text-align: center; width: 100%; font-size: large; font-weight: bold; color: Navy;" cellpadding="0" cellspacing="0">
+        <table style="text-align: center; width: 65%; font-size: large; font-weight: bold; color: Navy;" cellpadding="0" cellspacing="0">
             <tr>
                 <td>
                     <table style="width: 100%; text-align: center; font-size: large; font-weight: bold; color: Navy;">

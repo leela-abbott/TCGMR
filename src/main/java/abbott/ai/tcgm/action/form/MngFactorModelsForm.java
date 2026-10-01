@@ -1,6 +1,6 @@
 package abbott.ai.tcgm.action.form;
 
-import abbott.ai.tcgm.entities.*;
+import abbott.ai.tcgm.entities.TCGMModel;
 
 //import java.util.Vector;
 /**
