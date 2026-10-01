@@ -7,6 +7,7 @@
 	<!-- Global Constant Configurations -->
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.action.extension" value="action,do" />
+	<constant name="struts.custom.i18n.resources" value="ApplicationResources" />
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
@@ -796,13 +797,21 @@
 			<result name="success">/jsp/userList.jsp</result>
 		</action>
 
+		<!-- <action name="rptUserMaint" class="abbott.ai.tcgm.action.user.RptUserMaint"> 
+			<result name="input">/jsp/rptUserCreate.jsp</result> <result name="success">/jsp/rptUserCreate.jsp</result> 
+			<result name="appsuccess">/jsp/appUserCreate.jsp</result> <result name="filter">/jsp/rptUserFilter.jsp</result> 
+			<result name="burst">/jsp/burstMaint.jsp</result> <result name="usersview">/jsp/cognosUsersView.jsp</result> 
+			<result name="users">/jsp/cognosUsers.jsp</result> <result name="datausersView">/jsp/dataUsersView.jsp</result> 
+			<result name="datausers">/jsp/reportUsers.jsp</result> </action> -->
 		<action name="rptUserMaint"
-			class="abbott.ai.tcgm.action.user.RptUserMaint">
+			class="abbott.ai.tcgm17.action.user.RptUserMaintAction">
+			<!-- Input and Default Success Navigations -->
 			<result name="input">/jsp/rptUserCreate.jsp</result>
 			<result name="success">/jsp/rptUserCreate.jsp</result>
-			<result name="appsuccess">/jsp/appUserCreate.jsp</result>
+			<result name="appSuccess">/jsp/appUserCreate.jsp</result>
 			<result name="filter">/jsp/rptUserFilter.jsp</result>
 			<result name="burst">/jsp/burstMaint.jsp</result>
+			<result name="activeaff">/jsp/activeAffiliateMaint.jsp</result>
 			<result name="usersview">/jsp/cognosUsersView.jsp</result>
 			<result name="users">/jsp/cognosUsers.jsp</result>
 			<result name="datausersView">/jsp/dataUsersView.jsp</result>
@@ -992,16 +1001,12 @@
 			<result name="success">/jsp/mngDataFeedLog.jsp</result>
 		</action>
 
-<!-- 		<action name="ActiveDirSearch"
-			class="abbott.ai.tcgm.action.ActiveDirSearch">
-			<result name="input">/jsp/activeDirSearch.jsp</result>
-			<result name="success">/jsp/activeDirSearch.jsp</result>
-			<result name="appsuccess">/jsp/activeDirSearchApp.jsp</result>
-			<result name="rptUser">/jsp/rptUserCreate.jsp</result>
-			<result name="appUser">/jsp/appUserCreate.jsp</result>
-		</action> -->
-		
-		 <action name="ActiveDirSearch"
+		<!-- <action name="ActiveDirSearch" class="abbott.ai.tcgm.action.ActiveDirSearch"> 
+			<result name="input">/jsp/activeDirSearch.jsp</result> <result name="success">/jsp/activeDirSearch.jsp</result> 
+			<result name="appsuccess">/jsp/activeDirSearchApp.jsp</result> <result name="rptUser">/jsp/rptUserCreate.jsp</result> 
+			<result name="appUser">/jsp/appUserCreate.jsp</result> </action> -->
+
+		<action name="ActiveDirSearch"
 			class="abbott.ai.tcgm17.action.ActiveDirSearchAction">
 			<result name="input">/jsp/activeDirSearch.jsp</result>
 			<result name="success">/jsp/activeDirSearch.jsp</result>

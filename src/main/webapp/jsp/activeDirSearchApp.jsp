@@ -72,18 +72,35 @@
             text-align: center;
             padding-top: 25px;
         }
-        .tcgm-results-table {
+        
+        /* Unified table layouts matching original image specs */
+        .tcgm-results-table, 
+        .tcgm-existing-users-table {
             width: 100%;
             max-width: 950px;
             margin: 15px auto;
             border-collapse: collapse;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
         }
-        .tcgm-results-table td {
+        .tcgm-results-table td, .tcgm-results-table th,
+        .tcgm-existing-users-table td, .tcgm-existing-users-table th {
             padding: 8px;
             border: 1px solid #dcdcdc;
             text-align: left;
+        }
+        .tcgm-results-table th, 
+        .tcgm-existing-users-table th {
+            background-color: #99CCFF;
+            font-weight: bold;
+            color: #002266;
+        }
+        .tcgm-existing-users-table tr.evenRow {
+            background-color: #ffffff;
+        }
+        /* Changed back to the classic yellow color value from the screenshot */
+        .tcgm-existing-users-table tr.oddRow {
+            background-color: #ffffcc;
         }
     </style>
 </head>
@@ -128,7 +145,6 @@
       </tr>
   </table>
   <br>
-
   <c:if test="${not empty activeDirUserList}">
    		<c:if test="${activeDirUserList.size() > 10}">
    			  <table style="border-spacing: 10px 0; margin-left: auto; margin-right: auto;">
@@ -139,45 +155,34 @@
    		</c:if>
    		
       <table class="tcgm-results-table">
-        <tr class="mntTblHdng" bgcolor="#99CCFF">
-          <th width="40" style="padding: 8px;">&nbsp;</th>
-          <th align="left" style="padding: 8px;">User ID</th>
-          <th align="left" style="padding: 8px;">First Name</th>
-          <th align="left" style="padding: 8px;">Last Name</th>
-          <th align="left" style="padding: 8px;">UPI</th>
-          <th align="left" style="padding: 8px;">Division</th>
-          <th align="left" style="padding: 8px;">Type</th>
-          <th align="left" style="padding: 8px;">Email</th>
-        </tr>
-			
-        <c:forEach items="${activeDirUserList}" var="activeBean" varStatus="activeStatus">  
-          <tr bgcolor="${activeStatus.index % 2 == 0 ? '#ffffff' : '#f9f9f9'}">
-            <td align="center">
-              <input type="radio" name="blnSelected" value="<c:out value='${activeBean.userId}'/>" onclick="document.getElementById('selectUserButton').focus();"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.userId}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.firstName}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.lastName}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.abtNotesId}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.division}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.employeeType}"/>
-            </td>
-            <td>
-              <c:out value="${activeBean.email}"/>
-            </td>
-          </tr>
-        </c:forEach>
+        <thead>
+            <tr class="mntTblHdng">
+              <th width="40">&nbsp;</th>
+              <th>User ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>UPI</th>
+              <th>Division</th>
+              <th>Type</th>
+              <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${activeDirUserList}" var="activeBean" varStatus="activeStatus">  
+              <tr bgcolor="${activeStatus.index % 2 == 0 ? '#ffffff' : '#f9f9f9'}">
+                <td align="center">
+                  <input type="radio" name="blnSelected" value="<c:out value='${activeBean.userId}'/>" onclick="document.getElementById('selectUserButton').focus();"/>
+                </td>
+                <td><c:out value="${activeBean.userId}"/></td>
+                <td><c:out value="${activeBean.firstName}"/></td>
+                <td><c:out value="${activeBean.lastName}"/></td>
+                <td><c:out value="${activeBean.abtNotesId}"/></td>
+                <td><c:out value="${activeBean.division}"/></td>
+                <td><c:out value="${activeBean.employeeType}"/></td>
+                <td><c:out value="${activeBean.email}"/></td>
+              </tr>
+            </c:forEach>
+        </tbody>
       </table>     
        
       <table style="border-spacing: 10px 0; margin-left: auto; margin-right: auto;">
@@ -192,53 +197,42 @@
   <font face="Arial" size="2" color="blue">Existing TCGM Application Users : </font>
   <br>
 	
-  <table width="760" cellspacing="0" cellpadding="5">
+  <table class="tcgm-existing-users-table">
+        <thead>
 			<tr class="fltrTblHdng">
-				<td>User Id</td>
-				<td>First Name</td>
-				<td>Last Name</td>
-				<td>Phone</td>
-				<td>UPI</td>
-				<td>&nbsp;Role</td>
-				<td>&nbsp;Email</td>
+				<th>User Id</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Phone</th>
+				<th>UPI</th>
+				<th>Role</th>
+				<th>Email</th>
 			</tr>
-	
-      <c:choose>
-          <c:when test="${not empty userlist}">
-              <c:forEach var="userBean" items="${userlist}" varStatus="userStatus">
-                  <tr class="${userStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}" id="mntRow">
-                      <td class="mntLeft">
-                          <c:out value="${userBean.userid}" />
-                      </td>		
-                      <td class="mntLeft">
-                          <c:out value="${userBean.firstName}" />
-                      </td>
-                      <td class="mntLeft">
-                          <c:out value="${userBean.lastName}" />
-                      </td>
-                      <td class="mntLeft">
-                          <c:out value="${userBean.phone}" />
-                      </td>
-                      <td class="mntLeft">
-                          <c:out value="${userBean.abtNotesId}" />
-                      </td>
-                      <td class="mntCenter">
-                          &nbsp;&nbsp;<c:out value="${userBean.userRole}" />
-                      </td>
-                      <td class="mntLeft">
-                          &nbsp;&nbsp;<c:out value="${userBean.email}" />
+        </thead>
+        <tbody>
+          <c:choose>
+              <c:when test="${not empty userlist}">
+                  <c:forEach var="userBean" items="${userlist}" varStatus="userStatus">
+                      <tr class="${userStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}" id="mntRow">
+                          <td><c:out value="${userBean.userid}" /></td>		
+                          <td><c:out value="${userBean.firstName}" /></td>
+                          <td><c:out value="${userBean.lastName}" /></td>
+                          <td><c:out value="${userBean.phone}" /></td>
+                          <td><c:out value="${userBean.abtNotesId}" /></td>
+                          <td><c:out value="${userBean.userRole}" /></td>
+                          <td><c:out value="${userBean.email}" /></td>
+                      </tr>
+                  </c:forEach>	
+              </c:when>
+              <c:otherwise>
+                  <tr>
+                      <td colspan="7">
+                          <%@ include file="/include/recordsNotFound.jsf" %>
                       </td>
                   </tr>
-              </c:forEach>	
-          </c:when>
-          <c:otherwise>
-              <tr>
-                  <td colspan="7">
-                      <%@ include file="/include/recordsNotFound.jsf" %>
-                  </td>
-              </tr>
-          </c:otherwise>
-      </c:choose>
+              </c:otherwise>
+          </c:choose>
+        </tbody>
   </table>
 </s:form>
 

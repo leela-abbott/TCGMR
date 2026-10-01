@@ -70,8 +70,8 @@
         <s:hidden name="cmd" id="cmd" />
         <s:hidden name="userListSize" id="userListSize" />
 
-        <!-- Modernized Layout Matrix Table Grid System matching HTML5 metrics -->
-        <table style="width: 760px; border-collapse: collapse; border-spacing: 0; margin-top: 10px;">
+        <!-- Centered Layout Matrix Table Grid System via auto side margins -->
+        <table style="width: 760px; border-collapse: collapse; border-spacing: 0; margin-top: 10px; margin-left: auto; margin-right: auto;">
             <tr>
                 <td colspan="8" style="text-align: right; padding-bottom: 10px;">
                     <!-- Secure Role Evaluation Layer using standard Jakarta Session checks -->
@@ -82,7 +82,6 @@
                     </c:if>
                 </td>
             </tr>
-            
             <tr class="fltrTblHdng" style="background-color: #b4d8f4; font-weight: bold; color: Navy; text-align: left;">
                 <td style="padding: 6px;">User Id</td>
                 <td style="padding: 6px;">First Name</td>
@@ -129,10 +128,13 @@
 
         <!-- Render Fallback Elements cleanly if structural record data yields zero elements -->
         <c:if test="${empty action.userlist}">
-            <%@ include file="/include/recordsNotFound.jsf" %>
+            <div style="text-align: center; margin: 20px auto; width: 760px;">
+                <%@ include file="/include/recordsNotFound.jsf" %>
+            </div>
         </c:if>
 
     </s:form>
     <%@ include file="/include/footer.jsf" %>
 </body>
 </html>
+            

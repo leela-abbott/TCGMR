@@ -1,460 +1,627 @@
-<%! String pageTitle = "Report User Search"; %>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="javascript:disableList();">
-<%@ include file="/include/header.jsf" %>
-<jsp:useBean id="userForm" scope="session" class="abbott.ai.tcgm.action.form.RptUserForm" />
-<bean:define id="TCGMUser" name="TCGMUser" scope="session" type="abbott.ai.tcgm.entities.User" />
-<script language="JavaScript" src="include/sorttable.js" type=text/javascript></script>
-<SCRIPT type="text/javascript" language="JAVASCRIPT">
-function disableList()
-	{	
-	   	document.getElementById("areaCode").disabled=true;
-	   	document.getElementById("affCode").disabled=true;
-	   	document.getElementById("secCode").disabled=true;
-	  	  
-	}
-function enableList(){
-//alert(document.getElementById("role").value);
-		if (document.getElementById("role").value=='Area')
-	  	{
-	  		document.getElementById("areaCode").disabled=false;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").value=-1;		   	
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").value=-1;
-		   	document.getElementById("division").disabled=false;		   	
-	  	}
-	  	else if (document.getElementById("role").value=='Affiliate')
-	  	{
-		  	document.getElementById("areaCode").value=-1;	  	
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=false;
-		    document.getElementById("secCode").value=-1;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").value=-1;
-		   	document.getElementById("division").disabled=false;		   			   	
-	  	}
-	  	else if (document.getElementById("role").value=='Sector')
-	  	{
-		  	document.getElementById("areaCode").value=-1;	  	
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").value=-1;	  		
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=false;
-		   	document.getElementById("division").value=-1;		   	
-		   	document.getElementById("division").disabled=false;		   	
-	  	}else if(document.getElementById("role").value=='D')
-	  	{
-		  	document.getElementById("areaCode").value=-1;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("secCode").value=-1;
-		   	document.getElementById("division").value=-1;
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").disabled=false;		   			   	
-	  	}else {
-		  	document.getElementById("areaCode").value=-1;
-		   	document.getElementById("affCode").value=-1;
-		   	document.getElementById("secCode").value=-1;
-		   	document.getElementById("division").value=-1;
+<% String pageTitle = "Report User Search"; %>
+<c:set var="pageTitle" value="Report User Search" scope="request" />
 
-	  		document.getElementById("areaCode").disabled=true;
-		   	document.getElementById("affCode").disabled=true;
-		   	document.getElementById("secCode").disabled=true;
-		   	document.getElementById("division").disabled=true;		   	
-	  	}
-}	
+<head>
+<style type="text/css">
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        color: #333333;
+        margin: 0;
+        padding: 0;
+    }
+    .search-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .form-group-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+    .form-group-row label {
+        width: 160px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333333;
+        text-align: left;
+    }
+    .input-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+    .form-control-input, .form-control-select {
+        width: 280px;
+        height: 36px;
+        padding: 6px 12px;
+        font-size: 14px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        box-sizing: border-box;
+        background-color: #ffffff;
+        transition: border-color 0.2s ease;
+    }
+    .form-control-input:focus, .form-control-select:focus {
+        border-color: #a0a0a0;
+        outline: none;
+    }
+    .form-control-input:disabled, .form-control-select:disabled {
+        background-color: #f5f5f5;
+        color: #b0b0b0;
+        cursor: not-allowed;
+    }
+    .btn-submit-orange {
+        background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
+        border: 1px solid #e5a515;
+        border-radius: 6px;
+        color: #222222;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px 36px;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: block;
+        margin: 30px auto;
+        text-align: center;
+        min-width: 160px;
+    }
+    .btn-submit-orange:hover {
+        background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
+    }
+    .btn-action-gray {
+        background: #f0f0f0;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        color: #333333;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 12px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+    .btn-action-gray:hover {
+        background: #e5e5e5;
+    }
+    .btn-action-delete {
+        background: #fff0f0;
+        border: 1px solid #ffcccc;
+        color: #cc0000;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 12px;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .btn-action-delete:hover {
+        background: #ffe0e0;
+    }
+    .btn-action-export {
+        background: #f0f8ff;
+        border: 1px solid #bce0ff;
+        color: #0066cc;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 12px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-action-export:hover {
+        background: #e0f0ff;
+    }
+    .btn-toggle-select {
+        background: #ffffff;
+        border: 1px solid #bbbbbb;
+        border-radius: 3px;
+        font-size: 11px;
+        padding: 2px 6px;
+        cursor: pointer;
+    }
+    .results-fieldset {
+        border: 1px solid #dddddd;
+        border-radius: 6px;
+        padding: 20px;
+        margin-top: 40px;
+        display: block;
+        clear: both;
+        box-sizing: border-box;
+    }
+    .results-legend {
+        font-size: 16px;
+        font-weight: bold;
+        color: #0044aa;
+        padding: 0 10px;
+    }
+    .action-bar-table {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+    .modern-grid-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+    .modern-grid-table th {
+        background-color: #99ccff;
+        color: #333333;
+        font-weight: bold;
+        text-align: left;
+        padding: 10px;
+        border: 1px solid #d0e0f5;
+    }
+    .modern-grid-table td {
+        padding: 10px;
+        border: 1px solid #e8f0fa;
+    }
+    .evenRow {
+        background-color: #ffffff;
+    }
+    .oddRow {
+        background-color: #ffffdd;
+    }
+    .text-center { text-align: center; }
+    .text-left { text-align: left; }
+    .text-right { text-align: right; }
+        /* Hidden native box placeholder */
+    .custom-checkbox-container {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+    }
+    .custom-checkbox-container input {
+        opacity: 0;
+        position: absolute;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        z-index: 2;
+    }
+    /* Yellow tick box background base styling */
+    .checkmark-indicator {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #ffcc44; /* Custom yellow tone matches button */
+        border: 1px solid #d4a017;
+        border-radius: 3px;
+        z-index: 1;
+    }
+    /* Render internal checkmark drawing logic */
+    .checkmark-indicator:after {
+        content: "";
+        position: absolute;
+        display: block;
+        left: 5px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid #222222; /* Dark check accent matching old layout */
+        border-width: 0 2.5px 2.5px 0;
+        transform: rotate(45deg);
+    }
+    
+</style>
+<script language="JavaScript" src="include/sorttable.js" type="text/javascript"></script>
+<script type="text/javascript">
 
-function getUsers(form, cmd, action){
-		
-		if(document.getElementById("role").value=='Area'||document.getElementById("role").value=='Affiliate'
-			||document.getElementById("role").value=='Sector'||document.getElementById("role").value=='D'){
-				if(document.getElementById("division").value=='-1'){
-					alert('Please select Division');
-					return false;
-				}
-		}
-		
-		
-		if (document.getElementById("role").value=='Area')
-	  	{
-	  		if(document.getElementById("areaCode").value=='-1'){
-			alert('Please select Area');
-			return false;
-			}
-	  		form.selDesc.value = form.areaCode[form.areaCode.selectedIndex].text;
+/* function disableList() {    
+    document.getElementById("areaCode").disabled = true;
+    document.getElementById("affCode").disabled = true;
+    document.getElementById("secCode").disabled = true;
+} */
+function enableList() {
+    var roleVal = document.getElementById("role").value;
+    if (roleVal == 'Area') {
+        document.getElementById("areaCode").disabled = false;
+        document.getElementById("affCode").value = -1;
+        document.getElementById("affCode").disabled = true;
+        document.getElementById("secCode").value = -1;              
+        document.getElementById("secCode").disabled = true;
+        document.getElementById("division").value = -1;
+        document.getElementById("division").disabled = false;           
+    }
+    else if (roleVal == 'Affiliate') {
+        document.getElementById("areaCode").value = -1;     
+        document.getElementById("areaCode").disabled = true;
+        document.getElementById("affCode").disabled = false;
+        document.getElementById("secCode").value = -1;
+        document.getElementById("secCode").disabled = true;
+        document.getElementById("division").value = -1;
+        document.getElementById("division").disabled = false;               
+    }
+    else if (roleVal == 'Sector') {
+        document.getElementById("areaCode").value = -1;     
+        document.getElementById("areaCode").disabled = true;
+        document.getElementById("affCode").value = -1;              
+        document.getElementById("affCode").disabled = true;
+        document.getElementById("secCode").disabled = false;
+        document.getElementById("division").value = -1;            
+        document.getElementById("division").disabled = false;           
+    }
+    else if (roleVal == 'D') {
+        document.getElementById("areaCode").value = -1;
+        document.getElementById("affCode").value = -1;
+        document.getElementById("secCode").value = -1;
+        document.getElementById("division").value = -1;
 
-	  	}
-	  	if (document.getElementById("role").value=='Affiliate')
-	  	{
-	  		if(document.getElementById("affCode").value=='-1'){
-			alert('Please select Affiliate');
-			return false;
-			}
-	  		form.selDesc.value = form.affCode[form.affCode.selectedIndex].text;
-	  	}
-	  	if (document.getElementById("role").value=='Sector')
-	  	{
-	  		if(document.getElementById("secCode").value=='-1'){
-			alert('Please select Sector');
-			return false;
-			}	  	
-	  		form.selDesc.value = form.secCode[form.secCode.selectedIndex].text;
-	  	}
-	  	//alert(form.selDesc.value);
-	  	//alert(action);
-		chgActCmdSubmit(form, cmd, action);
-}	
-function allCap(id){
-var val = document.getElementById(id).value;
-document.getElementById(id).value = val.toUpperCase();
+        document.getElementById("areaCode").disabled = true;
+        document.getElementById("affCode").disabled = true;
+        document.getElementById("secCode").disabled = true;
+        document.getElementById("division").disabled = false;               
+    }
+    else {
+        document.getElementById("areaCode").value = -1;
+        document.getElementById("affCode").value = -1;
+        document.getElementById("secCode").value = -1;
+        document.getElementById("division").value = -1;
+
+        document.getElementById("areaCode").disabled = true;
+        document.getElementById("affCode").disabled = true;
+        document.getElementById("secCode").disabled = true;
+        document.getElementById("division").disabled = true;            
+    }
+}   
+</script>
+<script type="text/javascript">
+function getUsers(form, cmd, action) {
+    var roleVal = document.getElementById("role").value;
+    if(roleVal == 'Area' || roleVal == 'Affiliate' || roleVal == 'Sector' || roleVal == 'D') {
+        if(document.getElementById("division").value == '-1') {
+            alert('Please select Division');
+            return false;
+        }
+    }
+    
+    if (roleVal == 'Area') {
+        if(document.getElementById("areaCode").value == '-1') {
+            alert('Please select Area');
+            return false;
+        }
+        form.elements['selDesc'].value = form.elements['areaCode'].options[form.elements['areaCode'].selectedIndex].text;
+    }
+    if (roleVal == 'Affiliate') {
+        if(document.getElementById("affCode").value == '-1') {
+            alert('Please select Affiliate');
+            return false;
+        }
+        form.elements['selDesc'].value = form.elements['affCode'].options[form.elements['affCode'].selectedIndex].text;
+    }
+    if (roleVal == 'Sector') {
+        if(document.getElementById("secCode").value == '-1') {
+            alert('Please select Sector');
+            return false;
+        }       
+        form.elements['selDesc'].value = form.elements['secCode'].options[form.elements['secCode'].selectedIndex].text;
+    }
+    chgActCmdSubmit(form, cmd, action);
+}   
+
+function allCap(id) {
+    var val = document.getElementById(id).value;
+    document.getElementById(id).value = val.toUpperCase();
 }
-function initCap(id){
-var val = document.getElementById(id).value;
-document.getElementById(id).value = val.substring(0,1).toUpperCase()+val.substring(1,val.length);
+
+function initCap(id) {
+    var val = document.getElementById(id).value;
+    document.getElementById(id).value = val.substring(0,1).toUpperCase() + val.substring(1, val.length);
 }
 
-function confirmDelete(form, cmd, action)
-		{
-			if ( confirm("Are you sure that you would like to delete selected User Record(s)? ") ) 
-			{
-				chgActCmdSubmit(form, cmd, action);
-			}
-	}
-	function confirmAddReprt(form, cmd, action)
-	{
-			var cntVar=document.getElementById("hidVal");
-			var incr=0;
-			if(null!=cntVar)
-			{
-				var cnt=cntVar.value;
-				for(i=0;i<cnt;i++)
-				{
-					if(document.getElementById("userlist["+i+"].selected").checked)
-					{
-						incr++;
-					}
-				}
-				if(incr>0)
-				{
-	 					if ( confirm("Are you sure that you would like to Add selected User Record(s) to Cognos? ") ) 
-						{
-							chgActCmdSubmit(form, cmd, action);
-						}
-				}else{
-				 		alert('Please Select atleast a record to perform the action.');
-				}
-				
-			}else{
-		 		alert('Atleast a record should be there to perform the operation.');
-		 	}
-	
-				
-	}	
+// Custom clear float utility function
+function toggleSelectAll(listName, propName, totalSize) {
+    return false; // Interface utility connector
+}
 
-function confirmExport(form, cmd, action)
-	{
-			var cntVar=document.getElementById("hidVal");
-			var incr=0;
-			if(null!=cntVar)
-			{
-				var cnt=cntVar.value;
-				for(i=0;i<cnt;i++)
-				{
-					if(document.getElementById("userlist["+i+"].selected").checked)
-					{
-						incr++;
-					}
-				}
-				if(incr>0)
-				{
-	 					if ( confirm("Are you sure that you would like to Export selected User Record(s)? ") ) 
-						{
-							chgActCmdSubmit(form, cmd, action);
-						}
-				}else{
-				 		alert('Please Select atleast a record to perform the action.');
-				}
-				
-			}else{
-		 		alert('Atleast a record should be there to perform the operation.');
-		 	}
-	
-				
-	}	
-	function removeAllOptions(selectbox)
-{
-	var i;
-	for(i=selectbox.options.length-1;i>=0;i--)
-	{
-		selectbox.remove(i);
-	}
+function confirmDelete(form, cmd, action) {
+    if (confirm("Are you sure that you would like to delete selected User Record(s)? ")) {
+        chgActCmdSubmit(form, cmd, action);
+    }
+}
+function confirmAddReprt(form, cmd, action) {
+    var cntVar = document.getElementById("hidVal");
+    var incr = 0;
+    if(null != cntVar) {
+        var cnt = cntVar.value;
+        for(i = 0; i < cnt; i++) {
+            if(document.getElementById("userlist[" + i + "].selected").checked) {
+                incr++;
+            }
+        }
+        if(incr > 0) {
+            if (confirm("Are you sure that you would like to Add selected User Record(s) to Cognos? ")) {
+                chgActCmdSubmit(form, cmd, action);
+            }
+        } else {
+            alert('Please Select atleast a record to perform the action.');
+        }
+    } else {
+        alert('Atleast a record should be there to perform the operation.');
+    }
+}   
+
+function confirmExport(form, cmd, action) {
+    var cntVar = document.getElementById("hidVal");
+    var incr = 0;
+    if(null != cntVar) {
+        var cnt = cntVar.value;
+        for(i = 0; i < cnt; i++) {
+            if(document.getElementById("userlist[" + i + "].selected").checked) {
+                incr++;
+            }
+        }
+        if(incr > 0) {
+            if (confirm("Are you sure that you would like to Export selected User Record(s)? ")) {
+                chgActCmdSubmit(form, cmd, action);
+            }
+        } else {
+            alert('Please Select atleast a record to perform the action.');
+        }
+    } else {
+        alert('Atleast a record should be there to perform the operation.');
+    }
+}   
+
+function removeAllOptions(selectbox) {
+    for(var i = selectbox.options.length - 1; i >= 0; i--) {
+        selectbox.remove(i);
+    }
 }
  
- function removeList(selList)
- {
- 
-	 var affList = document.getElementById(selList);
-	 //alert(affList.options.length);
-	 for(var i=affList.options.length-1;i>=0;i--){
-	 		// alert(affList.options[i].text);
- 			 //alert(affList.options[i].value);
-		 if(affList.options[i].selected){
-				// alert(affList.options[i].text);
-		 		 //alert(affList.options[i].value);
-		 affList.remove(i);
-		 }
- 	}
- 	 	
- }
- 
- function addOptions(selectbox,text,value)
-{
-	var optn = document.createElement("OPTION");
-	optn.text = trim(text);
-	optn.value = trim(value);
-	selectbox.options.add(optn);
+function removeList(selList) {
+    var affList = document.getElementById(selList);
+    for(var i = affList.options.length - 1; i >= 0; i--) {
+        if(affList.options[i].selected) {
+            affList.remove(i);
+        }
+    }
 }
+ 
+function addOptions(selectbox, text, value) {
+    var optn = document.createElement("OPTION");
+    optn.text = trim(text);
+    optn.value = trim(value);
+    selectbox.options.add(optn);
+}
+
 function trim(stringToTrim) {
-	return stringToTrim.replace(/^\s+|\s+$/g,"");
-}
-function callValues()
-{
-	if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Area'){
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstArea&cascadingVal='+document.getElementById('division').value,'userForm','areaCode');
-	}
-	else if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Affiliate')
-	{
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstAff&cascadingVal='+document.getElementById('division').value,'userForm','affCode');
-	}
-	else if(document.getElementById('division').value!='-1' && document.getElementById('role').value=='Sector')
-	{
-		retrieveURL('./tcgmAjax.do?cascadingCmd=BurstSector&cascadingVal='+document.getElementById('division').value,'userForm','secCode');
-	}
-	else
-	{
-	removeAllOptions(document.getElementById("areaCode"));
-	removeAllOptions(document.getElementById("affCode"));
-	removeAllOptions(document.getElementById("secCode"));
-	}
+    return stringToTrim.replace(/^\s+|\s+$/g, "");
 }
 
+function callValues() {
+    var divVal = document.getElementById('division').value;
+    var roleVal = document.getElementById('role').value;
+    if(divVal != '-1' && roleVal == 'Area') {
+        retrieveURL('./tcgmAjax.action?cascadingCmd=BurstArea&cascadingVal=' + divVal, 'userForm', 'areaCode');
+    }
+    else if(divVal != '-1' && roleVal == 'Affiliate') {
+        retrieveURL('./tcgmAjax.action?cascadingCmd=BurstAff&cascadingVal=' + divVal, 'userForm', 'affCode');
+    }
+    else if(divVal != '-1' && roleVal == 'Sector') {
+        retrieveURL('./tcgmAjax.action?cascadingCmd=BurstSector&cascadingVal=' + divVal, 'userForm', 'secCode');
+    }
+    else {
+        removeAllOptions(document.getElementById("areaCode"));
+        removeAllOptions(document.getElementById("affCode"));
+        removeAllOptions(document.getElementById("secCode"));
+    }
+}
+</script>
+</head>
+<body onload="disableList();">
+<%@ include file="/include/header.jsf" %>
 
-</SCRIPT>
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
-<bean:define id="RptUser" name="RptUser" scope="session" type="abbott.ai.tcgm.entities.RptUser" />	
-	<nested:form method="post" name="userForm" type="abbott.ai.tcgm.action.form.RptUserForm" action="/rptUserMaint.do" scope="session">
-		<nested:hidden property="cmd" />
-		<nested:hidden property="selDesc" />
+<c:set var="userForm" value="${sessionScope.userForm}" scope="session" />
+<c:set var="TCGMUser" value="${sessionScope.TCGMUser}" scope="session" />
+<c:set var="RptUser" value="${sessionScope.RptUser}" scope="session" />
 
-  <table width="390" align="center">
-    <tr>
-      <td width="108" class="commandOptionLabel"><strong><span class="mntLeft" >User ID</span>
-      </strong></td>
-      <%String tmpProperty = "rptUser.userid";%>
-      
-      <td width="171"><nested:text property="<%=tmpProperty%>" onblur="javascript:allCap('userid');" 
-      						onkeydown="if(event.keyCode == 13){javascript:allCap('userid');document.getElementById('GetButton').click();}" 
-      							styleClass="mntLeft"  styleId="userid"/></td>
-    </tr>
-     <tr>
-     <%tmpProperty = "rptUser.lastName";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >Last Name</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft"  onblur="javascript:initCap('lastName');"  
-      		onkeydown="if(event.keyCode == 13){javascript:initCap('lastName'); document.getElementById('GetButton').click();}"	styleId="lastName"/></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-    <%tmpProperty = "rptUser.firstName";%>
-      <td class="commandOptionLabel"><strong><span class="mntLeft" >First Name</span></strong></td>
-      <td><nested:text  property="<%=tmpProperty%>" styleClass="mntLeft"  onblur="javascript:initCap('firstName');" 
-      		onkeydown="if(event.keyCode == 13){javascript:initCap('firstName'); document.getElementById('GetButton').click();}" styleId="firstName"/></td>
-      <td>&nbsp;</td>
-    </tr>
-   
-     <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Role</span></strong></td>
-		 <%tmpProperty = "rptUser.role";%>
-		<td>
-			<html:select property="<%=tmpProperty%>" onchange="javascript:enableList()" styleId="role">
-              <option value="-1">All</option>
-			  <option value="HQS">HQ Supervisor</option>
-              <option value="HQC">HQ Consumer</option>
-              <option value="DALL">All Divisions</option>                            
-              <option value="D">Division</option>
-              <option value="Area">Area</option>
-              <option value="Sector">Sector</option>              
-              <option value="Affiliate">Affiliate</option>
-	        </html:select>
-         </td> 
-      <td>&nbsp;</td>
-    </tr>
-<bean:define id="divCollection" name="RptUser" property="div" type="java.util.HashMap"/>
-     <tr>
-         <td class="commandOptionLabel"><strong><span class="mntLeft">Division</span></strong></td>
-		 <%tmpProperty = "rptUser.division";%>
-		<td>
-			<html:select property="<%=tmpProperty%>" styleId="division" onchange="javascript:callValues()">
-            <!--  <option value="All">All</option> -->
-              <option value="-1">Select One</option>
-              <html:options property="value" labelProperty="key" collection="divCollection" />
-                         </html:select>
-         </td> 
-         <td>&nbsp;</td>
-    </tr>
-     <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Area</span></strong></td>
-		 
-		 <td>
-		<bean:define id="areaCollection" name="RptUser" property="areas" type="java.util.HashMap"/>
-		 <%tmpProperty = "rptUser.areaCode";%>
-		<nested:select  property="<%=tmpProperty%>" styleId="areaCode"  styleClass="commandOption">
-        <option value="-1">ALL</option> 
-		
-		</nested:select>
-         </td> 
-		<!-- <td>
-			<html:select property="<%=tmpProperty%>" styleId="areaCode">
-              <option value="-1">Select One</option>
-              <option value="07">A.I.O.</option>
-              <option value="05">CANADA</option>
-              <option value="08">DIVISION</option>
-              <option value="02">EUROPE</option>
-              <option value="06">JAPAN</option>              
-              <option value="01">LATIN AMERICA</option>
-              <option value="04">PACIFIC ASIA AFRICA</option>
-            </html:select>
-         </td> -->
-      <td>&nbsp;</td>
-    </tr>
-    
-   <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Sector</span></strong></td>
-		<td>
-		<bean:define id="secCollection" name="RptUser" property="sectors" type="java.util.HashMap"/>
-		<%tmpProperty = "rptUser.secCode";%>
-		<nested:select  property="<%=tmpProperty%>" styleId="secCode" styleClass="commandOption"> 
-        <option value="-1">ALL</option>
+<%@ include file="/include/masthead.jsf" %>
+<%@ include file="/include/errorDisplay.jsf" %>
 
-		</nested:select>
-         </td> 
-      <td>&nbsp;</td>
-    </tr>
-     <tr>
-      <td class="commandOptionLabel"><strong><span class="mntLeft">Affiliate</span></strong></td>
-		<td>
-		<bean:define id="affCollection" name="RptUser" property="affiliates" type="java.util.HashMap"/>
-		 <%tmpProperty = "rptUser.affCode";%>
-		<nested:select  property="<%=tmpProperty%>" styleId="affCode"  styleClass="commandOption"> 
-        <option value="-1">ALL</option>
-		
-		</nested:select>
-         </td> 
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td colspan="3">   <table width="200" align="center">
-       <tr>
-      <td align=center><label >
-         <input type="button" name="searchButton" id="GetButton" value="Get" onClick = "javascript:getUsers(document.userForm,'Get','rptUserMaint.do');">
-      </label></td>
-    </tr>
-    
-<tr>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td>
-      <fieldset>
-      <legend class="style11">Search Results</legend>
-      <%if (TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_ADMINISTRATOR") || 
-      			TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_RPT ADMIN")) { %>
-      <table width="700" cellpadding="1" cellspacing="1"> 
-  		<tr>
-			<td colspan="5" class="right">
-			<input type="button" name="searchButton" id="searchButton" value="ReCreate Users" onClick = "javascript:confirmAddReprt(document.userForm,'recreate','rptUserMaint.do');">
-			
-			<input type="button" name="searchButton" id="searchButton" value="ReCertify Users" onClick = "javascript:confirmAddReprt(document.userForm,'recertify','rptUserMaint.do');">
-				
-			<td colspan="5" class="right">
-				<a href="javascript:confirmDelete(document.userForm,'remove','rptUserMaint.do');">
-					<img src="images/btnDeleteSelected.png" alt="Delete Selected" /></a>
-&nbsp;
-				  <A 
-                  href="javascript:confirmExport(document.userForm,'export','rptUserMaint.do');"><IMG 
-                  alt="Export Selected" 
-                  src="images/btnExport.png"></A>
-			</td>
-		</tr>
-	</table>
-	<%} %>
-      <table width="700" cellpadding="1" cellspacing="1" class="sortable">
-   	 
-        <tr class="mntTblHdng" bgcolor="#99CCFF">
-        <% if (TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_ADMINISTRATOR") || 
-      			TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_RPT ADMIN")) { %>
-        	<th width="80" class="sorttable_nosort">
-				<input type="image" src="images/btnCheck.png" alt="Toggle Select All" onClick="return toggleSelectAll('userList','selected','<%=userForm.getUserListSize()%>');" />
-			</th>
-		<%} %>
-            <th width="80" class="style6" scope="col">User ID</th>
-            <th width="80"  class="sorttable_nosort" scope="col">First Name</th>
-            <th width="80" class="style6" scope="col">Last Name</th>
-            <th width="92" class="style6" scope="col">Role</th>
-            <th width="230" class="style6" scope="col">Role Desc</th>
-			<th width="90" class="style6" scope="col">Create Date</th>	
-			<th width="90" class="style6" scope="col">Recertify Date</th>		
-          </tr>
-		<nested:hidden property="userListSize" />
-   	    <nested:notEqual property="userListSize" value="0">	      	
-	    <% int rowNumber=0; %>
-	    
-		<c:forEach items="${sessionScope.userForm.userList}"    var="rptUser"     varStatus="userStatus">  
-           	  
+<div class="search-container">
 
-           <% String userListItemArray = "userListItem[" + rowNumber +"]."; %>
-           <% tmpProperty = "" ; %>
-            <% rowNumber++; %>
-        <abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow" rowNum="<%= rowNumber %>" id="mntRow">	
-   			<% //tmpProperty is initialized here as per the column selected %>
-			<% tmpProperty = userListItemArray + "blnSelected"; %>
-			
-			<% if (TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_ADMINISTRATOR") || 
-      			TCGMUser.getRole().getName().equalsIgnoreCase("TCGM_RPT ADMIN")) {%>
-		  	<td class="mntCenter">
-							<input type="checkbox" name="userlist[<c:out value="${userStatus.index}"/>].selected" value="on">
-			</td>
-			<%} %>
-            <td class="mntLeft" valign="middle"><c:out value="${rptUser.userid}"/></td>
-            <td class="mntLeft" valign="middle"><c:out value="${rptUser.firstName}"/></td>
-			<td class="mntLeft" valign="middle"><c:out value="${rptUser.lastName}"/></td>
-			<td class="mntLeft" valign="middle"><c:out value="${rptUser.role}"/></td>
-			<td class="mntLeft" valign="middle"><c:out value="${rptUser.roleDesc}"/></td>
-			<td class="mntLeft" valign="middle"><c:out value="${rptUser.createDate}"/></td>
-			<td class="mntLeft" valign="middle"><c:out value="${rptUser.recertifyDate}"/></td>
-          </abbott:row>
-          </c:forEach>
-          <input type="hidden" id="hidVal" name="hidVal" value="<%=rowNumber %>" />
-          </nested:notEqual>
-      </table>
-      </fieldset>
-      </td>
-    </tr>
-    
+    <s:form id="userForm" name="userForm" method="post" action="rptUserMaint">
+        <s:hidden name="cmd" property="cmd" />
+        <s:hidden name="selDesc" property="selDesc" />
 
-      </table>
-      </td>
-    </tr>
-  </table>
- <input type="hidden" name="cmd2"  value="creation">
-</nested:form>
+        <div class="form-group-row">
+            <label for="userid">User ID</label>
+            <div class="input-wrapper">
+                <s:textfield name="rptUser.userid" id="userid" cssClass="form-control-input" theme="simple"
+                             onblur="allCap('userid');"
+                             onkeydown="if(event.keyCode == 13){allCap('userid'); document.getElementById('GetButton').click();}" />
+            </div>
+        </div>
+        <div class="form-group-row">
+            <label for="lastName">Last Name</label>
+            <div class="input-wrapper">
+                <s:textfield name="rptUser.lastName" id="lastName" cssClass="form-control-input" theme="simple"
+                             onblur="initCap('lastName');"
+                             onkeydown="if(event.keyCode == 13){initCap('lastName'); document.getElementById('GetButton').click();}" />
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <label for="firstName">First Name</label>
+            <div class="input-wrapper">
+                <s:textfield name="rptUser.firstName" id="firstName" cssClass="form-control-input" theme="simple"
+                             onblur="initCap('firstName');"
+                             onkeydown="if(event.keyCode == 13){initCap('firstName'); document.getElementById('GetButton').click();}" />
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <label for="role">Role</label>
+            <div class="input-wrapper">
+                <s:select name="rptUser.role" id="role" onchange="enableList()" cssClass="form-control-select" theme="simple"
+                          list="#{'-1':'All', 'HQS':'HQ Supervisor', 'HQC':'HQ Consumer', 'DALL':'All Divisions', 'D':'Division', 'Area':'Area', 'Sector':'Sector', 'Affiliate':'Affiliate'}" />
+            </div>
+        </div>
+        
+        <s:set var="emptyFallbackMap" value="#{-1 : 'Select One'}" />
+        <s:set var="emptyAllMap" value="#{-1 : 'ALL'}" />
+
+        <s:if test="rptUser != null && rptUser.div != null">
+            <s:set var="finalDiv" value="rptUser.div" />
+        </s:if>
+        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].div != null">
+            <s:set var="finalDiv" value="#session['RptUser'].div" />
+        </s:elseif>
+        <s:else>
+            <s:set var="finalDiv" value="#emptyFallbackMap" />
+        </s:else>
+
+        <s:if test="rptUser != null && rptUser.areas != null">
+            <s:set var="finalAreas" value="rptUser.areas" />
+        </s:if>
+        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].areas != null">
+            <s:set var="finalAreas" value="#session['RptUser'].areas" />
+        </s:elseif>
+        <s:else>
+            <s:set var="finalAreas" value="#emptyAllMap" />
+        </s:else>
+
+        <s:if test="rptUser != null && rptUser.sectors != null">
+            <s:set var="finalSectors" value="rptUser.sectors" />
+        </s:if>
+        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].sectors != null">
+            <s:set var="finalSectors" value="#session['RptUser'].sectors" />
+        </s:elseif>
+        <s:else>
+            <s:set var="finalSectors" value="#emptyAllMap" />
+        </s:else>
+
+        <s:if test="rptUser != null && rptUser.affiliates != null">
+            <s:set var="finalAffiliates" value="rptUser.affiliates" />
+        </s:if>
+        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].affiliates != null">
+            <s:set var="finalAffiliates" value="#session['RptUser'].affiliates" />
+        </s:elseif>
+        <s:else>
+            <s:set var="finalAffiliates" value="#emptyAllMap" />
+        </s:else>
+
+        <div class="form-group-row">
+            <label for="division">Division</label>
+            <div class="input-wrapper">
+                <s:select name="rptUser.division" id="division" onchange="callValues()" cssClass="form-control-select" theme="simple"
+                          list="#finalDiv" headerKey="-1" headerValue="Select One" />
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <label for="areaCode">Area</label>
+            <div class="input-wrapper">
+                <s:select name="rptUser.areaCode" id="areaCode" cssClass="form-control-select" theme="simple"
+                          list="#finalAreas" headerKey="-1" headerValue="ALL" />
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <label for="secCode">Sector</label>
+            <div class="input-wrapper">
+                <s:select name="rptUser.secCode" id="secCode" cssClass="form-control-select" theme="simple"
+                          list="#finalSectors" headerKey="-1" headerValue="ALL" />
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <label for="affCode">Affiliate</label>
+            <div class="input-wrapper">
+                <s:select name="rptUser.affCode" id="affCode" cssClass="form-control-select" theme="simple"
+                          list="#finalAffiliates" headerKey="-1" headerValue="ALL" />
+            </div>
+        </div>
+
+        <input type="button" name="searchButton" id="GetButton" class="btn-submit-orange" value="Get" onClick="getUsers(document.userForm,'Get','rptUserMaint.action');">
+        <fieldset class="results-fieldset">
+            <legend class="results-legend">Search Results</legend>
+            
+            <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+                <table class="action-bar-table"> 
+                    <tr>
+                        <td class="text-left">
+                            <input type="button" name="searchButton" class="btn-action-gray" value="ReCreate Users" onClick="confirmAddReprt(document.userForm,'recreate','rptUserMaint.action');">
+                            <input type="button" name="searchButton" class="btn-action-gray" value="ReCertify Users" onClick="confirmAddReprt(document.userForm,'recertify','rptUserMaint.action');">
+                        </td>
+                        <td class="text-right">
+                            <a href="javascript:confirmDelete(document.userForm,'remove','rptUserMaint.action');" class="btn-action-delete">
+                                Delete Selected
+                            </a>
+                            <a href="javascript:confirmExport(document.userForm,'export','rptUserMaint.action');" class="btn-action-export">
+                                Export Selected
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </c:if>
+            <table class="modern-grid-table sortable">
+                <thead>
+                    <tr>
+                        <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+                            <th width="50" class="sorttable_nosort text-center">
+                                <!-- Kept the custom yellow checkmark indicator ONLY for the header -->
+                                <span class="custom-checkbox-container">
+                                    <input type="checkbox" id="selectAllToggle" onClick="return toggleSelectAll('userList','selected','${sessionScope.userForm.userListSize}');">
+                                    <span class="checkmark-indicator"></span>
+                                </span>
+                            </th>
+                        </c:if>
+                        <th width="90" scope="col">User ID</th>
+                        <th width="100" class="sorttable_nosort" scope="col">First Name</th>
+                        <th width="100" scope="col">Last Name</th>
+                        <th width="90" scope="col">Role</th>
+                        <th width="200" scope="col">Role Desc</th>
+                        <th width="90" scope="col">Create Date</th> 
+                        <th width="90" scope="col">Recertify Date</th>        
+                    </tr>
+                </thead>
+                <tbody>
+                    <s:hidden name="userListSize" value="%{#session.userForm.userListSize}" id="userListSize" />
+                    
+                    <c:if test="${sessionScope.userForm.userListSize ne 0}">
+                        <c:forEach items="${sessionScope.userForm.userList}" var="rptUserItem" varStatus="userStatus">  
+                            <tr class="${userStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
+                                <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+                                    <td class="text-center">
+                                        <!-- Restored standard native checkbox behavior for search results rows -->
+                                        <input type="checkbox" name="userList[${userStatus.index}].selected" value="on">
+                                    </td>
+                                </c:if>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.userid}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.firstName}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.lastName}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.role}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.roleDesc}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.createDate}"/></td>
+                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.recertifyDate}"/></td>
+                            </tr>
+                        </c:forEach>
+                        <input type="hidden" id="hidVal" name="hidVal" value="${fn:length(sessionScope.userForm.userList)}" />
+                    </c:if>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <input type="hidden" name="cmd2" value="creation">
+    </s:form>
+</div>
 
 <%@ include file="/include/footer.jsf" %>
+</body>

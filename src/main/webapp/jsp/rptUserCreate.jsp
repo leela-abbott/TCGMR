@@ -4,56 +4,88 @@
 
 <%! String pageTitle = "Report User Creation"; %>
 <%@ include file="/include/header.jsf" %>
+<c:set var="pageTitle" value="Report User Creation" scope="request" />
 
 <head>
-    <style>
-        .tcgm-btn {
-            display: inline-block;
-            padding: 5px 18px;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            color: #123456 !important;
-            text-decoration: none;
-            background: linear-gradient(to bottom, #ffe880 0%, #ffcd3c 100%);
-            border: 1px solid #cca11f;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-            cursor: pointer;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-            transition: all 0.1s ease-in-out;
-        }
-        .tcgm-btn:hover {
-            background: linear-gradient(to bottom, #ffed96 0%, #ffd455 100%);
-            border-color: #b88f14;
-        }
-        .tcgm-btn:active {
-            background: #ffcd3c;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
-        }
-        .tcgm-input-readonly {
-            border: 1px solid #b8d4f0;
-            background-color: #e6e6e6;
-            color: #555555;
-            padding: 4px;
-            width: 240px;
-            font-family: Arial, sans-serif;
-            border-radius: 3px;
-        }
-        .tcgm-select {
-            border: 1px solid #b8d4f0;
-            padding: 4px;
-            width: 246px;
-            font-family: Arial, sans-serif;
-            border-radius: 3px;
-        }
-        .commandOptionLabel {
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            color: #333333;
-        }
-    </style>
+<style>
+    /* Modernized Pure CSS Gradient Button matching design metrics */
+    .tcgm-btn {
+        display: inline-block;
+        padding: 6px 24px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        color: #112233 !important;
+        text-decoration: none;
+        background: linear-gradient(to bottom, #fff093 0%, #ffca36 100%);
+        border: 1px solid #c59b1a;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        cursor: pointer;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+        transition: all 0.1s ease-in-out;
+    }
+    .tcgm-btn:hover {
+        background: linear-gradient(to bottom, #fff4aa 0%, #ffd44f 100%);
+        border-color: #b58d12;
+    }
+    .tcgm-btn:active {
+        background: #ffca36;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    /* Clean-cut Input Field System with clear visual hierarchy mapping */
+    .tcgm-input-readonly {
+        border: 1px solid #cccccc;
+        background-color: #ffffff;
+        color: #333333;
+        padding: 5px 8px;
+        width: 200px;
+        height: 24px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    
+    /* Dropdown Selection Field Structural Alignment */
+    .tcgm-select {
+        border: 1px solid #cccccc;
+        padding: 5px 8px;
+        width: 200px;
+        height: 24px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+    
+    /* Label Component formatting layer matching your reference layout metrics */
+    .commandOptionLabel {
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        font-weight: normal;
+        color: #222222;
+        text-align: left;
+        width: 130px;
+    }
+
+    /* Structural Table layout layer matching reference look */
+    table[align="center"] {
+        width: 400px !important;
+        margin-top: 40px !important;
+        margin-bottom: 30px !important;
+    }
+
+    table[align="center"] td {
+        padding: 8px 0 !important;
+    }
+
+    /* Target the button table spacing to align beautifully in center */
+    table table {
+        margin-top: 15px !important;
+    }
+</style>
 </head>
 
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
