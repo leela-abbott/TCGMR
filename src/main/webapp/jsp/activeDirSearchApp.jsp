@@ -9,9 +9,9 @@
     <style>
         .tcgm-action-btn {
             display: inline-block;
-            padding: 6px 36px;
+            padding: 4px 16px; /* Adjusted padding to normalize button sizing footprint */
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 15px;
+            font-size: 12px; /* Set to standard interface action button font size */
             font-weight: bold;
             font-style: italic;
             color: #002266 !important;
@@ -23,6 +23,7 @@
             cursor: pointer;
             text-shadow: 0 1px 0 rgba(255,255,255,0.3);
             transition: all 0.1s ease-in-out;
+            min-width: 110px; /* Aligned base execution dimensions across button elements */
         }
         .tcgm-action-btn:hover {
             background: linear-gradient(to bottom, #ffed85 0%, #ffc62d 100%);
@@ -59,12 +60,13 @@
             color: #333333;
         }
         .tcgm-input-box {
-            width: 180px !important;
+            width: 230px !important; /* Expanded field box to sit flush within its layout column wrapper */
+            height: 24px; /* Normalized static form container dimension block heights */
             border: 1px solid #cccccc; 
-            padding: 5px; 
+            padding: 2px 6px; /* Matched precise padding alignment specs */
             border-radius: 3px;
             font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-size: 12px; /* Coordinated text reading dimensions with form controls */
             box-sizing: border-box;
         }
         .tcgm-button-row {
@@ -104,8 +106,9 @@
     </style>
 </head>
 <body style="margin: 0; padding: 0;" onload="javascript:document.getElementById('usIdTextField').focus();">
-	<%@ include file="/include/errorDisplay.jsf" %>
+
 	<%@ include file="/include/masthead.jsf" %>
+	<%@ include file="/include/errorDisplay.jsf" %>
 <s:form id="activeDirSearchForm" name="activeDirSearchForm" namespace="/" action="ActiveDirSearch" method="post" theme="simple">
   <s:hidden name="cmd" id="cmd" />
   <s:hidden name="cmd2" id="cmd2" />

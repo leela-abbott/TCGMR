@@ -17,7 +17,7 @@
     }
     .search-container {
         width: 100%;
-        max-width: 800px;
+        max-width: 95%; /* Increased from 800px to accommodate wider dynamic tables */
         margin: 30px auto;
         padding: 0 15px;
         display: flex;
@@ -25,8 +25,11 @@
         align-items: center;
     }
     #activeDirSearchForm {
-        display: inline-block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin: 0 auto;
+        width: 100%;
     }
     .form-group-row {
         display: flex;
@@ -80,30 +83,36 @@
         background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
     }
     .btn-action-gray {
-        background: #f0f0f0;
-        border: 1px solid #cccccc;
-        border-radius: 3px;
-        color: #333333;
-        font-size: 11px;
+        background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
+        border: 1px solid #e5a515;
+        border-radius: 4px;
+        color: #222222;
+        font-size: 12px;
         font-weight: bold;
-        padding: 4px 12px;
+        padding: 4px 16px;
         cursor: pointer;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         display: block;
-        margin: 10px auto;
+        margin: 15px auto;
+        text-align: center;
+        min-width: 110px;
     }
     .btn-action-gray:hover {
-        background: #e5e5e5;
+        background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
     }
     .results-fieldset {
         border: 1px solid #dddddd;
         border-radius: 4px;
-        padding: 10px;
+        padding: 15px;
         margin-top: 20px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        width: 760px;
-        margin-left: calc(-380px + 165px);
+        width: fit-content; /* Dynamic scaling based on the table's fully unwrapped size */
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        overflow-x: auto; /* Adds a clean horizontal scroll bar if screen resolution gets too narrow */
     }
     .results-legend {
         font-size: 13px;
@@ -112,35 +121,44 @@
         padding: 0 6px;
     }
     .modern-grid-table {
-        width: 100%;
+        width: auto; /* Changed to auto so columns scale strictly up to text lengths */
+        min-width: 100%;
         border-collapse: collapse;
         margin-top: 5px;
-        font-size: 11px;
+        font-family: Consolas, "Courier New", Courier, monospace;
+        font-size: 13px;
+        table-layout: auto; /* Forces browser to look at content sizing instead of breaking down spaces */
     }
     .modern-grid-table th {
         background-color: #99ccff;
         color: #333333;
         font-weight: bold;
         text-align: left;
-        padding: 4px 6px;
+        padding: 8px 14px;
         border: 1px solid #d0e0f5;
+        white-space: nowrap; /* Keeps column text headers on one single row line */
     }
     .modern-grid-table td {
-        padding: 4px 6px;
-        border: 1px solid #e8f0fa;
-        color: #333333;
+        padding: 8px 14px;
+        border: 1px solid #e0e0e0;
+        color: #111111;
+        text-align: left;
+        vertical-align: middle;
+        white-space: nowrap; /* Crucial: Prevents user data from breaking or wrapping downwards */
+    }
+    .modern-grid-table th.text-center, 
+    .modern-grid-table td.text-center { 
+        text-align: center; 
     }
     .evenRow { background-color: #ffffff; }
-    .oddRow { background-color: #ffffdd; }
-    .text-center { text-align: center; }
-    .text-left { text-align: left; }
+    .oddRow { background-color: #ffffff; }
 </style>
 </head>
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<%@ include file="/include/header.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
 	<%@ include file="/include/masthead.jsf" %>
+	<%@ include file="/include/errorDisplay.jsf" %>
 	
 <div class="search-container">
 	

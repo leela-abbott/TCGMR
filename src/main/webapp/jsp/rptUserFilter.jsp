@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 
 <% String pageTitle = "Report User Search"; %>
 <c:set var="pageTitle" value="Report User Search" scope="request" />
@@ -17,34 +18,45 @@
     }
     .search-container {
         width: 100%;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
+        max-width: 95%; 
+        margin: 30px auto;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #userForm {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+        width: 100%;
     }
     .form-group-row {
         display: flex;
         align-items: center;
-        margin-bottom: 18px;
+        margin-bottom: 8px; 
+        width: 390px; 
     }
     .form-group-row label {
         width: 160px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 12px; 
         color: #333333;
         text-align: left;
     }
     .input-wrapper {
-        flex: 1;
+        width: 230px;
         display: flex;
         align-items: center;
     }
     .form-control-input, .form-control-select {
-        width: 250px;
-        height: 30px;
-        padding: 4px 10px;
-        font-size: 13px;
+        width: 230px; 
+        height: 24px; 
+        padding: 2px 6px; 
+        font-size: 12px; 
         border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border-radius: 3px;
         box-sizing: border-box;
         background-color: #ffffff;
         transition: border-color 0.2s ease;
@@ -63,15 +75,15 @@
         border: 1px solid #e5a515;
         border-radius: 4px;
         color: #222222;
-        font-size: 13px;
+        font-size: 12px; 
         font-weight: bold;
-        padding: 6px 24px;
+        padding: 4px 16px; 
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         display: block;
-        margin: 30px auto;
+        margin: 15px auto 5px auto;
         text-align: center;
-        min-width: 120px;
+        min-width: 110px; 
     }
     .btn-submit-orange:hover {
         background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
@@ -127,21 +139,31 @@
         padding: 2px 6px;
         cursor: pointer;
     }
+
     .results-fieldset {
         border: 1px solid #dddddd;
-        border-radius: 6px;
-        padding: 20px;
-        margin-top: 40px;
-        display: block;
-        clear: both;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 20px auto;
+        display: table;
         box-sizing: border-box;
+        min-width: 760px; 
+        max-width: 100%;
+        text-align: left;
     }
-    .results-legend {
-        font-size: 16px;
-        font-weight: bold;
-        color: #0044aa;
-        padding: 0 10px;
-    }
+.results-legend {
+    font-size: 13px;
+    font-weight: bold;
+    color: #0044aa;
+    padding: 0 6px;
+    margin-left: 0px;
+    margin-right: auto; 
+    text-align: left;
+    display: block; 
+    width: 100%;
+    margin-top:15px;
+}
+
     .action-bar-table {
         width: 100%;
         margin-top: 10px;
@@ -149,33 +171,41 @@
         border-collapse: collapse;
     }
     .modern-grid-table {
-        width: 100%;
+        width: auto; 
+        min-width: 100%;
         border-collapse: collapse;
-        margin-top: 10px;
+        margin-top: 5px;
+        font-family: Consolas, "Courier New", Courier, monospace; 
         font-size: 13px;
+        table-layout: auto; 
     }
     .modern-grid-table th {
         background-color: #99ccff;
         color: #333333;
         font-weight: bold;
         text-align: left;
-        padding: 10px;
+        padding: 8px 14px; 
         border: 1px solid #d0e0f5;
+        white-space: nowrap; 
     }
     .modern-grid-table td {
-        padding: 10px;
-        border: 1px solid #e8f0fa;
+        padding: 8px 14px;
+        border: 1px solid #e0e0e0; 
+        color: #111111;
+        text-align: left;
+        vertical-align: middle;
+        white-space: nowrap; 
     }
     .evenRow {
         background-color: #ffffff;
     }
     .oddRow {
-        background-color: #ffffdd;
+        background-color: #ffffff; 
     }
     .text-center { text-align: center; }
     .text-left { text-align: left; }
     .text-right { text-align: right; }
-        /* Hidden native box placeholder */
+    
     .custom-checkbox-container {
         display: inline-block;
         position: relative;
@@ -192,19 +222,17 @@
         margin: 0;
         z-index: 2;
     }
-    /* Yellow tick box background base styling */
     .checkmark-indicator {
         position: absolute;
         top: 0;
         left: 0;
         height: 18px;
         width: 18px;
-        background-color: #ffcc44; /* Custom yellow tone matches button */
+        background-color: #ffcc44;
         border: 1px solid #d4a017;
         border-radius: 3px;
         z-index: 1;
     }
-    /* Render internal checkmark drawing logic */
     .checkmark-indicator:after {
         content: "";
         position: absolute;
@@ -213,20 +241,16 @@
         top: 2px;
         width: 5px;
         height: 10px;
-        border: solid #222222; /* Dark check accent matching old layout */
+        border: solid #222222;
         border-width: 0 2.5px 2.5px 0;
         transform: rotate(45deg);
     }
-    
 </style>
-<script language="JavaScript" src="include/sorttable.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="include/sorttable.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
 
-/* function disableList() {    
-    document.getElementById("areaCode").disabled = true;
-    document.getElementById("affCode").disabled = true;
-    document.getElementById("secCode").disabled = true;
-} */
 function enableList() {
     var roleVal = document.getElementById("role").value;
     if (roleVal == 'Area') {
@@ -318,14 +342,13 @@ function allCap(id) {
     var val = document.getElementById(id).value;
     document.getElementById(id).value = val.toUpperCase();
 }
-    function initCap(id) {
+function initCap(id) {
     var val = document.getElementById(id).value;
     document.getElementById(id).value = val.substring(0,1).toUpperCase() + val.substring(1, val.length);
 }
 
-// Custom clear float utility function
 function toggleSelectAll(listName, propName, totalSize) {
-    return false; // Interface utility connector
+    return false; 
 }
 
 function confirmDelete(form, cmd, action) {
@@ -424,203 +447,214 @@ function callValues() {
 </script>
 </head>
 <body onload="disableList();">
-<%@ include file="/include/header.jsf" %>
-<%@ include file="/include/masthead.jsf" %>
+	<%@ include file="/include/header.jsf"%>
+	<%@ include file="/include/masthead.jsf"%>
 
-<c:set var="userForm" value="${sessionScope.userForm}" scope="session" />
-<c:set var="TCGMUser" value="${sessionScope.TCGMUser}" scope="session" />
-<c:set var="RptUser" value="${sessionScope.RptUser}" scope="session" />
+	<c:set var="userForm" value="${sessionScope.userForm}" scope="session" />
+	<c:set var="TCGMUser" value="${sessionScope.TCGMUser}" scope="session" />
+	<c:set var="RptUser" value="${sessionScope.RptUser}" scope="session" />
 
-<%@ include file="/include/errorDisplay.jsf" %>
+	<%@ include file="/include/errorDisplay.jsf"%>
 
-<div class="search-container">
+	<div class="search-container">
 
-    <s:form id="userForm" name="userForm" method="post" action="rptUserMaint">
-        <s:hidden name="cmd" property="cmd" />
-        <s:hidden name="selDesc" property="selDesc" />
+		<s:form id="userForm" name="userForm" method="post" action="rptUserMaint">
+			<s:hidden name="cmd" property="cmd" />
+			<s:hidden name="selDesc" property="selDesc" />
 
-        <div class="form-group-row">
-            <label for="userid">User ID</label>
-            <div class="input-wrapper">
-                <s:textfield name="rptUser.userid" id="userid" cssClass="form-control-input" theme="simple"
-                             onblur="allCap('userid');"
-                             onkeydown="if(event.keyCode == 13){allCap('userid'); document.getElementById('GetButton').click();}" />
-            </div>
-        </div>
-        <div class="form-group-row">
-            <label for="lastName">Last Name</label>
-            <div class="input-wrapper">
-                <s:textfield name="rptUser.lastName" id="lastName" cssClass="form-control-input" theme="simple"
-                             onblur="initCap('lastName');"
-                             onkeydown="if(event.keyCode == 13){initCap('lastName'); document.getElementById('GetButton').click();}" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="userid">User ID</label>
+				<div class="input-wrapper">
+					<s:textfield name="rptUser.userid" id="userid"
+						cssClass="form-control-input" theme="simple"
+						onblur="allCap('userid');"
+						onkeydown="if(event.keyCode == 13){allCap('userid'); document.getElementById('GetButton').click();}" />
+				</div>
+			</div>
+			<div class="form-group-row">
+				<label for="lastName">Last Name</label>
+				<div class="input-wrapper">
+					<s:textfield name="rptUser.lastName" id="lastName"
+						cssClass="form-control-input" theme="simple"
+						onblur="initCap('lastName');"
+						onkeydown="if(event.keyCode == 13){initCap('lastName'); document.getElementById('GetButton').click();}" />
+				</div>
+			</div>
+			<div class="form-group-row">
+				<label for="firstName">First Name</label>
+				<div class="input-wrapper">
+					<s:textfield name="rptUser.firstName" id="firstName"
+						cssClass="form-control-input" theme="simple"
+						onblur="initCap('firstName');"
+						onkeydown="if(event.keyCode == 13){initCap('firstName'); document.getElementById('GetButton').click();}" />
+				</div>
+			</div>
 
-        <div class="form-group-row">
-            <label for="firstName">First Name</label>
-            <div class="input-wrapper">
-                <s:textfield name="rptUser.firstName" id="firstName" cssClass="form-control-input" theme="simple"
-                             onblur="initCap('firstName');"
-                             onkeydown="if(event.keyCode == 13){initCap('firstName'); document.getElementById('GetButton').click();}" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="role">Role</label>
+				<div class="input-wrapper">
+					<s:select name="rptUser.role" id="role" onchange="enableList()"
+						cssClass="form-control-select" theme="simple"
+						list="#{'-1':'All', 'HQS':'HQ Supervisor', 'HQC':'HQ Consumer', 'DALL':'All Divisions', 'D':'Division', 'Area':'Area', 'Sector':'Sector', 'Affiliate':'Affiliate'}" />
+				</div>
+			</div>
 
-        <div class="form-group-row">
-            <label for="role">Role</label>
-            <div class="input-wrapper">
-                <s:select name="rptUser.role" id="role" onchange="enableList()" cssClass="form-control-select" theme="simple"
-                          list="#{'-1':'All', 'HQS':'HQ Supervisor', 'HQC':'HQ Consumer', 'DALL':'All Divisions', 'D':'Division', 'Area':'Area', 'Sector':'Sector', 'Affiliate':'Affiliate'}" />
-            </div>
-        </div>
-        
-        <s:set var="emptyFallbackMap" value="#{-1 : 'Select One'}" />
-        <s:set var="emptyAllMap" value="#{-1 : 'ALL'}" />
+			<s:set var="emptyFallbackMap" value="#{-1 : 'Select One'}" />
+			<s:set var="emptyAllMap" value="#{-1 : 'ALL'}" />
 
-        <s:if test="rptUser != null && rptUser.div != null">
-            <s:set var="finalDiv" value="rptUser.div" />
-        </s:if>
-        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].div != null">
-            <s:set var="finalDiv" value="#session['RptUser'].div" />
-        </s:elseif>
-        <s:else>
-            <s:set var="finalDiv" value="#emptyFallbackMap" />
-        </s:else>
+			<s:if test="rptUser != null && rptUser.div != null">
+				<s:set var="finalDiv" value="rptUser.div" />
+			</s:if>
+			<s:elseif test="#session['RptUser'] != null && #session['RptUser'].div != null">
+				<s:set var="finalDiv" value="#session['RptUser'].div" />
+			</s:elseif>
+			<s:else>
+				<s:set var="finalDiv" value="#emptyFallbackMap" />
+			</s:else>
 
-        <s:if test="rptUser != null && rptUser.areas != null">
-            <s:set var="finalAreas" value="rptUser.areas" />
-        </s:if>
-        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].areas != null">
-            <s:set var="finalAreas" value="#session['RptUser'].areas" />
-        </s:elseif>
-        <s:else>
-            <s:set var="finalAreas" value="#emptyAllMap" />
-        </s:else>
+			<s:if test="rptUser != null && rptUser.areas != null">
+				<s:set var="finalAreas" value="rptUser.areas" />
+			</s:if>
+			<s:elseif test="#session['RptUser'] != null && #session['RptUser'].areas != null">
+				<s:set var="finalAreas" value="#session['RptUser'].areas" />
+			</s:elseif>
+			<s:else>
+				<s:set var="finalAreas" value="#emptyAllMap" />
+			</s:else>
 
-        <s:if test="rptUser != null && rptUser.sectors != null">
-            <s:set var="finalSectors" value="rptUser.sectors" />
-        </s:if>
-        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].sectors != null">
-            <s:set var="finalSectors" value="#session['RptUser'].sectors" />
-        </s:elseif>
-        <s:else>
-            <s:set var="finalSectors" value="#emptyAllMap" />
-        </s:else>
+			<s:if test="rptUser != null && rptUser.sectors != null">
+				<s:set var="finalSectors" value="rptUser.sectors" />
+			</s:if>
+			<s:elseif test="#session['RptUser'] != null && #session['RptUser'].sectors != null">
+				<s:set var="finalSectors" value="#session['RptUser'].sectors" />
+			</s:elseif>
+			<s:else>
+				<s:set var="finalSectors" value="#emptyAllMap" />
+			</s:else>
 
-        <s:if test="rptUser != null && rptUser.affiliates != null">
-            <s:set var="finalAffiliates" value="rptUser.affiliates" />
-        </s:if>
-        <s:elseif test="#session['RptUser'] != null && #session['RptUser'].affiliates != null">
-            <s:set var="finalAffiliates" value="#session['RptUser'].affiliates" />
-        </s:elseif>
-        <s:else>
-            <s:set var="finalAffiliates" value="#emptyAllMap" />
-        </s:else>
+			<s:if test="rptUser != null && rptUser.affiliates != null">
+				<s:set var="finalAffiliates" value="rptUser.affiliates" />
+			</s:if>
+			<s:elseif test="#session['RptUser'] != null && #session['RptUser'].affiliates != null">
+				<s:set var="finalAffiliates" value="#session['RptUser'].affiliates" />
+			</s:elseif>
+			<s:else>
+				<s:set var="finalAffiliates" value="#emptyAllMap" />
+			</s:else>
 
-        <div class="form-group-row">
-            <label for="division">Division</label>
-            <div class="input-wrapper">
-                <s:select name="rptUser.division" id="division" onchange="callValues()" cssClass="form-control-select" theme="simple"
-                          list="#finalDiv" headerKey="-1" headerValue="Select One" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="division">Division</label>
+				<div class="input-wrapper">
+					<s:select name="rptUser.division" id="division"
+						onchange="callValues()" cssClass="form-control-select"
+						theme="simple" list="#finalDiv" headerKey="-1"
+						headerValue="Select One" />
+				</div>
+			</div>
 
-        <div class="form-group-row">
-            <label for="areaCode">Area</label>
-            <div class="input-wrapper">
-                <s:select name="rptUser.areaCode" id="areaCode" cssClass="form-control-select" theme="simple"
-                          list="#finalAreas" headerKey="-1" headerValue="ALL" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="areaCode">Area</label>
+				<div class="input-wrapper">
+					<s:select name="rptUser.areaCode" id="areaCode"
+						cssClass="form-control-select" theme="simple" list="#finalAreas"
+						headerKey="-1" headerValue="ALL" />
+				</div>
+			</div>
 
-        <div class="form-group-row">
-            <label for="secCode">Sector</label>
-            <div class="input-wrapper">
-                <s:select name="rptUser.secCode" id="secCode" cssClass="form-control-select" theme="simple"
-                          list="#finalSectors" headerKey="-1" headerValue="ALL" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="secCode">Sector</label>
+				<div class="input-wrapper">
+					<s:select name="rptUser.secCode" id="secCode"
+						cssClass="form-control-select" theme="simple" list="#finalSectors"
+						headerKey="-1" headerValue="ALL" />
+				</div>
+			</div>
 
-        <div class="form-group-row">
-            <label for="affCode">Affiliate</label>
-            <div class="input-wrapper">
-                <s:select name="rptUser.affCode" id="affCode" cssClass="form-control-select" theme="simple"
-                          list="#finalAffiliates" headerKey="-1" headerValue="ALL" />
-            </div>
-        </div>
+			<div class="form-group-row">
+				<label for="affCode">Affiliate</label>
+				<div class="input-wrapper">
+					<s:select name="rptUser.affCode" id="affCode"
+						cssClass="form-control-select" theme="simple"
+						list="#finalAffiliates" headerKey="-1" headerValue="ALL" />
+				</div>
+			</div>
 
-        <input type="button" name="searchButton" id="GetButton" class="btn-submit-orange" value="Get" onClick="getUsers(document.userForm,'Get','rptUserMaint.action');">
-        <fieldset class="results-fieldset">
-            <legend class="results-legend">Search Results</legend>
-            
-                        <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
-                <table class="action-bar-table"> 
-                    <tr>
-                        <td class="text-left">
-                            <input type="button" name="searchButton" class="btn-action-gray" value="ReCreate Users" onClick="confirmAddReprt(document.userForm,'recreate','rptUserMaint.action');">
-                            <input type="button" name="searchButton" class="btn-action-gray" value="ReCertify Users" onClick="confirmAddReprt(document.userForm,'recertify','rptUserMaint.action');">
-                        </td>
-                        <td class="text-right">
-                            <a href="javascript:confirmDelete(document.userForm,'remove','rptUserMaint.action');" class="btn-action-delete">
-                                Delete Selected
-                            </a>
-                            <a href="javascript:confirmExport(document.userForm,'export','rptUserMaint.action');" class="btn-action-export">
-                                Export Selected
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            </c:if>
-            <table class="modern-grid-table sortable">
-                <thead>
-                    <tr>
-                        <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
-                            <th width="50" class="sorttable_nosort text-center">
-                                <!-- Kept the custom yellow checkmark indicator ONLY for the header -->
-                                <span class="custom-checkbox-container">
-                                    <input type="checkbox" id="selectAllToggle" onClick="return toggleSelectAll('userList','selected','${sessionScope.userForm.userListSize}');">
-                                    <span class="checkmark-indicator"></span>
-                                </span>
-                            </th>
-                        </c:if>
-                        <th width="90" scope="col">User ID</th>
-                        <th width="100" class="sorttable_nosort" scope="col">First Name</th>
-                        <th width="100" scope="col">Last Name</th>
-                        <th width="90" scope="col">Role</th>
-                        <th width="200" scope="col">Role Desc</th>
-                        <th width="90" scope="col">Create Date</th> 
-                        <th width="90" scope="col">Recertify Date</th>        
-                    </tr>
-                </thead>
-                <tbody>
-                    <s:hidden name="userListSize" value="%{#session.userForm.userListSize}" id="userListSize" />
-                    
-                    <c:if test="${sessionScope.userForm.userListSize ne 0}">
-                        <c:forEach items="${sessionScope.userForm.userList}" var="rptUserItem" varStatus="userStatus">  
-                            <tr class="${userStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
-                                <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
-                                    <td class="text-center">
-                                        <!-- Restored standard native checkbox behavior for search results rows -->
-                                        <input type="checkbox" name="userList[${userStatus.index}].selected" value="on">
-                                    </td>
-                                </c:if>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.userid}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.firstName}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.lastName}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.role}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.roleDesc}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.createDate}"/></td>
-                                <td class="text-left" valign="middle"><c:out value="${rptUserItem.recertifyDate}"/></td>
-                            </tr>
-                        </c:forEach>
-                        <input type="hidden" id="hidVal" name="hidVal" value="${fn:length(sessionScope.userForm.userList)}" />
-                    </c:if>
-                </tbody>
-            </table>
-        </fieldset>
+			<input type="button" name="searchButton" id="GetButton"
+				class="btn-submit-orange" value="Get"
+				onClick="getUsers(document.userForm,'Get','rptUserMaint.action');">
 
-        <input type="hidden" name="cmd2" value="creation">
-    </s:form>
-</div>
+			<c:if test="${sessionScope.userForm.userListSize ne 0}">
+					<hr>
+					<span class="results-legend">Search Results</span>
 
-<%@ include file="/include/footer.jsf" %>
+					<c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+						<table class="action-bar-table">
+							<tr>
+								<td class="text-left">
+									<input type="button" name="searchButton" class="btn-action-gray" value="ReCreate Users" onClick="confirmAddReprt(document.userForm,'recreate','rptUserMaint.action');">
+									<input type="button" name="searchButton" class="btn-action-gray" value="ReCertify Users" onClick="confirmAddReprt(document.userForm,'recertify','rptUserMaint.action');">
+								</td>
+								<td class="text-right">
+									<a href="javascript:confirmDelete(document.userForm,'remove','rptUserMaint.action');" class="btn-action-delete"> Delete Selected </a> 
+									<a href="javascript:confirmExport(document.userForm,'export','rptUserMaint.action');" class="btn-action-export"> Export Selected </a>
+								</td>
+							</tr>
+						</table>
+					</c:if>
+
+					<table class="modern-grid-table sortable">
+						<thead>
+							<tr>
+								<c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+									<th width="50" class="sorttable_nosort text-center">
+										<span class="custom-checkbox-container"> 
+											<input type="checkbox" id="selectAllToggle" onClick="return toggleSelectAll('userList','selected','${sessionScope.userForm.userListSize}');">
+											<span class="checkmark-indicator"></span>
+										</span>
+									</th>
+								</c:if>
+								<th scope="col">User ID</th>
+								<th class="sorttable_nosort" scope="col">First Name</th>
+								<th scope="col">Last Name</th>
+								<th scope="col">Role</th>
+								<th scope="col">Role Desc</th>
+								<th scope="col">Create Date</th>
+								<th scope="col">Recertify Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<s:hidden name="userListSize" value="%{#session.userForm.userListSize}" id="userListSize" />
+							<c:forEach items="${sessionScope.userForm.userList}" var="rptUserItem" varStatus="userStatus">
+								<tr class="${userStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
+									<c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+										<td class="text-center">
+											<input type="checkbox" name="userList[${userStatus.index}].selected" value="on">
+										</td>
+									</c:if>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.userid}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.firstName}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.lastName}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.role}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.roleDesc}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.createDate}" /></td>
+									<td class="text-left" valign="middle"><c:out value="${rptUserItem.recertifyDate}" /></td>
+								</tr>
+							</c:forEach>
+							<!-- Fixed: Placed inputs cleanly into a valid table row layout container -->
+							<tr>
+								<td colspan="8" style="display: none;">
+									<input type="hidden" id="hidVal" name="hidVal" value="${fn:length(sessionScope.userForm.userList)}" />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			</c:if>
+
+			<input type="hidden" name="cmd2" value="creation">
+		</s:form>
+	</div>
+
+	<%@ include file="/include/footer.jsf"%>
 </body>
+</html>
+			

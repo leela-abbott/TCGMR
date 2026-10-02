@@ -34,9 +34,9 @@
 <style>
     .tcgm-btn {
         display: inline-block;
-        padding: 6px 20px;
+        padding: 4px 16px; /* Normalized padding layout */
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 13px;
+        font-size: 12px; /* Set to standard control font size */
         font-weight: bold;
         color: #112233 !important;
         text-decoration: none;
@@ -47,7 +47,7 @@
         cursor: pointer;
         text-shadow: 0 1px 0 rgba(255,255,255,0.4);
         transition: all 0.1s ease-in-out;
-        min-width: 100px;
+        min-width: 110px; /* Standard execution dimensions */
         text-align: center;
     }
     .tcgm-btn:hover {
@@ -62,21 +62,21 @@
         border: 1px solid #cccccc;
         background-color: #ffffff;
         color: #333333;
-        padding: 4px 10px;
-        width: 250px;
-        height: 30px;
+        padding: 2px 6px; /* Normalized padding alignment specs */
+        width: 230px; /* Reduced to sit flush within standard spacing layout rules */
+        height: 24px; /* Unified text container box heights */
         font-family: Arial, sans-serif;
-        font-size: 13px;
+        font-size: 12px; /* Coordinated text reading dimensions with form controls */
         border-radius: 4px;
         box-sizing: border-box;
     }
     .tcgm-select {
         border: 1px solid #cccccc;
-        padding: 4px 10px;
-        width: 250px;
-        height: 30px;
+        padding: 2px 6px; /* Normalized padding alignment specs */
+        width: 230px; /* Reduced to sit flush within standard spacing layout rules */
+        height: 24px; /* Unified text container box heights */
         font-family: Arial, sans-serif;
-        font-size: 13px;
+        font-size: 12px; /* Coordinated text reading dimensions with form controls */
         border-radius: 4px;
         box-sizing: border-box;
     }
@@ -94,10 +94,11 @@
 </style>
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
+    <%@ include file="/include/masthead.jsf" %>
     <%@ include file="/include/errorDisplay.jsf" %>
 
     <script type="text/javascript">
-        function chgActCmdSubmit(cmdValue, targetAction) {
+        function chgActCmdSubmit1(cmdValue, targetAction) {
             var form = document.getElementById('userForm');
             if (form) {
                 document.getElementById('cmd').value = cmdValue;
@@ -203,7 +204,8 @@
             }
         }   
         function add() {
-            chgActCmdSubmit('view', 'ActiveDirSearch.action');
+            chgActCmdSubmit1('view', 'ActiveDirSearch.action');
+            alert(submitted);
         }
 
         function saveForm() {
@@ -220,6 +222,7 @@
                     return false;
                 }
             }
+            
             if (roleElement.value == 'Area') {
                 var areaListSel = document.getElementById("areaCodeLst");
                 var areaCodeBox = document.getElementById("areaCode");
@@ -227,13 +230,14 @@
                     alert('Please select Area');
                     return false;
                 }
-                document.getElementById("selDesc").value = areaCodeBox.options[areaCodeBox.selectedIndex].text;
-                var areaCodeList = "";
-                for (var j = 0; j < areaListSel.options.length; j++) {
-                    areaCodeList = areaCodeList + areaListSel.options[j].value + "|" + areaListSel.options[j].text + "*";
+                for (var i = 0; i < areaListSel.options.length; i++) {
+                    areaListSel.options[i].selected = true;
                 }
-                document.getElementById("areaCodeList").value = areaCodeList.substring(0, areaCodeList.lastIndexOf("*"));
+                if (areaCodeBox.selectedIndex >= 0) {
+                    document.getElementById("selDesc").value = areaCodeBox.options[areaCodeBox.selectedIndex].text;
+                }
             }
+            
             if (roleElement.value == 'Affiliate') {
                 var affListSel = document.getElementById("affCodeLst");
                 var affCodeBox = document.getElementById("affCode");
@@ -241,13 +245,14 @@
                     alert('Please select Affiliate');
                     return false;
                 }
-                document.getElementById("selDesc").value = affCodeBox.options[affCodeBox.selectedIndex].text;
-                var affCodeList = "";
-                for (var j = 0; j < affListSel.options.length; j++) {
-                    affCodeList = affCodeList + affListSel.options[j].value + "|" + affListSel.options[j].text + "*";
+                for (var i = 0; i < affListSel.options.length; i++) {
+                    affListSel.options[i].selected = true;
                 }
-                document.getElementById("affCodeList").value = affCodeList.substring(0, affCodeList.lastIndexOf("*"));
+                if (affCodeBox.selectedIndex >= 0) {
+                    document.getElementById("selDesc").value = affCodeBox.options[affCodeBox.selectedIndex].text;
+                }
             }
+            
             if (roleElement.value == 'Sector') {
                 var secListSel = document.getElementById("secCodeLst");
                 var secCodeBox = document.getElementById("secCode");
@@ -255,16 +260,15 @@
                     alert('Please select Sector');
                     return false;
                 }      
-                document.getElementById("selDesc").value = secCodeBox.options[secCodeBox.selectedIndex].text;
-                var secCodeList = "";
-                for (var j = 0; j < secListSel.options.length; j++) {
-                    secCodeList = secCodeList + secListSel.options[j].value + "|" + secListSel.options[j].text + "*";
+                for (var i = 0; i < secListSel.options.length; i++) {
+                    secListSel.options[i].selected = true;
                 }
-                document.getElementById("secCodeList").value = secCodeList.substring(0, secCodeList.lastIndexOf("*"));
+                if (secCodeBox.selectedIndex >= 0) {
+                    document.getElementById("selDesc").value = secCodeBox.options[secCodeBox.selectedIndex].text;
+                }
             }
-            chgActCmdSubmit('save', 'rptUserMaint.action');
-        }   
-
+            chgActCmdSubmit1('save', 'rptUserMaint.action');
+        }
         function addList(list, selList) {
             var affList = document.getElementById(list);
             var affListSel = document.getElementById(selList);
@@ -418,8 +422,8 @@
             <tr>
                 <td colspan="4" style="padding-top: 25px; padding-bottom: 15px;">
                     <div style="margin-left: 142px; display: flex; gap: 15px;">
-                        <input type="button" id="addButton" class="tcgm-btn" value="LookUp" onclick="add();" />
-                        <input type="button" id="saveButton" class="tcgm-btn" value="Save" onclick="saveForm();" />
+                        <input type="button" id="addButton" class="tcgm-btn" value="LookUp" onclick="javascript:add();" />
+                        <input type="button" id="saveButton" class="tcgm-btn" value="Save" onclick="javascript:saveForm();" />
                     </div>
                 </td>
             </tr>
