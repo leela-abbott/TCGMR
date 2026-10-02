@@ -81,9 +81,12 @@ public class RptUserMaintAction extends TCGMAction {
                 userBean.setSectors(new HashMap<>());
                 userBean.setAreas(new HashMap<>());
                 this.setRptUser(userBean);
-                
+
                 session.setAttribute("RptUser", userBean);
+                System.out.println(session.getAttribute("RptUser"));
                 session.setAttribute("userForm", this);
+
+                System.out.println("ACTION DIV = " + this.getRptUser().getDiv());
                 return "filter";
             } catch (TCGMException tcgme) {
                 logger.error(tcgme.toString(), tcgme);

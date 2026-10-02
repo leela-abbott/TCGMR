@@ -17,33 +17,41 @@
     .search-container {
         width: 100%;
         max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
+        margin: 30px auto;
+        padding: 0 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #activeDirSearchForm {
+        display: inline-block;
+        margin: 0 auto;
     }
     .form-group-row {
         display: flex;
         align-items: center;
-        margin-bottom: 18px;
+        margin-bottom: 8px;
+        width: 330px;
     }
     .form-group-row label {
-        width: 160px;
+        width: 100px;
         font-weight: bold;
-        font-size: 14px;
+        font-size: 12px;
         color: #333333;
         text-align: left;
     }
     .input-wrapper {
-        flex: 1;
+        width: 230px;
         display: flex;
         align-items: center;
     }
     .form-control-input {
-        width: 280px;
-        height: 36px;
-        padding: 6px 12px;
-        font-size: 14px;
+        width: 100%;
+        height: 24px;
+        padding: 2px 6px;
+        font-size: 12px;
         border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border-radius: 3px;
         box-sizing: border-box;
         background-color: #ffffff;
         transition: border-color 0.2s ease;
@@ -55,17 +63,17 @@
     .btn-submit-orange {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #222222;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        padding: 10px 36px;
+        padding: 4px 16px;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
         display: block;
-        margin: 30px auto;
+        margin: 15px auto 5px auto;
         text-align: center;
-        min-width: 160px;
+        min-width: 110px;
     }
     .btn-submit-orange:hover {
         background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
@@ -73,62 +81,53 @@
     .btn-action-gray {
         background: #f0f0f0;
         border: 1px solid #cccccc;
-        border-radius: 4px;
+        border-radius: 3px;
         color: #333333;
-        font-size: 13px;
+        font-size: 11px;
         font-weight: bold;
-        padding: 8px 20px;
+        padding: 4px 12px;
         cursor: pointer;
         display: block;
-        margin: 20px auto;
+        margin: 10px auto;
     }
     .btn-action-gray:hover {
         background: #e5e5e5;
     }
     .results-fieldset {
         border: 1px solid #dddddd;
-        border-radius: 6px;
-        padding: 20px;
-        margin-top: 40px;
+        border-radius: 4px;
+        padding: 10px;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
+        width: 760px;
+        margin-left: calc(-380px + 165px);
     }
     .results-legend {
-        font-size: 16px;
+        font-size: 13px;
         font-weight: bold;
         color: #0044aa;
-        padding: 0 10px;
+        padding: 0 6px;
     }
     .modern-grid-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 10px;
-        font-size: 13px;
+        margin-top: 5px;
+        font-size: 11px;
     }
     .modern-grid-table th {
         background-color: #99ccff;
         color: #333333;
         font-weight: bold;
         text-align: left;
-        padding: 10px;
+        padding: 4px 6px;
         border: 1px solid #d0e0f5;
     }
     .modern-grid-table td {
-        padding: 8px 10px;
+        padding: 4px 6px;
         border: 1px solid #e8f0fa;
-    }
-    .modern-grid-table .table-input-field {
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 4px;
-        font-size: 13px;
         color: #333333;
-    }
-    .modern-grid-table .table-input-field:focus {
-        outline: none;
-        background: #f0f5fa;
     }
     .evenRow { background-color: #ffffff; }
     .oddRow { background-color: #ffffdd; }
@@ -173,14 +172,13 @@
 		</div>
 
 		<input type="button" name="searchButton" id="searchButton" class="btn-submit-orange" value="Get Users" onClick="javascript:chgActCmdSubmit('Get');">
-
-		<c:if test="${not empty activeDirUserList}">
+		<s:if test="activeDirUserList != null && !activeDirUserList.isEmpty()">
 			<fieldset class="results-fieldset">
 				<legend class="results-legend">Search Results</legend>
 
-				<c:if test="${activeDirUserList.size() > 10}">
-					<input type="button" name="selectUserButtonTop" id="selectUserButtonTop" class="btn-action-gray" value="Select User" onClick="javascript:checkSelect();" style="margin-top: 0; margin-bottom: 15px;">
-				</c:if>
+				<s:if test="activeDirUserList.size() > 10">
+					<input type="button" name="selectUserButtonTop" id="selectUserButtonTop" class="btn-action-gray" value="Select User" onClick="javascript:checkSelect();" style="margin-top: 0; margin-bottom: 8px;">
+				</s:if>
 				
 				<table class="modern-grid-table">
 					<thead>
@@ -196,40 +194,47 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${activeDirUserList}" var="activeBean" varStatus="activeStatus">  
-							<tr class="${activeStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
+						<s:iterator value="activeDirUserList" status="activeStatus">  
+							<tr class="<s:if test='#activeStatus.even'>evenRow</s:if><s:else>oddRow</s:else>">
 								<td class="text-center">
-									<input type="radio" name="blnSelected" value="<c:out value='${activeBean.userId}'/>" onclick="document.getElementById('selectUserButton').focus();"/>
+									<input type="radio" name="blnSelected" value="<s:property value='userId'/>" onclick="document.getElementById('selectUserButton').focus();"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].userId" value="%{#attr.activeBean.userId}" maxlength="30" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].userId" value="%{userId}"/>
+									<s:property value="userId"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].firstName" value="%{#attr.activeBean.firstName}" maxlength="30" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].firstName" value="%{firstName}"/>
+									<s:property value="firstName"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].lastName" value="%{#attr.activeBean.lastName}" maxlength="30" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].lastName" value="%{lastName}"/>
+									<s:property value="lastName"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].abtNotesId" value="%{#attr.activeBean.abtNotesId}" maxlength="50" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].abtNotesId" value="%{abtNotesId}"/>
+									<s:property value="abtNotesId"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].division" value="%{#attr.activeBean.division}" maxlength="50" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].division" value="%{division}"/>
+									<s:property value="division"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].employeeType" value="%{#attr.activeBean.employeeType}" maxlength="50" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].employeeType" value="%{employeeType}"/>
+									<s:property value="employeeType"/>
 								</td>
 								<td>
-									<s:textfield name="activeDirUserList[%{#activeStatus.index}].email" value="%{#attr.activeBean.email}" maxlength="50" cssClass="table-input-field" theme="simple" readonly="true"/>
+									<s:hidden name="activeDirUserList[%{#activeStatus.index}].email" value="%{email}"/>
+									<s:property value="email"/>
 								</td>
 							</tr>
-						</c:forEach>
+						</s:iterator>
 					</tbody>
 				</table>     
 				 
 				<input type="button" name="selectUserButton" id="selectUserButton" class="btn-action-gray" value="Select User" onClick="javascript:checkSelect();">
 			</fieldset>
-		</c:if> 
+		</s:if> 
 	</s:form>
 </div>
 
@@ -278,3 +283,5 @@ function callCancel(){
 
 <%@ include file="/include/footer.jsf" %>
 </body>
+</html>
+		

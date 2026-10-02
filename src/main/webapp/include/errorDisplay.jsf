@@ -35,10 +35,8 @@
 <!-- Struts 7 Error Check Block Component -->
 <s:if test="hasActionErrors() || hasFieldErrors()">
     <div class="rurd-error-container">
-        <%-- Renders global messages with HTML escaping disabled --%>
         <s:actionerror theme="simple" escape="false" />
         
-        <%-- Renders input validation messages with HTML escaping disabled --%>
         <s:fielderror theme="simple" escape="false" />
     </div>
 </s:if>

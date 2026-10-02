@@ -2,6 +2,7 @@ package abbott.ai.tcgm.entities;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 /**
  * <p>Title: TCGM</p>
@@ -44,7 +45,7 @@ public class RptUser extends TCGMLog implements Serializable
 	private HashMap affiliates;
 	private HashMap sectors;
 	private HashMap areas;
-	private HashMap div;
+	private Map<String,String> div;
 	private Vector userlist = new Vector();
 	
 	private String affCodeList = "";
@@ -512,10 +513,12 @@ public class RptUser extends TCGMLog implements Serializable
 	public void setRecertifyDate(String recertifyDate) {
 		this.recertifyDate = recertifyDate;
 	}
-	public HashMap getDiv() {
-		return div;
+
+	public Map<String,String> getDiv() {
+	    return div;
 	}
-	public void setDiv(HashMap div) {
-		this.div = div;
+
+	public void setDiv(Map<String,String> div) {
+	    this.div = div;
 	}
 }
