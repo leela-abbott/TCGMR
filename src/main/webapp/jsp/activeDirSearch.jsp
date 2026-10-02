@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 
 <%! String pageTitle = "Report User Search & Selection Screen"; %>
 <c:set var="pageTitle" value="Report User Search & Selection Screen" scope="request" />
@@ -143,14 +144,14 @@
 	
 <div class="search-container">
 	
-	<s:form id="activeDirSearchForm" name="activeDirSearchForm" namespace="/" action="ActiveDirSearch" method="post">
-		<s:hidden name="cmd" id="cmd" />
-		<s:hidden name="cmd2" id="cmd2" />
+	<form id="activeDirSearchForm" name="activeDirSearchForm" action="ActiveDirSearch" method="post">
+		<input type="hidden" name="cmd" id="cmd" value="<c:out value='${action.cmd}' />" />
+		<input type="hidden" name="cmd2" id="cmd2" value="<c:out value='${action.cmd2}' />" />
   
 		<div class="form-group-row">
 			<label for="usIdTextField">UserId</label>
 			<div class="input-wrapper">
-				<s:textfield name="usId" id="usIdTextField" cssClass="form-control-input" theme="simple"
+				<input type="text" name="usId" id="usIdTextField" class="form-control-input" value="<c:out value='${action.usId}' />"
 							 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
 			</div>
 		</div>
@@ -158,7 +159,7 @@
 		<div class="form-group-row">
 			<label for="lastNameTextField">Last Name</label>
 			<div class="input-wrapper">
-				<s:textfield name="lastName" id="lastNameTextField" cssClass="form-control-input" theme="simple"
+				<input type="text" name="lastName" id="lastNameTextField" class="form-control-input" value="<c:out value='${action.lastName}' />"
 							 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
 			</div>
 		</div>    
@@ -166,19 +167,20 @@
 		<div class="form-group-row">
 			<label for="firstNameTextField">First Name</label>
 			<div class="input-wrapper">
-				<s:textfield name="firstName" id="firstNameTextField" cssClass="form-control-input" theme="simple"
+				<input type="text" name="firstName" id="firstNameTextField" class="form-control-input" value="<c:out value='${action.firstName}' />"
 							 onkeydown="if(event.keyCode == 13){document.getElementById('searchButton').click();}" />
 			</div>
 		</div>
 
 		<input type="button" name="searchButton" id="searchButton" class="btn-submit-orange" value="Get Users" onClick="javascript:chgActCmdSubmit('Get');">
-		<s:if test="activeDirUserList != null && !activeDirUserList.isEmpty()">
+		
+		<c:if test="${not empty action.activeDirUserList && fn:length(action.activeDirUserList) > 0}">
 			<fieldset class="results-fieldset">
 				<legend class="results-legend">Search Results</legend>
 
-				<s:if test="activeDirUserList.size() > 10">
+				<c:if test="${fn:length(action.activeDirUserList) > 10}">
 					<input type="button" name="selectUserButtonTop" id="selectUserButtonTop" class="btn-action-gray" value="Select User" onClick="javascript:checkSelect();" style="margin-top: 0; margin-bottom: 8px;">
-				</s:if>
+				</c:if>
 				
 				<table class="modern-grid-table">
 					<thead>
@@ -194,48 +196,48 @@
 						</tr>
 					</thead>
 					<tbody>
-						<s:iterator value="activeDirUserList" status="activeStatus">  
-							<tr class="<s:if test='#activeStatus.even'>evenRow</s:if><s:else>oddRow</s:else>">
+						<c:forEach items="${action.activeDirUserList}" var="userItem" varStatus="activeStatus">  
+							<tr class="${activeStatus.index % 2 == 0 ? 'evenRow' : 'oddRow'}">
 								<td class="text-center">
-									<input type="radio" name="blnSelected" value="<s:property value='userId'/>" onclick="document.getElementById('selectUserButton').focus();"/>
+									<input type="radio" name="blnSelected" value="<c:out value='${userItem.userId}'/>" onclick="document.getElementById('selectUserButton').focus();"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].userId" value="%{userId}"/>
-									<s:property value="userId"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].userId" value="<c:out value='${userItem.userId}'/>"/>
+									<c:out value="${userItem.userId}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].firstName" value="%{firstName}"/>
-									<s:property value="firstName"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].firstName" value="<c:out value='${userItem.firstName}'/>"/>
+									<c:out value="${userItem.firstName}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].lastName" value="%{lastName}"/>
-									<s:property value="lastName"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].lastName" value="<c:out value='${userItem.lastName}'/>"/>
+									<c:out value="${userItem.lastName}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].abtNotesId" value="%{abtNotesId}"/>
-									<s:property value="abtNotesId"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].abtNotesId" value="<c:out value='${userItem.abtNotesId}'/>"/>
+									<c:out value="${userItem.abtNotesId}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].division" value="%{division}"/>
-									<s:property value="division"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].division" value="<c:out value='${userItem.division}'/>"/>
+									<c:out value="${userItem.division}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].employeeType" value="%{employeeType}"/>
-									<s:property value="employeeType"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].employeeType" value="<c:out value='${userItem.employeeType}'/>"/>
+									<c:out value="${userItem.employeeType}"/>
 								</td>
 								<td>
-									<s:hidden name="activeDirUserList[%{#activeStatus.index}].email" value="%{email}"/>
-									<s:property value="email"/>
+									<input type="hidden" name="activeDirUserList[${activeStatus.index}].email" value="<c:out value='${userItem.email}'/>"/>
+									<c:out value="${userItem.email}"/>
 								</td>
 							</tr>
-						</s:iterator>
+						</c:forEach>
 					</tbody>
 				</table>     
 				 
 				<input type="button" name="selectUserButton" id="selectUserButton" class="btn-action-gray" value="Select User" onClick="javascript:checkSelect();">
 			</fieldset>
-		</s:if> 
-	</s:form>
+		</c:if> 
+	</form>
 </div>
 
 <script language="JavaScript1.2" type="text/javascript">
@@ -284,4 +286,3 @@ function callCancel(){
 <%@ include file="/include/footer.jsf" %>
 </body>
 </html>
-		

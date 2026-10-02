@@ -7,7 +7,6 @@
 <c:set var="pageTitle" value="App User Search & Selection Screen" scope="request" />
 <head>
     <style>
-        /* Exact layout button style matching sample image specs */
         .tcgm-action-btn {
             display: inline-block;
             padding: 6px 36px;

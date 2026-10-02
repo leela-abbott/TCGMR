@@ -2,8 +2,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<%-- Struts 2 & JSTL Page Title Initialization Context --%>
-<%! String pageTitle = "File Upload"; %>
+<% String pageTitle = "File Upload"; %>
 <c:set var="pageTitle" value="File Upload" scope="request" />
 
 <head>
@@ -53,10 +52,10 @@
         gap: 15px;
     }
     .form-control-input, .form-control-select {
-        width: 280px;
-        height: 36px;
-        padding: 6px 12px;
-        font-size: 14px;
+        width: 250px;
+        height: 30px;
+        padding: 4px 10px;
+        font-size: 13px;
         border: 1px solid #e0e0e0;
         border-radius: 4px;
         box-sizing: border-box;
@@ -64,7 +63,7 @@
         transition: border-color 0.2s ease;
     }
     .form-control-file {
-        font-size: 14px;
+        font-size: 13px;
     }
     .form-control-input:focus, .form-control-select:focus {
         border-color: #a0a0a0;
@@ -79,14 +78,14 @@
     .btn-submit-orange {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #222222;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
-        padding: 10px 24px;
+        padding: 6px 20px;
         cursor: pointer;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        min-width: 140px;
+        min-width: 120px;
         text-align: center;
     }
     .btn-submit-orange:hover {
@@ -95,13 +94,13 @@
     .btn-action-gray {
         background: #f0f0f0;
         border: 1px solid #cccccc;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #333333;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
-        padding: 10px 24px;
+        padding: 6px 20px;
         cursor: pointer;
-        min-width: 100px;
+        min-width: 90px;
         text-align: center;
     }
     .btn-action-gray:hover {
@@ -114,7 +113,6 @@ function setCursor() {
     document.body.style.cursor = "default";
 }
 
-// Cleaned up duplicate JS declaration into a single structural logic controller
 function handleAction(actionType) {
     var form = document.getElementById('fileUploadForm');
     
@@ -147,7 +145,6 @@ function handleAction(actionType) {
     <s:form id="fileUploadForm" name="fileUploadForm" action="fileUpload" method="post" enctype="multipart/form-data" onsubmit="return handleAction();">
         <s:hidden name="cmd" id="cmd" />
 
-        <!-- Segmented Section 1: File Storage Upload Interface -->
         <fieldset class="form-section-fieldset">
             <legend class="form-section-legend">Upload File Action</legend>
             
@@ -155,8 +152,6 @@ function handleAction(actionType) {
                 <label for="theFile">File Name</label>
                 <div class="input-wrapper">
                     <s:file name="theFile" id="theFile" cssClass="form-control-file" theme="simple" />
-                    
-                    <!-- Dynamic map/collection selection binding configured for Struts 2 -->
                     <s:select name="strDirectory" id="strDirectory" cssClass="form-control-select" theme="simple"
                               list="dirs" headerKey="root" headerValue="Root" />
                 </div>
@@ -168,7 +163,6 @@ function handleAction(actionType) {
             </div>
         </fieldset>
 
-        <!-- Segmented Section 2: Directory Utility Panel -->
         <fieldset class="form-section-fieldset">
             <legend class="form-section-legend">Create Directory Utility</legend>
             

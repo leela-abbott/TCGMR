@@ -39,10 +39,10 @@
         align-items: center;
     }
     .form-control-input, .form-control-select {
-        width: 280px;
-        height: 36px;
-        padding: 6px 12px;
-        font-size: 14px;
+        width: 250px;
+        height: 30px;
+        padding: 4px 10px;
+        font-size: 13px;
         border: 1px solid #e0e0e0;
         border-radius: 4px;
         box-sizing: border-box;
@@ -61,17 +61,17 @@
     .btn-submit-orange {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #222222;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
-        padding: 10px 36px;
+        padding: 6px 24px;
         cursor: pointer;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         display: block;
         margin: 30px auto;
         text-align: center;
-        min-width: 160px;
+        min-width: 120px;
     }
     .btn-submit-orange:hover {
         background: linear-gradient(to bottom, #ffd666 0%, #ffcc33 100%);
@@ -83,7 +83,7 @@
         color: #333333;
         font-size: 12px;
         font-weight: bold;
-        padding: 6px 12px;
+        padding: 5px 10px;
         cursor: pointer;
         margin-right: 5px;
     }
@@ -97,7 +97,7 @@
         border-radius: 4px;
         font-size: 12px;
         font-weight: bold;
-        padding: 6px 12px;
+        padding: 5px 10px;
         text-decoration: none;
         display: inline-block;
         margin-right: 5px;
@@ -112,7 +112,7 @@
         border-radius: 4px;
         font-size: 12px;
         font-weight: bold;
-        padding: 6px 12px;
+        padding: 5px 10px;
         text-decoration: none;
         display: inline-block;
     }
@@ -318,8 +318,7 @@ function allCap(id) {
     var val = document.getElementById(id).value;
     document.getElementById(id).value = val.toUpperCase();
 }
-
-function initCap(id) {
+    function initCap(id) {
     var val = document.getElementById(id).value;
     document.getElementById(id).value = val.substring(0,1).toUpperCase() + val.substring(1, val.length);
 }
@@ -426,6 +425,7 @@ function callValues() {
 </head>
 <body onload="disableList();">
 <%@ include file="/include/header.jsf" %>
+<%@ include file="/include/masthead.jsf" %>
 
 <c:set var="userForm" value="${sessionScope.userForm}" scope="session" />
 <c:set var="TCGMUser" value="${sessionScope.TCGMUser}" scope="session" />
@@ -552,7 +552,7 @@ function callValues() {
         <fieldset class="results-fieldset">
             <legend class="results-legend">Search Results</legend>
             
-            <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
+                        <c:if test="${sessionScope.TCGMUser.role.name eq 'TCGM_ADMINISTRATOR' || sessionScope.TCGMUser.role.name eq 'TCGM_RPT ADMIN'}">
                 <table class="action-bar-table"> 
                     <tr>
                         <td class="text-left">

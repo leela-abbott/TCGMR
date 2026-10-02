@@ -9,9 +9,9 @@
     <style type="text/css">
         .tcgm-btn {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 5px 8px;
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             color: #123456 !important;
             text-decoration: none;
@@ -58,19 +58,19 @@
         }
 
         .compact-table td {
-            padding: 3px 5px !important;
-            font-size: 11px !important;
+            padding: 6px 8px !important;
+            font-size: 12px !important;
         }
         .compact-table input[type="checkbox"] {
             margin: 0;
             padding: 0;
-            transform: scale(0.85);
+            transform: scale(0.95);
             vertical-align: middle;
         }
     </style>
 </head>
 
-<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px;">
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
 	<%@ include file="/include/masthead.jsf" %>
     <%@ include file="/include/errorDisplay.jsf" %>
     
@@ -80,7 +80,7 @@
         <s:hidden name="cmd" id="cmd" />
         <s:hidden name="userListSize" id="userListSize" />
 
-        <table class="compact-table" style="width: 760px; border-collapse: collapse; border-spacing: 0; margin-top: 5px; margin-left: auto; margin-right: auto;">
+        <table class="compact-table" style="width: 920px; border-collapse: collapse; border-spacing: 0; margin-top: 5px; margin-left: auto; margin-right: auto;">
             <tr>
                 <td colspan="8" style="text-align: right; padding-bottom: 5px;">
                     <c:if test='${sessionScope.TCGMUser.role.name == "TCGM_ADMIN" || sessionScope.TCGMUser.role.accessLevel == 3}'>
@@ -90,15 +90,15 @@
                     </c:if>
                 </td>
             </tr>
-            <tr class="fltrTblHdng" style="background-color: #b4d8f4; font-weight: bold; color: Navy; text-align: left; font-size: 11px;">
-                <td style="padding: 4px 5px;">User Id</td>
-                <td style="padding: 4px 5px;">First Name</td>
-                <td style="padding: 4px 5px;">Last Name</td>
-                <td style="padding: 4px 5px;">Phone</td>
-                <td style="padding: 4px 5px;">UPI</td>
-                <td style="padding: 4px 5px;">&nbsp;Role</td>
-                <td style="padding: 4px 5px;">&nbsp;Email</td>
-                <td style="padding: 4px 5px; text-align: center; vertical-align: middle;">
+            <tr class="fltrTblHdng" style="background-color: #b4d8f4; font-weight: bold; color: Navy; text-align: left; font-size: 12px;">
+                <td style="padding: 8px 8px;">User Id</td>
+                <td style="padding: 8px 8px;">First Name</td>
+                <td style="padding: 8px 8px;">Last Name</td>
+                <td style="padding: 8px 8px;">Phone</td>
+                <td style="padding: 8px 8px;">UPI</td>
+                <td style="padding: 8px 8px;">&nbsp;Role</td>
+                <td style="padding: 8px 8px;">&nbsp;Email</td>
+                <td style="padding: 8px 8px; text-align: center; vertical-align: middle;">
                     <button type="button" class="tcgm-check-btn" title="Toggle Select All"
                             onClick="return toggleSelectAll('userlist', 'selected', '${action.userListSize}');"></button>
                 </td>
@@ -106,21 +106,21 @@
             <c:if test="${not empty action.userlist}">
                 
                 <c:forEach items="${action.userlist}" var="userItem" varStatus="status">
-                    <tr id="mntRow" class="${status.index % 2 == 0 ? 'evenRow' : 'oddRow'}" style="font-size: 11px;">
+                    <tr id="mntRow" class="${status.index % 2 == 0 ? 'evenRow' : 'oddRow'}" style="font-size: 12px;">
                         
-                        <td class="mntLeft" style="padding: 3px 5px;">
+                        <td class="mntLeft" style="padding: 6px 8px;">
                             <input type="hidden" name="userlist[${status.index}].userid" value="<c:out value='${userItem.userid}' />" />
                             <input type="hidden" name="userlist[${status.index}].userinfoid" value="<c:out value='${userItem.userinfoid}' />" />
                             <c:out value="${userItem.userid}" />
                         </td>        
-                        <td class="mntLeft" style="padding: 3px 5px;"><c:out value="${userItem.firstName}" /></td>
-                        <td class="mntLeft" style="padding: 3px 5px;"><c:out value="${userItem.lastName}" /></td>
-                        <td class="mntLeft" style="padding: 3px 5px;"><c:out value="${userItem.phone}" /></td>
-                        <td class="mntLeft" style="padding: 3px 5px;"><c:out value="${userItem.abtNotesId}" /></td>
-                        <td class="mntCenter" style="padding: 3px 5px;">&nbsp;&nbsp;<c:out value="${userItem.userRole}" /></td>
-                        <td class="mntLeft" style="padding: 3px 5px;">&nbsp;&nbsp;<c:out value="${userItem.email}" /></td>
+                        <td class="mntLeft" style="padding: 6px 8px;"><c:out value="${userItem.firstName}" /></td>
+                        <td class="mntLeft" style="padding: 6px 8px;"><c:out value="${userItem.lastName}" /></td>
+                        <td class="mntLeft" style="padding: 6px 8px;"><c:out value="${userItem.phone}" /></td>
+                        <td class="mntLeft" style="padding: 6px 8px;"><c:out value="${userItem.abtNotesId}" /></td>
+                        <td class="mntCenter" style="padding: 6px 8px;">&nbsp;&nbsp;<c:out value="${userItem.userRole}" /></td>
+                        <td class="mntLeft" style="padding: 6px 8px;">&nbsp;&nbsp;<c:out value="${userItem.email}" /></td>
                         
-                        <td class="mntCenter" style="padding: 3px 5px; text-align: center; vertical-align: middle;">
+                        <td class="mntCenter" style="padding: 6px 8px; text-align: center; vertical-align: middle;">
                             <input type="checkbox" name="userlist[${status.index}].selected" value="true" />
                         </td>
                     </tr>
@@ -130,7 +130,7 @@
         </table>
 
         <c:if test="${empty action.userlist}">
-            <div style="text-align: center; margin: 15px auto; width: 760px; font-size: 11px;">
+            <div style="text-align: center; margin: 15px auto; width: 920px; font-size: 12px;">
                 <%@ include file="/include/recordsNotFound.jsf" %>
             </div>
         </c:if>
@@ -139,4 +139,3 @@
     <%@ include file="/include/footer.jsf" %>
 </body>
 </html>
-            

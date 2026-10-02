@@ -2,7 +2,6 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<%-- Struts 2 & JSTL Page Title Initialization Context --%>
 <%! String pageTitle = "DatabaseUsers View"; %>
 <c:set var="pageTitle" value="DatabaseUsers View" scope="request" />
 
@@ -38,11 +37,11 @@
     .btn-action-trigger {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #222222;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
-        padding: 12px 36px;
+        padding: 6px 24px;
         text-decoration: none;
         display: inline-block;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -79,23 +78,18 @@
 <%@ include file="/include/errorDisplay.jsf" %>
 
 <div class="process-container">
-    <!-- Notice / Process Notification Elements -->
     <span class="info-msg-blue">This would trigger the process of getting Database Users.</span>
     <span class="warning-msg-red">It might take several hours to complete.</span>
     
-    <!-- Corrected Struts 2 URL Action Mapping Layer using the "var" compilation parameter -->
     <s:url var="dbUsersUrl" action="rptUserMaint">
         <s:param name="cmd">datausers</s:param>
     </s:url>
     
-    <!-- Evaluates action reference context explicitly utilizing the "#" operator symbol -->
     <s:a href="%{#dbUsersUrl}" cssClass="btn-action-trigger">
         Get DB Users
     </s:a>
     
-    <!-- Retained dynamic message anchor targets -->
     <div id="msgPopupDiv"></div>
-
 </div>
 
 <%@ include file="/include/footer.jsf" %>

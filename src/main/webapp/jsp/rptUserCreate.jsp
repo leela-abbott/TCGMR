@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="abbott.ai.tcgm.entities.RptUser" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
@@ -6,12 +7,34 @@
 <%@ include file="/include/header.jsf" %>
 <c:set var="pageTitle" value="Report User Creation" scope="request" />
 
+<%
+    RptUser sessionUser = (RptUser) session.getAttribute("RptUser");
+    String displayUserId = "";
+    String displayLastName = "";
+    String displayFirstName = "";
+    String displayEmail = "";
+    String displayUpi = "";
+    String displayDivision = "";
+    String displayType = "";
+
+    if (sessionUser != null) {
+        displayUserId = (sessionUser.getUserid() != null) ? sessionUser.getUserid() : "";
+        displayLastName = (sessionUser.getLastName() != null) ? sessionUser.getLastName() : "";
+        displayFirstName = (sessionUser.getFirstName() != null) ? sessionUser.getFirstName() : "";
+        displayEmail = (sessionUser.getEmail() != null) ? sessionUser.getEmail() : "";
+        displayUpi = (sessionUser.getAbtNotesId() != null) ? sessionUser.getAbtNotesId() : "";
+        displayDivision = (sessionUser.getEmpDivision() != null) ? sessionUser.getEmpDivision() : ((sessionUser.getDivision() != null) ? sessionUser.getDivision() : "");
+        displayType = (sessionUser.getEmployeeType() != null) ? sessionUser.getEmployeeType() : "";
+    }
+%>
+
+<c:set var="sessionDivMap" value="${sessionScope.RptUser['div']}" />
+
 <head>
 <style>
-    /* Modernized Pure CSS Gradient Button matching design metrics */
     .tcgm-btn {
         display: inline-block;
-        padding: 6px 24px;
+        padding: 6px 20px;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 13px;
         font-weight: bold;
@@ -24,6 +47,8 @@
         cursor: pointer;
         text-shadow: 0 1px 0 rgba(255,255,255,0.4);
         transition: all 0.1s ease-in-out;
+        min-width: 100px;
+        text-align: center;
     }
     .tcgm-btn:hover {
         background: linear-gradient(to bottom, #fff4aa 0%, #ffd44f 100%);
@@ -33,34 +58,28 @@
         background: #ffca36;
         box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
     }
-    
-    /* Clean-cut Input Field System with clear visual hierarchy mapping */
     .tcgm-input-readonly {
         border: 1px solid #cccccc;
         background-color: #ffffff;
         color: #333333;
-        padding: 5px 8px;
-        width: 200px;
-        height: 24px;
+        padding: 4px 10px;
+        width: 250px;
+        height: 30px;
         font-family: Arial, sans-serif;
         font-size: 13px;
-        border-radius: 3px;
+        border-radius: 4px;
         box-sizing: border-box;
     }
-    
-    /* Dropdown Selection Field Structural Alignment */
     .tcgm-select {
         border: 1px solid #cccccc;
-        padding: 5px 8px;
-        width: 200px;
-        height: 24px;
+        padding: 4px 10px;
+        width: 250px;
+        height: 30px;
         font-family: Arial, sans-serif;
         font-size: 13px;
-        border-radius: 3px;
+        border-radius: 4px;
         box-sizing: border-box;
     }
-    
-    /* Label Component formatting layer matching your reference layout metrics */
     .commandOptionLabel {
         font-family: Arial, sans-serif;
         font-size: 13px;
@@ -69,34 +88,22 @@
         text-align: left;
         width: 130px;
     }
-
-    /* Structural Table layout layer matching reference look */
-    table[align="center"] {
-        width: 400px !important;
-        margin-top: 40px !important;
-        margin-bottom: 30px !important;
-    }
-
-    table[align="center"] td {
-        padding: 8px 0 !important;
-    }
-
-    /* Target the button table spacing to align beautifully in center */
     table table {
         margin-top: 15px !important;
     }
 </style>
 </head>
-
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
     <%@ include file="/include/errorDisplay.jsf" %>
 
     <script type="text/javascript">
         function chgActCmdSubmit(cmdValue, targetAction) {
-            document.getElementById('cmd').value = cmdValue;
             var form = document.getElementById('userForm');
-            form.action = targetAction;
-            form.submit();
+            if (form) {
+                document.getElementById('cmd').value = cmdValue;
+                form.action = targetAction;
+                form.submit();
+            }
         }
 
         function disableList() {   
@@ -195,7 +202,6 @@
                 document.getElementById("secDiv").style.display = 'none';           
             }
         }   
-
         function add() {
             chgActCmdSubmit('view', 'ActiveDirSearch.action');
         }
@@ -325,8 +331,8 @@
             }
         }
     </script>
-
-    <s:form method="post" name="userForm" id="userForm" action="rptUserMaint" theme="simple">
+            <s:form method="post" name="userForm" id="userForm" action="rptUserMaint" theme="simple">
+        <!-- Added explicit DOM id constraints so your JavaScript function can locate elements -->
         <s:hidden name="cmd" id="cmd" />
         <s:hidden name="selDesc" id="selDesc" />
         <s:hidden name="affCodeList" id="affCodeList" />
@@ -335,9 +341,9 @@
 
         <table style="width: 700px; margin: 20px auto; border-collapse: collapse;" border="0" align="center">
             <tr>
-                <td style="width: 120px; padding: 6px;" class="commandOptionLabel"><strong>User Id</strong></td>
+                <td style="width: 140px; padding: 6px;" class="commandOptionLabel"><strong>User Id</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.userid" id="userid" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.userid" id="userid" value="<%=displayUserId%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -345,7 +351,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Last Name</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.lastName" id="lastName" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.lastName" id="lastName" value="<%=displayLastName%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -353,15 +359,15 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>First Name</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.firstName" id="firstName" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.firstName" id="firstName" value="<%=displayFirstName%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
             </tr>
-                        <tr>
+            <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Email</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.email" id="email" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.email" id="email" value="<%=displayEmail%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -369,7 +375,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>UPI</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.abtNotesId" id="abtNotesId" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.abtNotesId" id="abtNotesId" value="<%=displayUpi%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -377,7 +383,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.empDivision" id="empDivision" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.empDivision" id="empDivision" value="<%=displayDivision%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -385,7 +391,7 @@
             <tr>
                 <td style="padding: 6px;" class="commandOptionLabel"><strong>Type</strong></td>
                 <td style="padding: 6px;">
-                    <s:textfield name="rptUser.employeeType" id="employeeType" readonly="true" cssClass="tcgm-input-readonly" />
+                    <input type="text" name="rptUser.employeeType" id="employeeType" value="<%=displayType%>" readonly="readonly" class="tcgm-input-readonly" />
                 </td>
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
@@ -401,13 +407,21 @@
                 <td>&nbsp;</td>
             </tr>
             <tr>
-                <td style="padding: 6px;" class="commandOptionLabel"><strong>Division</strong></td>
+                <td style="padding: 6px;" class="commandOptionLabel"><strong>Division Mapping</strong></td>
                 <td style="padding: 6px;">
                     <s:select name="rptUser.division" id="division" cssClass="tcgm-select" onchange="callValues()"
-                              list="divCollection" headerKey="-1" headerValue="Select One" />
+                              list="#attr.sessionDivMap" headerKey="-1" headerValue="Select One" />
                 </td> 
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding-top: 25px; padding-bottom: 15px;">
+                    <div style="margin-left: 142px; display: flex; gap: 15px;">
+                        <input type="button" id="addButton" class="tcgm-btn" value="LookUp" onclick="add();" />
+                        <input type="button" id="saveButton" class="tcgm-btn" value="Save" onclick="saveForm();" />
+                    </div>
+                </td>
             </tr>
             
             <tbody id="areaDiv" style="display:none">
@@ -464,31 +478,13 @@
                         <s:select name="rptUser.secCodeList" id="secCodeLst" multiple="true" size="12" 
                                   style="width:220px; border:1px solid #b8d4f0; border-radius:3px;" list="#templateList" />
                     </td> 
-                </tr>
+                </tr>                         
             </tbody>
-            
-            <tr>
-                <td colspan="4" style="height: 15px;">&nbsp;</td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table align="center" style="border-spacing: 10px 0;">
-                        <tr>
-                            <td>
-                                <button type="button" id="addButton" class="tcgm-btn" onclick="add();">LookUp</button>
-                            </td>
-                            <td>
-                                <button type="button" id="saveButton" class="tcgm-btn" onclick="saveForm();">Save</button>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
         </table>
         <input type="hidden" name="cmd2" id="cmd2" value="creation">
     </s:form>
 
-    <%@ include file="/include/footer.jsf" %>
+<%@ include file="/include/footer.jsf" %>
 </body>
 </html>
-            
+        

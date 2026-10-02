@@ -38,11 +38,11 @@
     .btn-action-trigger {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 6px;
+        border-radius: 4px;
         color: #222222;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: bold;
-        padding: 12px 36px;
+        padding: 6px 24px;
         text-decoration: none;
         display: inline-block;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);

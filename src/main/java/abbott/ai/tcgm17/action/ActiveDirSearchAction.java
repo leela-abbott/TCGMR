@@ -33,7 +33,7 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
     private String firstName = "";
     private String lastName = "";
     private String blnSelected;
-    private ArrayList activeDirUserList = new ArrayList();
+    private ArrayList<ActiveDirSearchDtlBean> activeDirUserList = new ArrayList<ActiveDirSearchDtlBean>();
     private String usId = "";
     private Vector userList = new Vector();
     private User searchObject = new User();
@@ -128,12 +128,8 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
         try {
             String namesToSortBy[] = { "sn", "givenName", "cn", "mail", "userPrincipalName" };
             boolean sortAscending[] = { true, true, true, true, false };
-            
-            // Fetch results list
             ArrayList searchResults = activeDirSearchMgr.getUserList(this.getFirstName(), this.getLastName(), this.getUsId(), namesToSortBy, sortAscending);
             this.setActiveDirUserList(searchResults);
-
-            // FIX: Persist list into session so it survives stateless round-trips
             HttpSession session = request.getSession(true);
             session.setAttribute("ACTIVE_DIR_USER_LIST_SESSION", searchResults);
 
@@ -284,11 +280,19 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
     public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getBlnSelected() { return blnSelected; }
+    
     @StrutsParameter
     public void setBlnSelected(String blnSelected) { this.blnSelected = blnSelected; }
 
-    public ArrayList getActiveDirUserList() { return activeDirUserList; }
-    public void setActiveDirUserList(ArrayList activeDirUserList) { this.activeDirUserList = activeDirUserList; }
+    @StrutsParameter(depth = 2)
+    public ArrayList<ActiveDirSearchDtlBean> getActiveDirUserList() { 
+        return activeDirUserList; 
+    }
+
+    @StrutsParameter(depth = 2)
+    public void setActiveDirUserList(ArrayList<ActiveDirSearchDtlBean> activeDirUserList) { 
+        this.activeDirUserList = activeDirUserList; 
+    }
 
     public ActiveDirSearchDtlBean getActiveDirUserList(int index) {
         if (index >= 0 && index < this.activeDirUserList.size()) {
