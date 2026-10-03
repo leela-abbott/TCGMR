@@ -6,21 +6,24 @@
 <c:set var="pageTitle" value="Add Division / Area / Sector / Affiliate" scope="request" />
 <head>
     <style type="text/css">
+        /* Medium-sized action buttons styling */
         input[type="button"] {
             display: inline-block;
-            padding: 6px 22px;
+            padding: 4px 14px;
+            height: 28px;
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             font-style: italic;
             color: #0b2545 !important;
             text-decoration: none;
             background: linear-gradient(to bottom, #ffe47c 0%, #ffc124 100%);
             border: 1px solid #cca11f;
-            border-radius: 6px;
+            border-radius: 4px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
             cursor: pointer;
             transition: all 0.1s ease-in-out;
+            box-sizing: border-box;
         }
         input[type="button"]:hover {
             background: linear-gradient(to bottom, #ffed96 0%, #ffd455 100%);
@@ -31,15 +34,15 @@
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
         
-        /* Clean medium-sized select field styling matching the provided sample image */
+        /* Clean medium-sized select field styling */
         select {
             border: 1px solid #cccccc;
             background-color: #ffffff;
-            padding: 6px 10px;
-            width: 240px;
-            height: 32px;
+            padding: 4px 8px;
+            width: 210px;
+            height: 28px;
             font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             color: #333333;
             border-radius: 4px;
             box-sizing: border-box;
@@ -52,15 +55,15 @@
         /* Layout spacing adjustments */
         .commandOptionLabel {
             font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #333333;
             padding-right: 15px;
         }
         table {
-            margin-top: 30px;
+            margin-top: 20px;
             border-collapse: separate;
-            border-spacing: 0 12px;
+            border-spacing: 0 10px;
         }
     </style>
 
@@ -160,7 +163,6 @@
                 try { document.getElementById("areaCode").style.display = 'none'; } catch(err2) {}
             }
         }   
-
         function loadAreaDesc() {
             if (document.getElementById("role").value == '-1' || document.getElementById("division").value == '-1' || document.getElementById("areaCode").value == '-1') {
                 document.getElementById("catName").value = '';
@@ -211,99 +213,95 @@
         }
     </script>
 </head>
-        <body style="margin: 0;" onload="enableList();">
-	<%@ include file="/include/header.jsf"%>
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf"%>
+<body style="margin: 0;" onload="enableList();">
+    <%@ include file="/include/header.jsf"%>
+    <%@ include file="/include/masthead.jsf" %>
+    <%@ include file="/include/errorDisplay.jsf"%>
 
-	<s:form method="post" name="userForm" id="userForm"
-		action="rptUserMaint" theme="simple">
-		<s:hidden name="cmd" id="cmd" />
-		<s:hidden name="selDesc" id="selDesc" />
-		<s:hidden name="divisionCode" id="divisionCode" />
-		<s:hidden name="categoryid" id="categoryid" />
-		<s:hidden name="categoryname" id="categoryname" />
+    <s:form method="post" name="userForm" id="userForm" action="rptUserMaint" theme="simple">
+        <s:hidden name="cmd" id="cmd" />
+        <s:hidden name="selDesc" id="selDesc" />
+        <s:hidden name="divisionCode" id="divisionCode" />
+        <s:hidden name="categoryid" id="categoryid" />
+        <s:hidden name="categoryname" id="categoryname" />
 
-		<table width="650" align="center" border="0">
-			<tr>
-				<td class="commandOptionLabel" width="245" align="right"><strong><span
-						class="mntLeft">Role</span></strong></td>
-				<td width="405"><select name="rptUser.role" id="role"
-					onchange="enableList();">
-						<option value="-1">Select One</option>
-						<option value="D">Division</option>
-						<option value="Area">Area</option>
-						<option value="Sector">Sector</option>
-						<option value="Affiliate">Affiliate</option>
-				</select></td>
-			</tr>
-			<tr>
-				<td class="commandOptionLabel" width="245" align="right"><strong><span
-						class="mntLeft">Division</span></strong></td>
-				<td width="405"><select name="rptUser.division" id="division"
-					onchange="enableList();">
-						<option value="-1">Select One</option>
-						<c:forEach items="${rptUser['div']}" var="divItem">
-							<option value="${divItem.value}">${divItem.key}</option>
-						</c:forEach>
-				</select></td>
-			</tr>
-			<tr>
-				<td class="commandOptionLabel" align="right"><strong><span
-						class="mntLeft"><label id="code">Affiliate / Sector
-								/ Area #</label></span></strong></td>
-				<td style="vertical-align: middle;"><select
-					name="rptUser.areaCode" id="areaCode" style="display: none;">
-						<option value="-1">Select One</option>
-						<c:forEach items="${rptUser.areas}" var="areaItem">
-							<option value="${areaItem.value}">${areaItem.key}</option>
-						</c:forEach>
-				</select> <select name="rptUser.secCode" id="secCode" style="display: none;">
-						<option value="-1">Select One</option>
-						<c:forEach items="${rptUser.sectors}" var="secItem">
-							<option value="${secItem.value}">${secItem.key}</option>
-						</c:forEach>
-				</select> <select name="rptUser.affCode" id="affCode" style="display: none;">
-						<option value="-1">Select One</option>
-						<c:forEach items="${rptUser.affiliates}" var="affItem">
-							<option value="${affItem.value}">${affItem.key}</option>
-						</c:forEach>
-				</select></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input type="button"
-					name="saveButton" id="saveButton" value="Save"
-					onClick="saveForm(this, 'burstmaint', 'rptUserMaint.action');">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2"><font color="red" size="2">By choosing
-						the "Load Burst Tables" button below, the system will remove and
-						re-build the burst tables in TCGM based on the latest hierarchy.
-						It will not create the Cognos groups.</font></td>
-			</tr>
-			<tr>
-				<td colspan="2">&nbsp;</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input type="button"
-					name="loadButton" id="loadButton" value="Load Burst Tables"
-					onClick="loadBurst(this, 'loadBurst', 'rptUserMaint.action');">
-				</td>
-			</tr>
-		</table>
-		<input type="hidden" name="cmd2" value="creation">
-	</s:form>
-	<br>
-	<%@ include file="/include/footer.jsf"%>
+        <table width="650" align="center" border="0">
+            <tr>
+                <td class="commandOptionLabel" width="245" align="right"><strong><span class="mntLeft">Role</span></strong></td>
+                <td width="405">
+                    <select name="rptUser.role" id="role" onchange="enableList();">
+                        <option value="-1">Select One</option>
+                        <option value="D">Division</option>
+                        <option value="Area">Area</option>
+                        <option value="Sector">Sector</option>
+                        <option value="Affiliate">Affiliate</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="commandOptionLabel" width="245" align="right"><strong><span class="mntLeft">Division</span></strong></td>
+                <td width="405">
+                    <select name="rptUser.division" id="division" onchange="enableList();">
+                        <option value="-1">Select One</option>
+                        <c:forEach items="${rptUser['div']}" var="divItem">
+                            <option value="${divItem.value}">${divItem.key}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="commandOptionLabel" align="right"><strong><span class="mntLeft"><label id="code">Affiliate / Sector / Area #</label></span></strong></td>
+                <td style="vertical-align: middle;">
+                    <select name="rptUser.areaCode" id="areaCode" style="display: none;">
+                        <option value="-1">Select One</option>
+                        <c:forEach items="${rptUser.areas}" var="areaItem">
+                            <option value="${areaItem.value}">${areaItem.key}</option>
+                        </c:forEach>
+                    </select>
+                    <select name="rptUser.secCode" id="secCode" style="display: none;">
+                        <option value="-1">Select One</option>
+                        <c:forEach items="${rptUser.sectors}" var="secItem">
+                            <option value="${secItem.value}">${secItem.key}</option>
+                        </c:forEach>
+                    </select>
+                    <select name="rptUser.affCode" id="affCode" style="display: none;">
+                        <option value="-1">Select One</option>
+                        <c:forEach items="${rptUser.affiliates}" var="affItem">
+                            <option value="${affItem.value}">${affItem.key}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" name="saveButton" id="saveButton" value="Save" onClick="saveForm(this, 'burstmaint', 'rptUserMaint.action');">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2"><font color="red" size="2">By choosing the "Load Burst Tables" button below, the system will remove and re-build the burst tables in TCGM based on the latest hierarchy. It will not create the Cognos groups.</font></td>
+            </tr>
+            <tr>
+                <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" name="loadButton" id="loadButton" value="Load Burst Tables" onClick="loadBurst(this, 'loadBurst', 'rptUserMaint.action');">
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="cmd2" value="creation">
+    </s:form>
+    <br>
+    <%@ include file="/include/footer.jsf"%>
 </body>
 </html>
+        

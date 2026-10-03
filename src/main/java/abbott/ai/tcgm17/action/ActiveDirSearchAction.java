@@ -327,6 +327,7 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
     public ArrayList getRptUserList() { return rptUserList; }
     public void setRptUserList(ArrayList rptUserList) { this.rptUserList = rptUserList; }
 
+    @StrutsParameter(depth=3)
     public RptUser getRptUser() { return rptUser; }
     @StrutsParameter
     public void setRptUser(RptUser rptUser) { this.rptUser = rptUser; }

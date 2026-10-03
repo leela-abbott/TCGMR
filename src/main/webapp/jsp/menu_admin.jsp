@@ -28,7 +28,7 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	height: 32px; /* Reduced height from 45px */
+	height: 32px;
 	padding: 0;
 	position: relative;
 	z-index: 1000;
@@ -46,7 +46,6 @@ body {
 	color: var(--yellow-accent);
 	font-weight: bold;
 	font-size: 14px;
-	/* Slightly lowered font size to sit flush in 32px bar */
 	padding: 0 15px;
 	display: flex;
 	align-items: center;
@@ -105,7 +104,6 @@ body {
 	left: 0;
 }
 
-/* Cascading Level-3 Menu Positions */
 .dropdown-item {
 	position: relative;
 }
@@ -115,12 +113,10 @@ body {
 	left: 100%;
 }
 
-/* Hover States for Menu Visibility Triggers */
 .menu-item:hover>.dropdown-menu, .dropdown-item:hover>.submenu {
 	display: block;
 }
 
-/* Unified Link Formatting for Submenus */
 .dropdown-menu a {
 	display: block;
 	padding: 6px 12px;
@@ -136,7 +132,6 @@ body {
 	background-color: var(--yellow-accent);
 }
 
-/* Divider items matching legacy array layout definitions */
 .menu-separator {
 	border-top: 1px solid var(--primary-blue);
 	margin: 4px 0;
@@ -144,20 +139,56 @@ body {
 	overflow: hidden;
 }
 
-/* Log Out Anchor Action Element */
+.nav-right-group {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	margin-right: 10px;
+}
+
+.user-context-header-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    margin-right: 15px;
+    font-family: "Arial", sans-serif;
+    color: var(--primary-blue);
+    font-weight: bold;
+    text-align: right;
+    line-height: 1.2;
+}
+
+.currUserDisp {
+    font-size: 11px;
+    white-space: nowrap;
+    font-weight: bold !important;
+}
+
+.currModelDisp {
+    font-size: 10px;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 400px;
+    color: rgb(213, 57, 73) !important;
+}
+
+
 .logout-btn {
 	background-color: var(--primary-blue);
 	color: #ffffff;
 	text-decoration: none;
-	font-size: 11px; /* Scaled down slightly to fit smaller bar context */
+	font-size: 11px;
 	font-weight: bold;
-	padding: 6px 15px;
-	/* Replaced height: 100% with padding to dynamically fit content */
+	padding: 4px 15px;
 	display: inline-flex;
 	align-items: center;
-	border-radius: 15px; /* Full 15px rounding */
+	justify-content: center;
+	height: 22px;
+	border-radius: 15px;
 	cursor: pointer;
 	white-space: nowrap;
+	box-sizing: border-box;
 }
 
 .logout-btn:hover {
@@ -167,77 +198,51 @@ body {
 </head>
 <body>
 
-	<!-- Unified Master Menu Application Architecture -->
 	<nav class="nav-container">
 		<div class="nav-left-group">
 			<div class="logo-box">TCGM</div>
 
 			<ul class="menu-bar">
-				<li class="menu-item"><a class="menu-link">App
-						Security</a>
-					<ul class="dropdown-menu"
-						style="min-width: 100%; width: max-content;">
-						<li><a
-							onclick="navigate('ActiveDirSearch.action?cmd=appview')">Add
-								User</a></li>
-						<li><a onclick="navigate('userMaint.action')">User
-								Deletion</a></li>
-					</ul></li>
+				<li class="menu-item"><a class="menu-link">App Security</a>
+					<ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
+						<li><a onclick="navigate('ActiveDirSearch.action?cmd=appview')">Add User</a></li>
+						<li><a onclick="navigate('userMaint.action')">User Deletion</a></li>
+					</ul>
+				</li>
 
-				<!-- Main Menu Option 2: Reports Security (Triggers 'AppAdmin' Configurations) -->
-				<li class="menu-item"><a class="menu-link"
-					>Reports
-						Security</a>
-					<ul class="dropdown-menu"
-						style="min-width: 100%; width: max-content;">
-						<li><a onclick="navigate('ActiveDirSearch.action?cmd=view')">Add
-								User</a></li>
-						<li><a onclick="navigate('rptUserMaint.action?cmd=filter')">User
-								Search / Delete</a></li>
-						<li><a onclick="navigate('rptUserMaint.action?cmd=burst')">Add
-								Division /Area / Sector / Affiliate</a></li>
-						<li><a
-							onclick="navigate('rptUserMaint.action?cmd=usersView')">Cognos
-								User List</a></li>
-						<li><a
-							onclick="navigate('rptUserMaint.action?cmd=datausersView')">Database
-								User List</a></li>
+				<li class="menu-item"><a class="menu-link">Reports Security</a>
+					<ul class="dropdown-menu" style="min-width: 100%; width: max-content;">
+						<li><a onclick="navigate('ActiveDirSearch.action?cmd=view')">Add User</a></li>
+						<li><a onclick="navigate('rptUserMaint.action?cmd=filter')">User Search / Delete</a></li>
+						<li><a onclick="navigate('rptUserMaint.action?cmd=burst')">Add Division /Area / Sector / Affiliate</a></li>
+						<li><a onclick="navigate('rptUserMaint.action?cmd=usersView')">Cognos User List</a></li>
+						<li><a onclick="navigate('rptUserMaint.action?cmd=datausersView')">Database User List</a></li>
 						<li><a onclick="navigate('fileUpload.action')">FileUpload</a></li>
 						<li><a onclick="navigate('deleteFile.action?cmd=dir')">DeleteFile</a></li>
-					</ul></li>
+					</ul>
+				</li>
 
-				<li class="menu-item"><a class="menu-link"
-					onclick="navigate('main.action')">Main Menu</a></li>
+				<li class="menu-item"><a class="menu-link" onclick="navigate('main.action')">Main Menu</a></li>
 			</ul>
 		</div>
-		<%-- Context wrapper block containing application session profile identifiers --%>
-		<div class="user-context-header-panel">
-			<table>
-				<tr>
-					<td style="width: 225px; white-space: nowrap; vertical-align: top;">
-						<!-- Migrated Struts 1 bean:write session scopes to standard safe EL references -->
-						<div class="currUserDisp">
-							<c:out value="${sessionScope.TCGMUser.fullName}" />
-						</div>
-						<div class="currModelDisp">
-							Factor Model:&nbsp;
-							<c:out value="${sessionScope.TCGMState.currentModelName}" />
-						</div>
-					</td>
-				</tr>
-			</table>
-		</div>
 
-		<div
-			style="height: 100%; display: flex; align-items: center; margin-right: 10px;">
+		<!-- Container grouping the layout structures seamlessly on the right side of the navbar -->
+		<div class="nav-right-group">
+			<div class="user-context-header-panel">
+				<div class="currUserDisp">
+					<c:out value="${sessionScope.TCGMUser.fullName}" />
+				</div>
+				<div class="currModelDisp">
+					Factor Model:&nbsp;<c:out value="${sessionScope.TCGMState.currentModelName}" />
+				</div>
+			</div>
 			<a onclick="navigate('logout.action')" class="logout-btn">Log Out</a>
 		</div>
 	</nav>
 
 	<script type="text/javascript">
 		function navigate(targetActionEndpoint) {
-			console.log("Routing execution frame to interceptor map: "
-					+ targetActionEndpoint);
+			console.log("Routing execution frame to interceptor map: " + targetActionEndpoint);
 			window.location.href = targetActionEndpoint;
 		}
 	</script>
