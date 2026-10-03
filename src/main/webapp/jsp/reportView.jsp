@@ -1,20 +1,22 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <%@ page import="abbott.ai.tcgm.AppConst"%>
-<%@ page import=" jakarta.servlet.RequestDispatcher"%>
-<%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean"%>
-<bean:define id="TCGMUser" name="TCGMUser" scope="session" type="abbott.ai.tcgm.entities.User" />
+<%@ taglib prefix="s" uri="/struts-tags" %>
+
+<s:set var="TCGMUser" value="#session.TCGMUser" scope="page" />
+
 <html>
 <head>
-<title>TCGM Cognos Reports </title>
-<SCRIPT type="text/javascript">
+<title>TCGM Cognos Reports</title>
+<script type="text/javascript">
 function loadReports(){
-var password = encodeURIComponent('<%=  TCGMUser.getPassword()%>');
-//alert('<%=AppConst.reportsUrl%>');
-location.href = '<%=AppConst.reportsUrl%>?&CAMUsername=<%= TCGMUser.getUserid()%>&CAMPassword='+password;
+    // Use Struts 2 s:property tags to safely output the user properties
+    var password = encodeURIComponent('<s:property value="#TCGMUser.password" escapeJavaScript="true" />');
+    
+    location.href = '<%= AppConst.reportsUrl %>?&CAMUsername=<s:property value="#TCGMUser.userid" escapeJavaScript="true" />&CAMPassword=' + password;
 }
-</SCRIPT>
+</script>
 </head>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="javascript:loadReports()">
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onLoad="loadReports()">
 
 </body>
 </html>

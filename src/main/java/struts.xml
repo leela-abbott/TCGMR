@@ -7,11 +7,11 @@
 	<!-- Global Constant Configurations -->
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.action.extension" value="action,do" />
-	<constant name="struts.custom.i18n.resources" value="ApplicationResources" />
+	<constant name="struts.custom.i18n.resources"
+		value="ApplicationResources" />
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
-
 		<global-results>
 			<result name="exception">/jsp/exception.jsp</result>
 			<result name="login">/jsp/login.jsp</result>

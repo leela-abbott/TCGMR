@@ -315,7 +315,8 @@
     </init-param>                
     <init-param>
       <param-name>sharelocation</param-name>
-      <param-value>E:\\Tcgm_Docs\\</param-value>
+    <!-- <param-value>E:\\Tcgm_Docs\\</param-value>  -->
+    <param-value>C:\\apache-tomcat-10.1.57\\temp\\</param-value>  
     </init-param>
     <init-param>
 	  <param-name>fileUploadDirectory</param-name>
