@@ -68,7 +68,6 @@ public class RptUserMaintAction extends TCGMAction {
         HttpSession session = request.getSession();
         RptUserMngr userMaintMgr = new RptUserMngr();
         
-     // Add this near the top of your execute method, or as an explicit else-if check
         if (this.getCmd() == null || "".equals(this.getCmd().trim()) || this.getCmd().equalsIgnoreCase("filter")) {
             try {
                 this.setUserList(new ArrayList<>());
@@ -83,9 +82,7 @@ public class RptUserMaintAction extends TCGMAction {
                 this.setRptUser(userBean);
 
                 session.setAttribute("RptUser", userBean);
-                System.out.println(session.getAttribute("RptUser"));
                 session.setAttribute("userForm", this);
-
                 System.out.println("ACTION DIV = " + this.getRptUser().getDiv());
                 return "filter";
             } catch (TCGMException tcgme) {
@@ -192,7 +189,7 @@ public class RptUserMaintAction extends TCGMAction {
         // 3. BTN_VAL_REMOVE Action Routing
         else if (this.getCmd().equalsIgnoreCase(TCGMConstants.BTN_VAL_REMOVE)) {
             try {
-                @SuppressWarnings("unchecked")
+               
                 ArrayList<RptUser> legacyCastList = new ArrayList<>(this.getUserList());
                 userMaintMgr.deleteRptUser(legacyCastList);
                 this.setSearchObject(new RptUser());

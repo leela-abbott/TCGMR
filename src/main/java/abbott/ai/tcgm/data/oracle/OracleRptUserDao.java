@@ -503,7 +503,7 @@ public class OracleRptUserDao extends OracleDao implements RptUserDao
 			
 			RptUser cogosUser = userToDelete;
 			
-			ArrayList selectedUserList = new ArrayList();
+			ArrayList<RptUser> selectedUserList = new ArrayList<>();
 			selectedUserList.add(cogosUser);
 			ReportMngr reportMngr = new ReportMngr();
 			reportMngr.userMaintenance(selectedUserList, TCGMConstants.REPORT_CONSTANT_REMOVE_USERS);
@@ -518,11 +518,13 @@ public class OracleRptUserDao extends OracleDao implements RptUserDao
 		catch(SQLException sqle)
 		{
 			logException(className,methodName,sqle);
+			logger.info("this is SQL exception");
 			throw new TCGMException(className,methodName,sqle.toString());
 		}
 		catch(Exception e)
 		{
 			logException(className,methodName,e);
+			logger.info("this is exception block");
 			throw new TCGMException(className, methodName, e.toString());
 		}
 		finally

@@ -21,9 +21,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title><%= pageTitle %></title>
     
-    <script type="text/javascript" src="include/common.js"></script>
+    <script type="text/javascript" src="/include/common.js"></script>
 
-    <!-- Dynamic Role-Based Menu Script Injector Engine -->
     <c:choose>
         <%-- 1. Administrator Menu Selection (Access Level 3) --%>
         <c:when test='${sessionScope.TCGMUser.role.accessLevel == 3 || sessionScope.TCGMUser.role.name == "TCGM_ADMIN"}'>
@@ -46,8 +45,6 @@
             <script type="text/javascript" src="include/menu_supervisor.js"></script>
         </c:otherwise>
     </c:choose>
-
-    <!-- Core Dropdown and Structural Overlay Popup Helper Scripts -->
     <script type="text/javascript" src="include/mmenu.js"></script>
     <script type="text/javascript" src="include/AnchorPosition.js"></script>
     <script type="text/javascript" src="include/PopupWindow.js"></script>

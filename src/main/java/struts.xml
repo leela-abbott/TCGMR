@@ -805,7 +805,6 @@
 			<result name="datausers">/jsp/reportUsers.jsp</result> </action> -->
 		<action name="rptUserMaint"
 			class="abbott.ai.tcgm17.action.user.RptUserMaintAction">
-			<!-- Input and Default Success Navigations -->
 			<result name="input">/jsp/rptUserCreate.jsp</result>
 			<result name="success">/jsp/rptUserCreate.jsp</result>
 			<result name="appSuccess">/jsp/appUserCreate.jsp</result>
