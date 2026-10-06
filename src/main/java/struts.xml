@@ -141,7 +141,7 @@
 		</action>
 
 		<action name="asrMaintenance"
-			class="abbott.ai.tcgm.action.asr.AsrMaint">
+			class="abbott.ai.tcgm17.action.asr.AsrMaint">
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
 			<result name="advancedfilter">/jsp/asrMaintAdvFilter.jsp</result>
