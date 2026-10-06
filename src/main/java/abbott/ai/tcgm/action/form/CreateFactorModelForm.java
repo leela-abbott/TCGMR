@@ -24,6 +24,8 @@ public class CreateFactorModelForm extends TCGMCreateModelForm {
     private boolean createModelClearFreezeCosts;
     private String createModelCycle;
     private String createModelYear;
+    private  Option[] monthListNumber = null;
+    
     public Vector getFactorModels() {
         return factorModels;
     }
@@ -120,4 +122,16 @@ public class CreateFactorModelForm extends TCGMCreateModelForm {
         super();
         this.setModelType(TCGMModel.Type.FACTOR);
     }
+    
+    public Option[] getMonthListNumber() {
+		if (monthListNumber == null) {
+			monthListNumber = new Option[12];
+			String n = null;
+			for (int i = 0; i < 12; i++) {
+				n = String.valueOf(i+1);
+				monthListNumber[i] = new Option( n, n );
+			}
+		}
+		return monthListNumber;
+	}
 }

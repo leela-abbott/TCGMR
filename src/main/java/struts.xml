@@ -494,7 +494,7 @@
 		</action>
 
 		<action name="createFactorModel"
-			class="abbott.ai.tcgm.action.CreateFactorModel">
+			class="abbott.ai.tcgm17.action.CreateFactorModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
@@ -524,7 +524,7 @@
 		</action>
 
 		<action name="deleteFactorModel"
-			class="abbott.ai.tcgm.action.DeleteModel">
+			class="abbott.ai.tcgm17.action.DeleteModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
@@ -951,13 +951,13 @@
 		</action>
 
 		<action name="closeModel"
-			class="abbott.ai.tcgm.action.CloseModel">
+			class="abbott.ai.tcgm17.action.CloseModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
 
 		<action name="openModel"
-			class="abbott.ai.tcgm.action.OpenModel">
+			class="abbott.ai.tcgm17.action.OpenModel">
 			<result name="success" type="redirectAction">
 				<param name="actionName">mngFactorModels</param>
 				<param name="showModels">closed</param>

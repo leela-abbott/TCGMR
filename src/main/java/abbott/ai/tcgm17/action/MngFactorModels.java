@@ -25,6 +25,17 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class MngFactorModels extends TCGMAction
 {
+	
+	
+	private String showModels = "open";
+	
+	public String getShowModels() {
+	return showModels;
+	}
+	
+	public void setShowModels(String showModels) {
+	this.showModels = showModels;
+	}
 	/**
 	 * @param mapping ActionMapping
 	 * @param form ActionForm
@@ -66,6 +77,8 @@ public class MngFactorModels extends TCGMAction
 				CreateFactorModelForm mcf = new CreateFactorModelForm();
 				mcf.setFactorModels( v );
 				mcf.setShowModels(msf.getShowModels());
+				
+				request.setAttribute("monthListNumber", mcf.getMonthListNumber());
 				request.setAttribute("createFactorModelForm", mcf);
 				
 				this.setForward(TCGMConstants.FORWARD_SUCCESS);

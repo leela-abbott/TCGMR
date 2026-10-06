@@ -2,13 +2,15 @@
 
 <a name="top"></a>
 <!-- Modernized HTML5 compliant container utilizing pure CSS background imagery rules -->
-<table style="width: 734px; height: 87px; border-collapse: collapse; border-spacing: 0;" border="0">
+<table style="width: 734px; height: 87px; border-collapse: collapse; border-spacing: 0;" border="0" background="images/masthead.png">
+
 	<tr>
 		<td style="width: 72px; height: 55px;">&nbsp;</td>
 		<td class="pageHeading" style="white-space: nowrap;">
 			<c:out value="${pageTitle}" />
 		</td>
 		<td style="width: 225px; white-space: nowrap; vertical-align: top;">
+		<div class="logoutLink"  ><a href="logout.do"><img width=80 height=25 src="images/transparent.gif"></a></div><br><br>
 			<!-- Migrated Struts 1 bean:write session scopes to standard safe EL references -->
 			<div class="currUserDisp"><c:out value="${sessionScope.TCGMUser.fullName}" /></div>
 			<div class="currModelDisp">Factor Model:&nbsp;<c:out value="${sessionScope.TCGMState.currentModelName}" /></div>
@@ -19,24 +21,3 @@
 	</tr>
 </table>
  
-<%-- 
- <a name="top"></a>
-<table width="734" height="87" border="0" cellpadding="0" cellspacing="0" background="images/masthead.png">
-	<tr>
-		<td width="72" height="55">&nbsp;
-
-		</td>
-		<td class="pageHeading" nowrap>
-			<%=pageTitle%>
-		</td>
-		<td width="225" nowrap valign="top">
-            <div class="logoutLink"  ><a href="logout.do"><img width=80 height=25 src="images/transparent.gif"></a></div><br><br>
-            <div class="currUserDisp"><c:out value="${sessionScope.TCGMUser.fullName}" /></div>
-			<div class="currModelDisp">Factor Model:&nbsp;<c:out value="${sessionScope.TCGMState.currentModelName}" /></div>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="4" height="15">&nbsp;</td>
-	</tr>
-</table>
---%>

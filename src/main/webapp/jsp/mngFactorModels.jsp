@@ -25,7 +25,7 @@
 			if(confirm("ARE YOU SURE to delete " + modelname + "?") ){
 				var form = getForm();
 				document.getElementById('modelSelected').value = modelid;
-				changeActionAndSubmit(form, "deleteFactorModel.do");
+				changeActionAndSubmit(form, "deleteFactorModel.action");
 			}
 		}
 	}
@@ -35,7 +35,7 @@
 			var form = getForm();
 			document.getElementById('modelSelected').value = modelid;
 			document.getElementById('showModels').value = 'open';
-			changeActionAndSubmit(form, "closeModel.do");
+			changeActionAndSubmit(form, "closeModel.action");
 		}
 	}
 
@@ -67,6 +67,8 @@
 
 	<%//Sridevi.K 06/05/2005 New script for fixing the empty description field while creating a model starts here.%>
 	function createModel() {
+		
+		alert("Here");
 		var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
 		var check = true;
 		var createForm = document.getElementById('createFactorModelForm');
@@ -138,6 +140,8 @@
 	<%-- AAAA: <%=TCGMUser.getRole().getAccessLevel()%>
 	BBB  : <%=Role.Analyst.getAccessLevel()%> --%>
 	
+	
+	
 	<c:if test="${showModels == 'open'}">
 	
 		<c:forEach var="models" items="${requestScope.mngFactorModelsForm.models}">
@@ -150,7 +154,7 @@
 					<a class="CmdSm" href='javascript:closeModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Close</a>
 				</abbott:securePage>
 				<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-					&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Del</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Del12</a>
 				</abbott:securePage>
 			</td>
 			<td >
@@ -187,7 +191,7 @@
 				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >OpenAA</a>
 			</abbott:securePage>
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del123</a>
 			</abbott:securePage>
 		</td>
 		<td class="commandOptionLabel"> <c:out value="${closedModels.name}" /></td>
@@ -208,116 +212,219 @@
 		
   </table>
   <input type="hidden" id="modelSelected" name="modelSelected" value="" />
-  <input type="hidden" id="showModels" name="showModels" value="open" />
+  <!-- <input type="hidden" id="showModels" name="showModels" value="open" /> -->
+  <s:hidden id="showModels" name="showModels" />
 </s:form>
 
 <br>
 
 <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
  	
-  <s:form name="createFactorModelForm" action="/createFactorModel" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" >
+  <s:form name="createFactorModelForm" id="createFactorModelForm" action="createFactorModel.action" type="abbott.ai.tcgm.action.form.CreateFactorModelForm" >
   <c:set var="factorModels" value="${factorModels}" />
 <c:if test="${showModels == 'open'}">
 
-	<table width="598" class="tableCommand">
-	  <tr>
-		<td colspan="6" nowrap class="tableHeading">Create New Model</td>
-	  </tr>
+<!-- createModel.jsp -->
+    
+    <!-- Alignment -->
+    
+    
+    <table width="598" class="tableCommand">
 
-	  <tr>
-		<td width="89" nowrap class="commandOptionLabel"><div align="right">Name:</div></td>
-		<td width="1" nowrap class="commandOptionLabel">
-		<html:text property="createModelName" size="30" maxlength="30" styleClass="commandOption" />
-		 </td>
-		<td width="38" nowrap  align="right" class="commandOptionLabel">Cycle:</td>
-		<td width="50" nowrap  alingn="left" class="commandOptionLabel">
-		
-			<html:select property="createModelCycle" styleClass="commandOption">			
-			<option value="ACT">Actual</option>
-			<option value="PLN">Plan</option>
-			<option value="UPD">Updated Plan</option>
-			<option value="SIM">Simulation</option>
-			<option value="INV1">April Inv</option>
-			<option value="INV2">Sept Inv</option>
-			<option value="INV3">Dec Inv</option>
-			</html:select></td>
-			
-		<td width="33" nowrap align="right" class="commandOptionLabel">Year:</td>
-		<td nowrap align="left" class="commandOptionLabel"><html:text property="createModelYear" size="4" maxlength="4" styleClass="commandOption" /></td>
-	  </tr>
+    <!-- Heading -->
+    <tr>
+        <td colspan="6" nowrap class="tableHeading">
+            Create New Model
+        </td>
+    </tr>
 
-	  <tr>
-		<td width="89" height="22" align="right" nowrap class="commandOptionLabel" >Description:</td>
-		<td colspan="4" nowrap>
-			<html:text property="createModelDesc" size="80" maxlength="80" styleClass="commandOption" /></td>
-		<td width="166" nowrap class="commandOptionLabel" ></td>
-	  </tr>
-	  
-	  <tr>
-		<td width="89" height="94" nowrap align="right" class="tableEntry" style="padding:2px;" >Copy Options</td>
-		<td colspan="4" valign=top nowrap>
-			<table width="323">
+    <!-- Name / Cycle / Year -->
+    <tr>
+        <td width="89" nowrap align="right" class="commandOptionLabel">
+            Name:
+        </td>
 
-			<tr>
-			  <td colspan="3" align="left" nowrap class="commandOptionLabel">Copy From:
-				  <html:select property="selSourceModelId" styleClass="commandOption">
-					<option value="none">&lt;none&gt;</option>
-					<html:options property="modelId" labelProperty="name" collection="factorModels" />
-				  </html:select>
-				</td>
-			</tr>
-			<tr>
-			  <td width="150" height="22" valign="top" nowrap class="commandOptionLabel">
-				<html:checkbox property='createModelClearFreezeCosts' styleClass="commandOption" />
-				 Clear Freeze Costs</td>
-			  <td width="150" nowrap class="commandOptionLabel" > BP/C Period</td>
-			  <td width="50" nowrap>
-				<html:select property='createModelKeepBpcsPeriod' styleClass="commandOption">
-				  <option value=0>&lt;don't&gt;</option>
+        <td width="260" nowrap>
+            <s:textfield
+                name="createModelName"
+                size="30"
+                maxlength="30"
+                cssClass="commandOption"
+                theme="simple"/>
+        </td>
 
-				  <html:options collection="monthListNumber" labelProperty="label" property="value" />
-				</html:select>
-				</td>
-			</tr>
+        <td width="60" nowrap align="right" class="commandOptionLabel">
+            Cycle:
+        </td>
 
-		<!--	<tr>
-			  <td width="150" nowrap class="commandOptionLabel">
-				<html:checkbox property='createModelClearRevDates' styleClass="commandOption" />
-				 Clear BPC Revisions</td>
-			  <td width="150" nowrap class="commandOptionLabel">Keep BP/C Ex From</td>
-			  <td width="50" nowrap>
-				<html:select property='createModelKeepBPExPeriod' styleClass="commandOption">
+        <td width="150" nowrap align="left">
+            <s:select
+                name="createModelCycle"
+                cssClass="commandOption"
+                theme="simple"
+                list="#{'ACT':'Actual', 'PLN':'Plan', 'UPD':'Updated Plan', 'SIM':'Simulation', 'INV1':'April Inv', 'INV2':'Sept Inv', 'INV3':'Dec Inv'}"/>
+                
+        </td>
 
-				  <option value=0>&lt;don't&gt;</option>
-				  
-				  <html:options collection="monthListNumber" labelProperty="label" property="value" />
-				</html:select>
-				</td>
-			</tr>-->
+        <td width="50" nowrap align="right" class="commandOptionLabel">
+            Year:
+        </td>
 
-			<tr>
-			  <td width="250" nowrap class="commandOptionLabel">
-				<html:checkbox property="createModelClearBPCS" styleClass="commandOption" />
-				Clear BP/C and BP/C Exceptions</td>
-			  <!--<td width="150" nowrap class="commandOptionLabel" >Keep Rate Ex From</td>
-			  <td width="50" nowrap>
-				<html:select property='createModelKeepExchExPeriod' styleClass="commandOption">
-				  <option value=0>&lt;don't&gt;</option>
+        <td width="80" nowrap align="left">
+            <s:textfield
+                name="createModelYear"
+                size="4"
+                maxlength="4"
+                cssClass="commandOption"
+                theme="simple"/>
+        </td>
+    </tr>
 
-				  <html:options collection="monthListNumber" labelProperty="label" property="value" />
-					</html:select>
-				</td>-->
-			</tr>
-			</table></td>  
-		
-<!--Sridevi.K Code for document.createFactorModelForm.submit() is replaced 06/05/2005 
-		<td><a href="javascript:document.createFactorModelForm.submit()" ><img height="20" src="images/btnCreateNewModel.png" border=0></a></td>
--->		
-<!-- Sridevi.K New code that is replaced for the above submit is added on 06/05/05 starts here -->
-		<td><a href="javascript:createModel()" ><img height="20" src="images/btnCreateNewModel.png" border=0></a></td>
-<!-- Sridevi.K New code that is replaced for the above submit is added on 06/05/05 ends here -->
-	  </tr>
-	</table>
+
+    <!-- Description -->
+    <tr>
+        <td width="89"
+            height="22"
+            align="right"
+            nowrap
+            class="commandOptionLabel">
+            Description:
+        </td>
+
+        <td colspan="5" nowrap>
+            <s:textfield
+                name="createModelDesc"
+                size="80"
+                maxlength="80"
+                cssClass="commandOption"
+                theme="simple"/>
+        </td>
+    </tr>
+
+
+    <!-- Copy Options -->
+    <tr>
+
+        <!-- Blue left side -->
+        <td width="89"
+            height="94"
+            nowrap
+            align="right"
+            valign="middle"
+            class="tableEntry"
+            style="padding:2px;">
+            <b>Copy Options</b>
+        </td>
+
+        <!-- Copy Options controls -->
+        <td colspan="4" valign="top" nowrap>
+
+            <table width="100%" cellpadding="2" cellspacing="0">
+
+                <!-- Factor Model List -->
+                <c:set var="fmList"
+                       value="${requestScope.createFactorModelForm.factorModels}" />
+
+                <!-- Copy From -->
+                <tr>
+                    <td colspan="3"
+                        nowrap
+                        align="left"
+                        class="commandOptionLabel">
+
+                        Copy From:&nbsp;
+
+                        <s:select
+                            name="selSourceModelId"
+                            cssClass="commandOption"
+                            theme="simple"
+                            list="#attr.fmList"
+                            listKey="modelId"
+                            listValue="name"
+                            headerKey="none"
+                            headerValue="<none>"/>
+                            
+                    </td>
+                </tr>
+
+
+                <!-- Freeze Costs / BPC Period -->
+                <tr>
+
+                    <td width="390"
+                        height="25"
+                        nowrap
+                        valign="middle"
+                        class="commandOptionLabel">
+
+                        <s:checkbox
+                            name="createModelClearFreezeCosts"
+                            cssClass="commandOption"
+                            theme="simple"/>
+
+                        Clear Freeze Costs
+                    </td>
+
+
+                    <c:set var="monthListNumber"
+                           value="${requestScope.createFactorModelForm.monthListNumber}" />
+
+                    <td width="120"
+                        nowrap
+                        align="right"
+                        class="commandOptionLabel">
+
+                        BP/C Period&nbsp;
+
+                    </td>
+
+                    <td width="100"
+                        nowrap
+                        align="left">
+
+                        <s:select
+                            name="createModelKeepBpcsPeriod"
+                            cssClass="commandOption"
+                            theme="simple"
+                            list="#attr.monthListNumber"
+                            listKey="value"
+                            listValue="label"
+                            headerKey="0"
+                            headerValue="< don't >"/>
+                    </td>
+
+                </tr>
+
+
+                <!-- Clear BP/C -->
+                <tr>
+                    <td colspan="3"
+                        height="25"
+                        nowrap
+                        class="commandOptionLabel">
+
+                        <s:checkbox
+                            name="createModelClearBPCS"
+                            cssClass="commandOption"
+                            theme="simple"/>
+
+                        Clear BP/C and BP/C Exceptions
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+
+
+        <!-- Create New Model button -->
+        <td><a href="javascript:createModel()" ><img height="20" src="images/btnCreateNewModel.png" border=0></a></td>
+
+    </tr>
+
+</table>
+
+	
 	 </c:if>
   </s:form>
 	 
