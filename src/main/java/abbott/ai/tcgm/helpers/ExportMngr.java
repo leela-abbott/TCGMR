@@ -12,14 +12,15 @@ import abbott.ai.tcgm.exception.*;
 //import abbott.ai.tcgm.process.*;
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.helpers.AS400;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 public class ExportMngr implements TCGMMngr
 {
 
 	protected String name = this.getClass().getName();
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ReportMngr" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportMngr" );
 
 
 	/**

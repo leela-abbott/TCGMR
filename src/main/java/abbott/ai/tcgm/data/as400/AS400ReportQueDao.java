@@ -5,7 +5,8 @@ package abbott.ai.tcgm.data.as400;
 import java.sql.*;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 //import com.ibm.as400.access.*;
 
@@ -29,7 +30,7 @@ import abbott.ai.tcgm.process.JobInstance;
 
 public class AS400ReportQueDao extends AS400ReportDao
 {
-	private static Logger myLogger = Logger.getLogger( "AS400ReportQueDao" );
+	private static final Logger myLogger = LogManager.getLogger( "AS400ReportQueDao" );
 	private String reportTriggerFile = AppConst.reportTriggerFile;//"TCGRPHP00";
 	private String reportParmFile = AppConst.reportParmFile;//"TCGRPPP00";
 	private String triggerEntity = this.library + "." + this.reportTriggerFile;

@@ -4,7 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.action.form.TCGMProductionForm;
@@ -31,7 +32,7 @@ public class ProcessScheduler extends SelfRunningThread
 	private Calendar calendar = null;
 	public static int BATCH_START = 20;
 	private static int BATCH_END = 5;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.process.ProcessScheduler" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.process.ProcessScheduler" );
 	private String currentProcess = "--NONE--";
 	private static boolean batchFlag=true;
 

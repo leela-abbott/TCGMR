@@ -8,7 +8,8 @@ import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.entities.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 /**
  * <p>Title: TCGM Application</p>
  * <p>Description: </p>
@@ -20,7 +21,7 @@ import org.apache.log4j.Logger;
 
 public class CostExchDataMngr implements TCGMMngr
 {
-	private static Logger logger = Logger.getLogger("TCGM.Helpers.CostExchDataMngr");
+	private static final Logger logger = LogManager.getLogger("TCGM.Helpers.CostExchDataMngr");
 
 	public CostExchDataMngr() {
 		super();

@@ -5,7 +5,8 @@ package abbott.ai.tcgm.helpers;
 import java.io.File;
 import java.io.FileWriter;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.comm.FTPSession;
@@ -14,7 +15,7 @@ import abbott.ai.tcgm.exception.TCGMException;
 
 public class RSystem 
 {
-   private static Logger logger = Logger.getLogger("TCGM.Helpers.RSystem");
+   private static final Logger logger = LogManager.getLogger("TCGM.Helpers.RSystem");
    private final String name;
    public static final RSystem RBL = new RSystem ("RBL");
    public static final RSystem RBB = new RSystem ("RBB");

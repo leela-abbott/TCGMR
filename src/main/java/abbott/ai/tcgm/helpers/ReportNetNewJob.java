@@ -3,7 +3,8 @@ package abbott.ai.tcgm.helpers;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.exception.TCGMException;
 
@@ -25,7 +26,7 @@ import com.cognos.developer.schemas.bibus._3.UpdateActionEnum;
 public class ReportNetNewJob {
 	private BaseClass[] bca = null;
 	private BaseClass bc = null;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ReportNetNewJob" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportNetNewJob" );
 
 	/**
 	 * This method sets the job schedule. We are using this to schedule to

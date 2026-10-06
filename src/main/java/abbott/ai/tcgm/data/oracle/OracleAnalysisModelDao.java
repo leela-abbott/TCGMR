@@ -3,7 +3,8 @@ package abbott.ai.tcgm.data.oracle;
 import java.sql.*;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import java.util.*;
 
 //import javax.sql.*;
@@ -29,7 +30,7 @@ import abbott.ai.tcgm.TCGMUtil;
 
 public class OracleAnalysisModelDao extends OracleModelDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleAnalysisModelDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleAnalysisModelDao" );
 	/**
 	 * @param userToken
 	 */

@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import java.util.*;
 
 //import javax.sql.*;
@@ -33,7 +34,7 @@ import abbott.ai.tcgm.TCGMUtil;
  */
 public class OracleCostExchModelDao extends OracleModelDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleCostExchModelDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleCostExchModelDao" );
 	/**
 	 *
 	 * @param userToken

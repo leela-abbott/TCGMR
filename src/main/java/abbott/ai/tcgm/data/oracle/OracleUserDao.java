@@ -3,7 +3,8 @@ package abbott.ai.tcgm.data.oracle;
 import java.util.*;
 import javax.sql.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.sql.*;
 
@@ -24,7 +25,7 @@ import abbott.ai.tcgm.exception.*;
  */
 public class OracleUserDao extends OracleDao implements UserDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleUserDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleUserDao" );
 	private final String className = this.getClass().getName();
 	private User searchObject = null;
 	private Sort sortObject = DBConst.DEF_SORT_USER;

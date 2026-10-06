@@ -9,7 +9,8 @@ package abbott.ai.tcgm.helpers;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.data.AsrUsageDao;
 import abbott.ai.tcgm.data.DBConst;
@@ -31,7 +32,7 @@ public class AsrUsageMngr implements TCGMMngr{
 	
 	public String className = null;
 	
-	private static Logger myLogger = Logger.getLogger("AsrUsageMngr");
+	private static final Logger myLogger = LogManager.getLogger("AsrUsageMngr");
 
 		/**
 		 * Default COnstructor

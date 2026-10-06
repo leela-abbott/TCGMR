@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.action.asr;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.struts.action.*;
 //import org.apache.log4j.*;
 import jakarta.servlet.*;
@@ -25,7 +26,7 @@ import abbott.ai.tcgm.action.*;
  */
 public class AsrSave extends TCGMAction
 {
-	private static Logger myLogger = Logger.getLogger( "AsrSave" );
+	private static final Logger myLogger = LogManager.getLogger( "AsrSave" );
 	/**
 	 * Default Constructor
 	 */

@@ -11,7 +11,8 @@ import java.util.Vector;
 
 import javax.xml.rpc.ServiceException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
@@ -46,7 +47,7 @@ public class ReportMngr implements TCGMMngr
 {
 
 	protected String name = this.getClass().getName();
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ReportMngr" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportMngr" );
 	
 	public ReportMngr()	{	}
 

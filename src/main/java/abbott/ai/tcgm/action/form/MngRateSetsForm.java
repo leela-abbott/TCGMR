@@ -11,7 +11,8 @@ import abbott.ai.tcgm.entities.*;
 //import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.helpers.*;
 
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * <p>Title: TCGM</p>
  * <p>Description: </p>
@@ -22,8 +23,8 @@ import org.apache.log4j.*;
  */
 public class MngRateSetsForm extends TCGMForm
 {
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.action.form.MngRateSetsForm");
-
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.action.form.MngRateSetsForm");
+	
 	/**
 	 * Need a vector for list of rate sets.  The vector will
 	 * hold a list of Dataset objects

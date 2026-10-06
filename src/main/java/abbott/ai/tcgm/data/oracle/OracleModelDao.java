@@ -5,7 +5,8 @@ import java.util.*;
 import java.util.Date;
 
 import javax.sql.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.*;
 
@@ -29,7 +30,7 @@ import abbott.ai.tcgm.exception.TCGMException;
  */
 public abstract class OracleModelDao extends OracleDao implements ModelDao
 {
-  private static Logger myLogger = Logger.getLogger( "ProcessScheduler" );
+  private static final Logger myLogger = LogManager.getLogger( "ProcessScheduler" );
   protected String parmTable;
  // protected ActionErrors errors = new ActionErrors();
   protected OracleModelDao() {}

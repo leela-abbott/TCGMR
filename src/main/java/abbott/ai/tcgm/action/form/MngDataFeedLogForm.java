@@ -1,7 +1,8 @@
 package abbott.ai.tcgm.action.form;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.mapper.ActionMapping;
 
 import abbott.ai.tcgm.data.DaoFactory;
@@ -14,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class MngDataFeedLogForm extends TCGMForm  {
     ArrayList logentrylist = new ArrayList(20);
-    private static Logger logger = Logger.getLogger("abbott.ai.tcgm.action.form.MngDataFeedLogForm");
+    private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.action.form.MngDataFeedLogForm");
 
     public MngDataFeedLogForm() {
         this.reset();

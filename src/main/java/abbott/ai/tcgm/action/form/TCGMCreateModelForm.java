@@ -1,5 +1,6 @@
 package abbott.ai.tcgm.action.form;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.mapper.ActionMapping;
 
 import abbott.ai.tcgm.TCGMUtil;
@@ -22,7 +23,7 @@ public abstract class TCGMCreateModelForm extends TCGMForm {
     private String modelName;
     private String modelDesc;
     private java.util.Vector factorModels;
-    private static Logger myLogger = Logger.getLogger("abbott.ai.tcgm.action.form.TCGMCreateModelForm");
+    private static final Logger myLogger = LogManager.getLogger("abbott.ai.tcgm.action.form.TCGMCreateModelForm");
 
     public TCGMCreateModelForm() {
         super();

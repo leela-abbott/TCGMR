@@ -32,7 +32,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.TCGMUtil;
@@ -57,7 +58,7 @@ public class OracleAsrUsage extends OracleDao implements AsrUsageDao {
 	/**
 	 * 
 	 */
-	private static Logger myLogger = Logger.getLogger("OracleAsrUsage");
+	private static final Logger myLogger = LogManager.getLogger("OracleAsrUsage");
 	private ASRUsage searchObject = null;
 	private PagingFilter pagingFilter = null;
 	private Sort sortObject = DBConst.DEF_SORT_ASR;

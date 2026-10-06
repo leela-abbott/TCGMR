@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.process;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public abstract class SelfRunningThread {
 
@@ -8,7 +9,7 @@ public abstract class SelfRunningThread {
 	protected volatile boolean noStopRequested;
 	protected int sleeptime;
 
-	private static Logger logger = Logger.getLogger("TCGM.Process.SelfRunningThread");
+	private static final Logger logger = LogManager.getLogger("TCGM.Process.SelfRunningThread");
 
 	public SelfRunningThread(int sleeptime) {
 		this.sleeptime = sleeptime;

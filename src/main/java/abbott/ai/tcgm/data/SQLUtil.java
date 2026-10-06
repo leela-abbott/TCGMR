@@ -15,7 +15,8 @@ import javax.sql.RowSet;
 
 import oracle.jdbc.pool.OracleDataSource;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.entities.UserToken;
@@ -40,7 +41,7 @@ public final class SQLUtil
 	private static String datasourceURL;
 	private static UserToken oracleAdmin = null;
 
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.data.SQLUtil");
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.data.SQLUtil");
 	/*****************************************************************************************/
 	/**
 	 * Checks to see if an instance of the class has been created and if not creates a

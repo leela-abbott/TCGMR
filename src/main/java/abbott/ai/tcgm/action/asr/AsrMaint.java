@@ -8,7 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.struts.action.ActionError;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -32,7 +33,7 @@ import abbott.ai.tcgm.helpers.AsrMngr;
  */
 public class AsrMaint extends TCGMAction
 {
-	private static Logger myLogger = Logger.getLogger( "AsrMaint" );
+	private static final Logger myLogger = LogManager.getLogger( "AsrMaint" );
 	/**
 	 * Default Constructor
 	 */

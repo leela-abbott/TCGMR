@@ -2,7 +2,8 @@ package abbott.ai.tcgm.helpers;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.data.DaoFactory;
@@ -25,7 +26,7 @@ import com.abbott.ai.security.ldap.LdapAuthenticator;
  */
 public class LoginMngr implements TCGMMngr
 {
-	private static Logger myLogger = Logger.getLogger( "LoginMngr" );
+	private static final Logger myLogger = LogManager.getLogger( "LoginMngr" );
 	/**
 	 * Default Constructor
 	 */

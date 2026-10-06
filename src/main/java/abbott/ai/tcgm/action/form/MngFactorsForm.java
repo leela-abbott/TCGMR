@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.action.form;
 import abbott.ai.tcgm.entities.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -18,7 +19,7 @@ public class MngFactorsForm extends TCGMProductionForm {
 	private String actualUnitsSelected;
 	private java.util.Vector unitSets;
 	private java.util.Vector rateSets;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.action.form.MngFactorsForm" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.action.form.MngFactorsForm" );
 //	private String selExportRSystem;
 	private java.util.Vector exportSystemSets;
 	private String selCostRate;

@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.action;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.*;
 //import org.apache.log4j.*;
 import jakarta.servlet.*;
@@ -21,7 +22,7 @@ import abbott.ai.tcgm.data.*;
  * @version 1.0
  */
 public class LogReportAction extends TCGMAction {
-	private static Logger myLogger = Logger.getLogger( "LogReportAction" );
+	private static final Logger myLogger = LogManager.getLogger( "LogReportAction" );
 	/**
 	 * Default Constructor
 	 */

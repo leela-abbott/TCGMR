@@ -4,7 +4,8 @@ package abbott.ai.tcgm.action.form;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import org.apache.struts.action.*;
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.data.*;
@@ -23,7 +24,7 @@ import abbott.ai.tcgm.process.JobConstants;
 
 public class CreateAnalysisModelForm extends TCGMCreateModelForm {
 	
-	private static Logger myLogger = Logger.getLogger( "CreateAnalysisModelForm" );
+	private static final Logger myLogger = LogManager.getLogger( "CreateAnalysisModelForm" );
 	private String baseModelSelected;
 	private String analysisModelSelected;
 	private String volumeUnitsSelected;

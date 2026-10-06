@@ -2,7 +2,8 @@ package abbott.ai.tcgm.helpers;
 import java.math.BigInteger;
 import java.util.Calendar;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import com.cognos.developer.schemas.bibus._3.Account;
 import com.cognos.developer.schemas.bibus._3.AddOptions;
@@ -29,7 +30,7 @@ import com.cognos.developer.schemas.bibus._3.UpdateActionEnum;
 public class ReportNetNewScheduler extends BaseClass 
 {
 	private Schedule newSchedule = new Schedule();
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ReportNetNewScheduler" );	
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportNetNewScheduler" );	
 	
 	/**
 	 * This method sets the job schedule. We are using this to schedule to

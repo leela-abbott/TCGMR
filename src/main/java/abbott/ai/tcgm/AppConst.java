@@ -1,7 +1,8 @@
 package abbott.ai.tcgm;
 
 //import abbott.ai.tcgm.helpers.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.exception.*;
@@ -16,7 +17,7 @@ import abbott.ai.tcgm.exception.*;
  */
 public final class AppConst
 {
-	private static Logger myLogger = Logger.getLogger( "AppConst" );
+	private static final Logger myLogger = LogManager.getLogger( "AppConst" );
     private static String webInfDir="";
     private static String appRootDir="";
     private static String crystalServer="";

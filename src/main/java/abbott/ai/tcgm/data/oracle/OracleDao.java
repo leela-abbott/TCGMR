@@ -12,7 +12,8 @@ import javax.sql.RowSet;
 import oracle.jdbc.rowset.OracleCachedRowSet;
 import oracle.jdbc.rowset.OracleJDBCRowSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.data.DBConst;
@@ -61,7 +62,7 @@ public class OracleDao
 	 */
 	public OracleDao()
 	{
-		this.logger = Logger.getLogger(this.getClass());
+		this.logger = LogManager.getLogger(this.getClass());
 	}
 
 	public OracleDao(Connection c) {

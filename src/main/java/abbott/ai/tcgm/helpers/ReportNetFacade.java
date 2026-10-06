@@ -11,7 +11,8 @@ import java.util.Map;
 
 import javax.xml.rpc.ServiceException;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
@@ -64,7 +65,7 @@ import org.apache.axis.client.Stub;
 public class ReportNetFacade {
 	private static CognosReportNetPortType service;
 	//private final static String NAMESPACE = "Abbott Active Directory";
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ReportNetFacade" );	
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportNetFacade" );	
 	public ReportNetFacade()
 		throws TCGMException, ServiceException, MalformedURLException, RemoteException  
 		{

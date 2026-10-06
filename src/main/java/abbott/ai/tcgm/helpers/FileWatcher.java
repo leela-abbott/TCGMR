@@ -2,7 +2,8 @@ package abbott.ai.tcgm.helpers;
 
 import java.io.*;
 import abbott.ai.tcgm.process.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -15,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class FileWatcher
 {
-	private static Logger logger = Logger.getLogger("TCGM.Helpers.FileWatcher");
+	private static final Logger logger = LogManager.getLogger("TCGM.Helpers.FileWatcher");
 	private Thread myThread;
 	private volatile boolean stopRequested = false;
 	private long start;

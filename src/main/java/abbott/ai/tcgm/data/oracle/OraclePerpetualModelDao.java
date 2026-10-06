@@ -8,7 +8,8 @@ import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.TCGMUtil;
 import org.apache.struts.action.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 /**
@@ -21,7 +22,7 @@ import org.apache.log4j.*;
  */
 public class OraclePerpetualModelDao extends OracleModelDao
 {
-	private static Logger myLogger = Logger.getLogger( "OraclePerpetualModelDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OraclePerpetualModelDao" );
 	/**
 	 *
 	 * @param userToken

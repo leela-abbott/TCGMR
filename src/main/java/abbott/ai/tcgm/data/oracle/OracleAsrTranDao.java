@@ -6,7 +6,8 @@ import javax.sql.*;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import abbott.ai.tcgm.*;
@@ -23,7 +24,7 @@ import abbott.ai.tcgm.exception.*;
  */
 public class OracleAsrTranDao extends OracleDao implements AsrTranDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleAsrTranDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleAsrTranDao" );
 	private AsrTran searchObject = null;
 	private PagingFilter pagingFilter = null;
 	private Sort sortObject = DBConst.DEF_SORT_ASR_TRAN;

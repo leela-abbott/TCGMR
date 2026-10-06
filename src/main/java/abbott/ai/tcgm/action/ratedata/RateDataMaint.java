@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.action.ratedata;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.*;
 //import org.apache.log4j.*;
 
@@ -25,7 +26,7 @@ import abbott.ai.tcgm.action.*;
  */
 public class RateDataMaint extends TCGMAction
 {
-	private static Logger myLogger = Logger.getLogger( "RateDataMaint" );
+	private static final Logger myLogger = LogManager.getLogger( "RateDataMaint" );
 	/**
 	 * Default Constructor
 	 */

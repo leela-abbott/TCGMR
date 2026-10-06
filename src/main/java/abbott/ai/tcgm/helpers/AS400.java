@@ -8,14 +8,15 @@ import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.data.as400.*;
 
 import java.io.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class AS400
 {
    private static UserToken userToken;
    private static final String SERVER_NAME = "AP41";
    public AS400FileType theAS400FileType;
-   private static Logger logger = Logger.getLogger("TCGM.Helpers.AS400");
+   private static final Logger logger = LogManager.getLogger("TCGM.Helpers.AS400");
 
 
    /**

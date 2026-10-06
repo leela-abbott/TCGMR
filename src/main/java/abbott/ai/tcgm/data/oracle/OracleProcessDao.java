@@ -21,7 +21,8 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
@@ -65,7 +66,7 @@ public class OracleProcessDao extends OracleDao implements ProcessDao
 	private String jobQueHistTable = this.schema + ".JOB_QUE_HISTORY";
 	private String jobQueParmTable = this.schema + ".JOB_QUE_PARMS";
 	private String TBL_JOB = this.schema + ".JOB";
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.data.oracle.OracleProcessDao" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.data.oracle.OracleProcessDao" );
 	/**
 	 *
 	 * @param ut

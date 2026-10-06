@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.action.asr;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,7 +52,7 @@ public class AsrUsageDownload extends TCGMAction {
 	public AsrUsageDownload() {
 
 		super();
-		this.logger = Logger.getLogger(this.getClass());
+		this.logger = LogManager.getLogger(this.getClass());
 
 	}
 

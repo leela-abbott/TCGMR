@@ -9,7 +9,8 @@ import abbott.ai.tcgm.AppConst;
 import java.io.*;
 import abbott.ai.tcgm.process.JobConstants;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * <p>Title: </p>
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 
 public class EssbaseMngr implements TCGMMngr {
-	private static Logger myLogger = Logger.getLogger( "EssbaseMngr" );
+	private static final Logger myLogger = LogManager.getLogger( "EssbaseMngr" );
 	public static final String ESS_ANALYSIS_TYPE1 = "A1";
 	public static final String ESS_ANALYSIS_TYPE2 = "A2";
 	public static final String ESS_ANALYSIS_TYPE3 = "A3";

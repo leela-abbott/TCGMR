@@ -9,7 +9,8 @@ import abbott.ai.tcgm.TCGMConstants;
 
 import abbott.ai.tcgm.data.SQLUtil;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class DaemonMngr {
     private static DaemonMngr _instance = new DaemonMngr();
@@ -23,7 +24,7 @@ public class DaemonMngr {
     private static int psSleep = 5000; //Default value
 	private static int psmSleep = 300000; //Default value
 	
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.process.DaemonMngr");
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.process.DaemonMngr");
 
 	public static void init(jakarta.servlet.ServletConfig sc)
 	{

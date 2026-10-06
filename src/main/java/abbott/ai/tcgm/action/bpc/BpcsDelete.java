@@ -1,7 +1,8 @@
 package abbott.ai.tcgm.action.bpc;
 
 import org.apache.struts.action.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import java.io.*;

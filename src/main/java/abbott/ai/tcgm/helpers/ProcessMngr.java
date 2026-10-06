@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.TCGMUtil;
 import abbott.ai.tcgm.action.form.TCGMProductionForm;
@@ -30,7 +31,7 @@ import abbott.ai.tcgm.process.javajob.JavaJob;
 
 public class ProcessMngr implements TCGMMngr
 {
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.helpers.ProcessMngr" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ProcessMngr" );
 
 	public ProcessMngr() {}
 

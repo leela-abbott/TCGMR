@@ -19,7 +19,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.entities.ActiveDirSearchDtlBean;
@@ -37,7 +38,7 @@ public class ActiveDirSearchMngr implements TCGMMngr
 
 {
 	public final String className = this.getClass().getName();
-	private static Logger myLogger = Logger.getLogger( "LDAPUserSearch" );
+	private static final Logger myLogger = LogManager.getLogger( "LDAPUserSearch" );
 	/**
 	 * Default Constructor
 	 */

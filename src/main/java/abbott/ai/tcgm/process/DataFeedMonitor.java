@@ -9,7 +9,8 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
@@ -31,7 +32,7 @@ public class DataFeedMonitor extends SelfRunningThread {
 
 	private ArrayList dataFeeds = new ArrayList(5);
 	private String location = "";
-	private static Logger logger = Logger.getLogger("TCGM.Process.DataFeedMonitor");
+	private static final Logger logger = LogManager.getLogger("TCGM.Process.DataFeedMonitor");
 	private String currentFeed = "--NONE--";
 
 	public DataFeedMonitor(int sleeptime) throws TCGMException {

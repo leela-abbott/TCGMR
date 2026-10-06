@@ -30,6 +30,7 @@ public class ActiveDirSearchAction extends TCGMAction implements ServletRequestA
     private HttpServletRequest request;
 
     private String cmd = "";
+    
     private String firstName = "";
     private String lastName = "";
     private String blnSelected;

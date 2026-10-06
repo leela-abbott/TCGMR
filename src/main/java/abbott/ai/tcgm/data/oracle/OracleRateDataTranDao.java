@@ -3,7 +3,8 @@ package abbott.ai.tcgm.data.oracle;
 import java.sql.*;
 import javax.sql.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 import abbott.ai.tcgm.*;
@@ -20,7 +21,7 @@ import abbott.ai.tcgm.exception.*;
  */
 public class OracleRateDataTranDao extends OracleDao implements RateDataTranDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleRateDataTranDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleRateDataTranDao" );
 	private RateDataTran searchObject = null;
 	private PagingFilter pagingFilter = null;
 	private Sort sortObject = DBConst.DEF_SORT_RATE_DATA_TRAN;

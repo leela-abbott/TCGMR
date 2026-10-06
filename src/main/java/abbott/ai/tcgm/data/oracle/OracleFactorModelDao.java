@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.Date;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.TCGMUtil;
@@ -33,7 +34,7 @@ import abbott.ai.tcgm.TCGMUtil;
  */
 public class OracleFactorModelDao extends OracleModelDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleFactorModelDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleFactorModelDao" );
 	/**
 	 *
 	 * @param userToken

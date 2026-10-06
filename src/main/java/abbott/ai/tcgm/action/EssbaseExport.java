@@ -15,7 +15,8 @@ import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.*;
 import org.apache.struts.action.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 //import abbott.ai.tcgm.action.*;
 //import abbott.ai.tcgm.action.form.*;
 /**
@@ -38,7 +39,7 @@ public class EssbaseExport extends TCGMAction
 	 * @throws ServletException
 	 */
 	private static String name = "EssbaseExport";
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.action.EssbaseExport" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.action.EssbaseExport" );
 
 	public ActionForward perform(ActionMapping mapping,ActionForm form,HttpServletRequest request,HttpServletResponse response)throws IOException, ServletException
 	{

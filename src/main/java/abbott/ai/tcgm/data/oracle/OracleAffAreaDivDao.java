@@ -12,7 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.data.AffAreaDivDao;
 import abbott.ai.tcgm.data.SQLUtil;
@@ -26,7 +27,7 @@ import abbott.ai.tcgm.exception.TCGMException;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class OracleAffAreaDivDao extends OracleDao implements AffAreaDivDao {
-	private static Logger myLogger = Logger.getLogger("OracleAffAreaDivDao");
+	private static final Logger myLogger = LogManager.getLogger("OracleAffAreaDivDao");
 	private final String className = this.getClass().getName();
 	public OracleAffAreaDivDao() {
 

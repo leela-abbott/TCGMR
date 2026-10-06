@@ -17,7 +17,8 @@ import java.util.Vector;
 
 import javax.sql.RowSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.data.DBConst;
@@ -43,7 +44,7 @@ import abbott.ai.tcgm.helpers.ReportMngr;
  */
 public class OracleRptUserDao extends OracleDao implements RptUserDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleRptUserDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleRptUserDao" );
 	private final String className = this.getClass().getName();
 	private RptUser searchObject = null;
 	private Sort sortObject = DBConst.DEF_SORT_USER;

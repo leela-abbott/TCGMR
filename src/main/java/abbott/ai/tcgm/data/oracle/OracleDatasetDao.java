@@ -16,7 +16,8 @@ import java.util.Vector;
 
 import javax.sql.RowSet;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
@@ -41,7 +42,7 @@ import abbott.ai.tcgm.exception.TCGMUniqueExpectedException;
  */
 public class OracleDatasetDao extends OracleDao implements DatasetDao
 {
-	private static Logger myLogger = Logger.getLogger( "ProcessScheduler" );
+	private static final Logger myLogger = LogManager.getLogger( "ProcessScheduler" );
 	private Dataset searchObject = null;
 	private String ORDER_BY = " ORDER BY " + DBConst.COL_DATASET_NAME;
 	/*****************************************************************************************/

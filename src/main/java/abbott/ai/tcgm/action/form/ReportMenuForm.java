@@ -3,7 +3,8 @@ package abbott.ai.tcgm.action.form;
 import java.util.Vector;
 //import java.util.Iterator;
 import abbott.ai.tcgm.entities.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * <p>Title: </p>
@@ -27,7 +28,7 @@ public class ReportMenuForm extends TCGMForm {
 	private java.util.Vector restrictions;
 	private String numCopies;
 	private String reportHandler;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.action.form.ReportMenuForm" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.action.form.ReportMenuForm" );
 
 	public ReportMenuForm() {
 		if (destinationList == null) {

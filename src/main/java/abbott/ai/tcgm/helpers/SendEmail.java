@@ -23,7 +23,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.entities.User;
 import abbott.ai.tcgm.exception.TCGMException;
@@ -31,7 +32,7 @@ import abbott.ai.tcgm.exception.TCGMException;
 public class SendEmail {
 	private final String className = this.getClass().getName();
 
-	private static Logger myLogger = Logger.getLogger("SendEmail");
+	private static final Logger myLogger = LogManager.getLogger("SendEmail");
 
 	public SendEmail() {
 

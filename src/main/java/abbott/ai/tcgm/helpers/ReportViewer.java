@@ -1,7 +1,8 @@
 package abbott.ai.tcgm.helpers;
 
 //import org.apache.struts.action.*;
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -49,7 +50,7 @@ public class ReportViewer
 	String modelId = null;
 	String cacheKey = null;
 	String className = this.getClass().getName();
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.helpers.ReportViewer");
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.helpers.ReportViewer");
 	private CrystalReportViewer viewer = new CrystalReportInteractiveViewer();
 	private ReportInstance reportInstance = null;
 

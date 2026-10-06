@@ -8,7 +8,8 @@ import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.exception.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -21,7 +22,7 @@ import org.apache.log4j.Logger;
  */
 public class OracleRateExDao extends OracleDao implements RateExDao
 {
-	private static Logger myLogger = Logger.getLogger( "OracleRateExDao" );
+	private static final Logger myLogger = LogManager.getLogger( "OracleRateExDao" );
 	private RateEx searchObject = null;
 	private PagingFilter pagingFilter = null;
 	private Sort sortObject = DBConst.DEF_SORT_RATEEX;

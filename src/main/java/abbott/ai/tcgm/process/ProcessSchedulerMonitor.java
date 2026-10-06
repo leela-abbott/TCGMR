@@ -5,7 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import abbott.ai.tcgm.data.SQLUtil;
 import abbott.ai.tcgm.exception.TCGMException;
@@ -27,7 +28,7 @@ public class ProcessSchedulerMonitor extends SelfRunningThread
 	private Calendar calendar = null;
 	private int BATCH_START = 19;
 	private int BATCH_END = 5;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.process.ProcessSchedulerMonitor" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.process.ProcessSchedulerMonitor" );
 	
 
 	public ProcessSchedulerMonitor(int sleepInterval)

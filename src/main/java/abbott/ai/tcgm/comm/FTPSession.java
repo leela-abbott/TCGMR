@@ -10,11 +10,12 @@ package abbott.ai.tcgm.comm;
  */
 
 import java.util.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class FTPSession
 {
-	private static Logger logger = Logger.getLogger("TCGM.Comm.FTPSession");
+	private static final Logger logger = LogManager.getLogger("TCGM.Comm.FTPSession");
 	public static final String CARRIAGE_RETURN = "\r\n";
 
 	public static final int CODE_CONNECT_OK = 220;

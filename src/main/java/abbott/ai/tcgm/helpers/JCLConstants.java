@@ -6,7 +6,8 @@ import java.io.*;
 //import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class JCLConstants
 {
@@ -42,7 +43,7 @@ public class JCLConstants
 	private static String JCL_FactorRBBRecordFooter;
 	private static String JCL_FactorRBLRecordFooter;
 
-	private static Logger logger = Logger.getLogger("TCGM.Helpers.JCLConstants");
+	private static final Logger logger = LogManager.getLogger("TCGM.Helpers.JCLConstants");
 	public static final String className = JCLConstants.class.getName();
 	public static final String UNIT_FILE_NAME_RBB = "ABT.AB.RBB.RBBD20(+0)";
 	public static final String UNIT_FILE_NAME_RBL = "ABT.AB.RBL.RBLD20(+0)";

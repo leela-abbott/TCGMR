@@ -11,7 +11,8 @@ import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.helpers.*;
 import abbott.ai.tcgm.exception.*;
 import org.apache.struts.action.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  */
 public class CreateFactorModel extends TCGMAction
 {
-	private static Logger myLogger = Logger.getLogger( "CreateFactorModel" );
+	private static final Logger myLogger = LogManager.getLogger( "CreateFactorModel" );
 	/**
 	 * @param mapping ActionMapping
 	 * @param form ActionForm

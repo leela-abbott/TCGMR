@@ -7,7 +7,8 @@ import abbott.ai.tcgm.data.*;
 import java.io.*;
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import abbott.ai.tcgm.process.JobConstants;
 
 public final class ExtractComposer extends TCGMStringComposer
@@ -15,7 +16,7 @@ public final class ExtractComposer extends TCGMStringComposer
 	private static final String className = "ExtractComposer";
 	private static String templateFileString = null;
 	private static String classname = "ExtractComposer";
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.helpers.ExtractComposer");
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.helpers.ExtractComposer");
 
 	private static String SQL_EXTRACT_ASR_TREE = "SELECT * FROM ASR_TREE WHERE MODEL_ID='%3'";
 

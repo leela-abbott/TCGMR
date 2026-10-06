@@ -29,7 +29,7 @@
     <servlet-class>abbott.ai.tcgm.servlet.Log4jInit</servlet-class>
     <init-param>
       <param-name>log4j-init-file</param-name>
-      <param-value>/WEB-INF/log4j.properties</param-value>
+      <param-value>/WEB-INF/log4j2.properties</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
@@ -77,7 +77,7 @@
     <servlet-class>abbott.ai.tcgm.servlet.Log4jInit</servlet-class>
     <init-param>
       <param-name>log4j-init-file</param-name>
-      <param-value>/WEB-INF/log4j.properties</param-value>
+      <param-value>/WEB-INF/log4j2.properties</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>

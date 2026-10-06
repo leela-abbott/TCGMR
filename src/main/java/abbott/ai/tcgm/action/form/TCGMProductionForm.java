@@ -3,7 +3,8 @@ package abbott.ai.tcgm.action.form;
 
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.struts2.dispatcher.mapper.ActionMapping;
 
 //import java.util.Iterator;
@@ -36,7 +37,7 @@ public class TCGMProductionForm extends TCGMForm {
 	private ReportRestriction restrictions;
 	private String numCopies;
 	private String formHandler;
-	private static Logger myLogger = Logger.getLogger( "abbott.ai.tcgm.action.form.TCGMProductionForm" );
+	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.action.form.TCGMProductionForm" );
 	private String jobName;
 	private String modelLongDesc ="";  //A.Winter 
 	private String memo ="";  //A.Winter

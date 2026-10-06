@@ -1,6 +1,7 @@
 package abbott.ai.tcgm;
 
-import org.apache.log4j.*;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import abbott.ai.tcgm.exception.*;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import abbott.ai.tcgm.data.ModelDao;
 public class TCGMUtil extends TCGMStringComposer
 {
 	private static final String className = "TCGMUtil";
-	private static Logger logger = Logger.getLogger("abbott.ai.tcgm.TCGMUtil");
+	private static final Logger logger = LogManager.getLogger("abbott.ai.tcgm.TCGMUtil");
 	private static TCGMUtil instance = null;
 
 	// Spaces for padding
