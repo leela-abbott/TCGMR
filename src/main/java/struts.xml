@@ -674,7 +674,7 @@
 			<result name="success" type="redirectAction">processMgmt</result>
 		</action>
 		<action name="updateModelSelection"
-			class="abbott.ai.tcgm.action.UpdateModelSelection">
+			class="abbott.ai.tcgm17.action.UpdateModelSelection">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 		</action>
 
