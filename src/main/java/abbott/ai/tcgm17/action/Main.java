@@ -12,18 +12,10 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import abbott.ai.tcgm.AppConst;
 
-/**
- * <p>Title: TCGM</p>
- * <p>Description: Consolidated Struts 7.3.0 Main Action and Form Model</p>
- * <p>Copyright: Copyright (c) 2008, 2026</p>
- * <p>Company: Abbott Laboratories</p>
- * @version 7.3.0
- */
 public class Main extends ActionSupport {
 
     private static final long serialVersionUID = 2L;
 
-    // --- Form Properties (Merged from MainForm) ---
     private String cmd = "";
     private String bulletinMessage = "";
     private String dirName = "";
@@ -31,14 +23,9 @@ public class Main extends ActionSupport {
     private List<String> dirList = new ArrayList<>();
     private List<String> fileList = new ArrayList<>();
 
-    /**
-     * Default Constructor
-     */
     public Main() {
-        // Explicit super() omitted to comply with Java compliance compiler parsing blocks
     }
 
-    // --- Struts 2/7 Execution Logic (Merged from perform) ---
     @Override
     public String execute() throws Exception {
         String filePath = AppConst.getSharelocation();

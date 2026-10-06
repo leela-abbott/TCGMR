@@ -40,9 +40,31 @@
 
 		<action name="fileUpload"
 			class="abbott.ai.tcgm17.action.FileUploadAction">
+
+			<interceptor-ref name="defaultStack" />
+
 			<result name="input">/jsp/fileUpload.jsp</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
+
+
+		<action name="initUploadView"
+			class="abbott.ai.tcgm17.action.FileUploadAction" method="input">
+			<result name="input">/jsp/fileUpload.jsp</result>
+		</action>
+
+		<!-- <action name="createDirectory" class="abbott.ai.tcgm17.action.FileUploadAction"> 
+			<result name="input" type="redirectAction">initUploadView</result> <result 
+			name="success" type="redirectAction">initUploadView</result> <result name="login" 
+			type="redirectAction">openLogin</result> <result name="exception">/jsp/error.jsp</result> 
+			</action> -->
+
+		<action name="createDirectory"
+			class="abbott.ai.tcgm17.action.FileUploadAction">
+			<result name="input" type="redirectAction">fileUpload</result>
+			<result name="success">/jsp/fileUpload.jsp</result>
+			<result name="login" type="redirectAction">openLogin</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
 		<action name="deleteFile"
@@ -1040,4 +1062,3 @@
 
 	</package>
 </struts>
-        

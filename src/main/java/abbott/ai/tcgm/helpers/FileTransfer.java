@@ -28,7 +28,6 @@ public class FileTransfer implements TCGMMngr {
 				if (!"root".equalsIgnoreCase(selectedDirectory)) {
 					filePath = filePath + selectedDirectory + File.separator;
 				}
-				
 				Path destination = Paths.get(filePath, destFileName);
 				Files.copy(myFile.toPath(), destination, StandardCopyOption.REPLACE_EXISTING);
 			}

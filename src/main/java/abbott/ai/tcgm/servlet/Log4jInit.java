@@ -40,6 +40,7 @@ public class Log4jInit extends HttpServlet {
         if (initFile != null) {
             String fullPath = basePath + initFile.replace("\\", File.separator).replace("/", File.separator);
             File log4jFile = new File(fullPath);
+            
 
             if (log4jFile.exists()) {
                 LoggerContext loggerContext = (LoggerContext) LogManager.getContext(false);

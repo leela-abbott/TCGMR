@@ -128,7 +128,6 @@
                                             <c:if test='${sessionScope.TCGMUser.role.name == "TCGM_OPERATOR" || sessionScope.TCGMUser.role.accessLevel == 1}'>
                                                 <a href="mngFactorModels.action" style="color: #0000A0; text-decoration: underline;">Link to TCGM</a>
                                             </c:if> 
-
                                             <!-- 3. ANALYST ROLE CHECK --> 
                                             <c:if test='${sessionScope.TCGMUser.role.name == "TCGM_ANALYST" || sessionScope.TCGMUser.role.accessLevel == 2}'>
                                                 <a href="mngFactorModels.action" style="color: #0000A0; text-decoration: underline;">Link to TCGM</a>
@@ -174,9 +173,6 @@
                         <tr>
                             <td align="center"><hr /></td>
                         </tr>
-                        <!-- ==================================================================== -->
-                        <!-- FILE SYSTEM DIRECTORY NAVIGATION ITERATOR ENGINE                      -->
-                        <!-- ==================================================================== -->
                         <s:if test="cmd == null || cmd == '' || cmd.equalsIgnoreCase('dir')">
                             <s:iterator value="dirList">
                                 <tr>
@@ -184,7 +180,8 @@
                                         <b>
                                             <a href="main.action?cmd=file&amp;dirName=<s:property />" style="color: Blue; text-decoration: none">
                                                 <img src="images/folder.gif" border="0" alt="Folder" style="vertical-align: middle;" />
-                                                <font size="small"> <s:property /></font>
+                                                <!-- Increased font size to a readable 13px -->
+                                                <span style="font-size: 13px; font-weight: bold;"> <s:property /></span>
                                             </a>
                                         </b>
                                     </td>
@@ -215,13 +212,13 @@
                             <tr>
                                 <td align="left">
                                     <b>
-                                        <a href="main.action?cmd=dir" style="color: #0000A0; text-decoration: underline;">Back to Dir</a>
+                                        <!-- Increased font size to a readable 13px -->
+                                        <a href="main.action?cmd=dir" style="color: #0000A0; text-decoration: underline; font-size: 13px;">Back to Dir</a>
                                     </b>
                                 </td>
                             </tr>
                         </s:else>
 
-                        <!-- System Exit Trigger Row Segment -->
                         <tr style="height: 15px"></tr>
                         <tr>
                             <td><br /></td>
@@ -239,4 +236,4 @@
     </s:form>
 </body>
 </html>
-                        
+            
