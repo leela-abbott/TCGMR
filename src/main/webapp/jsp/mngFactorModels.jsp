@@ -68,7 +68,6 @@
 	<%//Sridevi.K 06/05/2005 New script for fixing the empty description field while creating a model starts here.%>
 	function createModel() {
 		
-		alert("Here");
 		var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
 		var check = true;
 		var createForm = document.getElementById('createFactorModelForm');
@@ -154,7 +153,7 @@
 					<a class="CmdSm" href='javascript:closeModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Close</a>
 				</abbott:securePage>
 				<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-					&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Del12</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${models.modelId}" />, "<c:out value="${models.name}" />")' >Del</a>
 				</abbott:securePage>
 			</td>
 			<td >
@@ -188,10 +187,10 @@
 			
 			<%-- <a class="CmdSm" href="#" onclick="openModel(<c:out value="${closedModels.modelId}" />, '<c:out value="${closedModels.name}" />'); return false;"> OpenAA1</a> --%>
 			
-				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >OpenAA</a>
+				<a class="CmdSm" href='javascript:openModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Open</a>
 			</abbott:securePage>
 			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del123</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;<a class="CmdSm" href='javascript:deleteModel(<c:out value="${closedModels.modelId}" />, "<c:out value="${closedModels.name}" />")' >Del</a>
 			</abbott:securePage>
 		</td>
 		<td class="commandOptionLabel"> <c:out value="${closedModels.name}" /></td>
