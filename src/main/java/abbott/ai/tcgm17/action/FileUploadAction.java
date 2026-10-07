@@ -1,10 +1,12 @@
 package abbott.ai.tcgm17.action;
 
-import java.io.File;
 import java.util.Map;
-import java.util.HashMap;
+import java.io.File;
+import java.util.List;
 
 import org.apache.struts2.action.SessionAware;
+import org.apache.struts2.action.UploadedFilesAware;
+import org.apache.struts2.dispatcher.multipart.UploadedFile;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,132 +16,123 @@ import abbott.ai.tcgm.entities.User;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.FileTransfer;
 
-public class FileUploadAction extends TCGMAction implements SessionAware {
+public class FileUploadAction extends TCGMAction implements SessionAware, UploadedFilesAware {
 
 	private static final long serialVersionUID = 1L;
-
 	private static final Logger logger = LogManager.getLogger(FileUploadAction.class);
 
-    private File theFile;
-    private String theFileContentType;
-    private String theFileFileName;
-    private String dirName;
-    private HashMap<String, Object> dirs;
-    private String strDirectory;
-    private String cmd = "";
+	private String dirName;
+	private Map<String, Object> dirs;
+	private String strDirectory;
+	private String cmd = "";
+	
+	// Struts 7.x multi-part request wrapper collection 
+	private List<UploadedFile> uploadedFiles;
+	private Map<String, Object> session;
 
-    private Map<String, Object> session;
+	@Override
+	public void withSession(Map<String, Object> session) {
+		this.session = session;
+	}
 
-    @Override
-    public void withSession(Map<String, Object> session) {
-        this.session = session;
-    }
+	// OFFICIAL STRUTS 7.3.0 CONTRACT CALLBACK
+	@Override
+	@StrutsParameter(depth = 1)
+	public void withUploadedFiles(List<UploadedFile> uploadedFiles) {
+		this.uploadedFiles = uploadedFiles;	
+	}
 
-    public String execute() {
-        if (session == null) {
-            addActionError(getText("error.fileupload.form.missing"));
-            return "selectModel";
-        }
+	public String execute() {
+		if (session == null) {
+			addActionError(getText("error.fileupload.form.missing"));
+			return "selectModel";
+		}
 
-        User user = (User) session.get(TCGMConstants.SESSION_NAME_USER);
-        if (user == null) {
-            return "login";
-        }
+		User user = (User) session.get(TCGMConstants.SESSION_NAME_USER);
+		if (user == null) {
+			return "login";
+		}
 
-        FileTransfer fileTransfer = new FileTransfer();
+		FileTransfer fileTransfer = new FileTransfer();
 
-        try {
-            if ("Upload".equalsIgnoreCase(cmd)) {
-                if (theFile != null && theFileFileName != null && !theFileFileName.isEmpty()) {
-                    this.cmd = "";
-                    fileTransfer.upload(theFile, theFileFileName, strDirectory);
-                    addActionMessage(getText("success.fileupload.copied"));
-                }
-            } else if ("Create".equalsIgnoreCase(cmd)) {
-                this.cmd = "";
-                String strReturn = fileTransfer.createDirectory(dirName);
-                this.dirs = fileTransfer.getDirectories(user.getRole().getAccessLevel());
-                
-                if ("success".equalsIgnoreCase(strReturn)) {
-                    addActionMessage(getText("success.createdir"));
-                } else {
-                    addActionError(getText("error.createdir"));
-                }
-                this.dirName = "";
-            } else {
-                this.dirs = fileTransfer.getDirectories(user.getRole().getAccessLevel());
-            }
+		try {
+			this.dirs = fileTransfer.getDirectories(user.getRole().getAccessLevel());
 
-            logger.debug("FileUpload Action Forward: success");
-            return SUCCESS;
+			if ("Upload".equalsIgnoreCase(cmd)) {
+				this.cmd = ""; 
+				if (uploadedFiles != null && !uploadedFiles.isEmpty()) {
+					UploadedFile uploadedFile = uploadedFiles.get(0);
+					File fileContent = null;
+					if (uploadedFile.getContent() instanceof File) {
+						fileContent = (File) uploadedFile.getContent();
+					} else {
+						String absolutePath = uploadedFile.getAbsolutePath();
+						if (absolutePath != null) {
+							fileContent = new File(absolutePath);
+						}
+					}
+					
+					String fileName = uploadedFile.getName();
+					
+					if (fileContent != null && fileName != null && !fileName.isEmpty()) {
+						fileTransfer.upload(fileContent, fileName, strDirectory);
+						addActionMessage(getText("success.fileupload.copied"));
+					} else {
+						logger.error("Failed to materialize upload file instance from MultiPart wrapper.");
+						addActionError("File processing failed. Internal file instantiation error.");
+						return INPUT;
+					}
+				} else {
+					logger.warn("UploadedFiles list received by Action is empty.");
+					addActionError("No file data received. Ensure file doesn't exceed allowed size metrics.");
+					return INPUT;
+				}
+				
+			} else if ("Create".equalsIgnoreCase(cmd)) {
+				this.cmd = "";
+				String strReturn = fileTransfer.createDirectory(dirName);
+				this.dirs = fileTransfer.getDirectories(user.getRole().getAccessLevel());
+				
+				if ("success".equalsIgnoreCase(strReturn)) {
+					addActionMessage(getText("success.createdir"));
+				} else {
+					addActionError(getText("error.createdir"));
+				}
+				this.dirName = "";
+			}
 
-        } catch (TCGMException tcgme) {
-            logger.error(tcgme.getMessage(), tcgme);
-            session.put(TCGMConstants.SESSION_NAME_EXCEPTION, tcgme);
-            return "exception";
-        }
-    }
+			logger.debug("FileUpload Action Forward: success");
+			return SUCCESS;
 
-    public File getTheFile() { 
-        return theFile; 
-    }
+		} catch (TCGMException tcgme) {
+			logger.error(tcgme.getMessage(), tcgme);
+			session.put(TCGMConstants.SESSION_NAME_EXCEPTION, tcgme);
+			return "exception";
+		} catch (Exception e) {
+			logger.error("Unexpected runtime error during upload execution: " + e.getLocalizedMessage(), e);
+			
+			String params = "cmd=" + cmd + ", strDirectory=" + strDirectory;
+			TCGMException wrapper = new TCGMException(
+				"FileUploadAction", 
+				"execute", 
+				params, 
+				"Upload failed due to internal error: " + e.getMessage(), 
+				e
+			);
+			
+			session.put(TCGMConstants.SESSION_NAME_EXCEPTION, wrapper);
+			return "exception";
+		}
+	}
 
-    @StrutsParameter
-    public void setTheFile(File theFile) { 
-        this.theFile = theFile; 
-    }
+	public String getDirName() { return dirName; }
+	@StrutsParameter public void setDirName(String dirName) { this.dirName = dirName; }
 
-    public String getTheFileContentType() { 
-        return theFileContentType; 
-    }
+	public Map<String, Object> getDirs() { return dirs; }
 
-    @StrutsParameter
-    public void setTheFileContentType(String theFileContentType) { 
-        this.theFileContentType = theFileContentType; 
-    }
+	public String getStrDirectory() { return strDirectory; }
+	@StrutsParameter public void setStrDirectory(String strDirectory) { this.strDirectory = strDirectory; }
 
-    public String getTheFileFileName() { 
-        return theFileFileName; 
-    }
-
-    @StrutsParameter
-    public void setTheFileFileName(String theFileFileName) { 
-        this.theFileFileName = theFileFileName; 
-    }
-
-    public String getDirName() { 
-        return dirName; 
-    }
-
-    @StrutsParameter
-    public void setDirName(String dirName) { 
-        this.dirName = dirName; 
-    }
-
-    public HashMap<String, Object> getDirs() { 
-        return dirs; 
-    }
-
-    @StrutsParameter(depth = 2)
-    public void setDirs(HashMap<String, Object> dirs) { 
-        this.dirs = dirs; 
-    }
-
-    public String getStrDirectory() { 
-        return strDirectory; 
-    }
-
-    @StrutsParameter
-    public void setStrDirectory(String strDirectory) { 
-        this.strDirectory = strDirectory; 
-    }
-
-    public String getCmd() { 
-        return cmd; 
-    }
-
-    @StrutsParameter
-    public void setCmd(String cmd) { 
-        this.cmd = cmd; 
-    }
+	public String getCmd() { return cmd; }
+	@StrutsParameter public void setCmd(String cmd) { this.cmd = cmd; }
 }

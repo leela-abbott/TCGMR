@@ -9,6 +9,12 @@
 	<constant name="struts.action.extension" value="action,do" />
 	<constant name="struts.custom.i18n.resources"
 		value="ApplicationResources" />
+    <constant name="struts.multipart.saveDir" value="C:\Temp" />
+    <constant name="struts.multipart.maxSize" value="52428800" />
+    <constant name="struts.ui.theme" value="simple" />
+	<constant
+		name="struts.parameters.requireAnnotations.transitionMode"
+		value="true" />
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
@@ -40,24 +46,30 @@
 
 		<action name="fileUpload"
 			class="abbott.ai.tcgm17.action.FileUploadAction">
-
-			<interceptor-ref name="defaultStack" />
+			<interceptor-ref name="defaultStack">
+				<param name="actionFileUpload.maximumSize">52428800</param>
+			</interceptor-ref>
 
 			<result name="input">/jsp/fileUpload.jsp</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
+			<result name="login" type="redirectAction">openLogin</result>
+			<result name="selectModel">/jsp/selectModel.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
+        <action name="fileUploadv2" class="abbott.ai.tcgm17.action.FileUploadAction">
+            <interceptor-ref name="defaultStack">
+                <param name="actionFileUpload.maximumSize">52428800</param>
+            </interceptor-ref>
 
-		<action name="initUploadView"
-			class="abbott.ai.tcgm17.action.FileUploadAction" method="input">
-			<result name="input">/jsp/fileUpload.jsp</result>
-		</action>
-
-		<!-- <action name="createDirectory" class="abbott.ai.tcgm17.action.FileUploadAction"> 
-			<result name="input" type="redirectAction">initUploadView</result> <result 
-			name="success" type="redirectAction">initUploadView</result> <result name="login" 
-			type="redirectAction">openLogin</result> <result name="exception">/jsp/error.jsp</result> 
-			</action> -->
+            <result name="input">/jsp/fileUpload.jsp</result>
+            <result name="success">/jsp/fileUpload.jsp</result>
+            <result name="login" type="redirectAction">openLogin</result>
+            <result name="selectModel">/jsp/selectModel.jsp</result>
+            <result name="exception">/jsp/exception.jsp</result>
+            <result name="failure" type="redirectAction">openLogin</result>
+        </action>
 
 		<action name="createDirectory"
 			class="abbott.ai.tcgm17.action.FileUploadAction">
@@ -516,7 +528,7 @@
 		</action>
 
 		<action name="createFactorModel"
-			class="abbott.ai.tcgm17.action.CreateFactorModel">
+			class="abbott.ai.tcgm.action.CreateFactorModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
@@ -546,7 +558,7 @@
 		</action>
 
 		<action name="deleteFactorModel"
-			class="abbott.ai.tcgm17.action.DeleteModel">
+			class="abbott.ai.tcgm.action.DeleteModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
@@ -696,7 +708,7 @@
 			<result name="success" type="redirectAction">processMgmt</result>
 		</action>
 		<action name="updateModelSelection"
-			class="abbott.ai.tcgm17.action.UpdateModelSelection">
+			class="abbott.ai.tcgm.action.UpdateModelSelection">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 		</action>
 
@@ -973,13 +985,13 @@
 		</action>
 
 		<action name="closeModel"
-			class="abbott.ai.tcgm17.action.CloseModel">
+			class="abbott.ai.tcgm.action.CloseModel">
 			<result name="success" type="redirectAction">mngFactorModels</result>
 			<result name="failure" type="chain">mngFactorModels</result>
 		</action>
 
 		<action name="openModel"
-			class="abbott.ai.tcgm17.action.OpenModel">
+			class="abbott.ai.tcgm.action.OpenModel">
 			<result name="success" type="redirectAction">
 				<param name="actionName">mngFactorModels</param>
 				<param name="showModels">closed</param>
@@ -1062,3 +1074,4 @@
 
 	</package>
 </struts>
+        

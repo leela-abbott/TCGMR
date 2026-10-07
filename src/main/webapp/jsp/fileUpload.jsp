@@ -5,7 +5,11 @@
 <% String pageTitle = "File Upload"; %>
 <c:set var="pageTitle" value="File Upload" scope="request" />
 
+<!DOCTYPE html>
+<html>
 <head>
+<meta charset="UTF-8">
+<title><%= pageTitle %></title>
 <style type="text/css">
     body {
         font-family: Arial, sans-serif;
@@ -113,28 +117,34 @@ function setCursor() {
     document.body.style.cursor = "default";
 }
 
-function handleAction(actionType) {
-    var form = document.getElementById('fileUploadForm');
+function upload(){
+    var fileInput = document.getElementById("theFile");
     
-    if (!actionType) {
+    // Safety check: Handles validation if validateFile exists, otherwise allows submission
+    if(fileInput) {
+        if (typeof validateFile === "function" && !validateFile(fileInput.value)) {
+            return false;
+        }
+        
         document.body.style.cursor = 'wait';
-        if (document.getElementById('btnUpload')) document.getElementById('btnUpload').disabled = true;
-        if (document.getElementById('btnCancel')) document.getElementById('btnCancel').disabled = true;
-        document.getElementById('cmd').value = 'Upload';
-        return true;
+        var cmdInput = document.getElementById("cmd");
+        if(cmdInput) {
+            cmdInput.value = 'Upload';
+        }
+        
+        // RESOLVED: Uses document.getElementById to safely target and submit the form element
+        var form = document.getElementById("fileUploadForm");
+        if(form) {
+            form.submit();
+            return true;
+        }
     }
-    
-    if (actionType === 'Upload') {
-        document.getElementById('cmd').value = 'Upload';
-        form.submit(); 
-    } else if (actionType === 'Create') {
-        document.getElementById('cmd').value = 'Create';
-        form.submit(); 
-    }
+    return false;
 }
 </script>
 </head>
-
+<%-- RESOLVED: Renamed ID here from fileUploadForm to fileUploadFormBean to avoid duplicate ID conflicts with the form --%>
+<jsp:useBean id="fileUploadFormBean" scope="session" class="abbott.ai.tcgm17.action.FileUploadAction" />
 <body bgcolor="white" onload="setCursor();" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <%@ include file="/include/header.jsf" %>
 <%@ include file="/include/masthead.jsf" %>
@@ -142,12 +152,10 @@ function handleAction(actionType) {
 
 <div class="search-container">
 
-    <s:form id="fileUploadForm" name="fileUploadForm" action="fileUpload" method="post" enctype="multipart/form-data" onsubmit="return handleAction();">
+    <s:form id="fileUploadForm" action="fileUploadv2" namespace="/" method="post" enctype="multipart/form-data" theme="simple">
         <s:hidden name="cmd" id="cmd" />
-
         <fieldset class="form-section-fieldset">
             <legend class="form-section-legend">Upload File Action</legend>
-            
             <div class="form-group-row">
                 <label for="theFile">File Name</label>
                 <div class="input-wrapper">
@@ -156,29 +164,30 @@ function handleAction(actionType) {
                               list="dirs" headerKey="root" headerValue="Root" />
                 </div>
             </div>
-
             <div class="button-group-row">
-                <input type="button" id="btnUpload" class="btn-submit-orange" value="Upload File" onclick="handleAction('Upload');" />
+                <%-- RESOLVED: Changed class to btn-submit-orange to map correctly to your style definitions --%>
+                <button type="button" class="btn-submit-orange" onclick="upload();">Upload</button>
                 <input type="button" id="btnCancel" class="btn-action-gray" value="Cancel" onclick="checkFilterDirtyFlag('mainMenu.action');" />
             </div>
         </fieldset>
-
+    </s:form>
+    
+    <s:form id="directoryCreateForm" action="createDirectory" method="post">
+        <input type="hidden" name="cmd" value="Create" />
         <fieldset class="form-section-fieldset">
             <legend class="form-section-legend">Create Directory Utility</legend>
-            
             <div class="form-group-row">
                 <label for="dirName">Directory Name</label>
                 <div class="input-wrapper">
                     <s:textfield name="dirName" id="dirName" cssClass="form-control-input" maxlength="30" theme="simple" />
                 </div>
             </div>
-
             <div class="button-group-row">
-                <input type="button" id="btnCreate" class="btn-submit-orange" value="Create Directory" onclick="handleAction('Create');" />
+                <s:submit class="btn-submit-orange" value="Create Directory" theme="simple" />
             </div>
         </fieldset>
-
     </s:form>
+
 </div>
 
 <%@ include file="/include/footer.jsf" %>
