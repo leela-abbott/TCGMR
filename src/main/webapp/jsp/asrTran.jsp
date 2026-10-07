@@ -16,7 +16,7 @@
 		<s:hidden property="cmd" />
 		<s:hidden property="focusField" />
 		<%//Begin code for filter row%>
-		<table width="780" cellspacing="0" border=""1" >
+		<table width="780" cellspacing="0">
 			<tr class="fltrTblHdng">
 				<td rowspan="2">Act<br>Code</td>
 				<td rowspan="2">Prod<br>Orig</td>
@@ -604,7 +604,7 @@
 		
 		<!-- Strusts 2 starts -->
 		
-<table width="780" cellspacing="0" border="1">
+<table width="780" cellspacing="0">
     <tr class="fltrTblHdng">
         <td rowspan="2">Act<br>Code</td>
         <td rowspan="2">Prod<br>Orig</td>
