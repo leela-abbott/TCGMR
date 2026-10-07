@@ -14,6 +14,8 @@
 	<tr>
 		<td width="0%">&nbsp;
 			<span id="prevPageDiv">
+			
+			
 				<nested:equal property="pagingFilter.dispPrevPage" value="true">
 					<a href="javascript:checkFilterDirtyFlag(document.asrTranForm,'prevpage');">
 						<img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
@@ -51,17 +53,23 @@
 			</td>
 			</div>
 		</nested:nest>
+		
+	
+	
+	
+		
+		
 		<td width="0%">
 			   <a href="javascript:changeCmdAndSubmit(document.asrTranForm,'selectedrecordpage');">
 				<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
 		</td>
+		
 		<td rowspan="2" width="100%" class="right" valign="top">
 			<span id="modelDsp">
-				<nested:define id="factorModels" property="models" />
-				<html:select name="asrTranForm" property="modelSelected" size="1" onfocus='<%="javascript:removeOption(this,\'"+ state.getCurrentModelName() +"\');" %>'>
-					<option value="none">&lt;none&gt;</option>
-					<html:options property="modelId" labelProperty="name" collection="factorModels" />
-				</html:select>
+				
+				<s:select name="modelSelected" size="1" list="models" listKey="modelId" listValue="name"
+					headerKey="none" headerValue="<none>"
+					onfocus="javascript:removeOption(this,'%{#session.TCGMState.currentModelName}');" />
 			</span>
 		</td>
 		<% 

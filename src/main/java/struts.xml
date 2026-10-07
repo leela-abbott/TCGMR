@@ -175,7 +175,7 @@
 		</action>
 
 		<action name="asrTranMaintenance"
-			class="abbott.ai.tcgm.action.asr.AsrTranMaint">
+			class="abbott.ai.tcgm17.action.asr.AsrTranMaint">
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
 			<result name="advancedfilter">/jsp/asrTranMaintAdvFilter.jsp</result>
