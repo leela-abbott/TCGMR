@@ -181,7 +181,7 @@ import abbott.ai.tcgm.exception.TCGMException;
 			RptUserDao userDao = daoFactory.getRptUserDao();
 			userDao.create(userBean);
 			
-			ArrayList selectedUserList = new ArrayList();
+			ArrayList<RptUser> selectedUserList = new ArrayList<RptUser>();
 			selectedUserList.add(userBean);
 			
 			ReportMngr reportMngr = new ReportMngr();
@@ -431,8 +431,7 @@ import abbott.ai.tcgm.exception.TCGMException;
 	public void getRptUser(User user) throws TCGMException
 	{
 				String methodName = "getRptUser()";			
-				ArrayList al=null;
-
+				ArrayList<RptUser> al=null;
 
 				DaoFactory daoFactory = DaoFactory.getDaoFactory(DaoFactory.ORACLE);
 				RptUserDao userDao = daoFactory.getRptUserDao();
@@ -442,6 +441,7 @@ import abbott.ai.tcgm.exception.TCGMException;
 		        thread.start();
 		
 		}
+	
 	public void recreateUser(ArrayList userList)throws TCGMException
 	{
 		String methodName = "recreateUser()";			

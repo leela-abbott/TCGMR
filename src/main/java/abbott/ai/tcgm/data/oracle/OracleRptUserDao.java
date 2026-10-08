@@ -995,7 +995,7 @@ public class OracleRptUserDao extends OracleDao implements RptUserDao
 			strDivisions =getDivisionException(rptUserToInsert.getDivision());
 			conn.setAutoCommit(false);
 			
-			ArrayList selectedUserList = new ArrayList();
+			ArrayList<RptUser> selectedUserList = new ArrayList<RptUser>();
 			selectedUserList.add(cogosUser);
 			
 			ReportMngr reportMngr = new ReportMngr();
@@ -2391,7 +2391,7 @@ public class OracleRptUserDao extends OracleDao implements RptUserDao
 		}
 	}
 	
-	public ArrayList getRptUsers() throws TCGMException {
+	public ArrayList<RptUser> getRptUsers() throws TCGMException {
 		
 		String methodName = "getRptUsers()";
 

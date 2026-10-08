@@ -67,7 +67,7 @@ public interface RptUserDao extends TCGMDao
 	
 	public HashMap getListValues(String query, Connection obj_Connection) throws TCGMException;
 	
-	public ArrayList getRptUsers() throws TCGMException;
+	public ArrayList<RptUser> getRptUsers() throws TCGMException;
 	
 	public void recertifyRptUsers(ArrayList userList, String userName)	throws TCGMException;
 	

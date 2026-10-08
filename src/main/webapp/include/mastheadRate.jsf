@@ -7,11 +7,11 @@
                 <td class="pageHeading" nowrap>
                     <%=pageTitle%>
                 </td>
-                <td width="225" nowrap valign="top">
+           <!--      <td width="225" nowrap valign="top">
                     <div class="logoutLink"  ><a href="logout.do"><img width=80 height=25 src="images/transparent.gif"></a></div><br><br>
                     <div class="currUserDisp"><bean:write name="TCGMUser" property="fullName" ignore="true" scope="session" /></div>
                     <div class="currModelDisp">Rate Model:&nbsp;<bean:write name="TCGMState" property="curRateSetName" ignore="true" scope="session" /></div>
-                </td>
+                </td>  -->
             </tr>
             <tr>
                 <td colspan="4" height="15">&nbsp;</td>

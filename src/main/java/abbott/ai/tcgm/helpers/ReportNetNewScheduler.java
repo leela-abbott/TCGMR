@@ -1,4 +1,5 @@
 package abbott.ai.tcgm.helpers;
+
 import java.math.BigInteger;
 import java.util.Calendar;
 
@@ -10,7 +11,10 @@ import com.cognos.developer.schemas.bibus._3.AddOptions;
 import com.cognos.developer.schemas.bibus._3.BaseClass;
 import com.cognos.developer.schemas.bibus._3.BaseClassArrayProp;
 import com.cognos.developer.schemas.bibus._3.BooleanProp;
-import com.cognos.developer.schemas.bibus._3.CognosReportNetPortType;
+// REMOVED DEPRECATED: com.cognos.developer.schemas.bibus._3.CognosReportNetPortType
+import com.cognos.developer.schemas.bibus._3.ContentManagerService_PortType;
+import com.cognos.developer.schemas.bibus._3.SearchPathSingleObject;
+import com.cognos.developer.schemas.bibus._3.SearchPathMultipleObject;
 import com.cognos.developer.schemas.bibus._3.Credential;
 import com.cognos.developer.schemas.bibus._3.DateTimeProp;
 import com.cognos.developer.schemas.bibus._3.NmtokenProp;
@@ -27,71 +31,77 @@ import com.cognos.developer.schemas.bibus._3.Sort;
 import com.cognos.developer.schemas.bibus._3.StringProp;
 import com.cognos.developer.schemas.bibus._3.UpdateActionEnum;
 
-public class ReportNetNewScheduler extends BaseClass 
-{
+public class ReportNetNewScheduler extends BaseClass {
 	private Schedule newSchedule = new Schedule();
-	private static final Logger myLogger = LogManager.getLogger( "abbott.ai.tcgm.helpers.ReportNetNewScheduler" );	
-	
-	/**
-	 * This method sets the job schedule. We are using this to schedule to
-	 * the job immediately and specifying to run it only once.In the future
-	 * we can take advantage of the existing code to schedule it in different ways.
-	 * 
-	 * @param oCrn       This Provides a Connection to Cognos.
-	 * @param objectPath The ObjectPath contains the path of the job in the content store.
-	 * @param runPeriod  It can be 'hourly', 'daily', 'weekly', etc.
-	 * @param runFreq    It can be every 8 hours, once in a day, once in a week, etc.
-	 * @param endOnDate  It can be every 8 hours, once in a day, once in a week, etc.
-	 */
+	private static final Logger myLogger = LogManager.getLogger(ReportNetNewScheduler.class);
 
-	public void setSchedule(CognosReportNetPortType oCrn, String objectPath,
-							String runPeriod, String runFreq,
-							Calendar endOnDate, String endOnTime) throws Exception  
-	{
+	/**
+	 * This method sets the job schedule. We are using this to schedule to the job
+	 * immediately and specifying to run it only once.
+	 * 
+	 * @param cmService  This Provides a Connection to Cognos Content Manager.
+	 * @param objectPath The ObjectPath contains the path of the job in the content
+	 *                   store.
+	 * @param runPeriod  It can be 'hourly', 'daily', 'weekly', etc.
+	 * @param runFreq    It can be every 8 hours, once in a day, once in a week,
+	 *                   etc.
+	 * @param endOnDate  Calendar Date boundary configuration
+	 */
+	public void setSchedule(ContentManagerService_PortType cmService, String objectPath, String runPeriod,
+			String runFreq, Calendar endOnDate, String endOnTime) throws Exception {
 		BooleanProp isActive = new BooleanProp();
-		DateTimeProp startDate = new DateTimeProp();
-		DateTimeProp endDate = new DateTimeProp();
-		RunOptionArrayProp roap = new RunOptionArrayProp();
-		roap.setValue(this.setSchedulerRunOptions());
 		isActive.setValue(true);
+
 		setFrequencyByDay(runPeriod);
 		setFrequency(runFreq);
+
 		newSchedule.setStartDate(this.setScheduleStartDate());
 		newSchedule.setEndType(this.setScheduleEndTime(endOnTime));
 		newSchedule.setEndDate(this.setScheduleEndDate(endOnDate, endOnTime));
 		newSchedule.setActive(isActive);
-		newSchedule.setRunOptions(roap);
-		//If the object is a report set parameter values
-		//in this case we assume reports don't require parameters
-		if (objectPath.indexOf("/report") > 0)
+
+		// FIXED: Converted RunOptionArrayProp to explicit OptionArrayProp wrapper class
+		// for Cognos 12 schedule models
+		com.cognos.developer.schemas.bibus._3.OptionArrayProp scheduleOptions = new com.cognos.developer.schemas.bibus._3.OptionArrayProp();
+		scheduleOptions.setValue(this.setSchedulerRunOptions());
+		newSchedule.setOptions(scheduleOptions);
+
+		if (objectPath.indexOf("/report") > 0) {
 			newSchedule.setParameters(new ParameterValueArrayProp());
-		//get the account that is currently logged in and add credentials to it
-		Account logonInfo = this.getLogonAccount(oCrn);
+		}
+
+		Account logonInfo = this.getLogonAccount(cmService);
 		BaseClassArrayProp credentials = new BaseClassArrayProp();
 		Credential crd = new Credential();
-		//set search path for the credentials
+
 		StringProp crdPath = new StringProp();
-		crdPath.setValue( logonInfo.getSearchPath().getValue() + "/credential[@name='Credential']");
+		crdPath.setValue(logonInfo.getSearchPath().getValue() + "/credential[@name='Credential']");
 		crd.setSearchPath(crdPath);
+
 		newSchedule.setCredential(credentials);
 		newSchedule.getCredential().setValue(new BaseClass[] { crd });
-		//add the schedule to the report
+
 		AddOptions ao = new AddOptions();
 		ao.setUpdateAction(UpdateActionEnum.replace);
-		BaseClass newBc =
-			oCrn.add(objectPath, new BaseClass[] { newSchedule }, ao)[0];
-		if (newBc != null)
+
+		// FIXED: Appended [0] to the end because cmService.add now returns a
+		// BaseClass[] array
+		BaseClass newBc = cmService.add(new SearchPathSingleObject(objectPath), new BaseClass[] { newSchedule }, ao)[0];
+
+		if (newBc != null) {
 			myLogger.debug("Schedule created successfully");
-		else
+		} else {
 			myLogger.debug("Schedule NOT Created");
+		}
+
 	}
 
 	/**
 	 * This method sets the Frequency for the job.
-	 * @param runFreq    Set the Schedule Frequency for the job.
+	 * 
+	 * @param runFreq Set the Schedule Frequency for the job.
 	 */
-	public void setFrequency(String runFreq) 
-	{
+	public void setFrequency(String runFreq) {
 		PositiveIntegerProp freq = new PositiveIntegerProp();
 		freq.setValue(new BigInteger(runFreq));
 		newSchedule.setEveryNPeriods(freq);
@@ -99,10 +109,10 @@ public class ReportNetNewScheduler extends BaseClass
 
 	/**
 	 * This method sets the Frequency(runPeriod) for the job.
-	 * @param runPeriod    Set the Schedule Frequency(runPeriod) for the job.
+	 * 
+	 * @param runPeriod Set the Schedule Frequency(runPeriod) for the job.
 	 */
-	public void setFrequencyByDay(String runPeriod) 
-	{
+	public void setFrequencyByDay(String runPeriod) {
 		NmtokenProp period = new NmtokenProp();
 		NmtokenProp howOften = new NmtokenProp();
 		howOften.setValue("daily");
@@ -114,11 +124,8 @@ public class ReportNetNewScheduler extends BaseClass
 	/**
 	 * This method sets the runOptions for the Scheduler
 	 */
-	public RunOption[] setSchedulerRunOptions() 
-	{
-		 RunOptionBoolean prompt =
-				new RunOptionBoolean();
-		//Don't prompt for values
+	public RunOption[] setSchedulerRunOptions() {
+		RunOptionBoolean prompt = new RunOptionBoolean();
 		prompt.setName(RunOptionEnum.prompt);
 		prompt.setValue(false);
 		return new RunOption[] { prompt };
@@ -127,8 +134,7 @@ public class ReportNetNewScheduler extends BaseClass
 	/**
 	 * This method sets the StartDate for the job
 	 */
-	public DateTimeProp setScheduleStartDate() 
-	{
+	public DateTimeProp setScheduleStartDate() {
 		DateTimeProp startDate = new DateTimeProp();
 		Calendar myCal = Calendar.getInstance();
 		myCal.add(Calendar.MINUTE, 5);
@@ -138,71 +144,61 @@ public class ReportNetNewScheduler extends BaseClass
 
 	/**
 	 * This method sets the EndDate for the job
-	 * @param  endOnDate  The Calendar Date on which the job will end running (last run)
-	 * @param  endOnTime  The time the last run will happen on the last day.
-	 * @return endDate    The DateTimeProp.
+	 * 
+	 * @param endOnDate The Calendar Date on which the job will end running
+	 * @param endOnTime The time the last run will happen on the last day.
+	 * @return endDate The DateTimeProp.
 	 */
-
-	public DateTimeProp setScheduleEndDate(Calendar endOnDate, String endOnTime) 
-	{
+	public DateTimeProp setScheduleEndDate(Calendar endOnDate, String endOnTime) {
 		DateTimeProp endDate = new DateTimeProp();
-		if (endOnTime.compareToIgnoreCase("onDate") == 0)
-			if (endOnDate != null) 
-			{
+		if (endOnTime.compareToIgnoreCase("onDate") == 0) {
+			if (endOnDate != null) {
 				endDate.setValue(endOnDate);
-			} 
-			else
-		myLogger.info("Parameter endOnTime cannot be onDate if no endOnDate provided");
+			} else {
+				myLogger.info("Parameter endOnTime cannot be onDate if no endOnDate provided");
+			}
+		}
 		return endDate;
 	}
-	
+
 	/**
 	 * This method sets the EndTime for the job
-	 * @param  endOnTime  The time the last run will happen on the last day.
-	 * @return endTime    The NmtokenProp.
+	 * 
+	 * @param endOnTime The time the last run will happen on the last day.
+	 * @return endTime The NmtokenProp.
 	 */
-
-	public NmtokenProp setScheduleEndTime(String endOnTime) 
-	{
+	public NmtokenProp setScheduleEndTime(String endOnTime) {
 		NmtokenProp endTime = new NmtokenProp();
-		if (endOnTime != null) 
-		{
+		if (endOnTime != null) {
 			endTime.setValue(endOnTime);
-		} else
+		} else {
 			myLogger.debug("Parameter endOnTime cannot be null! Options: indefinite or onDate");
+		}
 		return endTime;
 	}
 
 	/**
 	 * This method sets the LogonAccount
-	 * @param  oCrn     The Connection to Cognos
-	 * @return Account  The Login Account Information.
+	 * 
+	 * @param cmService The Connection to Cognos Content Manager
+	 * @return Account The Login Account Information.
 	 */
-
-	public Account getLogonAccount(CognosReportNetPortType oCrn) 
-	{
-		PropEnum props[] =
-			new PropEnum[] { PropEnum.searchPath, PropEnum.defaultName };
+	public Account getLogonAccount(ContentManagerService_PortType cmService) {
+		PropEnum[] props = new PropEnum[] { PropEnum.searchPath, PropEnum.defaultName };
 		Account myAccount = new Account();
-		if (oCrn != null) 
-		{
-			try 
-			{
-				BaseClass bc[] = oCrn.query("~", props, new Sort[] {}, new QueryOptions());
-				if (bc != null) 
-				{
-					if (bc.length > 0) 
-					{
-						for (int i = 0; i < bc.length; i++) 
-						{
-							myAccount = (Account) bc[i];
-						}
+		if (cmService != null) {
+			try {
+				// FIXED: Wrapped raw "~" string parameter inside SearchPathMultipleObject
+				// container to fix signature binding mismatch
+				BaseClass[] bc = cmService.query(new SearchPathMultipleObject("~"), props, new Sort[] {},
+						new QueryOptions());
+				if (bc != null && bc.length > 0) {
+					for (BaseClass baseObj : bc) {
+						myAccount = (Account) baseObj;
 					}
 				}
-			} 
-			catch (Exception e) 
-			{
-				myLogger.error(e.getMessage());
+			} catch (Exception e) {
+				myLogger.error("Failed to recover login context identity from Content Manager: " + e.getMessage());
 			}
 		}
 		return myAccount;

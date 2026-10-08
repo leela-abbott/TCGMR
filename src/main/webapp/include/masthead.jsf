@@ -2,19 +2,19 @@
 
 <a name="top"></a>
 <!-- Modernized HTML5 compliant container utilizing pure CSS background imagery rules -->
-<table style="width: 734px; height: 87px; border-collapse: collapse; border-spacing: 0;" border="0" background="images/masthead.png">
+<table style="width: 734px; height: 87px; border-collapse: collapse; border-spacing: 0;" border="0">
 
 	<tr>
 		<td style="width: 72px; height: 55px;">&nbsp;</td>
 		<td class="pageHeading" style="white-space: nowrap;">
 			<c:out value="${pageTitle}" />
 		</td>
-		<td style="width: 225px; white-space: nowrap; vertical-align: top;">
+	<!-- 	<td style="width: 225px; white-space: nowrap; vertical-align: top;">
 		<div class="logoutLink"  ><a href="logout.do"><img width=80 height=25 src="images/transparent.gif"></a></div><br><br>
-			<!-- Migrated Struts 1 bean:write session scopes to standard safe EL references -->
+			
 			<div class="currUserDisp"><c:out value="${sessionScope.TCGMUser.fullName}" /></div>
 			<div class="currModelDisp">Factor Model:&nbsp;<c:out value="${sessionScope.TCGMState.currentModelName}" /></div>
-		</td>
+		</td>   -->
 	</tr>
 	<tr>
 		<td colspan="4" style="height: 15px;">&nbsp;</td>

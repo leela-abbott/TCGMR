@@ -44,6 +44,9 @@ public class RptUserMaintAction extends TCGMAction {
     private boolean blnDivision = false;
     private List<ActiveAffMaint> affMaintList = new ArrayList<>();
     private String cmd = "";
+    private String cmd2 = "";
+    private String hidVal;
+    private long userListSize;
 
     public RptUserMaintAction() {
         super();
@@ -542,14 +545,14 @@ public class RptUserMaintAction extends TCGMAction {
     }
 
     public long getUserListSize() {
-        return this.getUserList().size();
+    	userListSize =  this.getUserList().size();
+    	return userListSize;
     }
 
     public long getAffMaintListSize() {
         return this.getAffMaintList().size();
     }
 
-    // --- Secure Getters & Setters annotated for Parameter Injection Security ---
 
     @StrutsParameter(depth = 1)
     public RptUser getSearchObject() {
@@ -693,4 +696,30 @@ public class RptUserMaintAction extends TCGMAction {
     public void setCmd(String cmd) {
         this.cmd = cmd;
     }
+    
+    @StrutsParameter
+    public String getCmd2() {
+        return cmd2;
+    }
+
+    @StrutsParameter
+    public void setCmd2(String cmd2) {
+        this.cmd2 = cmd2;
+    }
+
+    @StrutsParameter
+    public String getHidVal() {
+        return hidVal;
+    }
+
+    @StrutsParameter
+    public void setHidVal(String hidVal) {
+        this.hidVal = hidVal;
+    }
+
+    @StrutsParameter
+    public void setUserListSize(long userListSize) {
+       // this.userListSize = userListSize;
+    }
+
 }
