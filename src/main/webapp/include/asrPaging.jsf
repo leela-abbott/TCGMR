@@ -32,11 +32,21 @@
 		<td width="160">
 		<div class="fltrTblHdng">
 		Record&nbsp;#&nbsp;
-		<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+		<!-- <nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
 		 onkeyup="return autoTab(this, 7, event);"  onchange="javascript:document.getElementById('pagingFilter.recordNumberInSet').value =(this.value);"/>
 		</td>
 		</div>
-		</nested:nest>
+		</nested:nest> -->
+		<s:textfield
+		    theme="simple"
+		    name="pagingFilter.recordNumberInSet"
+		    maxlength="7"
+		    cssClass="fltrWidth7"
+		    onkeyup="return autoTab(this, 7, event);"
+		    onchange="document.getElementById('pagingFilter.recordNumberInSet').value = this.value;"
+     />	
+     </td>
+     </div>
 		<td width="0%">
 		<a href="javascript:changeCmdAndSubmit(document.asrForm,'selectedrecordpage');">
 		<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
