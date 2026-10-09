@@ -18,13 +18,18 @@ import abbott.ai.tcgm.helpers.FileTransfer;
 
 public class DeleteFileAction extends TCGMAction implements SessionAware {
 
-    private static final Logger logger = LogManager.getLogger(DeleteFileAction.class);
+	private static final long serialVersionUID = 1L;
+	private static final Logger logger = LogManager.getLogger(DeleteFileAction.class);
 
     private String fileName = "";
     private HashMap<String, String> fileListDisplay = new HashMap<>();
     private ArrayList<String> dirList = new ArrayList<>();
     private String dirName = "";
     private String cmd = "";
+
+    private String delete = "";
+    private String file = "";
+    private String hidVal = "";
 
     private Map<String, Object> session;
 
@@ -47,17 +52,20 @@ public class DeleteFileAction extends TCGMAction implements SessionAware {
         String filePath = AppConst.getSharelocation();
 
         try {
-            if ("deletefile".equalsIgnoreCase(cmd) && !fileName.isEmpty()) {
-                if (dirName != null && !dirName.isEmpty()) {
+            if ("deletefile".equalsIgnoreCase(cmd) && fileName != null && !fileName.trim().isEmpty()) {
+                if (dirName != null && !dirName.trim().isEmpty()) {
                     filePath = filePath + dirName + File.separator;
                 }
+                
                 File fileDelete = new File(filePath + fileName);
                 if (fileDelete.exists()) {
                     fileDelete.delete();
-                    this.cmd = "file";
-                    FileTransfer fileTrns = new FileTransfer();
-                    this.fileListDisplay = fileTrns.getFiles(filePath);
                 }
+                
+                this.cmd = "file";
+                FileTransfer fileTrns = new FileTransfer();
+                this.fileListDisplay = fileTrns.getFiles(filePath);
+                
             } else if ("dir".equalsIgnoreCase(cmd)) {
                 File dir = new File(filePath);
                 String[] dirListArray = dir.list();
@@ -80,9 +88,11 @@ public class DeleteFileAction extends TCGMAction implements SessionAware {
                     this.dirList = dirLst;
                 }
             } else if ("file".equalsIgnoreCase(cmd)) {
-                String newfilePath = filePath + dirName + File.separator;
+                if (dirName != null && !dirName.trim().isEmpty()) {
+                    filePath = filePath + dirName + File.separator;
+                }
                 FileTransfer fileTrns = new FileTransfer();
-                this.fileListDisplay = fileTrns.getFiles(newfilePath);
+                this.fileListDisplay = fileTrns.getFiles(filePath);
             }
 
             return SUCCESS;
@@ -141,5 +151,32 @@ public class DeleteFileAction extends TCGMAction implements SessionAware {
     @StrutsParameter
     public void setCmd(String cmd) { 
         this.cmd = cmd; 
+    }
+
+    public String getDelete() {
+        return delete;
+    }
+
+    @StrutsParameter
+    public void setDelete(String delete) {
+        this.delete = delete;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    @StrutsParameter
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public String getHidVal() {
+        return hidVal;
+    }
+
+    @StrutsParameter
+    public void setHidVal(String hidVal) {
+        this.hidVal = hidVal;
     }
 }

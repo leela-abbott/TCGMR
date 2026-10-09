@@ -1,158 +1,253 @@
-<%@ page import="abbott.ai.tcgm.entities.AffAreaDivsion" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <%! String pageTitle = "Affiliate Area UnWanted Division"; %>
 <%@ include file="/include/header.jsf" %>
-<abbott:securePage	userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>"
-	requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>"
-	comparisonType="="
-	forwardPage="/insufficientPrivelage.do" />
 
-<jsp:useBean id="affCodeForm" scope="session" class="abbott.ai.tcgm.action.form.AffAreaDivForm" />
+<c:set var="pageTitle" value="Affiliate Area UnWanted Division" scope="request" />
+
+<abbott:securePage userAccessLevel="${sessionScope.TCGMUser.role.accessLevel}"
+    requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>"
+    comparisonType="="
+    forwardPage="/insufficientPrivelage.action" />
+
+<style type="text/css">
+    .form-center-container {
+        width: 800px;
+        margin: 25px auto 0 auto;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .form-center-container table {
+        width: 800px;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    .form-center-container td {
+        padding: 6px 8px;
+        vertical-align: middle;
+    }
+
+    .tableEntry,
+    .fltrTblHdngLeft td {
+        color: #003366 !important;
+        font-weight: bold !important;
+        font-size: 12px !important;
+        text-align: left !important;
+        padding: 6px 8px !important;
+        background-color: #b2d1f0 !important;
+        border: 1px solid #ffffff;
+    }
+
+    .form-center-container select,
+    .form-center-container select option {
+        box-sizing: border-box;
+        height: 22px;
+        font-size: 12px;
+        border: 1px solid #7f9db9;
+        padding: 1px 3px;
+        text-align: left !important;
+    }
+
+    .btn-tcgm-action {
+        background: #ffcc00;
+        background: linear-gradient(to bottom, #ffe066 0%, #ffcc00 40%, #ffa500 100%);
+        border: 1px solid #b58000;
+        border-radius: 4px;
+        color: #000000;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        padding: 4px 14px;
+        cursor: pointer;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        margin: 0 4px;
+        display: inline-block;
+        text-decoration: none;
+    }
+
+    .btn-tcgm-action:hover {
+        background: linear-gradient(to bottom, #fff099 0%, #ffdb4d 40%, #ffb833 100%);
+        border-color: #8c6300;
+    }
+
+    .btn-tcgm-action:active {
+        background: linear-gradient(to bottom, #ffa500 0%, #ffcc00 100%);
+        box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .tcgm-check-btn {
+        background: #ffcc00;
+        background: linear-gradient(to bottom, #ffe066 0%, #ffcc00 40%, #ffa500 100%);
+        border: 1px solid #b58000;
+        border-radius: 2px;
+        color: #000000;
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 6px;
+        cursor: pointer;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        display: inline-block;
+    }
+
+    .tcgm-check-btn:hover {
+        background: linear-gradient(to bottom, #fff099 0%, #ffdb4d 40%, #ffb833 100%);
+        border-color: #8c6300;
+    }
+    
+    .note-text {
+        color: red;
+        font-size: 11px;
+        text-align: right !important;
+        padding-top: 4px;
+    }
+</style>
+
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-	<%@ include file="/include/masthead.jsf" %>
-	<%@ include file="/include/errorDisplay.jsf" %>
+    <%@ include file="/include/masthead.jsf" %>
+    <%@ include file="/include/errorDisplay.jsf" %>
  
-	<nested:form method="post" name="affCodeForm" type="abbott.ai.tcgm.action.form.AffAreaDivForm" action="/affAreaMaint.do" scope="session">
-		<nested:hidden property="cmd" />
-		<nested:hidden property="affcode" />
-		<table cellspacing="0" width="800">
-			<tr>
-				<td class="tableEntry" width="400">Affiliate</td>
-				<td class="tableEntry" width="400">Area</td>
-				<td class="tableEntry" width="400">Region</td>
-				<td class="tableEntry" width="400">Sector</td>
-			</tr>
-			<tr>
-				<td class="mntLeft" width="400">
-				
-				<html:select name="affCodeForm" property="affListCode" size="1" onchange='javascript:setFilter();' styleClass="mntLeft">
-						  <option value="-1">Select Affiliate</option>
-					  	<%  
-					  	   AffAreaDivsion affUser=null;
-					  	   for (int i=0; i<affCodeForm.getAffCodeList().size(); i++) {
-					  	   affUser=(AffAreaDivsion)affCodeForm.getAffCodeList().get(i);
-					  	   
-					  	%>
-						  <option value="<%=affUser.getAffCode()%>"><%=affUser.getAffDesc()%></option>
-						  <%  } %>
-			   </html:select>
-				</td>
-				<td width="400" class="mntLeft">
-					<label id="areaLab"> </label> 
-				</td >
-				<td width="400" class="mntLeft">
-					<label id="regLab"> </label> 
-				</td>
-				<td width="400" class="mntLeft">
-					<label id="secLab"> </label> 
-				</td>
-			</tr>
-			<tr>
-				<td colspan="5" class="right">
-					<font color="red" size="1">Note:The Save Button Makes the selected record as UnWanted</font>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="5" class="right">
-					<a href="javascript:doSave();" >
-						<img src="images/btnSave.png" alt="Save" /></a>
-					<a href="javascript:doCancel();" >
-						<img src="images/btnCancel.png" alt="Cancel" /></a>
-				</td>
-			</tr>
-			
-		</table>
+    <div class="form-center-container">
+        <s:form id="affCodeForm" name="affCodeForm" method="post" action="affAreaMaint">
+            <s:hidden name="cmd" id="cmd" />
+            <s:hidden name="affcode" id="affcode" />
+            
+            <table cellspacing="0" width="800">
+                <tr>
+                    <td class="tableEntry" width="22%">Affiliate</td>
+                    <td class="tableEntry" width="26%">Area</td>
+                    <td class="tableEntry" width="26%">Region</td>
+                    <td class="tableEntry" width="26%">Sector</td>
+                </tr>
+                <tr>
+                    <td class="mntLeft" width="22%" style="text-align: left;">
+                        <s:select name="affListCode" id="affListCode" list="affCodeList" 
+                                  listKey="affCode" listValue="affDesc" 
+                                  headerKey="-1" headerValue="Select Affiliate"
+                                  onchange="setFilter();" cssClass="mntLeft" style="width: 100%; text-align: left;" />
+                    </td>
+                    <td width="26%" style="text-align: left; font-size: 12px; font-weight: bold; color: #333333;">
+                        <label id="areaLab"> </label> 
+                    </td>
+                    <td width="26%" style="text-align: left; font-size: 12px; font-weight: bold; color: #333333;">
+                        <label id="regLab"> </label> 
+                    </td>
+                    <td width="26%" style="text-align: left; font-size: 12px; font-weight: bold; color: #333333;">
+                        <label id="secLab"> </label> 
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="note-text">
+                        Note: The Save Button Makes the selected record as UnWanted
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="text-align: right; padding-top: 10px; padding-bottom: 10px;">
+                        <button type="button" class="btn-tcgm-action" onclick="doSave();">Save</button>
+                        <button type="button" class="btn-tcgm-action" onclick="doCancel();">Cancel</button>
+                    </td>
+                </tr>
+            </table>
 
-		<hr/>
-
-		<table width="800" cellspacing="0">
-			<tr>
-				<td colspan="5" class="right">
-					<font color="red" size="1">Note:The Delete Selected Button Makes the selected record as Wanted</font>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="5" class="right">
-					<a href="javascript:deleteCurrencyCode(document.affCodeForm,'delete','affAreaMaint.do');">
-						<img src="images/btnDeleteSelected.png" alt="Delete Selected" />
-					</a>
-				</td>
-			</tr>
-			<tr class="fltrTblHdngLeft">
-				<td>Affiliate</td>
-				<td>Area</td>
-				<td>Region</td>
-				<td>Sector</td>
-				<td class="center">
-					<input type="image" src="images/btnCheck.png" alt="Toggle Select All" onClick="return toggleSelectAll('affCodeList','selected','<%=affCodeForm.getAffListSize()%>');" />
-				</td>
-			</tr>
-	
-			<nested:notEqual property="affListSize" value="0">
-				<% int rowNumber=0; %>
-				<c:forEach var="affCodeBean" items="${affCodeForm.afflist}"  varStatus="affCodeStatus">	               			
-					<abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow" rowNum="<%= rowNumber %>" id="mntRow">	
-						<td class="mntLeft" width="400">
-							<c:out value="${affCodeBean.affDesc}" />(<c:out value="${affCodeBean.affCode}" />)
-						</td>		
-						<td class="mntLeft" width="400">
-							<c:out value="${affCodeBean.areaDesc}" />
-						</td>
-						<td class="mntLeft" width="400">
-							<c:out value="${affCodeBean.regDesc}" />
-						</td>		
-						<td class="mntLeft" width="400">
-							<c:out value="${affCodeBean.secDesc}" />
-						</td>
-						<td class="mntCenter">
-							<input type="checkbox" name="affCodeList[<c:out value="${affCodeStatus.index}"/>].selected" value="on">
-						</td>
-					</abbott:row>
-			  		<% rowNumber++; %>			
-				</c:forEach>					
-			</nested:notEqual>
-		</table>
-		<nested:equal property="affListSize" value="0">
-			<%@ include file="/include/recordsNotFound.jsf" %>
-		</nested:equal>
-	</nested:form>
-	
-<script language=javascript>
-	function deleteCurrencyCode(form, cmd, action)
-		{
-			if ( confirm("Are you sure that you would like make selected Affiliate code(s) to Wanted?. ") ) 
-			{
-				javascript:chgActCmdSubmit(document.affCodeForm,'delete','affAreaMaint.do');
-			}
-	}	
-	function setFilter(){
-	  var selVal=document.affCodeForm.affListCode.value;
-	 if(selVal=="-1"){ 
-		 document.getElementById('areaLab').innerHTML='';
-		 document.getElementById('regLab').innerHTML='';
-		 document.getElementById('secLab').innerHTML='';
-	 }else{
-	 	var x=selVal.split(',');
-		 document.getElementById('areaLab').innerHTML=x[2];
-		 document.getElementById('regLab').innerHTML=x[4];
-		 document.getElementById('secLab').innerHTML=x[6];
-	 }	 
-	}
-	function doSave(){
-		 var selVal=document.affCodeForm.affListCode.value;
-	 if(selVal=="-1"){ 
-	 	alert("Select a Affliate to be Saved");
-	 }else{
-	 	 var x=selVal.split(',');
-		 document.affCodeForm.affcode.value=x[0];		 
-	 	javascript:chgActCmdSubmit(document.affCodeForm,'save','affAreaMaint.do');
-	 }
-	}
-	function doCancel(){
-		document.affCodeForm.affListCode.value="-1";
-		document.getElementById('areaLab').innerHTML='';
-		 document.getElementById('regLab').innerHTML='';
-		 document.getElementById('secLab').innerHTML='';
-	}
+            <hr style="margin: 20px auto; border: 0; border-top: 1px solid #cccccc; width: 800px;"/>
+            <table width="800" cellspacing="0">
+                <tr>
+                    <td colspan="5" class="note-text">
+                        Note: The Delete Selected Button Makes the selected record as Wanted
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5" style="text-align: right; padding-top: 10px; padding-bottom: 15px;">
+                        <button type="button" class="btn-tcgm-action" onclick="deleteCurrencyCode();">Delete Selected</button>
+                    </td>
+                </tr>
+                <tr class="fltrTblHdngLeft">
+                    <td width="22%">Affiliate</td>
+                    <td width="26%">Area</td>
+                    <td width="26%">Region</td>
+                    <td width="20%">Sector</td>
+                    <td width="6%" style="text-align: center !important;">
+                        <span class="tcgm-check-btn" 
+                              onclick="return toggleSelectAll('affCodeList','selected','${affListSize}');" 
+                              title="Toggle Select All">&#10003;</span>
+                    </td>
+                </tr>
+        
+                <s:if test="affListSize > 0">
+                    <c:forEach var="affCodeBean" items="${afflist}" varStatus="status">
+                        <abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow" rowNum="${status.index}" id="mntRow"> 
+                            <td class="mntLeft" style="text-align: left; width: 22%;">
+                                <c:out value="${affCodeBean.affDesc}" />(<c:out value="${affCodeBean.affCode}" />)
+                            </td>       
+                            <td class="mntLeft" style="text-align: left; width: 26%;">
+                                <c:out value="${affCodeBean.areaDesc}" />
+                            </td>
+                            <td class="mntLeft" style="text-align: left; width: 26%;">
+                                <c:out value="${affCodeBean.regDesc}" />
+                            </td>       
+                            <td class="mntLeft" style="text-align: left; width: 20%;">
+                                <c:out value="${affCodeBean.secDesc}" />
+                            </td>
+                            <td class="mntCenter" style="text-align: center; width: 6%;">
+                                <input type="checkbox" name="afflist[${status.index}].selected" value="true" <c:if test="${affCodeBean.selected}">checked="checked"</c:if> />
+                            </td>
+                        </abbott:row>
+                    </c:forEach>                   
+                </s:if>
+            </table>
+            
+            <s:if test="affListSize == 0">
+                <%@ include file="/include/recordsNotFound.jsf" %>
+            </s:if>
+        </s:form>
+    </div>
+    
+<script type="text/javascript">
+    function deleteCurrencyCode() {
+        if (confirm("Are you sure that you would like make selected Affiliate code(s) to Wanted?. ")) {
+            chgActCmdSubmit(document.forms['affCodeForm'], 'delete', 'affAreaMaint.action');
+        }
+    }   
+    function setFilter(){
+        var selVal = document.getElementById('affListCode').value;
+        if(selVal == "-1"){ 
+            document.getElementById('areaLab').innerHTML = '';
+            document.getElementById('regLab').innerHTML = '';
+            document.getElementById('secLab').innerHTML = '';
+        } else {
+            var x = selVal.split(',');
+            document.getElementById('areaLab').innerHTML = x || '';
+            document.getElementById('regLab').innerHTML = x || '';
+            document.getElementById('secLab').innerHTML = x || '';
+        }   
+    }
+    function doSave(){
+        var selVal = document.getElementById('affListCode').value;
+        if(selVal == "-1"){ 
+            alert("Select a Affiliate to be Saved");
+        } else {
+            var x = selVal.split(',');
+            document.getElementById('affcode').value = x;        
+            chgActCmdSubmit(document.forms['affCodeForm'], 'save', 'affAreaMaint.action');
+        }
+    }
+    function doCancel(){
+        document.getElementById('affListCode').value = "-1";
+        document.getElementById('areaLab').innerHTML = '';
+        document.getElementById('regLab').innerHTML = '';
+        document.getElementById('secLab').innerHTML = '';
+    }
+    
+    function chgActCmdSubmit(form,cmd,action)
+    {
+    	form.cmd.value = cmd;
+    	form.action = action;
+    	form.submit();
+    }
 </script>
-	
+    
 <%@ include file="/include/footer.jsf" %>
+            

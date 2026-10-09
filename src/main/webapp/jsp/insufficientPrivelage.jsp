@@ -1,6 +1,8 @@
 <%! String pageTitle="Insufficient Security"; %>
 <%@ include file="../include/header.jsf" %>
+<c:set var="pageTitle" value="Insufficient Security" scope="request" />
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	
 	<%@ include file="../include/masthead.jsf" %>
 
 	<table class="tableCommand">

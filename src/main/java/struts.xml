@@ -4,7 +4,6 @@
 "https://struts.apache.org/dtds/struts-2.5.dtd">
 
 <struts>
-	<!-- Global Constant Configurations -->
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.action.extension" value="action,do" />
 	<constant name="struts.custom.i18n.resources"
@@ -128,10 +127,15 @@
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
+		<!-- <action name="affAreaMaint" class="abbott.ai.tcgm.action.AffAreaDivMaint"> 
+			<result name="input">/jsp/affList.jsp</result> <result name="success">/jsp/affList.jsp</result> 
+			<result name="exception">/jsp/exception.jsp</result> </action> -->
+
 		<action name="affAreaMaint"
-			class="abbott.ai.tcgm.action.AffAreaDivMaint">
+			class="abbott.ai.tcgm17.action.AffAreaDivMaintAction">
 			<result name="input">/jsp/affList.jsp</result>
 			<result name="success">/jsp/affList.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
 		<action name="errorReport"
@@ -941,25 +945,25 @@
 
 
 		<action name="affCstCurMaint"
-			class="abbott.ai.tcgm.action.affcstcur.AffCstCurMaint">
+			class="abbott.ai.tcgm17.action.affcstcur.AffCstCurMaintAction">
 			<result name="input">/jsp/affCstCurList.jsp</result>
 			<result name="success">/jsp/affCstCurList.jsp</result>
 		</action>
 
 		<action name="editAffCstCur"
-			class="abbott.ai.tcgm.action.affcstcur.EditAffCstCur">
+			class="abbott.ai.tcgm17.action.affcstcur.AffCstCurMaintAction">
 			<result name="input">/jsp/affCstCurList.jsp</result>
 			<result name="success">/jsp/affCstCurList.jsp</result>
 		</action>
 
 		<action name="saveAffCstCur"
-			class="abbott.ai.tcgm.action.affcstcur.SaveAffCstCur">
+			class="abbott.ai.tcgm17.action.affcstcur.AffCstCurMaintAction">
 			<result name="input">/jsp/affCstCurList.jsp</result>
 			<result name="success">/jsp/affCstCurList.jsp</result>
 		</action>
 
 		<action name="deleteAffCstCur"
-			class="abbott.ai.tcgm.action.affcstcur.DeleteAffCstCur">
+			class="abbott.ai.tcgm17.action.affcstcur.AffCstCurMaintAction">
 			<result name="input">/jsp/affCstCurList.jsp</result>
 			<result name="success">/jsp/affCstCurList.jsp</result>
 		</action>
@@ -1020,7 +1024,7 @@
 		</action>
 
 		<action name="mngDaemons"
-			class="abbott.ai.tcgm.action.MngDaemons">
+			class="abbott.ai.tcgm17.action.MngDaemonsAction">
 			<result name="success">/jsp/mngDaemons.jsp</result>
 		</action>
 
@@ -1061,25 +1065,25 @@
 		</action>
 
 		<action name="salesTypeMaint"
-			class="abbott.ai.tcgm.action.salestype.SalesTypeMaint">
+			class="abbott.ai.tcgm17.action.salestype.SalesTypeMaintAction">
 			<result name="input">/jsp/salesTypeList.jsp</result>
 			<result name="success">/jsp/salesTypeList.jsp</result>
 		</action>
 
 		<action name="editSalesType"
-			class="abbott.ai.tcgm.action.salestype.EditSalesType">
+			class="abbott.ai.tcgm17.action.salestype.SalesTypeMaintAction">
 			<result name="input">/jsp/salesTypeList.jsp</result>
 			<result name="success">/jsp/salesTypeList.jsp</result>
 		</action>
 
 		<action name="saveSalesType"
-			class="abbott.ai.tcgm.action.salestype.SaveSalesType">
+			class="abbott.ai.tcgm17.action.salestype.SalesTypeMaintAction">
 			<result name="input">/jsp/salesTypeList.jsp</result>
 			<result name="success">/jsp/salesTypeList.jsp</result>
 		</action>
 
 		<action name="deleteSalesType"
-			class="abbott.ai.tcgm.action.salestype.DeleteSalesType">
+			class="abbott.ai.tcgm17.action.salestype.SalesTypeMaintAction">
 			<result name="input">/jsp/salesTypeList.jsp</result>
 			<result name="success">/jsp/salesTypeList.jsp</result>
 		</action>
