@@ -9,12 +9,14 @@
 	<constant name="struts.action.extension" value="action,do" />
 	<constant name="struts.custom.i18n.resources"
 		value="ApplicationResources" />
-    <constant name="struts.multipart.saveDir" value="C:\Temp" />
-    <constant name="struts.multipart.maxSize" value="52428800" />
-    <constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.multipart.saveDir" value="C:\Temp" />
+	<constant name="struts.multipart.maxSize" value="52428800" />
+	<constant name="struts.ui.theme" value="simple" />
 	<constant
 		name="struts.parameters.requireAnnotations.transitionMode"
 		value="true" />
+	<constant name="struts.allowlist.packageNames"
+		value="abbott.ai.tcgm.entities,abbott.ai.tcgm.helpers,abbott.ai.tcgm17.action.currency" />
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
@@ -58,18 +60,19 @@
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
-        <action name="fileUploadv2" class="abbott.ai.tcgm17.action.FileUploadAction">
-            <interceptor-ref name="defaultStack">
-                <param name="actionFileUpload.maximumSize">52428800</param>
-            </interceptor-ref>
+		<action name="fileUploadv2"
+			class="abbott.ai.tcgm17.action.FileUploadAction">
+			<interceptor-ref name="defaultStack">
+				<param name="actionFileUpload.maximumSize">52428800</param>
+			</interceptor-ref>
 
-            <result name="input">/jsp/fileUpload.jsp</result>
-            <result name="success">/jsp/fileUpload.jsp</result>
-            <result name="login" type="redirectAction">openLogin</result>
-            <result name="selectModel">/jsp/selectModel.jsp</result>
-            <result name="exception">/jsp/exception.jsp</result>
-            <result name="failure" type="redirectAction">openLogin</result>
-        </action>
+			<result name="input">/jsp/fileUpload.jsp</result>
+			<result name="success">/jsp/fileUpload.jsp</result>
+			<result name="login" type="redirectAction">openLogin</result>
+			<result name="selectModel">/jsp/selectModel.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
+			<result name="failure" type="redirectAction">openLogin</result>
+		</action>
 
 		<action name="createDirectory"
 			class="abbott.ai.tcgm17.action.FileUploadAction">
@@ -862,22 +865,36 @@
 			<result name="input">/jsp/rptUserList.jsp</result> <result name="success">/jsp/rptUserList.jsp</result> 
 			</action> -->
 
+		<!-- <action name="currencyCodeMaint" class="abbott.ai.tcgm.action.currency.CurrencyCodeMaint"> 
+			<result name="input">/jsp/currencyList.jsp</result> <result name="success">/jsp/currencyList.jsp</result> 
+			</action> -->
+
 		<action name="currencyCodeMaint"
-			class="abbott.ai.tcgm.action.currency.CurrencyCodeMaint">
+			class="abbott.ai.tcgm17.action.currency.CurrencyCodeMaintAction">
 			<result name="input">/jsp/currencyList.jsp</result>
 			<result name="success">/jsp/currencyList.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
 		<action name="editCurrencyCode"
-			class="abbott.ai.tcgm.action.currency.EditCurrencyCode">
+			class="abbott.ai.tcgm17.action.currency.CurrencyCodeMaintAction">
 			<result name="input">/jsp/currencyList.jsp</result>
 			<result name="success">/jsp/currencyList.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
 		<action name="saveCurrencyCode"
-			class="abbott.ai.tcgm.action.currency.SaveCurrencyCode">
+			class="abbott.ai.tcgm17.action.currency.CurrencyCodeMaintAction">
 			<result name="input">/jsp/currencyList.jsp</result>
 			<result name="success">/jsp/currencyList.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
+		</action>
+
+		<action name="deleteCurrencyCode"
+			class="abbott.ai.tcgm17.action.currency.CurrencyCodeMaintAction">
+			<result name="input">/jsp/currencyList.jsp</result>
+			<result name="success">/jsp/currencyList.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
 		<action name="notesTranCopy"
@@ -922,11 +939,6 @@
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
-		<action name="deleteCurrencyCode"
-			class="abbott.ai.tcgm.action.currency.DeleteCurrencyCode">
-			<result name="input">/jsp/currencyList.jsp</result>
-			<result name="success">/jsp/currencyList.jsp</result>
-		</action>
 
 		<action name="affCstCurMaint"
 			class="abbott.ai.tcgm.action.affcstcur.AffCstCurMaint">
