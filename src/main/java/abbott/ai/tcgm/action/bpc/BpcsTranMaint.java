@@ -1,19 +1,26 @@
 package abbott.ai.tcgm.action.bpc;
 
+import java.io.IOException;
+
 import org.apache.struts.action.*;
 //import org.apache.log4j.*;
+import org.apache.struts2.components.ActionError;
+import org.apache.struts2.dispatcher.mapper.ActionMapping;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import java.io.*;
-
-import abbott.ai.tcgm.*;
-import abbott.ai.tcgm.action.form.*;
-import abbott.ai.tcgm.entities.*;
-import abbott.ai.tcgm.helpers.*;
-import abbott.ai.tcgm.exception.*;
-import abbott.ai.tcgm.data.*;
-import abbott.ai.tcgm.action.*;
+import abbott.ai.tcgm.TCGMConstants;
+import abbott.ai.tcgm.action.TCGMAction;
+import abbott.ai.tcgm.action.form.BpcsTranForm;
+import abbott.ai.tcgm.data.DBConst;
+import abbott.ai.tcgm.entities.FactorModel;
+import abbott.ai.tcgm.entities.TCGMModel;
+import abbott.ai.tcgm.entities.UserToken;
+import abbott.ai.tcgm.exception.TCGMException;
+import abbott.ai.tcgm.helpers.BpcsMngr;
+import abbott.ai.tcgm.helpers.ModelMngr;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 /**
  * <p>Title: TCGM</p>
  * <p>Description: </p>

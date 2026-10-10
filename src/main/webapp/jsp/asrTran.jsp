@@ -42,163 +42,12 @@
 			</tr>
 			
 			<%//Sridevi.K code modified to fix to toggle between the order of the data in a row%>
-			<s:hidden property="sortObject.sortColumn" />
-			<s:hidden property="sortObject.sortOrder" />
+			<s:hidden name="sortObject.sortColumn" />
+			<s:hidden name="sortObject.sortOrder" />
 			<%//Sridevi.K end..%>
 			<% String submitFilter = "submitFilter(document.asrTranForm,'filter', event);"; %>
 			
-			<%-- <nested:nest property="searchObject">
-				<nested:nest property="asr">
-					<s:hidden property="modelId" />
-					<s:hidden property="datasetTableId" />
-				</nested:nest>
-				<tr class="oddRowCenter">
-					<td>
-						<nested:text property="actionCode" maxlength="1" styleClass="fltrWidth1"
-							         onchange="makeFilterDirty('pagingDiv','red','bold');"
-							         onkeydown = "<%=submitFilter%>"
-							         onkeyup="return autoTab(this, 1, event);" />
-					</td>
-					<nested:nest property="asr">
-						<td>
-							<nested:text property="productOrigin" maxlength="1" styleClass="fltrWidth1"
-										 onchange="makeFilterDirty('pagingDiv','red','bold'); "
-										 onkeydown = "<%=submitFilter%>"
-										 onkeyup="return autoTab(this, 1, event);" />
-						</td>
-						<td>
-							<nested:text property="rptAff" maxlength="4" styleClass="fltrWidth4"
-										 onchange="makeFilterDirty('pagingDiv','red','bold');"
-										 onkeydown = "<%=submitFilter%>"
-										 onkeyup="return autoTab(this, 4, event);" 
-										 onblur="checkPadLeft(this,'0',4);" />
-						</td>
-						<nested:nest property="rptProduct">
-							<td>
-								<nested:text property="invCode" maxlength="1" styleClass="fltrWidth1"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 1, event);" />
-							</td>
-							<td>
-								<nested:text property="list" maxlength="6" styleClass="fltrWidth6"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 6, event);" />
-							</td>
-							<td>
-								<nested:text property="label" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 3, event);" />
-							</td>
-							<td>
-								<nested:text property="size" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 3, event);" />
-							</td>
-							<td>
-								<nested:text property="pack" maxlength="4" styleClass="fltrWidth4"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 4, event);" />
-							</td>
-						</nested:nest>
-						<td>
-							<nested:text property="supAff" maxlength="4" styleClass="fltrWidth4"
-										 onchange="makeFilterDirty('pagingDiv','red','bold');"
-										 onkeydown = "<%=submitFilter%>"
-										 onkeyup="return autoTab(this, 4, event);" 
-										 onblur="checkPadLeft(this,'0',4);" />
-						</td>
-						<nested:nest property="supProduct">
-							<td>
-								<nested:text property="invCode" maxlength="1" styleClass="fltrWidth1"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 1, event);" />
-							</td>
-							<td>
-								<nested:text property="list" maxlength="6" styleClass="fltrWidth6"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 6, event);" />
-							</td>
-							<td>
-								<nested:text property="label" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 3, event);" />
-							</td>
-							<td>
-								<nested:text property="size" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 3, event);" />
-							</td>
-							<td>
-								<nested:text property="pack" maxlength="4" styleClass="fltrWidth4"
-											 onchange="makeFilterDirty('pagingDiv','red','bold');"
-											 onkeydown = "<%=submitFilter%>"
-											 onkeyup="return autoTab(this, 4, event);" />
-							</td>
-						</nested:nest>
-						<td>
-							<nested:text property="usage" maxlength="16" styleClass="fltrWidth16"
-										 onchange="makeFilterDirty('pagingDiv','red','bold');"
-										 onblur="alertLength(this,10);"
- 										 onkeydown = "<%=submitFilter%>"
-										 onkeyup="return autoTab(this, 16, event);"/>
-										  
-						</td>
-						
-						<td>
-							<nested:text property="supKey" maxlength="1" styleClass="fltrWidth1"
-										 onkeydown = "<%=submitFilter%>"
-										 onchange="makeFilterDirty('pagingDiv','red','bold');"
- 										 onkeyup="return autoTab(this, 1, event);" />
-						</td>
-					</nested:nest>
-					<td>
-						<nested:text property="publishFlag" maxlength="1" styleClass="fltrWidth1"
-									 onchange="makeFilterDirty('pagingDiv','red','bold');"
-									 onkeydown = "<%=submitFilter%>" />
-					</td>
-				</tr>
-				<tr class="fltrTblHdng">
-					<td colspan="2">User<br>Id</td>
-					<td colspan="15" class="bgWhiteRight">&nbsp;</td>
-				</tr>
-				<tr class="oddRowCenter">
-					<td colspan="2">
-						<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="<">
-							<%=TCGMUser.getUserid()%>
-						</abbott:securePage>
-							<!--
-							*	Added by Uday on 02/04/2006 to provide the user(Analyst)
-							* the option to use the maintenance records of any user. Start
-							-->
-						<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
-							<select property="userSelected" styleClass="commandOption" onchange="makeFilterDirty('pagingDiv','red','bold');" >
-		          <option value="ALL">ALL</option>
-       				<options name="TCGMUser" property="userlist" /></select> 
-						</abbott:securePage>
-							<!--
-							*	Added by Uday on 02/04/2006 to provide the user(Analyst)
-							* the option to use the maintenance records of any user. End
-							-->
-					</td>
-					<td colspan="15" class="bgWhiteRight">
-						<a href="javascript:changeCmdAndSubmit(document.asrTranForm,'filter');" >
-							<img src="images/btnFilter.png" alt="Filter" /></a>
-						<a href="javascript:changeCmdAndSubmit(document.asrTranForm,'advancedfilter');" >
-							<img src="images/btnAdvancedFilter.png" alt="Advanced Filter" /></a>
-						<a href="javascript:changeCmdAndSubmit(document.asrTranForm,'clearfilter');" >
-							<img src="images/btnClear.png" alt="Clear Filter"/></a>
-					</td>
-				</tr>
-			</nested:nest> --%>
+			
 			
 			<!-- Struts2 starts -->
 		
@@ -379,25 +228,18 @@
         </tr>
         <tr class="oddRowCenter">
             <td colspan="2">
-            <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
-                 <%-- <s:if test="TCGMUser.role.accessLevel >= #{Role.Analyst.accessLevel}"> --%>
-                    <s:select name="userSelected" cssClass="commandOption"
-                        list="userlist"
-                        onchange="makeFilterDirty('pagingDiv','red','bold');" />
-                </abbott:securePage>
+            <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" 
+                              requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" 
+                              comparisonType=">=">
+                    <s:select name="userSelected" 
+                              cssClass="commandOption"
+                              list="userlist"
+                              onchange="makeFilterDirty('pagingDiv','red','bold');" />
+            </abbott:securePage>
                 <%-- </s:if> --%>
                 <s:else>
                     <s:property value="TCGMUser.userid" />
                 </s:else>
-                
-                
-                <%-- <abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType=">=">
-							<select property="userSelected" styleClass="commandOption" onchange="makeFilterDirty('pagingDiv','red','bold');" >
-		          <option value="ALL">ALL</option>
-       				<options name="TCGMUser" property="userlist" /></select> 
-						</abbott:securePage> --%>
-                
-                
             </td>
             
             
@@ -744,14 +586,17 @@
 					userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>"
 					requiredAccessLevel="<%=Role.Query.getAccessLevel()%>"
 					comparisonType="!=">
-					<td colspan="16" class="right"><a
+					<td colspan="16" class="right">
+					<a
 						href="javascript:chgActCmdSubmit(document.asrTranForm,'add','asrTranSave.do');">
 							<img src="images/btnAdd.png" alt="Add" />
-					</a> <a
+					</a> 
+					<a
 						href="javascript:chgActCmdSubmit(document.asrTranForm,'massupdate','asrTranSave.do');">
 							<img src="images/btnMassUpdate.png"
 							alt="Apply Changes to all records based on Filter criteria" />
-					</a> <a
+					</a> 
+					<a
 						href="javascript:chgActCmdSubmit(document.asrTranForm,'clearaddnew','asrTranMaintenance.do');">
 							<img src="images/btnClear.png" alt="Clear" />
 					</a></td>
@@ -929,15 +774,22 @@
 									<img src="images/exclamation.png" />
 								</a>
 							</s:if>
-							<s:textfield theme ="simple" name="asrTranListItem[%{#asrTranStatus.index}].actionCode" maxlength="1" cssClass="mntWidth1"
+							<s:textfield theme ="simple" 
+							     name="asrTranListItem[%{#asrTranStatus.index}].actionCode"
+							     maxlength="1" cssClass="mntWidth1"
 								 onchange="makeEditDirty('asrTranListItem[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" onkeydown="restrSpace(event);" />
+								 onkeyup="return autoTab(this, 1, event);" 
+								 onkeydown="restrSpace(event);" />
 						</td>
 						
 						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranListItem[%{#asrTranStatus.index}].asr.productOrigin" maxlength="1" cssClass="mntWidth1"
+							<s:textfield theme ="simple" 
+							    name="asrTranListItem[%{#asrTranStatus.index}].asr.productOrigin" 
+							      maxlength="1" cssClass="mntWidth1"
 								 onchange="makeEditDirty('asrTranListItem[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" onblur="checkPadLeft(this,'0',1);" onkeydown="restrSpace(event);" />
+								 onkeyup="return autoTab(this, 1, event);" 
+								 onblur="checkPadLeft(this,'0',1);" 
+								 onkeydown="restrSpace(event);" />
 						</td>
 						<td class="mntCenter">
 							<s:textfield theme ="simple" name="asrTranListItem[%{#asrTranStatus.index}].asr.rptAff" maxlength="4" cssClass="mntWidth4"

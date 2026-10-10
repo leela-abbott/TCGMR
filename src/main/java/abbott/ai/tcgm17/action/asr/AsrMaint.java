@@ -2,10 +2,12 @@ package abbott.ai.tcgm17.action.asr;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.struts2.action.SessionAware;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import abbott.ai.tcgm.TCGMConstants;
@@ -26,7 +28,7 @@ import abbott.ai.tcgm17.action.TCGMAction;
  * @author David Fields
  * @version 1.0
  */
-public class AsrMaint extends TCGMAction
+public class AsrMaint extends TCGMAction implements SessionAware
 {
     private static final long serialVersionUID = 1L;
     private static Logger myLogger = LogManager.getLogger("AsrMaint");
@@ -46,6 +48,8 @@ public class AsrMaint extends TCGMAction
     public AsrMaint() {
         super();
     }
+    
+    private Map<String, Object> session;
 
     public String execute() throws Exception {
         myLogger.debug("Executing perform() method in AsrMaint.");
@@ -256,4 +260,9 @@ public class AsrMaint extends TCGMAction
     public String getRowToCopy() { return rowToCopy; }
     @StrutsParameter
     public void setRowToCopy(String rowToCopy) { this.rowToCopy = rowToCopy; }
+
+	@Override
+	public void withSession(Map<String, Object> arg0) {
+		this.session = session;		
+	}
 }

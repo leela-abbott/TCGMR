@@ -55,7 +55,10 @@
 			 <a href="javascript:changeCmdAndSubmit(document.bpcsTranForm,'selectedrecordpage');">
 			 <img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
 		 </td>
-		<td rowspan="2" width="100%" class="right" valign="top">
+		 
+		 
+		 
+		<%-- <td rowspan="2" width="100%" class="right" valign="top">
 			<span id="modelDsp">
 				<nested:define id="factorModels" property="models" />
 			
@@ -67,7 +70,20 @@
 					<html:options property="modelId" labelProperty="name" collection="factorModels" />
 				</html:select>
 			</span>
+		</td> --%>
+		
+		<td rowspan="2" width="100%" class="right" valign="top">
+			<span id="modelDsp">
+				
+				<s:select name="modelSelected" size="1" list="models" listKey="modelId" listValue="name"
+					headerKey="none" headerValue="<none>"
+					onfocus="javascript:removeOption(this,'%{#session.TCGMState.currentModelName}');" />
+			</span>
 		</td>
+		
+		
+		
+		
 		<% 
 				if ((TCGMUser.getRole().getAccessLevel()) != (Role.Query.getAccessLevel())) { %>
 		<td class="pagingBtns">
