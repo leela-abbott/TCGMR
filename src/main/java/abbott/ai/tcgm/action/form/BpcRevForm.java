@@ -29,7 +29,6 @@ public class BpcRevForm extends TCGMForm
 	private Sort sortObject = new Sort(DBConst.COL_BPC_DEF, DBConst.SORT_ASC);
 	private BpcRevTran _addNew = new BpcRevTran();
 	private TCGMDataValidation dataVal = new TCGMDataValidation("BPCREV");
-	private ActionErrors errors = new ActionErrors();
 	private String errs = "";
 	/*****************************************************************************************/
 	/**
