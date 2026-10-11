@@ -192,11 +192,9 @@ public class RptUserMaintAction extends TCGMAction {
         // 3. BTN_VAL_REMOVE Action Routing
         else if (this.getCmd().equalsIgnoreCase(TCGMConstants.BTN_VAL_REMOVE)) {
             try {
-               
                 ArrayList<RptUser> legacyCastList = new ArrayList<>(this.getUserList());
                 userMaintMgr.deleteRptUser(legacyCastList);
                 this.setSearchObject(new RptUser());
-                
                 @SuppressWarnings("unchecked")
                 List<RptUser> records = userMaintMgr.getUserList(this.getRptUser(), true);
                 this.setUserList(records != null ? records : new ArrayList<>());

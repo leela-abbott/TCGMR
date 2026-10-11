@@ -330,13 +330,13 @@
 			<result name="failure">/jsp/login.jsp</result>
 		</action>
 
-		<action name="bpcRevMaint"
+<!-- 		<action name="bpcRevMaint"
 			class="abbott.ai.tcgm17.action.bpcrev.BpcRevMaint">
 			<result name="input">/jsp/bpcRev.jsp</result>
 			<result name="success">/jsp/bpcRev.jsp</result>
 			<result name="advancedfilter">/jsp/bpcRevMaintAdvFilter.jsp</result>
 			<result name="failure">/jsp/login.jsp</result>
-		</action>
+		</action> -->
 
 		<action name="bpcRevTranDelete"
 			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranDelete">

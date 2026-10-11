@@ -15,61 +15,66 @@
 
 <style type="text/css">
     .form-center-container {
-        width: 729px;
-        margin: 25px auto 0 auto;
+        width: 650px; /* Reduced container width from 729px for a tighter layout */
+        margin: 20px auto 0 auto; /* Reduced margin */
         font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px; /* Global medium font baseline */
     }
     
     .form-center-container table {
-        width: 729px;
+        width: 100%;
         border-collapse: collapse;
         margin: 0 auto;
     }
 
     .form-center-container td {
-        padding: 8px 10px;
+        padding: 5px 8px; /* Tighter cell padding from 8px 10px */
         vertical-align: middle;
+        font-size: 12px; /* Ensures status outputs like 'Running' or '--None--' display at medium size */
+        color: #333333;
     }
 
     .tableHeadingSection {
         color: #003366 !important;
         font-weight: bold !important;
-        font-size: 13px !important;
-        padding: 6px 10px !important;
+        font-size: 12px !important; /* Reduced from 13px */
+        padding: 5px 8px !important; /* Reduced from 6px 10px */
         background-color: #b2d1f0 !important;
     }
 
     .cmdOptLbl {
         font-weight: bold;
-        font-size: 12px;
+        font-size: 11px; /* Scaled down slightly to contrast with values */
         color: #333333;
     }
 
     .form-center-container select {
         box-sizing: border-box;
-        height: 22px;
-        font-size: 12px;
+        height: 20px; /* Compact drop-down height down from 22px */
+        font-size: 11px; /* Matching medium element scaling */
         border: 1px solid #7f9db9;
-        padding: 1px 3px;
+        border-radius: 3px;
+        padding: 0px 2px;
         text-align: center;
+        vertical-align: middle;
     }
 
     .btn-tcgm-action {
         background: #ffcc00;
         background: linear-gradient(to bottom, #ffe066 0%, #ffcc00 40%, #ffa500 100%);
         border: 1px solid #b58000;
-        border-radius: 4px;
+        border-radius: 3px; /* Matches modern 3px rounding standard */
         color: #000000;
         font-family: Arial, sans-serif;
         font-size: 11px;
         font-weight: bold;
-        padding: 4px 14px;
+        padding: 3px 10px; /* Slimmer button padding */
         cursor: pointer;
-        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
         display: inline-block;
         text-decoration: none;
         white-space: nowrap;
-        width: 130px; /* Fixed width to make all buttons align perfectly */
+        width: 110px; /* Reduced from 130px to fit narrower table */
         text-align: center;
     }
 
@@ -83,6 +88,7 @@
         box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
     }
 </style>
+
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
     <%@ include file="/include/masthead.jsf" %>

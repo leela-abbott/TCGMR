@@ -275,8 +275,8 @@ import abbott.ai.tcgm.exception.TCGMException;
 		}	
 		private RptUser populateDeleteUser(RptUser userToDelete)
 		{
-			String strRoleName = userToDelete.getRoleName();
-			String strRole = userToDelete.getRole();
+			String strRoleName = userToDelete.getRole();
+			String strRole = userToDelete.getRoleName();
 			userToDelete.setRole(strRoleName);
 			userToDelete.setRecipient("CAMID(\"LDAP abbott.corp:u:cn="+userToDelete.getUserid()+",ou=users\")");
 

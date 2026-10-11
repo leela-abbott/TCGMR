@@ -14,38 +14,39 @@ body {
 	color: #333333;
 	margin: 0;
 	padding: 0;
+	font-size: 13px; /* Reduced from default */
 }
 
 .search-container {
 	width: 100%;
-	max-width: 600px;
-	margin: 40px auto;
-	padding: 0 20px;
+	max-width: 550px; /* Sized down slightly from 600px */
+	margin: 30px auto; /* Reduced vertical margin */
+	padding: 0 15px;
 }
 
 .results-fieldset {
 	border: 1px solid #dddddd;
-	border-radius: 6px;
-	padding: 20px;
-	margin-top: 20px;
+	border-radius: 4px; /* Tighter rounding */
+	padding: 15px; /* Reduced padding from 20px */
+	margin-top: 15px;
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
 }
 
 .results-legend {
-	font-size: 16px;
+	font-size: 13px; /* Reduced from 16px */
 	font-weight: bold;
 	color: #0044aa;
-	padding: 0 10px;
+	padding: 0 8px;
 }
 
 .modern-grid-table {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 10px;
-	font-size: 13px;
-	margin-bottom: 20px;
+	margin-top: 8px;
+	font-size: 12px; /* Reduced from 13px */
+	margin-bottom: 15px;
 }
 
 .modern-grid-table th {
@@ -53,20 +54,20 @@ body {
 	color: #333333;
 	font-weight: bold;
 	text-align: left;
-	padding: 10px;
+	padding: 6px 8px; /* Tighter cell padding from 10px */
 	border: 1px solid #d0e0f5;
 }
 
 .modern-grid-table td {
-	padding: 10px;
+	padding: 6px 8px; /* Tighter cell padding from 10px */
 	border: 1px solid #e8f0fa;
 }
 
 .directory-item {
 	display: flex;
 	align-items: center;
-	gap: 10px;
-	padding: 10px;
+	gap: 8px;
+	padding: 6px 8px; /* Made directory rows more compact */
 	border-bottom: 1px solid #e8f0fa;
 }
 
@@ -74,10 +75,10 @@ body {
 	color: #0044aa;
 	text-decoration: none;
 	font-weight: bold;
-	font-size: 14px;
+	font-size: 12px; /* Reduced from 14px */
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 6px;
 }
 
 .directory-item a:hover {
@@ -85,8 +86,8 @@ body {
 }
 
 .directory-item img {
-	width: 16px;
-	height: 16px;
+	width: 14px; /* Scaled down folder icon */
+	height: 14px;
 	border: 0;
 }
 
@@ -101,17 +102,17 @@ body {
 .btn-submit-orange {
 	background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
 	border: 1px solid #e5a515;
-	border-radius: 6px;
+	border-radius: 3px; /* Matches new border radii */
 	color: #222222;
-	font-size: 14px;
+	font-size: 12px; /* Reduced from 14px */
 	font-weight: bold;
-	padding: 5px 25px;
+	padding: 4px 16px; /* Made button less bulky */
 	cursor: pointer;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	display: block;
-	margin: 20px auto 10px auto;
+	margin: 15px auto 5px auto;
 	text-align: center;
-	min-width: 160px;
+	min-width: 120px; /* Reduced from 160px */
 }
 
 .btn-submit-orange:hover {
@@ -119,8 +120,8 @@ body {
 }
 
 .navigation-link-row {
-	margin-top: 15px;
-	font-size: 13px;
+	margin-top: 10px;
+	font-size: 12px; /* Reduced from 13px */
 }
 
 .navigation-link-row a {
