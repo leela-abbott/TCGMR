@@ -22,6 +22,13 @@ public class TCGMException extends Exception {
         this.errorMessage = te.getErrorMessage();
     }
 
+   
+   public TCGMException(String message) {
+      
+       this(null,null,null, message);
+   }
+
+    
     /**
      * Constructor with message and location details
      */

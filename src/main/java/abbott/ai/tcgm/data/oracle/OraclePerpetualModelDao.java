@@ -7,7 +7,6 @@ import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.data.*;
 import abbott.ai.tcgm.entities.*;
 import abbott.ai.tcgm.TCGMUtil;
-import org.apache.struts.action.*;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -27,7 +26,6 @@ public class OraclePerpetualModelDao extends OracleModelDao
 	 *
 	 * @param userToken
 	 */
-	protected ActionErrors errors = new ActionErrors();
 	public OraclePerpetualModelDao(UserToken userToken)
 	{
 		this.userToken = userToken;
@@ -119,7 +117,7 @@ public class OraclePerpetualModelDao extends OracleModelDao
 		  }
 		  catch (TCGMException ex) 
 		  {
-			this.errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.model.perpetual.create"));
+			  throw new TCGMException(this.className, methodName, model.toString(), "error.model.perpetual.create", ex);
 		  }
 		}
 		else

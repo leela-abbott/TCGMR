@@ -3,7 +3,7 @@ package abbott.ai.tcgm.data;
 import abbott.ai.tcgm.*;
 //import abbott.ai.tcgm.exception.*;
 import abbott.ai.tcgm.entities.*;
-import org.apache.struts.action.*;
+import org.apache.struts2.ActionSupport;
 /**
  * <p>Title: TCGM</p>
  * <p>Description: </p>
@@ -12,7 +12,7 @@ import org.apache.struts.action.*;
  * @author Dave Fields
  * @version 1.0
  */
-public class TCGMDataValidation
+public class TCGMDataValidation extends ActionSupport
 {
 	public final String className = this.getClass().getName();
 	private String pageName = "";
@@ -1094,12 +1094,12 @@ public class TCGMDataValidation
 	 * @param errors
 	 * @return
 	 */
-	public boolean validateModelCopy(String modelId, TCGMState state, ActionErrors errors) {
+	public boolean validateModelCopy(String modelId, TCGMState state) {
 		String methodName = "validateModelCopy(String modelId, TCGMState state)";
 
 		if ( modelId.equals(state.getCurrentModelIdString() ) )
-		{
-			 errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.validation.trancopy.current"));
+		{	
+			addActionError(getText("error.validation.trancopy.current"));
 			 return false;
 		}
 		else
@@ -1119,7 +1119,8 @@ public class TCGMDataValidation
 
 		if ( modelId.trim().equals("") || modelId.trim().equals(null) || modelId.trim().equals("none"))
 		{
-			 errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.validation.trancopy.notspecified"));
+			addActionError(getText("error.validation.trancopy.notspecified"));
+			// errors.add(ActionErrors.GLOBAL_ERROR, new ActionError("error.validation.trancopy.notspecified"));
 			 return false;
 		}
 		else
@@ -1135,12 +1136,12 @@ public class TCGMDataValidation
 	 * @param canBeBlank boolean
 	 * @return boolean
 	 */
-	public boolean validateAsrTran(AsrTran asrTran,ActionErrors errors,boolean canBeBlank)
+	public boolean validateAsrTran(AsrTran asrTran,boolean canBeBlank)
 	{
 		String methodName = "validate(AsrTran,ActionErrors,boolean)";
 		boolean validate = true;
 
-		validate = validateAsr(asrTran.getAsr(),errors,canBeBlank);
+		validate = validateAsr(asrTran.getAsr(),canBeBlank);
 
 		asrTran.getAsr().appendMsg(this.valActionCode(asrTran.getActionCode()));
 
@@ -1150,7 +1151,8 @@ public class TCGMDataValidation
 		{
 			if(! asrTran.getAsr().getMsg().equals(""))
 			{
-				errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));
+addActionError(getText("error.validation"));
+			//	errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));
 				validate = false;
 			}
 		}
@@ -1172,7 +1174,8 @@ public class TCGMDataValidation
 
 		validate = validateAsr(asr,canBeBlank);
 			if(!validate){
-				errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));	
+				addActionError(getText("error.validation"));
+			//	errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));	
 			}
 		return validate;
 	}
@@ -1331,6 +1334,7 @@ public class TCGMDataValidation
 		{
 			if(! bpcRevTran.getBpcRev().getMsg().equals(""))
 			{
+				
 				errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));
 				validate = false;
 			}
@@ -1662,7 +1666,7 @@ public class TCGMDataValidation
 
 		if(! rateEx.getMsg().equals(""))
 		{
-			errors.add(ActionErrors.GLOBAL_ERROR,new ActionError("error.validation"));
+			addActionError(getText("error.validation"));
 			validate = false;
 		}
 

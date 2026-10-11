@@ -176,6 +176,7 @@
 							<c:out value="${affCstCurListBean.curCode}" />
 						</td>
 						<td class="mntCenter" style="text-align: center; padding: 6px 8px;">
+							 <input type="hidden" name="affCstCurList[${status.index}].aff" value="<c:out value="${affCstCurListBean.aff}" />" />
 							<input type="checkbox" name="affCstCurList[${status.index}].selected" value="true" <c:if test="${affCstCurListBean.selected}">checked="checked"</c:if> />
 						</td>
 					</abbott:row>
