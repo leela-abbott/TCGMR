@@ -682,7 +682,7 @@
 		</action>
 
 		<action name="mngFactors"
-			class="abbott.ai.tcgm.action.MngFactors">
+			class="abbott.ai.tcgm17.action.MngFactorsAction">
 			<result name="input">/jsp/mngFactors.jsp</result>
 			<result name="success">/jsp/mngFactors.jsp</result>
 		</action>
