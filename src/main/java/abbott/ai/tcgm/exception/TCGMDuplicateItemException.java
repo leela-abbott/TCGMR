@@ -15,16 +15,21 @@ public class TCGMDuplicateItemException extends TCGMException
 {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 *
 	 * @param duplicateItem
 	 */
 	public TCGMDuplicateItemException(String duplicateItem)
 	{
-		super();
+		super(duplicateItem);
 	}
 	
 	public TCGMDuplicateItemException(String errorClass, String errorMethod, String errMsg)
 	{
-		super();
+		super(errorClass, errorMethod, errMsg);
 	}	
 }

@@ -60,6 +60,12 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
         AffCstCurMngr affCstCurMngr = new AffCstCurMngr();
         CurrencyCodeMngr currCodeMngr = new CurrencyCodeMngr();
         UserToken userToken = this.getUserToken(request);
+        
+        if (cmd.equalsIgnoreCase("deleteselected")) {
+            return this.delete();
+        } else if (cmd.equalsIgnoreCase("save")) {
+            return this.save();
+        }
 
         try {
             this.affCstCurList = affCstCurMngr.getAffCstCur(userToken, this.getSearchObject(), this.getSortObject());
@@ -155,7 +161,8 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
     public void setSearchObject(AffCstCur searchObject) {
         this.searchObject = searchObject;
     }
-
+    
+    @StrutsParameter(depth = 2)
     public AffCstCur getSearchObject() {
         if (this.searchObject == null) {
             this.searchObject = new AffCstCur();
@@ -180,6 +187,7 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
         this.affCstCurList = affCstCurList;
     }
 
+    @StrutsParameter(depth = 2)
     public Vector<AffCstCur> getAffCstCurList() {
         if (this.affCstCurList == null) {
             this.affCstCurList = new Vector<>();
@@ -192,6 +200,7 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
         this.affCstCurToEdit = affCstCurToEdit;
     }
 
+    @StrutsParameter(depth = 2)
     public AffCstCur getAffCstCurToEdit() {
         if (this.affCstCurToEdit == null) {
             this.affCstCurToEdit = new AffCstCur();
@@ -211,17 +220,22 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
         return this.curCodes;
     }
 
-    public AffCstCur getAffCstCurlist(int index) {
-        if (index >= 0 && index < this.getAffCstCurList().size()) {
-            return this.getAffCstCurList().elementAt(index);
+    // --- Fixed Indexed Methods Matching JSP Case Sensitivity ('List' instead of 'list') ---
+
+    @StrutsParameter(depth = 3)
+    public AffCstCur getAffCstCurList(int index) {
+        while (this.getAffCstCurList().size() <= index) {
+            this.getAffCstCurList().add(new AffCstCur());
         }
-        return null;
+        return this.getAffCstCurList().elementAt(index);
     }
 
-    public void setAffCstCurlist(int index, AffCstCur affCstCur) {
-        if (index >= 0 && index < this.getAffCstCurList().size()) {
-            this.getAffCstCurList().setElementAt(affCstCur, index);
+    @StrutsParameter(depth = 3)
+    public void setAffCstCurList(int index, AffCstCur affCstCur) {
+        while (this.getAffCstCurList().size() <= index) {
+            this.getAffCstCurList().add(new AffCstCur());
         }
+        this.getAffCstCurList().setElementAt(affCstCur, index);
     }
 
     public int getAffCstCurListSize() {
@@ -236,8 +250,9 @@ public class AffCstCurMaintAction extends TCGMAction implements ServletRequestAw
     }
 
     public void setCurCode(int index, String curCode) {
-        if (index >= 0 && index < this.getCurCodes().size()) {
-            this.getCurCodes().set(index, curCode);
+        while (this.getCurCodes().size() <= index) {
+            this.getCurCodes().add("");
         }
+        this.getCurCodes().set(index, curCode);
     }
 }

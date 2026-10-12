@@ -31,12 +31,61 @@
 <c:set var="sessionDivMap" value="${sessionScope.RptUser['div']}" />
 
 <head>
-<style>
+<style type="text/css">
+    /* Remove default table borders and force a transparent background layout */
+    table {
+        border-collapse: collapse;
+        border: none !important;
+        background: transparent !important; /* Blends seamlessly with master page background color */
+    }
+    
+    table td {
+        padding: 6px 10px !important; 
+        border: none !important;      
+        background: transparent !important; /* Ensures no mismatching white patches behind labels */
+        font-family: Arial, sans-serif;
+        font-size: 13px;              
+        color: #333333;
+    }
+
+    .commandOptionLabel {
+        font-family: Arial, sans-serif;
+        font-size: 13px;              
+        font-weight: normal;          
+        color: #222222;
+        text-align: left;
+        width: 130px;                 
+    }
+
+    .tcgm-input-readonly {
+        border: 1px solid #cccccc;
+        background-color: #ffffff;    
+        color: #333333;
+        padding: 2px 6px;
+        width: 230px;                 
+        height: 24px;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .tcgm-select {
+        border: 1px solid #cccccc;
+        padding: 2px 6px;
+        width: 230px;                 
+        height: 24px;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
     .tcgm-btn {
         display: inline-block;
-        padding: 4px 16px; /* Normalized padding layout */
+        padding: 4px 16px;            
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 12px; /* Set to standard control font size */
+        font-size: 12px;              
         font-weight: bold;
         color: #112233 !important;
         text-decoration: none;
@@ -47,51 +96,29 @@
         cursor: pointer;
         text-shadow: 0 1px 0 rgba(255,255,255,0.4);
         transition: all 0.1s ease-in-out;
-        min-width: 110px; /* Standard execution dimensions */
+        min-width: 110px;             
         text-align: center;
     }
+
     .tcgm-btn:hover {
         background: linear-gradient(to bottom, #fff4aa 0%, #ffd44f 100%);
         border-color: #b58d12;
     }
+
     .tcgm-btn:active {
         background: #ffca36;
         box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
     }
-    .tcgm-input-readonly {
-        border: 1px solid #cccccc;
-        background-color: #ffffff;
-        color: #333333;
-        padding: 2px 6px; /* Normalized padding alignment specs */
-        width: 230px; /* Reduced to sit flush within standard spacing layout rules */
-        height: 24px; /* Unified text container box heights */
-        font-family: Arial, sans-serif;
-        font-size: 12px; /* Coordinated text reading dimensions with form controls */
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    .tcgm-select {
-        border: 1px solid #cccccc;
-        padding: 2px 6px; /* Normalized padding alignment specs */
-        width: 230px; /* Reduced to sit flush within standard spacing layout rules */
-        height: 24px; /* Unified text container box heights */
-        font-family: Arial, sans-serif;
-        font-size: 12px; /* Coordinated text reading dimensions with form controls */
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    .commandOptionLabel {
-        font-family: Arial, sans-serif;
-        font-size: 13px;
-        font-weight: normal;
-        color: #222222;
-        text-align: left;
-        width: 130px;
-    }
-    table table {
-        margin-top: 15px !important;
+
+    /* Target lists panel formatting adjustments */
+    table table select[multiple="true"] {
+        font-size: 12px !important;
+        border: 1px solid #b8d4f0 !important;
+        border-radius: 3px;
+        padding: 2px;
     }
 </style>
+
 </head>
 <body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif;" onload="javascript:disableList();">
     <%@ include file="/include/masthead.jsf" %>

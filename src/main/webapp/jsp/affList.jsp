@@ -125,7 +125,8 @@
                 <tr>
                     <td class="mntLeft" width="22%" style="text-align: left;">
                         <s:select name="affListCode" id="affListCode" list="affCodeList" 
-                                  listKey="affCode" listValue="affDesc" 
+                                  listKey="%{affCode + ',' + areaCode + ',' + areaDesc + ',' + regCode + ',' + regDesc + ',' + secCode + ',' + secDesc}" 
+                                  listValue="affDesc" 
                                   headerKey="-1" headerValue="Select Affiliate"
                                   onchange="setFilter();" cssClass="mntLeft" style="width: 100%; text-align: left;" />
                     </td>
@@ -211,6 +212,7 @@
             chgActCmdSubmit(document.forms['affCodeForm'], 'delete', 'affAreaMaint.action');
         }
     }   
+    
     function setFilter(){
         var selVal = document.getElementById('affListCode').value;
         if(selVal == "-1"){ 
@@ -219,21 +221,23 @@
             document.getElementById('secLab').innerHTML = '';
         } else {
             var x = selVal.split(',');
-            document.getElementById('areaLab').innerHTML = x || '';
-            document.getElementById('regLab').innerHTML = x || '';
-            document.getElementById('secLab').innerHTML = x || '';
+            document.getElementById('areaLab').innerHTML = x[2] || '';
+            document.getElementById('regLab').innerHTML = x[4] || '';
+            document.getElementById('secLab').innerHTML = x[6] || '';
         }   
     }
+    
     function doSave(){
         var selVal = document.getElementById('affListCode').value;
         if(selVal == "-1"){ 
-            alert("Select a Affiliate to be Saved");
+            alert("Select an Affiliate to be Saved");
         } else {
             var x = selVal.split(',');
-            document.getElementById('affcode').value = x;        
+            document.getElementById('affcode').value = x[0];        
             chgActCmdSubmit(document.forms['affCodeForm'], 'save', 'affAreaMaint.action');
         }
     }
+    
     function doCancel(){
         document.getElementById('affListCode').value = "-1";
         document.getElementById('areaLab').innerHTML = '';
@@ -243,9 +247,9 @@
     
     function chgActCmdSubmit(form,cmd,action)
     {
-    	form.cmd.value = cmd;
-    	form.action = action;
-    	form.submit();
+        form.cmd.value = cmd;
+        form.action = action;
+        form.submit();
     }
 </script>
     

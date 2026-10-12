@@ -48,6 +48,8 @@ public class SalesTypeMaintAction extends TCGMAction {
 
             if ("deleteselected".equalsIgnoreCase(this.cmd)) {
                 return this.delete();
+            } else if ("save".equalsIgnoreCase(this.cmd)) {
+                return this.save();
             }
 
             SalesTypeMngr salesTypeMngr = new SalesTypeMngr();
@@ -187,6 +189,7 @@ public class SalesTypeMaintAction extends TCGMAction {
         this.cmd = cmd;
     }
 
+    @StrutsParameter(depth = 2)
     public SalesType getSearchObject() {
         if (this.searchObject == null) {
             this.searchObject = new SalesType();
@@ -194,7 +197,7 @@ public class SalesTypeMaintAction extends TCGMAction {
         return this.searchObject;
     }
 
-    @StrutsParameter(depth = 1)
+    @StrutsParameter(depth = 2)
     public void setSearchObject(SalesType searchObject) {
         this.searchObject = searchObject;
     }
@@ -211,6 +214,7 @@ public class SalesTypeMaintAction extends TCGMAction {
         this.sortObject = sortObject;
     }
 
+    @StrutsParameter(depth = 3)
     public Vector getSlsTypeList() {
         if (this.slsTypeList == null) {
             this.slsTypeList = new Vector();
@@ -218,20 +222,26 @@ public class SalesTypeMaintAction extends TCGMAction {
         return this.slsTypeList;
     }
 
-    @StrutsParameter(depth = 2)
+    @StrutsParameter(depth = 3)
     public void setSlsTypeList(Vector slsTypeList) {
         this.slsTypeList = slsTypeList;
     }
 
-    public SalesType getSlsTypelist(int index) {
-        SalesType slsType = null;
-        if (index >= 0 && index < this.getSlsTypeList().size()) {
-            slsType = (SalesType) this.getSlsTypeList().elementAt(index);
+    // --- Fixed Indexed Methods Matching JSP Case Sensitivity ('List' instead of 'list') ---
+
+    @StrutsParameter(depth = 3)
+    public SalesType getSlsTypeList(int index) {
+        while (this.getSlsTypeList().size() <= index) {
+            this.getSlsTypeList().add(new SalesType());
         }
-        return slsType;
+        return (SalesType) this.getSlsTypeList().elementAt(index);
     }
 
-    public void setSlsTypelist(int index, SalesType slsType) {
+    @StrutsParameter(depth = 3)
+    public void setSlsTypeList(int index, SalesType slsType) {
+        while (this.getSlsTypeList().size() <= index) {
+            this.getSlsTypeList().add(new SalesType());
+        }
         this.getSlsTypeList().setElementAt(slsType, index);
     }
 
@@ -239,6 +249,7 @@ public class SalesTypeMaintAction extends TCGMAction {
         return this.getSlsTypeList().size();
     }
 
+    @StrutsParameter(depth = 2)
     public SalesType getSlsTypeToEdit() {
         if (this.slsTypeToEdit == null) {
             this.slsTypeToEdit = new SalesType();
@@ -246,7 +257,7 @@ public class SalesTypeMaintAction extends TCGMAction {
         return this.slsTypeToEdit;
     }
 
-    @StrutsParameter(depth = 1)
+    @StrutsParameter(depth = 2)
     public void setSlsTypeToEdit(SalesType slsTypeToEdit) {
         this.slsTypeToEdit = slsTypeToEdit;
     }
@@ -271,8 +282,9 @@ public class SalesTypeMaintAction extends TCGMAction {
     }
 
     public void setDivCode(int index, String divCode) {
-        if (index >= 0 && index < this.getDivCodes().size()) {
-            this.getDivCodes().set(index, divCode);
+        while (this.getDivCodes().size() <= index) {
+            this.getDivCodes().add("");
         }
+        this.getDivCodes().set(index, divCode);
     }
 }

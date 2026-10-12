@@ -17,35 +17,36 @@
         color: #333333;
         margin: 0;
         padding: 0;
+        font-size: 13px; /* Reduced from default */
     }
     .search-container {
         width: 100%;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 0 20px;
+        max-width: 750px; /* Sized down from 800px */
+        margin: 30px auto; /* Reduced margin */
+        padding: 0 15px;
     }
     .form-section-fieldset {
         border: 1px solid #dddddd;
-        border-radius: 6px;
-        padding: 25px;
-        margin-bottom: 25px;
+        border-radius: 4px; /* Slightly tighter rounding */
+        padding: 15px 20px; /* Reduced padding from 25px */
+        margin-bottom: 20px;
         box-sizing: border-box;
     }
     .form-section-legend {
-        font-size: 15px;
+        font-size: 13px; /* Reduced from 15px */
         font-weight: bold;
         color: #0044aa;
-        padding: 0 10px;
+        padding: 0 8px;
     }
     .form-group-row {
         display: flex;
         align-items: center;
-        margin-bottom: 18px;
+        margin-bottom: 12px; /* Reduced spacing from 18px */
     }
     .form-group-row label {
-        width: 160px;
+        width: 140px; /* Tighter label column from 160px */
         font-weight: bold;
-        font-size: 14px;
+        font-size: 12px; /* Reduced from 14px */
         color: #333333;
         text-align: left;
     }
@@ -53,43 +54,43 @@
         flex: 1;
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 10px; /* Reduced gaps */
     }
     .form-control-input, .form-control-select {
-        width: 250px;
-        height: 30px;
-        padding: 4px 10px;
-        font-size: 13px;
+        width: 220px; /* Narrowed width from 250px */
+        height: 26px; /* Compact height from 30px */
+        padding: 2px 8px; /* Snugger padding */
+        font-size: 12px; /* Reduced from 13px */
         border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border-radius: 3px;
         box-sizing: border-box;
         background-color: #ffffff;
         transition: border-color 0.2s ease;
     }
     .form-control-file {
-        font-size: 13px;
+        font-size: 12px; /* Reduced from 13px */
     }
     .form-control-input:focus, .form-control-select:focus {
         border-color: #a0a0a0;
         outline: none;
     }
     .button-group-row {
-        margin-left: 160px;
+        margin-left: 140px; /* Matches new label column width */
         display: flex;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 8px;
+        margin-top: 5px;
     }
     .btn-submit-orange {
         background: linear-gradient(to bottom, #ffcc44 0%, #ffbb22 100%);
         border: 1px solid #e5a515;
-        border-radius: 4px;
+        border-radius: 3px;
         color: #222222;
-        font-size: 13px;
+        font-size: 12px; /* Reduced from 13px */
         font-weight: bold;
-        padding: 6px 20px;
+        padding: 4px 14px; /* Made button less bulky */
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        min-width: 120px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        min-width: 100px; /* Reduced from 120px */
         text-align: center;
     }
     .btn-submit-orange:hover {
@@ -98,19 +99,20 @@
     .btn-action-gray {
         background: #f0f0f0;
         border: 1px solid #cccccc;
-        border-radius: 4px;
+        border-radius: 3px;
         color: #333333;
-        font-size: 13px;
+        font-size: 12px; /* Reduced from 13px */
         font-weight: bold;
-        padding: 6px 20px;
+        padding: 4px 14px; /* Made button less bulky */
         cursor: pointer;
-        min-width: 90px;
+        min-width: 80px; /* Reduced from 90px */
         text-align: center;
     }
     .btn-action-gray:hover {
         background: #e5e5e5;
     }
 </style>
+
 
 <script type="text/javascript">
 function setCursor() {
