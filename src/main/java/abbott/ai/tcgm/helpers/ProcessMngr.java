@@ -1,6 +1,7 @@
 package abbott.ai.tcgm.helpers;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -538,5 +539,54 @@ public class ProcessMngr implements TCGMMngr
 	public String sendNetAnl(UserToken ut,String modelId,String modelDesc) throws TCGMException {
 		ProcessDao pd = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getProcessDao(ut);
 		return pd.sendNetAnl(modelId,modelDesc);
+	}
+	
+	public JobInstance createJob(String modelId, String datasetTableId, Map<String, Object> form) throws TCGMException {
+		Object jobNameObj = form.get("jobName");
+		String jobName = (jobNameObj != null) ? jobNameObj.toString() : "";
+		JobInstance job = new JobInstance(JobDefinition.getJobDefFromName(jobName));
+		job.getJobDef().populateDetail();
+
+		Object chkImmediateObj = form.get("ChkImmediate");
+		boolean isImmediate = (chkImmediateObj != null) && (boolean) chkImmediateObj;
+		if (isImmediate)
+			job.setJobStatus(JobInstance.JobStatus.Immediate);
+		else
+			job.setJobStatus(JobInstance.JobStatus.Batch);
+
+		job.setModelId(modelId);
+		job.setDatasetTableId(datasetTableId); 
+
+		if (!"MODEL_CLOSE".equals(jobName) && !"MODEL_COMPACT".equals(jobName) && !"MODEL_DELETE".equals(jobName)) {
+
+			Object destObj = form.get("SelReportDest");
+			String selReportDest = (destObj != null) ? destObj.toString() : "";
+
+			if ("GP".equals(selReportDest)) // Generate & Print Report
+			{
+				job.setPrintOutput(true);
+				job.addJobParm("REPORT_DEST", selReportDest);
+			}
+			if ("G".equals(selReportDest)) // Generate Report
+			{
+				job.setGenerateOutput(true);
+				job.addJobParm("REPORT_DEST", selReportDest);
+			}
+
+			// add restriction string if entered
+			Object restrictionObj = form.get("RestrictionStr");
+			String restrictionStr = (restrictionObj != null) ? restrictionObj.toString() : "";
+			if (!TCGMUtil.isEmpty(restrictionStr)) {
+				job.addJobParm(JobConstants.PN_RESTRICTIONS, restrictionStr);
+			} else {
+				// specifically add a single space parameter. This will get pushed into the
+				// global pool and override the restriction setting left from any previous
+				// reports
+				job.addJobParm(JobConstants.PN_RESTRICTIONS, " ");
+			}
+
+		}
+
+		return job;
 	}
 }

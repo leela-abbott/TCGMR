@@ -1,19 +1,22 @@
-<nested:define id="destinationList" property="destinationList" />
-<html:hidden property="jobName" /><html:hidden property="cmd" />
-<table class="tableJob" cellspacing=0  >
-  <tr valign="middle">
-   <td class="tdJobHeader" >Job Options</td>
-   <td width=10 class="tdJobOption" >&nbsp;</td>
-    <td class="tdJobOption" >
-       <html:checkbox property="chkImmediate" />Run Job Immediate
-    </td>
-       <td width=180 class="tdJobOption" >&nbsp;</td>
-    <td class="tdJobOption" >
-        <html:select property="selReportDest" styleClass="smNormal" value="G"><><html:options property="value" labelProperty="label" collection="destinationList"  /></html:select>
-    </td>
-    <td class="tdJobOption" >
-        <html:checkbox property="chkRestrict" /> Restrict Output     
-<!-- 	<html:text property="numCopies" value="1" size="3" maxlength="3"  styleClass="smNormal" /> Copies -->
-    </td>
-  </tr>
- </table>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
+<s:set var="destinationList" value="destinationList" />
+<s:hidden name="jobName" id="jobName" />
+<s:hidden name="cmd" id="cmd" />
+
+<table class="tableJob" cellspacing="0">
+	<tr valign="middle">
+		<td class="tdJobHeader">Job Options</td>
+		<td width="10" class="tdJobOption">&nbsp;</td>
+		<td class="tdJobOption"><s:checkbox name="chkImmediate"
+				theme="simple" />Run Job Immediate</td>
+		<td width="180" class="tdJobOption">&nbsp;</td>
+		<td class="tdJobOption"><s:select name="selReportDest"
+				list="destinationList" listKey="value" listValue="label" value="'G'"
+				cssClass="smNormal" theme="simple" /></td>
+		<td class="tdJobOption"><s:checkbox name="chkRestrict"
+				theme="simple" /> Restrict Output &nbsp;&nbsp;&nbsp;&nbsp; <!-- <s:textfield name="numCopies" value="1" size="3" maxlength="3" cssClass="smNormal" theme="simple" /> Copies -->
+		</td>
+	</tr>
+</table>
