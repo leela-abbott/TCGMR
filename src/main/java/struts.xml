@@ -330,7 +330,7 @@
 			<result name="failure">/jsp/login.jsp</result>
 		</action>
 
- 		<action name="bpcRevMaint"
+		<action name="bpcRevMaint"
 			class="abbott.ai.tcgm17.action.bpcrev.BpcRevMaint">
 			<result name="input">/jsp/bpcRev.jsp</result>
 			<result name="success">/jsp/bpcRev.jsp</result>
@@ -685,7 +685,10 @@
 			class="abbott.ai.tcgm17.action.MngFactorsAction">
 			<result name="input">/jsp/mngFactors.jsp</result>
 			<result name="success">/jsp/mngFactors.jsp</result>
+			<result name="restrictions">/jsp/restrictions.jsp</result>
+			<result name="exception">/jsp/exception.jsp</result>
 		</action>
+
 
 		<action name="openReporting"
 			class="abbott.ai.tcgm.action.DefaultForward">

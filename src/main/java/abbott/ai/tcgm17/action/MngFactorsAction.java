@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,28 +38,11 @@ import abbott.ai.tcgm.process.JobConstants;
 import abbott.ai.tcgm.process.JobDefinition;
 import abbott.ai.tcgm.process.JobInstance;
 
-/**
- * <p>
- * Title: TCGM
- * </p>
- * <p>
- * Description: Migrated to Struts 7.3.0, JDK 17, Tomcat 10 (Strict
- * org.apache.struts2 API)
- * </p>
- * <p>
- * Copyright: Copyright (c) 2002, 2026
- * </p>
- * 
- * @version 7.3.0
- */
 public class MngFactorsAction extends TCGMAction {
 
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LogManager.getLogger(MngFactorsAction.class);
 
-	// ==========================================
-	// Merged Form Fields & UI Variables
-	// ==========================================
 	private String selBegFactorPeriod;
 	private String selFactorRate;
 	private String planUnitsSelected;
@@ -97,21 +81,16 @@ public class MngFactorsAction extends TCGMAction {
 
 	public MngFactorsAction() {
 		super();
-
 		if (destinationList == null) {
 			destinationList = new Vector<Option>(3);
 			destinationList.add(new Option("Run Only", "0"));
 			destinationList.add(new Option("Generate Report", "G"));
 			destinationList.add(new Option("Generate & Print Report", "GP"));
 		}
-
-		this.resetRestrictions();
+		this.restrictions = new ReportRestriction();
 		this.operations = ReportRestriction.Operations;
 	}
 
-	// ==========================================
-	// Execution Entry Point
-	// ==========================================
 	@Override
 	public String execute() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -139,9 +118,8 @@ public class MngFactorsAction extends TCGMAction {
 			}
 		} catch (TCGMException ex) {
 			request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
-			return ERROR;
+			return "exception";
 		}
-
 		return SUCCESS;
 	}
 
@@ -180,9 +158,6 @@ public class MngFactorsAction extends TCGMAction {
 		} else if (cmd.equalsIgnoreCase("COMP_MODEL")) {
 			ModelDao md = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getModelDao(ut, TCGMModel.Type.FACTOR);
 			md.setModelParmII(-1, "TCGM_IPS_PRICE_COMPARISON", state.getCurrentModelIdString());
-
-			// FIXED: Look up success.modelcomp.add message via native resource bundle text
-			// resolution mechanics
 			String compMsg = getText("success.modelcomp.add", new String[] { state.getCurrentModelName() });
 			addActionMessage(compMsg);
 
@@ -192,6 +167,7 @@ public class MngFactorsAction extends TCGMAction {
 			jobDetails.put("SelReportDest", getSelReportDest());
 			jobDetails.put("RestrictionStr", getRestrictionStr());
 			jobDetails.put("ChkImmediate", isChkImmediate());
+
 			JobInstance job = pm.createJob(state.getCurrentModelIdString(), "-1", jobDetails);
 			job.getJobDef().populateDetail();
 			job.setDesc(job.getJobDef().getJobName() + TCGMConstants.STR_SEP + fm.getName());
@@ -235,7 +211,6 @@ public class MngFactorsAction extends TCGMAction {
 				} else {
 					job.addJobParm(JobConstants.PN_RATE_SET, ds.getDatasetName().trim());
 				}
-
 			} else if (job.getJobDef().equals(JobDefinition.SEND_FACTORS)
 					|| job.getJobDef().equals(JobDefinition.SEND_ALL_FACTORS)) {
 				selected = false;
@@ -255,7 +230,6 @@ public class MngFactorsAction extends TCGMAction {
 					fm.setExportRtcSystem("N");
 					job.addJobParm(JobConstants.PN_R_SYSTEM_RTC, "N");
 				}
-
 				if (this.getRbbSystemSelected()) {
 					fm.setExportRbbSystem("Y");
 					job.addJobParm(JobConstants.PN_R_SYSTEM_RBB, "Y");
@@ -264,7 +238,6 @@ public class MngFactorsAction extends TCGMAction {
 					fm.setExportRbbSystem("N");
 					job.addJobParm(JobConstants.PN_R_SYSTEM_RBB, "N");
 				}
-
 				if (this.getRblSystemSelected()) {
 					fm.setExportRblSystem("Y");
 					job.addJobParm(JobConstants.PN_R_SYSTEM_RBL, "Y");
@@ -295,16 +268,19 @@ public class MngFactorsAction extends TCGMAction {
 					|| job.getJobDef().equals(JobDefinition.BUILD_ASR_TREE)
 					|| job.getJobDef().equals(JobDefinition.PRINT_EXRATE)) {
 				job.addJobParm("DIS_VERSION", fm.getDesc());
-			} else if (job.getJobDef().equals(JobDefinition.PRINT_VAL_AD)
-					|| job.getJobDef().equals(JobDefinition.PRINT_DUB_SUP)
-					|| job.getJobDef().equals(JobDefinition.MISS_FACTOR)
-					|| job.getJobDef().equals(JobDefinition.PRINT_INVCUR)
-					|| job.getJobDef().equals(JobDefinition.BLNDD_SUMMRY)
-					|| job.getJobDef().equals(JobDefinition.PRINT_BP_FRZ)
-					|| job.getJobDef().equals(JobDefinition.PRINT_MISM)
-					|| job.getJobDef().equals(JobDefinition.AUDIT_FACTORS) || job.getJobDef().equals("DELETE_AUDIT")) {
-				job.addJobParm(JobConstants.PN_DIS_VERSION, fm.getDesc());
-			}
+			
+		} else if (job.getJobDef().equals(JobDefinition.PRINT_VAL_AD)
+				|| job.getJobDef().equals(JobDefinition.PRINT_DUB_SUP)
+				|| job.getJobDef().equals(JobDefinition.MISS_FACTOR)
+				|| job.getJobDef().equals(JobDefinition.PRINT_INVCUR)
+				|| job.getJobDef().equals(JobDefinition.BLNDD_SUMMRY)
+				|| job.getJobDef().equals(JobDefinition.PRINT_BP_FRZ)
+				|| job.getJobDef().equals(JobDefinition.PRINT_MISM)
+				|| job.getJobDef().equals(JobDefinition.AUDIT_FACTORS) 
+				|| "DELETE_AUDIT".equalsIgnoreCase(job.getJobDef().toString())) { // <-- UPDATED
+			job.addJobParm(JobConstants.PN_DIS_VERSION, fm.getDesc());
+		}
+
 
 			if (selected) {
 				pm.addJob(job, ut);
@@ -325,23 +301,17 @@ public class MngFactorsAction extends TCGMAction {
 		this.reset(model);
 
 		String descr = mm.getModelParmValue(ut, modelId, TCGMModel.Type.FACTOR, "MEMO");
-		if (descr == null || descr.equals("")) {
-			this.modelLongDesc = model.getDesc();
-		} else {
-			this.modelLongDesc = descr;
-		}
+		this.modelLongDesc = (descr == null || descr.equals("")) ? model.getDesc() : descr;
 
 		String excDate = mm.getModelParmValue(ut, modelId, TCGMModel.Type.FACTOR, "SVD_FCTR_DT");
 		TimeZone tz = TimeZone.getTimeZone(AppConst.getTcgmTimeZone());
 		long rawOffset = tz.getRawOffset();
 		SimpleDateFormat sdf = new SimpleDateFormat(AppConst.getTcgmDateFormat());
-
 		if (tz.inDaylightTime(new Date())) {
 			rawOffset += Integer.parseInt(TCGMConstants.DT_OFFSET);
 		}
 
 		if (excDate != null && !excDate.trim().equals("")) {
-			@SuppressWarnings("deprecation")
 			long time = new Date(excDate).getTime();
 			long newTime = time;
 			if (AppConst.getServerTimeZone().equals(TCGMConstants.DT_GMT)) {
@@ -373,116 +343,25 @@ public class MngFactorsAction extends TCGMAction {
 		restrictions = new ReportRestriction();
 	}
 
-	public Vector getReportList() {
-		return reportList;
+	@StrutsParameter
+	public void setCmd(String cmd) {
+		this.cmd = (cmd != null && cmd.contains(",")) ? cmd.split(",")[0].trim() : cmd;
 	}
 
-	public void setReportList(Vector reportList) {
-		this.reportList = reportList;
+	public String getCmd() {
+		return cmd;
 	}
 
-	public void setSelReport(String selReport) {
-		this.selReport = selReport;
+	@StrutsParameter
+	public void setJobName(String jobName) {
+		this.jobName = (jobName != null && jobName.contains(",")) ? jobName.split(",")[0].trim() : jobName;
 	}
 
-	public String getSelReport() {
-		return selReport;
+	public String getJobName() {
+		return jobName;
 	}
 
-	public void setChkImmediate(boolean chkImmediate) {
-		this.chkImmediate = chkImmediate;
-	}
-
-	public boolean isChkImmediate() {
-		return chkImmediate;
-	}
-
-	public void setChkRestrict(boolean chkRestrict) {
-		this.chkRestrict = chkRestrict;
-	}
-
-	public boolean isChkRestrict() {
-		return chkRestrict;
-	}
-
-	public void setSelReportDest(String selReportDest) {
-		this.selReportDest = selReportDest;
-	}
-
-	public String getSelReportDest() {
-		return selReportDest;
-	}
-
-	public void setDestinationList(Vector destinationList) {
-		this.destinationList = destinationList;
-	}
-
-	public Vector getDestinationList() {
-		return destinationList;
-	}
-
-	public void setOperations(String[] operations) {
-		this.operations = operations;
-	}
-
-	public String[] getOperations() {
-		return operations;
-	}
-
-	public ReportRestriction getRestrictions() {
-		return restrictions;
-	}
-
-	public void setRestrictions(ReportRestriction restrictions) {
-		this.restrictions = restrictions;
-	}
-
-	public void setNumCopies(String numCopies) {
-		this.numCopies = numCopies;
-	}
-
-	public String getNumCopies() {
-		return numCopies;
-	}
-
-	public String getRestrictionStr() {
-		StringBuffer sb = new StringBuffer();
-		if (!restrictions.getRptAffRestriction().equals("")) {
-			sb.append(" | " + restrictions.getRptAffRestriction());
-		}
-		if (!restrictions.getSupAffRestriction().equals("")) {
-			sb.append(" | " + restrictions.getSupAffRestriction());
-		}
-		if (!restrictions.getEndAffRestriction().equals("")) {
-			sb.append(" | " + restrictions.getEndAffRestriction());
-		}
-		if (!restrictions.getRptListRestriction().equals("")) {
-			sb.append(" | " + restrictions.getRptListRestriction());
-		}
-		if (!restrictions.getSupListRestriction().equals("")) {
-			sb.append(" | " + restrictions.getSupListRestriction());
-		}
-		if (!restrictions.getEndListRestriction().equals("")) {
-			sb.append(" | " + restrictions.getEndListRestriction());
-		}
-		if (!restrictions.getGroupIdLimiterValues().equals("")) {
-			sb.append(" | " + restrictions.getGroupIdLimiterValues());
-		}
-
-		if (sb.toString().length() > 2)
-			return sb.toString().substring(2);
-		else
-			return sb.toString();
-	}
-
-	public ReportPrintRequest getReportPrintRequest() {
-		ReportPrintRequest rpr = new ReportPrintRequest();
-		rpr.setReportId(this.getSelReport());
-		rpr.setReportDest(this.getSelReportDest());
-		rpr.setNumCopies(this.getNumCopies());
-		return rpr;
-	}
-
+	@StrutsParameter
 	public void setFormHandler(String formHandler) {
 		this.formHandler = formHandler;
 	}
@@ -491,30 +370,7 @@ public class MngFactorsAction extends TCGMAction {
 		return formHandler;
 	}
 
-	public void setJobName(String jobName) {
-		if (jobName != null && jobName.contains(",")) {
-			this.jobName = jobName.split(",")[0].trim();
-		} else {
-			this.jobName = jobName;
-		}
-	}
-
-	public String getJobName() {
-		if (jobName != null && jobName.contains(",")) {
-			return jobName.split(",")[0].trim();
-		}
-		return jobName;
-	}
-
-	public void reset() {
-		logger.debug("Reset being called");
-		this.setCmd("");
-		this.setJobName("");
-		this.setRestrictionEntered(false);
-		this.resetRestrictions();
-		this.setModelSelected(getModelSelected());
-	}
-
+	@StrutsParameter
 	public void setRestrictionEntered(boolean restrictionEntered) {
 		this.restrictionEntered = restrictionEntered;
 	}
@@ -523,30 +379,62 @@ public class MngFactorsAction extends TCGMAction {
 		return restrictionEntered;
 	}
 
-	public String getMemo() {
-		return memo;
+	@StrutsParameter
+	public void setChkRestrict(boolean chkRestrict) {
+		this.chkRestrict = chkRestrict;
 	}
 
-	public String getModelLongDesc() {
-		return modelLongDesc;
+	public boolean isChkRestrict() {
+		return chkRestrict;
 	}
 
-	public void setSelBegFactorPeriod(String selBegFactorPeriod) {
-		this.selBegFactorPeriod = selBegFactorPeriod;
+	@StrutsParameter(depth = 1)
+	public void setRestrictions(ReportRestriction restrictions) {
+		this.restrictions = restrictions;
 	}
 
-	public String getSelBegFactorPeriod() {
-		return selBegFactorPeriod;
+	@StrutsParameter(depth = 1)
+	public ReportRestriction getRestrictions() {
+		return restrictions;
 	}
 
-	public String getSelFactorRate() {
-		return selFactorRate;
+	@StrutsParameter
+	public void setSelReportDest(String selReportDest) {
+		this.selReportDest = selReportDest;
 	}
 
-	public void setSelFactorRate(String selFactorRate) {
-		this.selFactorRate = selFactorRate;
+	public String getSelReportDest() {
+		return selReportDest;
 	}
 
+	@StrutsParameter
+	public void setChkImmediate(boolean chkImmediate) {
+		this.chkImmediate = chkImmediate;
+	}
+
+	public boolean isChkImmediate() {
+		return chkImmediate;
+	}
+
+	@StrutsParameter
+	public void setSelReport(String selReport) {
+		this.selReport = selReport;
+	}
+
+	public String getSelReport() {
+		return selReport;
+	}
+
+	@StrutsParameter
+	public void setNumCopies(String numCopies) {
+		this.numCopies = numCopies;
+	}
+
+	public String getNumCopies() {
+		return numCopies;
+	}
+
+	@StrutsParameter
 	public void setPlanUnitsSelected(String planUnitsSelected) {
 		this.planUnitsSelected = planUnitsSelected;
 	}
@@ -555,12 +443,118 @@ public class MngFactorsAction extends TCGMAction {
 		return planUnitsSelected;
 	}
 
+	@StrutsParameter
 	public void setActualUnitsSelected(String actualUnitsSelected) {
 		this.actualUnitsSelected = actualUnitsSelected;
 	}
 
 	public String getActualUnitsSelected() {
 		return actualUnitsSelected;
+	}
+
+	@StrutsParameter
+	public void setSelCostRate(String selCostRate) {
+		this.selCostRate = selCostRate;
+	}
+
+	public String getSelCostRate() {
+		return selCostRate;
+	}
+
+	@StrutsParameter
+	public void setSelFactorRate(String selFactorRate) {
+		this.selFactorRate = selFactorRate;
+	}
+
+	public String getSelFactorRate() {
+		return selFactorRate;
+	}
+
+	@StrutsParameter
+	public void setSelRevisionRate(String selRevisionRate) {
+		this.selRevisionRate = selRevisionRate;
+	}
+
+	public String getSelRevisionRate() {
+		return selRevisionRate;
+	}
+
+	@StrutsParameter
+	public void setModelLongDesc(String modelLongDesc) {
+		this.modelLongDesc = modelLongDesc;
+	}
+
+	public String getModelLongDesc() {
+		return modelLongDesc;
+	}
+
+	@StrutsParameter
+	public void setRgmSystemSelected(boolean rgmSystemSelected) {
+		this.rgmSystemSelected = rgmSystemSelected;
+	}
+
+	public boolean getRgmSystemSelected() {
+		return rgmSystemSelected;
+	}
+
+	@StrutsParameter
+	public void setRtcSystemSelected(boolean rtcSystemSelected) {
+		this.rtcSystemSelected = rtcSystemSelected;
+	}
+
+	public boolean getRtcSystemSelected() {
+		return rtcSystemSelected;
+	}
+
+	@StrutsParameter
+	public void setRbbSystemSelected(boolean rbbSystemSelected) {
+		this.rbbSystemSelected = rbbSystemSelected;
+	}
+
+	public boolean getRbbSystemSelected() {
+		return rbbSystemSelected;
+	}
+
+	@StrutsParameter
+	public void setRblSystemSelected(boolean rblSystemSelected) {
+		this.rblSystemSelected = rblSystemSelected;
+	}
+
+	public boolean getRblSystemSelected() {
+		return rblSystemSelected;
+	}
+
+	@StrutsParameter
+	public void setCcsType(String ccsType) {
+		this.ccsType = ccsType;
+	}
+
+	public String getCcsType() {
+		return ccsType;
+	}
+
+	public Vector getReportList() {
+		return reportList;
+	}
+
+	public void setReportList(Vector reportList) {
+		this.reportList = reportList;
+	}
+
+	public Vector getDestinationList() {
+		return destinationList;
+	}
+
+	public String[] getOperations() {
+		return operations;
+	}
+
+	public String getMemo() {
+		return memo;
+	}
+
+	public String getLastExSavePeriod13FactorsDt() {
+		return lastExSavePeriod13FactorsDt;
 	}
 
 	public void setUnitSets(java.util.Vector unitSets) {
@@ -580,75 +574,39 @@ public class MngFactorsAction extends TCGMAction {
 	}
 
 	public void setExportSystemSets(java.util.Vector exportSystemSets) {
-		this.rateSets = exportSystemSets;
+		this.exportSystemSets = exportSystemSets;
 	}
 
 	public java.util.Vector getExportSystemSets() {
 		return exportSystemSets;
 	}
 
-	public void setSelCostRate(String selCostRate) {
-		this.selCostRate = selCostRate;
+	public void setSelBegFactorPeriod(String selBegFactorPeriod) {
+		this.selBegFactorPeriod = selBegFactorPeriod;
 	}
 
-	public String getSelCostRate() {
-		return selCostRate;
+	public String getSelBegFactorPeriod() {
+		return selBegFactorPeriod;
 	}
 
-	public void setSelRevisionRate(String selRevisionRate) {
-		this.selRevisionRate = selRevisionRate;
+	public void setModelSelected(String modelSelected) {
+		this.modelSelected = modelSelected;
 	}
 
-	public String getSelRevisionRate() {
-		return selRevisionRate;
+	public String getModelSelected() {
+		return (this.modelSelected == null) ? "" : this.modelSelected;
 	}
 
-	public boolean isRgmSystemSelected() {
-		return this.rgmSystemSelected;
+	@StrutsParameter
+	public void setLastExSavePeriod13FactorsDt(String lastExSavePeriod13FactorsDt) {
+		this.lastExSavePeriod13FactorsDt = lastExSavePeriod13FactorsDt;
 	}
 
-	public void setRgmSystemSelected(boolean rgmSystemSelected) {
-		this.rgmSystemSelected = rgmSystemSelected;
-	}
-
-	public boolean getRgmSystemSelected() {
-		return rgmSystemSelected;
-	}
-
-	public boolean isRtcSystemSelected() {
-		return this.rtcSystemSelected;
-	}
-
-	public void setRtcSystemSelected(boolean rtcSystemSelected) {
-		this.rtcSystemSelected = rtcSystemSelected;
-	}
-
-	public boolean getRtcSystemSelected() {
-		return rtcSystemSelected;
-	}
-
-	public boolean isRbbSystemSelected() {
-		return this.rbbSystemSelected;
-	}
-
-	public void setRbbSystemSelected(boolean rbbSystemSelected) {
-		this.rbbSystemSelected = rbbSystemSelected;
-	}
-
-	public boolean getRbbSystemSelected() {
-		return rbbSystemSelected;
-	}
-
-	public boolean isRblSystemSelected() {
-		return this.rblSystemSelected;
-	}
-
-	public void setRblSystemSelected(boolean rblSystemSelected) {
-		this.rblSystemSelected = rblSystemSelected;
-	}
-
-	public boolean getRblSystemSelected() {
-		return rblSystemSelected;
+	public void reset() {
+		this.setCmd("");
+		this.setJobName("");
+		this.setRestrictionEntered(false);
+		this.resetRestrictions();
 	}
 
 	public void reset(FactorModel myModel) {
@@ -661,57 +619,37 @@ public class MngFactorsAction extends TCGMAction {
 		this.setSelRevisionRate(myModel.getRateSetRevisionId());
 	}
 
-	public String getLastExSavePeriod13FactorsDt() {
-		return lastExSavePeriod13FactorsDt;
-	}
-
-	public void setLastExSavePeriod13FactorsDt(String string) {
-		lastExSavePeriod13FactorsDt = string;
-	}
-
-	public boolean isCcsSystemSelected() {
-		return ccsSystemSelected;
-	}
-
-	public void setCcsSystemSelected(boolean b) {
-		ccsSystemSelected = b;
-	}
-
-	public boolean getCcsSystemSelected() {
-		return this.ccsSystemSelected;
-	}
-
-	public String getCcsType() {
-		return ccsType;
-	}
-
-	public void setCcsType(String string) {
-		ccsType = string;
-	}
-
-	public void setCmd(String cmd) {
-		if (cmd != null && cmd.contains(",")) {
-			this.cmd = cmd.split(",")[0].trim();
+	// Append this inside MngFactorsAction.java to fix getRestrictionStr() error
+	public String getRestrictionStr() {
+		StringBuffer sb = new StringBuffer();
+		if (restrictions != null) {
+			if (restrictions.getRptAffRestriction() != null && !restrictions.getRptAffRestriction().equals("")) {
+				sb.append(" | " + restrictions.getRptAffRestriction());
+			}
+			if (restrictions.getSupAffRestriction() != null && !restrictions.getSupAffRestriction().equals("")) {
+				sb.append(" | " + restrictions.getSupAffRestriction());
+			}
+			if (restrictions.getEndAffRestriction() != null && !restrictions.getEndAffRestriction().equals("")) {
+				sb.append(" | " + restrictions.getEndAffRestriction());
+			}
+			if (restrictions.getRptListRestriction() != null && !restrictions.getRptListRestriction().equals("")) {
+				sb.append(" | " + restrictions.getRptListRestriction());
+			}
+			if (restrictions.getSupListRestriction() != null && !restrictions.getSupListRestriction().equals("")) {
+				sb.append(" | " + restrictions.getSupListRestriction());
+			}
+			if (restrictions.getEndListRestriction() != null && !restrictions.getEndListRestriction().equals("")) {
+				sb.append(" | " + restrictions.getEndListRestriction());
+			}
+			if (restrictions.getGroupIdLimiterValues() != null && !restrictions.getGroupIdLimiterValues().equals("")) {
+				sb.append(" | " + restrictions.getGroupIdLimiterValues());
+			}
+		}
+		if (sb.toString().length() > 2) {
+			return sb.toString().substring(2);
 		} else {
-			this.cmd = cmd;
+			return sb.toString();
 		}
-	}
-	
-	public String getCmd() {
-		if (cmd != null && cmd.contains(",")) {
-			return cmd.split(",")[0].trim();
-		}
-		return cmd;
 	}
 
-	public void setModelSelected(String modelSelected) {
-		this.modelSelected = modelSelected;
-	}
-
-	public String getModelSelected() {
-		if (this.modelSelected == null) {
-			this.modelSelected = "";
-		}
-		return this.modelSelected;
-	}
 }

@@ -6,165 +6,194 @@
 <%!String pageTitle = "Calculate and Manage Factors";%>
 
 <%@ include file="/include/header.jsf"%>
+
+<head>
+<style>
+/* Restored the yellow-to-gold corporate gradients from the original application */
+.btn-fctr {
+	width: 100%;
+	height: 24px;
+	background: linear-gradient(to bottom, #ffe169, #f7c11e);
+	color: #002266;
+	border: 1px solid #cca329;
+	font-family: sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	font-style: italic;
+	cursor: pointer;
+	padding: 0 10px;
+	margin: 2px 0;
+	border-radius: 1px;
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.3);
+	vertical-align: middle;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.btn-fctr:hover {
+	background: linear-gradient(to bottom, #ffd533, #e0aa0b);
+}
+
+.btn-fixed-width {
+	width: 150px !important;
+}
+
+.textarea-stamp {
+	font-family: sans-serif;
+	font-size: 11px;
+	color: #333;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	resize: none;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+</style>
+</head>
+
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<c:set var="pageTitle" value="Calculate and Manage Factors" scope="request" />
 	<%@ include file="/include/masthead.jsf"%>
 	<%@ include file="/include/errorDisplay.jsf"%>
 	<div id="divToHide">
 
-		<s:form id="mngFactorsForm" action="mngFactors" method="post"
-			theme="simple">
-			<%-- Command flag controls --%>
-			<s:hidden name="cmd" id="cmd" />
-			<s:hidden name="jobName" id="jobName" />
+<s:form id="mngFactorsForm" action="mngFactors" method="post" theme="simple">
+    <s:hidden name="cmd" id="cmd" />
+    <s:hidden name="jobName" id="jobName" />
+    <s:checkbox name="chkRestrict" id="chkRestrict" style="display:none;" />
+
 
 			<%@ include file="/include/jobOptions.jsf"%>
 
-			<TABLE class="tableCommand">
+			<TABLE class="tableCommand" border="0" cellpadding="5"
+				cellspacing="0">
 				<TR>
 					<TD valign="top">
-						<fieldset style="text-align: center;">
-							<legend class="commandOptionLabel"></legend>
-							<TABLE>
+						<fieldset style="text-align: center; padding: 10px;">
+							<TABLE border="0" cellpadding="3" cellspacing="2">
 								<tr>
-									<td height="0" colspan="5" bgcolor="#b4d8f4">
-										<p class="tableHeading">Factor Settings</p>
+									<td height="0" colspan="3" bgcolor="#b4d8f4">
+										<p class="tableHeading" style="margin: 4px;">Factor
+											Settings</p>
 									</td>
 								</tr>
 								<tr>
-									<td width="130" height="0" class="commandOptionLabel">Plan
+									<td width="130" class="commandOptionLabel" align="left">Plan
 										Units</td>
-									<td height="0"><s:select name="planUnitsSelected"
-											list="unitSets" listKey="datasetTableId"
-											listValue="datasetNameLogStamp" headerKey="0"
-											headerValue="<none>" cssClass="commandOption" /></td>
-									<td>&nbsp;</td>
+									<td><s:select name="planUnitsSelected" list="unitSets"
+											listKey="datasetTableId" listValue="datasetNameLogStamp"
+											headerKey="0" headerValue="<none>" cssClass="commandOption"
+											style="width: 450px;" /></td>
 								</tr>
 								<tr>
-									<td height="0" class="commandOptionLabel">Actual Units</td>
-									<td height="0"><s:select name="actualUnitsSelected"
-											list="unitSets" listKey="datasetTableId"
-											listValue="datasetNameLogStamp" headerKey="0"
-											headerValue="<none>" cssClass="commandOption" /></td>
+									<td class="commandOptionLabel" align="left">Actual Units</td>
+									<td><s:select name="actualUnitsSelected" list="unitSets"
+											listKey="datasetTableId" listValue="datasetNameLogStamp"
+											headerKey="0" headerValue="<none>" cssClass="commandOption"
+											style="width: 450px;" /></td>
 								</tr>
 								<tr>
-									<td height="0" class="commandOptionLabel">Factor Rate</td>
-									<td height="0"><s:select name="selCostRate"
-											list="rateSets" listKey="datasetTableId"
-											listValue="datasetName" headerKey="" headerValue="<none>"
-											cssClass="commandOption" /></td>
+									<td class="commandOptionLabel" align="left">Factor Rate</td>
+									<td><s:select name="selCostRate" list="rateSets"
+											listKey="datasetTableId" listValue="datasetName" headerKey=""
+											headerValue="<none>" cssClass="commandOption"
+											style="width: 150px;" /></td>
 								</tr>
 								<tr>
-									<td height="0" class="commandOptionLabel">Std Cost Rate</td>
-									<td height="0"><s:select name="selFactorRate"
-											list="rateSets" listKey="datasetTableId"
-											listValue="datasetName" headerKey="" headerValue="<none>"
-											cssClass="commandOption" /></td>
+									<td class="commandOptionLabel" align="left">Std Cost Rate</td>
+									<td><s:select name="selFactorRate" list="rateSets"
+											listKey="datasetTableId" listValue="datasetName" headerKey=""
+											headerValue="<none>" cssClass="commandOption"
+											style="width: 150px;" /></td>
 								</tr>
 								<tr>
-									<td height="0" class="commandOptionLabel">Revision Rate</td>
-									<td width="73" height="0"><s:select name="selRevisionRate"
-											list="rateSets" listKey="datasetTableId"
-											listValue="datasetName" headerKey="" headerValue="<none>"
-											cssClass="commandOption" /></td>
+									<td class="commandOptionLabel" align="left">Revision Rate</td>
+									<td><s:select name="selRevisionRate" list="rateSets"
+											listKey="datasetTableId" listValue="datasetName" headerKey=""
+											headerValue="<none>" cssClass="commandOption"
+											style="width: 150px;" /></td>
 								</tr>
 								<tr>
-									<td class="commandOptionLabel">Memo:</td>
-									<td width="242"><s:textarea name="modelLongDesc" cols="68"
-											rows="7" onkeyup="return checkLength(this, 425);"
-											cssClass="commandOption" /></td>
+									<td class="commandOptionLabel" valign="top" align="left">Memo:</td>
+									<td><s:textarea name="modelLongDesc" cols="68" rows="7"
+											cssClass="commandOption"
+											style="width: 450px; font-family:sans-serif;" /></td>
 								</tr>
 								<tr>
-									<td><a href="javascript:checkDefault()"><button
-												type="button"
-												style="width: 160px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Save
-												Factor Parms</button></a></td>
-									<td><a href="javascript:addJobDirect('SAVE_FACTORS_13')"><button
-												type="button"
-												style="width: 180px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Save
-												Period 13 Factors</button></a> <s:textarea name="lastExSavePeriod13FactorsDt"
-											disabled="true" readonly="true" /></td>
+									<td colspan="2" align="left" style="padding-top: 10px;">
+										<button type="button" class="btn-fctr" style="width: 140px;"
+											onclick="checkDefault()">Save Factor Parms</button>
+										<button type="button" class="btn-fctr"
+											style="width: 160px; margin-left: 10px;"
+											onclick="addJobDirect('SAVE_FACTORS_13')">Save
+											Period 13 Factors</button> <s:textfield
+											name="lastExSavePeriod13FactorsDt" disabled="true"
+											readonly="true" cssClass="textarea-stamp"
+											style="width: 200px; height:20px;" />
+									</td>
 								</tr>
 							</TABLE>
 						</fieldset>
 					</TD>
-
+					<!-- RIGHT PANEL: Factor Job Queue Management Buttons & Routing -->
 					<TD valign="top">
-						<fieldset style="width: 70px; text-align: center;">
-							<legend class="commandOptionLabel"></legend>
-							<table>
+						<fieldset style="text-align: center; padding: 10px; height: 100%;">
+							<table border="0" cellpadding="3" cellspacing="0">
 								<tr>
-									<td height="0" colspan="4" bgcolor="#b4d8f4">
-										<p class="tableHeading">Factor Jobs</p>
+									<td colspan="2" bgcolor="#b4d8f4">
+										<p class="tableHeading" style="margin: 4px;">Factor Jobs</p>
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<TABLE>
+									<td valign="top" style="padding-top: 10px;">
+										<TABLE border="0" cellpadding="2" cellspacing="0">
 											<tr>
-												<td height="0">&nbsp;</td>
+												<td><button type="button"
+														class="btn-fctr btn-fixed-width"
+														onclick="addJobDirect('APPLY_MAINTENANCE')">Apply
+														Maintenance</button></td>
 											</tr>
 											<tr>
-												<td colspan="2"><a
-													href="javascript:addJobDirect('APPLY_MAINTENANCE')"><button
-															type="button"
-															style="width: 150px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Apply
-															Maintenance</button></a></td>
+												<td><button type="button"
+														class="btn-fctr btn-fixed-width"
+														onclick="addJobDirect('BUILD_ASR_TREE')">Build
+														Tree</button></td>
 											</tr>
 											<tr>
-												<td colspan="2"><a
-													href="javascript:addJobDirect('BUILD_ASR_TREE')"><button
-															type="button"
-															style="width: 150px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Build
-															Tree</button></a></td>
+												<td><button type="button"
+														class="btn-fctr btn-fixed-width" onclick="checkCCS(1)">Calculate
+														Factors</button></td>
 											</tr>
 											<tr>
-												<td colspan="2"><a href="javascript:checkCCS(1)"><button
-															type="button" name="btnCalcFactors"
-															style="width: 150px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Calculate
-															Factors</button></a></td>
+												<td><button type="button"
+														class="btn-fctr btn-fixed-width" onclick="checkCCS(2)">Resend
+														Factors</button></td>
 											</tr>
 											<tr>
-												<td colspan="2"><a href="javascript:checkCCS(2)"><button
-															type="button"
-															style="width: 150px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Resend
-															Factors</button></a></td>
-											</tr>
-											<tr>
-												<td colspan="2"><a href="javascript:checkCCS(3)"><button
-															type="button"
-															style="width: 150px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Send
-															All/Sel Factors</button></a></td>
-											</tr>
-											<tr>
-												<td class="commandOptionLabel">&nbsp;</td>
+												<td><button type="button"
+														class="btn-fctr btn-fixed-width" onclick="checkCCS(3)">Send
+														All/Sel Factors</button></td>
 											</tr>
 										</TABLE>
 									</td>
-									<td>
-										<fieldset style="width: 70px; text-align: center;">
-											<legend class="commandOptionLabel"></legend>
-											<table>
+									<td valign="top" style="padding-left: 10px; padding-top: 10px;">
+										<fieldset style="padding: 5px; text-align: left;">
+											<table border="0" cellpadding="2" cellspacing="0">
 												<tr>
-													<td class="mntCenter" colspan="2"><u>Send To</u></td>
+													<td align="center" style="border-bottom: 1px solid #999;"><u>Send
+															To</u></td>
 												</tr>
 												<tr>
-													<td class="mntCenter">SCR<s:checkbox
-															name="rgmSystemSelected" />
+													<td>SCR <s:checkbox name="rgmSystemSelected" /></td>
 												</tr>
 												<tr>
-													<td class="mntCenter">RTC<s:checkbox
-															name="rtcSystemSelected" />
-													</td>
+													<td>RTC <s:checkbox name="rtcSystemSelected" /></td>
 												</tr>
 												<tr>
-													<td class="mntCenter">RBB<s:checkbox
-															name="rbbSystemSelected" />
-													</td>
+													<td>RBB <s:checkbox name="rbbSystemSelected" /></td>
 												</tr>
 												<tr>
-													<td class="mntCenter">RBL<s:checkbox
-															name="rblSystemSelected" />
-													</td>
+													<td>RBL <s:checkbox name="rblSystemSelected" /></td>
 												</tr>
 											</table>
 										</fieldset>
@@ -175,125 +204,96 @@
 					</TD>
 				</TR>
 
-				<tr>
-					<td>
-						<table cellpadding="4" cellspacing="2">
-							<tr>
-								<td>
-									<fieldset style="width: 70px; text-align: center;">
-										<legend class="commandOptionLabel"></legend>
-										<table cellpadding="4" cellspacing="2">
-											<tr>
-												<td colspan="3" bgcolor="#b4d8f4"><p
-														class="tableHeading">Reports</p></td>
-											</tr>
-											<tr>
-												<td width="250"><a
-													href="javascript:addJobDirect('ASR_TREE')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">ASR
-															Tree</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('BP_VS_TPSS_RPT1_PRE')"><button
-															type="button"
-																														style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">BP
-															vs TPSS Comparison</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('AUDIT_FACTORS')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Factor
-															Audit</button></a></td>
-											</tr>
-											<tr>
-												<td width="250"><a
-													href="javascript:addJobDirect('BLNDD_SUMMRY')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Blended
-															Factor Summary</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_DUB_SUP')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Dubious
-															Sup Aff Usages</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_INVCUR')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Invalid
-															Currency Codes</button></a></td>
-											</tr>
-											<tr>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_BP_FRZ')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">BPlCost
-															Freeze Cost Only</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('DUP_RPT01')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Dup
-															Reporting Products</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_MISM')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Mismatch
-															ASR vs BPlCost</button></a></td>
-											</tr>
-											<tr>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_BPCOST')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">BPlCost
-															Set</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_EXCEPT')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Exception
-															Set</button></a></td>
-												<td width="250"><a
-													href="javascript:addJobDirect('MISS_FACTOR')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Missing
-															Factors</button></a></td>
-											</tr>
-											<tr>
-												<td width="250">&nbsp;</td>
-												<td width="250">&nbsp;</td>
-												<td width="250"><a
-													href="javascript:addJobDirect('PRINT_VAL_AD')"><button
-															type="button"
-															style="width: 100%; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 10px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Negative
-															Value Added</button></a></td>
-											</tr>
-										</table>
-									</fieldset>
-								</td>
-								<td valign="top">
-									<fieldset style="width: 70px; text-align: center;">
-										<legend class="commandOptionLabel"></legend>
-										<table cellpadding="4" cellspacing="2">
-											<tr>
-												<td colspan="2" bgcolor="#b4d8f4"><p
-														class="tableHeading">Exports</p></td>
-											</tr>
-											<tr>
-												<td width="130" height="0" class="commandOptionLabel">
-													<a href="javascript:addJobDirect('SEND_CCSH')"><button
-															type="button"
-															style="width: 110px; height: 24px; background: linear-gradient(to bottom, #ffe169, #f7c11e); color: #002266; border: 1px solid #cca329; font-family: sans-serif; font-size: 11px; font-weight: bold; font-style: italic; cursor: pointer; padding: 0 5px; margin: 0; border-radius: 1px; box-shadow: 0px 2px 3px rgba(0,0,0,0.3); vertical-align: middle; white-space: nowrap;">Send
-															to CCS</button></a><br> <%-- Modernized static map select rendering for Struts 7 --%>
-													<s:select name="ccsType"
-														list="#{'A':'Actual', 'P':'Prelim', 'F':'Final'}"
-														cssClass="commandOption" />
-												</td>
-											</tr>
-										</table>
-									</fieldset>
-								</td>
-							</tr>
-						</table>
-					</td>
-					<td></td>
-				</tr>
+				<!-- LOWER LAYOUT ROW: Comprehensive Reports Grid & Exports Block -->
+				<TR>
+					<!-- Reports Layout Sub-Grid Matrix -->
+					<TD valign="top">
+						<fieldset style="padding: 10px;">
+							<table border="0" cellpadding="3" cellspacing="4" width="100%">
+								<tr>
+									<td colspan="3" bgcolor="#b4d8f4"><p class="tableHeading"
+											style="margin: 4px;">Reports</p></td>
+								</tr>
+								<!-- Row 1 -->
+								<tr>
+									<td width="33%"><button type="button" class="btn-fctr"
+											onclick="addJobDirect('ASR_TREE')">ASR Tree</button></td>
+									<td width="33%"><button type="button" class="btn-fctr"
+											onclick="addJobDirect('BP_VS_TPSS_RPT1_PRE')">BP vs
+											TPSS Comparison</button></td>
+									<td width="34%"><button type="button" class="btn-fctr"
+											onclick="addJobDirect('AUDIT_FACTORS')">Factor Audit</button></td>
+								</tr>
+								<!-- Row 2 -->
+								<tr>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('BLNDD_SUMMRY')">Blended
+											Factor Summary</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobWithRestrictions('PRINT_DUB_SUP')">Dubious
+											Sup Aff Usages</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_INVCUR')">Invalid
+											Currency Codes</button></td>
+								</tr>
+								<!-- Row 3 -->
+								<tr>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_BP_FRZ')">BPlCost
+											Freeze Cost Only</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('DUP_RPT01')">Dup Reporting
+											Products</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_MISM')">Mismatch ASR vs
+											BPlCost</button></td>
+								</tr>
+								<!-- Row 4 -->
+								<tr>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_BPCOST')">BPlCost Set</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_EXCEPT')">Exception Set</button></td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('MISS_FACTOR')">Missing
+											Factors</button></td>
+								</tr>
+								<!-- Row 5 -->
+								<tr>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><button type="button" class="btn-fctr"
+											onclick="addJobDirect('PRINT_VAL_AD')">Negative
+											Value Added</button></td>
+								</tr>
+							</table>
+						</fieldset>
+					</TD>
+
+					<!-- SIDE PANEL: Exports Data Extraction Handling -->
+					<TD valign="top">
+						<fieldset style="padding: 10px; height: 100%;">
+							<table border="0" cellpadding="3" cellspacing="2" width="100%">
+								<tr>
+									<td bgcolor="#b4d8f4"><p class="tableHeading"
+											style="margin: 4px;">Exports</p></td>
+								</tr>
+								<tr>
+									<td align="center" style="padding-top: 10px;">
+										<button type="button" class="btn-fctr btn-fixed-width"
+											onclick="addJobDirect('SEND_CCSH')">Send to CCS</button>
+									</td>
+								</tr>
+								<tr>
+									<td align="center" style="padding-top: 5px;"><s:select
+											name="ccsType"
+											list="#{'A':'Actual', 'P':'Prelim', 'F':'Final'}"
+											cssClass="commandOption" style="width: 120px;" /></td>
+								</tr>
+							</table>
+						</fieldset>
+					</TD>
+				</TR>
 			</TABLE>
 		</s:form>
 	</div>
@@ -308,23 +308,36 @@
 		}
 
 		function addJobDirect(jobNameValue) {
-			var form = document.getElementById("mngFactorsForm");
-			document.getElementById("cmd").value = "ADD_JOB";
-			document.getElementById("jobName").value = jobNameValue;
-			form.submit();
+		    document.getElementById("cmd").value = "ADD_JOB";
+		    document.getElementById("jobName").value = jobNameValue;
+		    var visualCheckbox = document.getElementById("chkRestrictOutput"); 
+		    
+		    if (visualCheckbox) {
+		        document.getElementById("chkRestrict").checked = visualCheckbox.checked;
+		    } else {
+		        document.getElementById("chkRestrict").checked = false;
+		    }
+		    
+		    document.getElementById("mngFactorsForm").submit();
 		}
 
+		function addJobWithRestrictions(jobNameValue) {
+		    document.getElementById("cmd").value = "ADD_JOB";
+		    document.getElementById("jobName").value = jobNameValue;
+		    document.getElementById("chkRestrict").checked = true;
+		    document.getElementById("mngFactorsForm").submit();
+		}
+
+
 		function checkCCS(x) {
-			if (x == 1) {
+			if (x == 1)
 				addJobDirect("CALCULATE_FACTORS");
-			} else if (x == 2) {
-				if (confirm("Are you sure you want to add this SEND_FACTORS job?")) {
+			else if (x == 2) {
+				if (confirm("Are you sure you want to add this SEND_FACTORS job?"))
 					addJobDirect('SEND_FACTORS');
-				}
 			} else if (x == 3) {
-				if (confirm("Are you sure you want to add this SEND_ALL_FACTORS job?")) {
+				if (confirm("Are you sure you want to add this SEND_ALL_FACTORS job?"))
 					addJobDirect('SEND_ALL_FACTORS');
-				}
 			}
 		}
 
@@ -339,7 +352,7 @@
 			}
 			if (form.elements["actualUnitsSelected"].value == "0") {
 				flag = false;
-				msg += "Please Select a Actual Units.\n";
+				msg += "Please Select an Actual Units.\n";
 			}
 			if (form.elements["selCostRate"].value == "") {
 				flag = false;
@@ -356,7 +369,7 @@
 
 			if (flag) {
 				document.getElementById("cmd").value = 'SET_FACTOR_MODEL_PARMS';
-								form.submit();
+				form.submit();
 			} else {
 				msg += "\nAre you sure you want to proceed... \n";
 				if (confirm(msg)) {
@@ -365,7 +378,6 @@
 				}
 			}
 		}
-
 		function compModel() {
 			var form = document.getElementById("mngFactorsForm");
 			document.getElementById("cmd").value = 'COMP_MODEL';
