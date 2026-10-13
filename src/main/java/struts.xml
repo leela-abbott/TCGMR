@@ -218,7 +218,7 @@
 		</action>
 
 		<action name="bpcExMaint"
-			class="abbott.ai.tcgm.action.bpcex.BpcExMaint">
+			class="abbott.ai.tcgm17.action.bpcex.BpcExMaint">
 			<result name="input">/jsp/bpcEx.jsp</result>
 			<result name="success">/jsp/bpcEx.jsp</result>
 			<result name="advancedfilter">/jsp/bpcExMaintAdvFilter.jsp</result>

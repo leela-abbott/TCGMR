@@ -3,23 +3,23 @@
 			<td>
 				<a href="asrMaintenance.action" class="mntNav">
 					Asr<br />
-					Data1</a>
+					Data</a>
 			</td>
 
 			<td>
 				<a href="asrTranMaintenance.action" class="mntNav">
 					Asr<br />
-					Maint1</a>
+					Maint</a>
 			</td>
 			<td>
 				<a href="bpcsMaint.action" class="mntNav">
 					BPC<br />
-					Data1</a>
+					Data</a>
 			</td>
 			<td>
 				<a href="bpcsTranMaint.action" class="mntNav">
 					BPC<br />
-					Maint1</a>
+					Maint</a>
 			</td>
 
 			<td>
