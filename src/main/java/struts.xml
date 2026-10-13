@@ -410,7 +410,7 @@
 		</action>
 
 		<action name="notesMaint"
-			class="abbott.ai.tcgm.action.notes.NotesMaint">
+			class="abbott.ai.tcgm17.action.notes.NotesMaint">
 			<result name="input">/jsp/notesMaint.jsp</result>
 			<result name="success">/jsp/notesMaint.jsp</result>
 			<result name="advancedfilter">/jsp/notesMaintAdvFilter.jsp</result>
