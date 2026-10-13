@@ -1,106 +1,75 @@
-<%@ page import="abbott.ai.tcgm.AppConst" %>
-<% String pageTitle="Job Reports"; %> 
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<%-- 1. Initialize pageTitle context BEFORE pulling layout headers --%>
+<%! String pageTitle="Job Reports"; %>
+
+<%-- 2. Include document headers --%>
 <%@ include file="/include/header.jsf" %>
 
+<head>
+<style>
+    /* Safe visual centering container protecting top global menus */
+    .center-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 50vh;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+</style>
+
+<script type="text/javascript">
+function openReportNet() {
+    // 1. Grab the base reports URL exposed from your backend Action class getter
+    var baseUrl = '<s:property value="reportsUrl" escapeHtml="false" />';
+    
+    // 2. Fallback protection: if the OGNL property evaluates to blank, explicitly apply your target configuration address
+    if (!baseUrl || baseUrl === "") {
+        baseUrl = "http://oneabbott.com";
+    }
+    
+    // 3. Route to your standard corporate framework script or default to native window launch
+    if (typeof viewReportNetReports === 'function') {
+        viewReportNetReports(baseUrl);
+    } else {
+        window.open(baseUrl, 'ReportNetWindow', 'width=1280,height=800,resizable=yes,scrollbars=yes,status=yes');
+    }
+}
+</script>
+</head>
+
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<%-- 3. Standard global application template masthead and errors interface imports --%>
 <%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
-<table width="700" border="0" cellpadding="2" cellspacing="2" >
- <tr></tr>
- <tr></tr>
- <tr>
- 
- <!-- <td align="center" class="tableHeading"><a href="http://abtapz0452dv/crn/cgi-bin/cognos.cgi?b_action=xts.run&m=portal/main.xts">
-Click here to view Reports.
-</a></td> -->
-<% String reportsUrl = AppConst.reportsUrl; %>
-	<td colspan="2" width=400 valign="center">
-		<div align="center">
-		  <br>
-			<a href="javascript:viewReportNetReports('<%=reportsUrl%>')"><img src="images/btnOpenReportsWindow.png" border=0></a></div>
-		  <br><br>
-	</td>
 
- </tr>
-</table>
+<%-- 4. Isolated flexbox display content wrapper --%>
+<div class="center-container">
+    
+    <%-- Native CSS-styled Action Button targeting our simplified wrapper script function --%>
+    <button type="button" 
+            onclick="openReportNet()"
+            style="background-color: #FFD523; 
+                   color: #003B73; 
+                   font-family: sans-serif;
+                   font-size: 16px; 
+                   font-weight: bold; 
+                   font-style: italic;
+                   padding: 10px 24px; 
+                   border: 1px solid #E6BE1E; 
+                   border-radius: 4px; 
+                   cursor: pointer; 
+                   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                   transition: background-color 0.2s ease;">
+        Open ReportNet Window
+    </button>
+    
+</div>
 
-<br><br>
-<br><br>
-<% //Sridevi.K 8/23/05 This code is all commented as this page just has to provide a link to the reportNet %>
-	<%/*
-	<html:form name="mngReportJobsForm" action="mngReportJobs.do" type="abbott.ai.tcgm.action.form.MngReportJobsForm" >
-	<bean:define id="reportList" name="mngReportJobsForm" property="reportList" />
-	<bean:define id="destinationList" name="mngReportJobsForm" property="destinationList" />
-	<div id="divToHide">
-	  <table width="700" border="0" cellpadding="2" cellspacing="2" >
-		<tr>
-		  <td align="center" class="tableHeading">Available Reports</td>
-		  <td colspan="2" width=200 align="center" class="tableHeading">Print & Display Options</td>
-		</tr>
-		<tr valign="top">
-		  <td rowspan="4" >
-			  <div align="center">
-				  <html:select property="selReport" size="20">
-						  <html:options property="reportInstanceId" labelProperty="reportInstanceName" collection="reportList" />
-			  </html:select>
-		 </div>
-			</td>
-			<td>
-			<table>
-			 <tr>
-			  <td colspan="2" width=300 valign="top">
-				<div align="center">
-				  <br>
-				<a href="javascript:viewReport(document.forms[0].selReport.value)"><img src="images/btnDisplay.png" border=0 width="80" height="20"></a></div>
-				  <br><br>
-			  </td>
-			</tr>
-			<tr valign="top">
-			  <td width="100" valign="top" class="smNormal">
-				<html:checkbox property="chkImmediate" /> Immediate<br>
-				<html:select property="selReportDest">
-					<option>Rmt 143</option><option>Rmt 14</option>
-				</html:select>
-			  </td>
-			  <td width="100" valign="top" class="smNormal">
-<!--			  
-					<html:checkbox property="chkRestrict" />Restrict<br>
--->					
-					<html:text property="numCopies" value="1" size="3" maxlength="3"  styleClass="smNormal" /> Copies
-			   </td>		   
-			 </tr>
-		<tr>
-		  <td colspan="2" width=200><div align="center"><a href="javascript:changeCmdAndSubmit(document.forms[0], 'PRINT')"><img src="images/btnPrint.png" border=0 width="80" height="20"></a></div></td>
-		</tr>
-		</table>
-		<div align="center"><br>
-		  <br>
-		  <br>
-		  <a href="javascript:deleteReport(document.forms[0].selReport);"><img border="0" height="20" src="images/btnDelete.png" width="80"></a><br>
-		</div></td>
-		</tr>
-	  </table>
-	  </div>
-	  <html:hidden property="cmd" />
-	  <html:hidden property="returnLocation" />
-	</html:form>
-	<script language="javascript">
-
-
-function deleteReport(selectList) {
-
-	if (selectList.value == 0) {
-		alert ("You must select a report to delete.");
-		return;
-	}
-
-	var itemName = getSelectedOptionText(selectList);
-	if ( confirm("Are you sure that you would like to delete " + itemName + "?\nThis can not be undone.") ) {
-		changeCmdAndSubmit(document.forms[0], "delete");
-		}
-}
-
-</script>
-	*/%>
 <%@ include file="/include/footer.jsf" %>
+</body>

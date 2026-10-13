@@ -1,44 +1,47 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page errorPage="/jsp/exception.jsp" %>
 <%@ page import="abbott.ai.tcgm.entities.Role" %>
-
-<%@ taglib uri="/WEB-INF/taglib/struts-bean.tld" prefix="bean" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-logic.tld" prefix="logic" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-template.tld" prefix="template" %>
-<%@ taglib uri="/WEB-INF/taglib/struts-nested.tld" prefix="nested" %>
-<%@ taglib uri="/WEB-INF/taglib/c.tld" prefix="c" %>
-<%@ taglib uri="/WEB-INF/taglib/c-rt.tld" prefix="c-rt" %>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib uri="/WEB-INF/taglib/abbott.tld" prefix="abbott" %>
 
-<jsp:useBean id="TCGMConstants" class="abbott.ai.tcgm.TCGMConstants" scope="session" />
-<jsp:useBean id="DBConst" class="abbott.ai.tcgm.data.DBConst" scope="session" />
+<s:set var="TCGMUser" value="#session.TCGMUser" scope="page" />
+<s:set var="TCGMConstants" value="#session['abbott.ai.tcgm.TCGMConstants']" scope="session" />
+<s:set var="DBConst" value="#session['abbott.ai.tcgm.data.DBConst']" scope="session" />
 
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 
-<bean:define id="TCGMUser" name="TCGMUser" scope="session" type="abbott.ai.tcgm.entities.User" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <title><s:property value="#attr.pageTitle" /></title>
 
-<html>
-	<head>
-		<title>
-			<%=pageTitle%>
-		</title>
-		<script language="JavaScript" src="include/common.js" type=text/javascript></script>
-		<% // Added by Udaya B Aravapalli on 01/12/2006 to restrict access based on roles.-- Start %>
-     <% if ((TCGMUser.getRole().getAccessLevel()) == (Role.Administrator.getAccessLevel())) { %>
-		<script language="JavaScript" src="include/menu_admin.js" type=text/javascript></script>
-     <% } else  if ((TCGMUser.getRole().getAccessLevel()) == (Role.Operator.getAccessLevel())) { %>
-		<script language="JavaScript" src="include/menu_operator.js" type=text/javascript></script>
-     <% } else { %>
-		<script language="JavaScript" src="include/menu_supervisor.js" type=text/javascript></script>
-		 <% } %>     
-		<% // Added by Udaya B Aravapalli on 01/12/2006 to restrict access based on roles.-- End %>		 
+    <script type="text/javascript" src="include/common.js"></script>
+    <c:choose>
+        <%-- Administrator Menu Selection --%>
+        <c:when test="${pageScope.TCGMUser.role.accessLevel == 3 || pageScope.TCGMUser.role.name == 'TCGM_ADMIN'}">
+            <script type="text/javascript" src="include/menu_admin.js"></script>
+        </c:when>
 
+        <%-- Operator Menu Selection --%>
+        <c:when test="${pageScope.TCGMUser.role.accessLevel == 1 || pageScope.TCGMUser.role.name == 'TCGM_OPERATOR'}">
+            <script type="text/javascript" src="include/menu_operator.js"></script>
+        </c:when>
 
-		<script language="JavaScript" src="include/AnchorPosition.js" type=text/javascript></script>
-		<script language="JavaScript" src="include/PopupWindow.js" type=text/javascript></script>
-		<script language="JavaScript" src="include/popupInit.js" type=text/javascript></script>
+        <%-- Default Fallback Supervisor Menu Selection --%>
+        <c:otherwise>
+            <script type="text/javascript" src="include/menu_supervisor.js"></script>
+        </c:otherwise>
+    </c:choose>
 
-		<link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-				<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-	</head>
+    <script type="text/javascript" src="include/AnchorPosition.js"></script>
+    <script type="text/javascript" src="include/PopupWindow.js"></script>
+    <script type="text/javascript" src="include/popupInit.js"></script>
+
+    <!-- Master Corporate Style Sheet Bindings Mapping -->
+    <link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
+</head>

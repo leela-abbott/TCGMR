@@ -85,7 +85,6 @@ function cancelAddJob(formObj) {
 <%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 
-<!-- Added Center Layout Flexbox Container Wrapper -->
 <div class="center-container">
     <s:form id="restrictionForm" action="mngFactors" method="post" theme="simple">
         <table width="690" border="0" cellpadding="2" cellspacing="1" align="center">

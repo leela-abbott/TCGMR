@@ -139,14 +139,14 @@
 		</action>
 
 		<action name="errorReport"
-			class="abbott.ai.tcgm.action.LogReportAction">
+			class="abbott.ai.tcgm17.action.LogReportAction">
 			<result name="input">/jsp/jobMgmt.jsp</result>
 			<result name="success">/jsp/logReport.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
 		</action>
 
 		<action name="generateReport"
-			class="abbott.ai.tcgm.action.GenerateReport">
+			class="abbott.ai.tcgm17.action.GenerateReportAction">
 			<result name="input">/jsp/jobMgmt.jsp</result>
 			<result name="success">/jsp/generateReport.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
@@ -530,7 +530,7 @@
 		</action>
 
 		<action name="changeJobStatus"
-			class="abbott.ai.tcgm.action.ChangeJobStatus">
+			class="abbott.ai.tcgm17.action.ChangeJobStatusAction">
 			<result name="success" type="redirectAction">processMgmt</result>
 		</action>
 
@@ -588,7 +588,7 @@
 		</action>
 
 		<action name="deleteJob"
-			class="abbott.ai.tcgm.action.DeleteJob">
+			class="abbott.ai.tcgm17.action.DeleteJobAction">
 			<result name="success" type="redirectAction">processMgmt</result>
 		</action>
 
@@ -689,14 +689,18 @@
 			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
-
 		<action name="openReporting"
-			class="abbott.ai.tcgm.action.DefaultForward">
+			class="abbott.ai.tcgm17.action.DefaultForwardAction">
 			<result name="success">/jsp/reportMenu.jsp</result>
 		</action>
 
-		<action name="viewReport"
+<!-- 	<action name="viewReport"
 			class="abbott.ai.tcgm.action.ViewReport">
+			<result name="failure">/jsp/sessionExpired.jsp</result>
+		</action> -->
+
+		<action name="viewReport"
+			class="abbott.ai.tcgm17.action.ViewReportAction">
 			<result name="failure">/jsp/sessionExpired.jsp</result>
 		</action>
 
@@ -706,7 +710,7 @@
 		</action>
 
 		<action name="processMgmt"
-			class="abbott.ai.tcgm.action.ProcessMgmt">
+			class="abbott.ai.tcgm17.action.ProcessMgmtAction">
 			<result name="success">/jsp/jobMgmt.jsp</result>
 		</action>
 
@@ -972,7 +976,7 @@
 		</action>
 
 		<action name="reorderJobQue"
-			class="abbott.ai.tcgm.action.ReorderJobQue">
+			class="abbott.ai.tcgm17.action.ReorderJobQueAction">
 			<result name="success" type="redirectAction">processMgmt</result>
 		</action>
 
@@ -994,8 +998,13 @@
 			<result name="success">/jsp/prMfgList.jsp</result>
 		</action>
 
-		<action name="mngReportJobs"
+<!-- 		<action name="mngReportJobs"
 			class="abbott.ai.tcgm.action.MngReportJobs">
+			<result name="success">/jsp/mngReportJobs.jsp</result>
+		</action> -->
+		
+		<action name="mngReportJobs"
+			class="abbott.ai.tcgm17.action.MngReportJobsAction">
 			<result name="success">/jsp/mngReportJobs.jsp</result>
 		</action>
 

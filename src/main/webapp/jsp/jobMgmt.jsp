@@ -1,196 +1,338 @@
-<% String pageTitle="Job Q Management"; %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<%@ include file="/include/header.jsf" %>
-<jsp:useBean id="processForm" scope="request" class="abbott.ai.tcgm.action.form.ProcessForm" />
+<%-- 1. Pre-initialize pageTitle context BEFORE pulling layout headers --%>
+<%!String pageTitle = "Job Q Management";%>
+
+<%-- 2. Pull down the document headers using your standard working static include --%>
+<%@ include file="/include/header.jsf"%>
+<c:set var="pageTitle" value="Job Q Management" scope="request" />
+<head>
+<style>
+/* Global screen expansion container rules overriding static limits */
+.screen-wrapper {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 10px 20px;
+}
+
+.mgmt-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.mgmt-table td {
+	padding: 4px 8px;
+	vertical-align: top;
+}
+
+/* Production UI Header Styles matching original screenshot branding */
+.tableHeading {
+	background-color: #b4d8f4;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #002266;
+	padding: 6px 12px !important;
+	text-align: left;
+}
+
+.subtitle-text {
+	font-family: Arial, sans-serif;
+	font-size: 11px;
+	color: #555555;
+	font-weight: normal;
+	font-style: italic;
+}
+
+.value-display-box {
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+	padding: 12px;
+	text-align: center;
+	min-height: 20px;
+}
+
+.select-box-style {
+	width: 100%;
+	font-family: Courier New, monospace;
+	font-size: 12px;
+	padding: 4px;
+	border: 1px solid #999999;
+}
+
+/* Production UI Control Stack layout layout */
+.controls-column {
+	width: 140px;
+	text-align: center;
+	padding-left: 15px !important;
+}
+
+/* Replica Medium Yellow-Gold Button Design metrics applied globally */
+.btn-action {
+	display: block;
+	width: 125px;
+	background: #FFD523;
+	background: linear-gradient(to bottom, #FFE054 0%, #FFD523 100%);
+	color: #000000;
+	font-family: Arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	font-style: italic;
+	padding: 3px 6px;
+	margin: 0 auto 4px auto;
+	border: 1px solid #D4B218;
+	border-radius: 3px;
+	cursor: pointer;
+	text-align: center;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 1px
+		rgba(0, 0, 0, 0.15);
+}
+
+.btn-action:hover {
+	background: #E6BE1E;
+}
+</style>
+</head>
+
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<%@ include file="/include/masthead.jsf" %>
-<%@ include file="/include/errorDisplay.jsf" %>
-<html:form name="processForm" action=""  scope="request" type="abbott.ai.tcgm.action.form.ProcessForm">
-  <div id="divToHide">
-  <table width="700" border="0" cellpadding="6" cellspacing="0">
-	<tr>
-	  <td width=20 rowspan="6">&nbsp;</td>
-	  <td width="500" align="center" class="tableHeading">Current Job&nbsp;&nbsp;<font face="Arial" size=2 color=gray>(Job Name | Model Name | Start Time | User Name)</font></td>
-	  <td width="180" align="center" class="tableHeading">Scheduler Status</td>
-	</tr>
-	<tr>
-	  <td align="center">
-	   <logic:equal name="processForm" property="processSchedulerStatus" value="Running">
-		    <b><bean:write name="processForm" property="currentProcess" /></b>
-	   </logic:equal>
-	</td>
-	  <td align="center"> 
-		 <b><bean:write name="processForm" property="processSchedulerStatus" /></b>
-	</td>
-	</tr>
-	<tr>
-	  <td class="tableHeading" align="center" >Pending Jobs&nbsp;&nbsp;<font face="Arial" size=2 color=gray>(Job Name | Model Name | Status | Submit Time | User Name)</font></td><td class="tableHeading">&nbsp;</td>
-	</tr>
-	<tr>
-	  <td width="261" >
-		<div align="center">
-		  <logic:greaterThan name="processForm" property="processListSize" value="0">
-			<select name="selPendingJob" size="10">
-			  <logic:iterate id="processes" name="processForm" property="processList" scope="request" type="abbott.ai.tcgm.process.JobInstance">
-				<option value='<bean:write name="processes" property="jobQueId" ignore="true" />' >
 
-				<bean:write name="processes" property="desc" ignore="true" />
-				&nbsp;|&nbsp;
-				<bean:write name="processes" property="jobStatus.name" ignore="true" />
-				&nbsp;|&nbsp;
-				<bean:write name="processes" property="submitTime" ignore="true" />				
-				&nbsp;|&nbsp;
-				<bean:write name="processes" property="userSubmitted" ignore="true" />
-				</option>
-			</logic:iterate>
-			</select>
-	 </logic:greaterThan>
-		  <logic:equal name="processForm" property="processListSize" value="0">There are no pending jobs</logic:equal>
-		</div></td>
-	  <td height="20"><div align="left">
-		  <a href='javascript:changeJobStatus(processForm.selPendingJob, "I")'><img border="0" height="20" src="images/btnImmediate.png" width="80"></a>
-		  <a href='javascript:changeJobStatus(processForm.selPendingJob, "B")'><img border="0" height="20" src="images/btnBatch.png" width="80"></a>
-		  <a href='javascript:reorderJobQue(processForm.selPendingJob, "<%=1-processForm.getProcessListSize()%>")'><img src="images/btnMoveToTop.png" height="20"></a><br>
-		  <a href='javascript:reorderJobQue(processForm.selPendingJob, -1)'><img src="images/btnMoveUp.png" width="80" height="20"></a><br>
-    	  <a href='javascript:reorderJobQue(processForm.selPendingJob, 1)'><img src="images/btnMoveDown.png" width="80" height="20"></a>
-	      <a href='javascript:reorderJobQue(processForm.selPendingJob, "<%=processForm.getProcessListSize()-1%>")'><img src="images/btnMoveToBottom.png" height="20"></a>
-		  <a href='javascript:deleteJob(processForm.selPendingJob)'> <img border="0" height="20" src="images/btnDelete.png" width="80"></a>
-		</div></td>
-	</tr>
-	<tr>
-	  <td class="tableHeading" align="center" >Completed Jobs&nbsp;&nbsp;<font face="Arial" size=2 color=gray>(Job Name | Model Name | Status | End Time | User Name)</font></td><td class="tableHeading">&nbsp;</td>
+	<%@ include file="/include/masthead.jsf"%>
+	<%@ include file="/include/errorDisplay.jsf"%>
 
-	</tr>
-	<tr >
-	  <td><div align="left">
-		  <logic:greaterThan name="processForm" property="completedJobListSize" value="0">
-			<select name="selFailedJob" size="10">
-			  <logic:iterate id="processes" name="processForm" property="completedJobList" scope="request" type="abbott.ai.tcgm.process.JobInstance">
-				<option value='<bean:write name="processes" property="jobQueId" ignore="true" />' >
-				<bean:write name="processes" property="desc" ignore="true" />
-				&nbsp;|&nbsp;
-				<bean:write name="processes" property="jobStatus.name" ignore="true" />
-				&nbsp;|&nbsp; 
-				<bean:write name="processes" property="endTime" ignore="true" />
-				&nbsp;|&nbsp;
-				<bean:write name="processes" property="userSubmitted" ignore="true" />			
-				</option>
-			</logic:iterate>
-			</select>
-	 </logic:greaterThan>
-		  <logic:equal name="processForm" property="completedJobListSize" value="0">There are no failed jobs</logic:equal>
-		</div></td>
-	  <td align="left" valign="top">
+	<div class="screen-wrapper">
+		<s:form id="processForm" name="processForm" action="" method="post"
+			theme="simple">
+			<div id="divToHide">
+				<table class="mgmt-table">
+					<!-- 1. Current Job Header Matrix Split (Takes 100% of the screen) -->
+					<tr>
+						<td class="tableHeading" style="width: 80%;">Current Job <span
+							class="subtitle-text">(Job Name | Model Name | Start Time
+								| User Name)</span>
+						</td>
+						<td class="tableHeading" style="width: 20%; text-align: center;">Scheduler
+							Status</td>
+					</tr>
+					<tr>
+						<td class="value-display-box"
+							style="border-bottom: 1px solid #dddddd;"><s:if
+								test="processSchedulerStatus == 'Running' && currentProcess != null && currentProcess != '' && currentProcess != '<none>'">
+								<b><s:property value="currentProcess" /></b>
+							</s:if></td>
+						<td class="value-display-box"
+							style="border-bottom: 1px solid #dddddd; font-weight: bold;">
+							<s:if
+								test="currentProcess == null || currentProcess == '' || currentProcess == '<none>'">
+                    Stopped
+                </s:if> <s:else>
+								<s:property value="processSchedulerStatus" />
+							</s:else>
+						</td>
+					</tr>
 
-		<!-- <p><a href='javascript:changeJobStatus(processForm.selFailedJob, "B")'><img src="images/btnRetryJob.png" width="80" height="20" border=0></a></p> -->
-		<p> <a href='javascript:logWindow(document.processForm, "logReport.do",processForm.selPendingJob,processForm.selFailedJob )'><img src="images/btnViewLog.png" width="80" height="20" border="0"></a>  
-		<a href='javascript:generateReports(processForm.selFailedJob, "PRINT_REPORTS")'><img src="images/btnGenerateReports.png" height="20" border=0></a></p>
-		<br><br>		<br><br>
-		<p><a href='javascript:deleteJob(processForm.selFailedJob)'><img src="images/btnDelete.png" width="80" height="20" border="0"></a></p>
+					<tr>
+						<td colspan="2" style="height: 15px;">&nbsp;</td>
+					</tr>
 
-		</td>
-	</tr>
-  </table>
-  </div>
-  <html:hidden property="selProcessId" /><html:hidden property="cmd" />
-   <html:hidden property="selJodDesc" /><html:hidden property="selJodStatus" />
-  </html:form>
+					<!-- 2. Pending Jobs Grid Section Layout Layout -->
+					<tr>
+						<td class="tableHeading" colspan="2">Pending Jobs <span
+							class="subtitle-text">(Job Name | Model Name | Status |
+								Submit Time | User Name)</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="list-wrapper"><s:if test="processListSize > 0">
+								<select name="selPendingJob" id="selPendingJob" size="10"
+									class="select-box-style">
+									<s:iterator value="processList" var="processes">
+										<option value="<s:property value="#processes.jobQueId"/>">
+											<s:property value="#processes.desc" /> |
+											<s:property value="#processes.jobStatus.name" /> |
+											<s:property value="#processes.submitTime" /> |
+											<s:property value="#processes.userSubmitted" />
+										</option>
+									</s:iterator>
+								</select>
+							</s:if> <s:else>
+								<div
+									style="padding: 30px; text-align: center; font-family: Arial, sans-serif; font-size: 13px;">There
+									are no pending jobs</div>
+							</s:else></td>
+						<td class="controls-column">
+							<button type="button" class="btn-action"
+								onclick="changeJobStatus(document.getElementById('selPendingJob'), 'I')">Immediate</button>
+							<button type="button" class="btn-action"
+								onclick="changeJobStatus(document.getElementById('selPendingJob'), 'B')">Batch</button>
+							<button type="button" class="btn-action"
+								onclick="reorderJobQue(document.getElementById('selPendingJob'), (1 - parseInt('<s:property value="processListSize"/>')))">Move
+								to Top</button>
+							<button type="button" class="btn-action"
+								onclick="reorderJobQue(document.getElementById('selPendingJob'), -1)">Move
+								Up</button>
+							<button type="button" class="btn-action"
+								onclick="reorderJobQue(document.getElementById('selPendingJob'), 1)">Move
+								Down</button>
+							<button type="button" class="btn-action"
+								onclick="reorderJobQue(document.getElementById('selPendingJob'), (parseInt('<s:property value="processListSize"/>') - 1))">Move
+								to Bottom</button>
+							<button type="button" class="btn-action"
+								onclick="deleteJob(document.getElementById('selPendingJob'))">Delete</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="height: 15px;">&nbsp;</td>
+					</tr>
 
-<script language="javascript">
-function deleteJob(selectList) {
+					<!-- 3. Completed Jobs Grid Section Layout Layout -->
+					<tr>
+						<td class="tableHeading" colspan="2">Completed Jobs <span
+							class="subtitle-text">(Job Name | Model Name | Status |
+								End Time | User Name)</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="list-wrapper"><s:if
+								test="completedJobListSize > 0">
+								<select name="selFailedJob" id="selFailedJob" size="10"
+									class="select-box-style">
+									<s:iterator value="completedJobList" var="processes">
+										<option value="<s:property value="#processes.jobQueId"/>">
+											<s:property value="#processes.desc" /> |
+											<s:property value="#processes.jobStatus.name" /> |
+											<s:property value="#processes.endTime" /> |
+											<s:property value="#processes.userSubmitted" />
+										</option>
+									</s:iterator>
+								</select>
+							</s:if> <s:else>
+								<div
+									style="padding: 30px; text-align: center; font-family: Arial, sans-serif; font-size: 13px;">There
+									are no failed jobs</div>
+							</s:else></td>
+						<td class="controls-column">
+							<button type="button" class="btn-action"
+								onclick="logWindow(document.processForm, 'logReport.action', document.getElementById('selPendingJob'), document.getElementById('selFailedJob'))">View
+								Log</button>
+							<button type="button" class="btn-action"
+								onclick="generateReports(document.getElementById('selFailedJob'), 'PRINT_REPORTS')">Generate
+								Reports</button>
+							<div style="height: 35px;">&nbsp;</div>
+							<button type="button" class="btn-action"
+								onclick="deleteJob(document.getElementById('selFailedJob'))">Delete</button>
+						</td>
+					</tr>
+				</table>
+			</div>
 
-	if (selectList.value == 0) {
-		alert ("You must select a job to delete.");
-		return;
-	}
-	var jobName = getSelectedOptionText(selectList);
-	if ( confirm("Are you sure that you would like to delete " + jobName + "?\nThis can not be undone.") ) {
-		document.processForm.selProcessId.value = selectList.value;
-		changeActionAndSubmit(document.processForm, "deleteJob.do");
+			<s:hidden name="selProcessId" id="selProcessId" />
+			<s:hidden name="cmd" id="cmd" />
+			<s:hidden name="selJodDesc" id="selJodDesc" />
+			<s:hidden name="selJodStatus" id="selJodStatus" />
+		</s:form>
+	</div>
+
+	<script type="text/javascript">
+		function deleteJob(selectList) {
+			if (!selectList || selectList.value == 0) {
+				alert("You must select a job to delete.");
+				return;
+			}
+			var jobName = selectList.options[selectList.selectedIndex].text;
+			if (confirm("Are you sure that you would like to delete " + jobName
+					+ "?\nThis can not be undone.")) {
+				document.getElementById('selProcessId').value = selectList.value;
+				changeActionAndSubmit(document.forms['processForm'],
+						"deleteJob.action");
+			}
 		}
-}
 
-function changeJobStatus(selectList, sCode) {
-
-	if (selectList.value == 0) {
-		alert ("You must first select a job, then change its status.");
-		return;
-	}
-	
-	document.processForm.selProcessId.value = selectList.value;
-	document.processForm.cmd.value=sCode;
-	changeActionAndSubmit(document.processForm, "changeJobStatus.do");
-}
-
-function printReports(selectList, sCode) {
-
-	if (selectList.value == 0) {
-		alert ("You must first select a job, then change its status.");
-		return;
-	}
-	
-	document.processForm.selProcessId.value = selectList.value;
-	document.processForm.cmd.value=sCode;
-	changeActionAndSubmit(document.processForm, "changeJobStatus.do");
-}
-
-function generateReports(selectList, sCode) {
-
-	if (selectList.value == 0) {
-		alert ("You must first select a job, then change its status.");
-		return;
-	}
-	
-	document.processForm.selProcessId.value = selectList.value;
-	document.processForm.cmd.value=sCode;
-	//changeActionAndSubmit(document.processForm, "changeJobStatus.do");
-	window.open('generateReport.do?selProcessId='+document.processForm.selProcessId.value+'&cmd='+document.processForm.cmd.value,"_left","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=yes, width=600, height=300,left = 0,top =100"); 
-	
-}
-
-function reorderJobQue(selectList, offset) {
-	document.processForm.selProcessId.value = selectList.value;
-	document.processForm.cmd.value=offset;
-	changeActionAndSubmit(document.processForm, "reorderJobQue.do");
-}
-
-function logWindow(form,action,selectList1,selectList2) {
-
-   if (selectList1!=null && selectList2!=null){
-	  if (  selectList1.value == 0 && selectList2.value==0) {
-    		alert ("You must first select a job to view the log.");
-			return;
+		function changeJobStatus(selectList, sCode) {
+			if (!selectList || selectList.value == 0) {
+				alert("You must first select a job, then change its status.");
+				return;
+			}
+			document.getElementById('selProcessId').value = selectList.value;
+			document.getElementById('cmd').value = sCode;
+			changeActionAndSubmit(document.forms['processForm'],
+					"changeJobStatus.action");
 		}
-		if (selectList1.value != 0){
-		document.processForm.selProcessId.value = selectList1.value;
-		}
-	}
-	
-	else if (selectList2!=null){
-		if (selectList2.value==0) {
-    		alert ("You must first select a job to view the log.");
-			return;
-		}
-	}
-	
-	if(selectList2.value != 0){
-		document.processForm.selProcessId.value = selectList2.value;
-	} 
-	
-	var selectedItemNum=selectList2.selectedIndex;
-	var selectedItemTxt=selectList2.options[selectList2.selectedIndex].text;
-	var comaIdx=selectedItemTxt.indexOf(",");
-	var dashIdx=selectedItemTxt.indexOf(":");
-	var jbDesc=selectedItemTxt.substr(0,comaIdx);
-	var jbSts=selectedItemTxt.substring(comaIdx+1,dashIdx-17);
-	
-	document.processForm.selJodDesc.value = jbDesc;
-	document.processForm.selJodStatus.value = jbSts;
-	
-	
-	window.open('errorReport.do?selProcessId='+document.processForm.selProcessId.value+'&selJodDesc='+document.processForm.selJodDesc.value+'&selJodStatus='+document.processForm.selJodStatus.value,"_left","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=yes, width=900, height=530,left = 0,top =100"); 
-	 	   	
-}   
 
-</script>
-<%@ include file="/include/footer.jsf" %>  
+		function generateReports(selectList, sCode) {
+			if (!selectList || selectList.value == 0) {
+				alert("You must first select a job, then change its status.");
+				return;
+			}
+			document.getElementById('selProcessId').value = selectList.value;
+			document.getElementById('cmd').value = sCode;
+			window
+					.open(
+							'generateReport.action?selProcessId='
+									+ document.getElementById('selProcessId').value
+									+ '&cmd='
+									+ document.getElementById('cmd').value,
+							"_left",
+							"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes, copyhistory=yes, width=600, height=300,left=0,top=100");
+		}
+
+		function reorderJobQue(selectList, offset) {
+			if (!selectList || selectList.value == 0) {
+				alert("You must select a job to move within the queue.");
+				return;
+			}
+			document.getElementById('selProcessId').value = selectList.value;
+			document.getElementById('cmd').value = offset;
+			changeActionAndSubmit(document.forms['processForm'],
+					"reorderJobQue.action");
+		}
+
+		function logWindow(form, action, selectList1, selectList2) {
+			var targetedSelect = null;
+			if (selectList1 && selectList1.value != 0) {
+				targetedSelect = selectList1;
+			} else if (selectList2 && selectList2.value != 0) {
+				targetedSelect = selectList2;
+			}
+			if (!targetedSelect) {
+				alert("You must first select a job to view the log.");
+				return;
+			}
+
+			document.getElementById('selProcessId').value = targetedSelect.value;
+			var selectedItemTxt = targetedSelect.options[targetedSelect.selectedIndex].text;
+			var comaIdx = selectedItemTxt.indexOf(",");
+			var dashIdx = selectedItemTxt.indexOf(":");
+			var jbDesc = (comaIdx !== -1) ? selectedItemTxt.substr(0, comaIdx)
+					: selectedItemTxt;
+			var jbSts = (comaIdx !== -1 && dashIdx !== -1) ? selectedItemTxt
+					.substring(comaIdx + 1, dashIdx - 17) : "Completed";
+
+			document.getElementById('selJodDesc').value = jbDesc.trim();
+			document.getElementById('selJodStatus').value = jbSts.trim();
+			window
+					.open(
+							'errorReport.action?selProcessId='
+									+ document.getElementById('selProcessId').value
+									+ '&selJodDesc='
+									+ encodeURIComponent(document
+											.getElementById('selJodDesc').value)
+									+ '&selJodStatus='
+									+ encodeURIComponent(document
+											.getElementById('selJodStatus').value),
+							"_left",
+							"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, copyhistory=yes, width=900, height=530,left=0,top=100");
+		}
+		
+		function changeActionAndSubmit(form,action)
+		{
+			form.action = action;
+			form.submit();
+		}
+	</script>
+
+	<%@ include file="/include/footer.jsf"%>
+</body>
+</html>
