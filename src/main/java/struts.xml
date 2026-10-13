@@ -237,7 +237,7 @@
 		</action>
 
 		<action name="bpcExTranMaint"
-			class="abbott.ai.tcgm.action.bpcex.BpcExTranMaint">
+			class="abbott.ai.tcgm17.action.bpcex.BpcExTranMaint">
 			<result name="input">/jsp/bpcExTran.jsp</result>
 			<result name="success">/jsp/bpcExTran.jsp</result>
 			<result name="advancedfilter">/jsp/bpcExTranMaintAdvFilter.jsp</result>
