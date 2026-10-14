@@ -727,7 +727,7 @@
 		</action>
 
 		<action name="openMngRateSets"
-			class="abbott.ai.tcgm.action.ratedata.OpenMngRateSets">
+			class="abbott.ai.tcgm17.action.ratedata.OpenMngRateSets">
 			<result name="input">/jsp/rateDataSelectCreate.jsp</result>
 			<result name="success">/jsp/rateDataSelectCreate.jsp</result>
 			<result name="failure">/jsp/rateDataSelectCreate.jsp</result>

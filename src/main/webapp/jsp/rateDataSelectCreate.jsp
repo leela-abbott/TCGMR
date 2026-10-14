@@ -1,10 +1,12 @@
 <%! String pageTitle="Select or Create Rate Set";%>
 <%@ include file="/include/header.jsf" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<jsp:useBean id="TCGMConstants" scope="application" class="abbott.ai.tcgm.TCGMConstants" />
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<%@ include file="/include/mastheadRate.jsf" %>
 	<%@ include file="/include/errorDisplay.jsf" %>
-	<nested:form name="mngRateSets" action="/openMngRateSets.do" type="abbott.ai.tcgm.action.form.MngRateSetsForm" scope="session" method="post">
-		<nested:hidden property="cmd" />
+	<s:form name="mngRateSets" action="openMngRateSets" namespace="/" method="post" theme="simple">
+		<s:hidden name="cmd" />
 		<table cellspacing="0" width="460" align="center">
 			<tr>
 				<td class="tableHeading" colspan="2">
@@ -13,12 +15,14 @@
 			</tr>
 			<tr>
 				<td width="180">
-                <div id="divToHide">
-					<nested:define id="rateSets" property="rateSetList"/>
-					<html:select name="mngRateSets" property="selectedDatasetTableId" size="6">
-						<html:options property="datasetTableId" labelProperty="datasetName" collection="rateSets" />
-					</html:select>
-                </div>
+					<div id="divToHide">
+						<s:select name="selectedDatasetTableId" 
+								  size="6"
+								  list="rateSetList" 
+								  listKey="datasetTableId" 
+								  listValue="datasetName"
+								  theme="simple" />
+					</div>
 				</td>
 				<td valign="top" align="center">
 					<a href="javascript:confirmDelete(document.mngRateSets,'delete','deleteRateSet.do');">
@@ -28,21 +32,22 @@
 						<img src="images/btnMaintain.png" alt="Maintain Rate Set" /></a>
 					<br />
 					<a href="javascript:chgActCmdSubmit(document.mngRateSets,'rename','renameRateSet.do');">
-						<img src="images/btnRename.png" alt="Raname Rate Set" /></a>
+						<img src="images/btnRename.png" alt="Rename Rate Set" /></a>
 				</td>
 			</tr>
 		</table>
 		<br />
-
-		<nested:hidden property="editRateSet.datasetTableId" />
-
+		<s:hidden name="editRateSet.datasetTableId" />
 		<table cellspacing="0" width="460" align="center">
 			<tr>
 				<td class="tableEntry">
 					Rate Set Name
 				</td>
 				<td>
-					<nested:text property="editRateSet.datasetName" maxlength="20" styleClass="rateWidth20"/>
+					<s:textfield name="editRateSet.datasetName" 
+								 maxlength="20" 
+								 cssClass="rateWidth20"
+								 theme="simple" />
 				</td>
 			</tr>
 			<tr>
@@ -50,7 +55,10 @@
 					Rate Set Description
 				</td>
 				<td>
-					<nested:text property="editRateSet.datasetDesc" maxlength="128" styleClass="rateWidth40" />
+					<s:textfield name="editRateSet.datasetDesc" 
+								 maxlength="128" 
+								 cssClass="rateWidth40"
+								 theme="simple" />
 				</td>
 			</tr>
 			<tr>
@@ -58,10 +66,15 @@
 					Copy From
 				</td>
 				<td>
-					<html:select name="mngRateSets" property="copyFromDatasetTableId" size="1" >
-						<html:option value="<%=TCGMConstants.NONE_SELECTED%>"><%=TCGMConstants.NONE_SEL_HTML%></html:option>
-						<html:options property="datasetTableId" labelProperty="datasetName" collection="rateSets" />
-					</html:select>
+					<s:select name="copyFromDatasetTableId" 
+							  size="1"
+							  list="rateSetList" 
+							  listKey="datasetTableId" 
+							  listValue="datasetName"
+							  
+                              headerKey="@abbott.ai.tcgm.TCGMConstants@NONE_SELECTED" 
+                              headerValue="< none >"
+							  theme="simple" />
 				</td>
 			</tr>
 			<tr>
@@ -69,19 +82,18 @@
 					<a href="javascript:chgActCmdSubmit(document.mngRateSets,'save','saveRateSet.do');">
 						<img src="images/btnSave.png" alt="Save Rate Set" /></a>
 					<a href="javascript:chgActCmdSubmit(document.mngRateSets,'cancel','openMngRateSets.do');">
-						<img src="images/btnCancel.png" alt="Raname Rate Set" /></a>
+						<img src="images/btnCancel.png" alt="Cancel" /></a>
 				</td>
 			</tr>
 		</table>
-	</nested:form>
+	</s:form>
 	<script language="JavaScript1.2" type="text/javascript">
 		setFocus('selectedDatasetTableId');
-		function confirmDelete(form, cmd, action)
-		{
-			if ( confirm("Are you sure that you would like to delete selected Rate Set. ") ) 
-			{
+		function confirmDelete(form, cmd, action) {
+			if (confirm("Are you sure that you would like to delete selected Rate Set.")) {
 				chgActCmdSubmit(form, cmd, action);
 			}
 		}	
 	</script>
 <%@ include file="/include/footer.jsf" %>
+</body>
