@@ -47,7 +47,7 @@
             cssClass="fltrWidth7"
             onkeyup="return autoTab(this, 7, event);" />
     </div>
-</td>
+    </td>
 		
 		
 		<td width="0%">

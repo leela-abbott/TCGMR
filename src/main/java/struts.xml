@@ -496,7 +496,7 @@
 		</action>
 
 		<action name="rateDataTranMaint"
-			class="abbott.ai.tcgm.action.ratedata.RateDataTranMaint">
+			class="abbott.ai.tcgm17.action.ratedata.RateDataTranMaint">
 			<result name="input">/jsp/rateDataTran.jsp</result>
 			<result name="success">/jsp/rateDataTran.jsp</result>
 			<result name="failure">/jsp/login.jsp</result>
