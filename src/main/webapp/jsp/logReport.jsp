@@ -47,11 +47,7 @@
         </td>
     </tr>
 
-    <%-- 
-      3. LIVE REPLICATION BUG FIX:
-      Swapped dangerous index position slicing operations for a safe, modern split-array look-up.
-      This handles double pipes seamlessly without ever risking a page rendering compilation crash.
-    --%>
+    <%-- Safe status-token string breakdown matching backend model properties --%>
     <s:if test="selJodStatus != null && selJodStatus.contains('|')">
         <s:set var="statusTokens" value="selJodStatus.split('\\\|')" />
         <s:set var="strModelName" value="#statusTokens.length > 1 ? #statusTokens[1].trim() : ''" />
@@ -62,93 +58,97 @@
   
     <tr>
         <td>
-            <%-- Application Log Evaluation Branch --%>
-            <s:if test="logList != null && logList.size() != 0">
-                <table width="100%" class="logs-grid-table" cellpadding="3" style="margin-bottom: 20px;">
-                    <tr>
-                        <td width="30%">&nbsp;</td>
-                        <td width="40%" class="text-center pageHeading">Application Log</td>
-                        <td width="30%">&nbsp;</td>
-                    </tr>
-                </table>
-                
-                <table width="100%" class="logs-grid-table" cellpadding="3" style="border: 1px solid #cccccc;">
-                    <tr>
-                        <td class="tableHeading">Model Name</td>
-                        <td class="tableHeading">Proc Name</td>
-                        <td class="tableHeading">Status</td>
-                        <td class="tableHeading">Message</td>  
-                        <td class="tableHeading" style="width: 200px;">Time</td> 
-                    </tr> 
-                    <s:iterator value="logList" var="prfm">
+            <%-- Application Log Evaluation Branch using JSTL Expression matching working sample flow --%>
+            <c:choose>
+                <c:when test="${logList != null && !empty logList}">
+                    <table width="100%" class="logs-grid-table" cellpadding="3" style="margin-bottom: 20px;">
                         <tr>
-                            <td class="tableEntry"><s:property value="#attr.strModelName" /></td>
-                            <td class="tableEntry"><s:property value="#prfm.procname" /></td>
-                            <td class="tableEntry"><s:property value="#prfm.status" /></td>
-                            <td class="tableEntry"><s:property value="#prfm.msg" /></td> 
-                            <td class="tableEntry" style="width: 200px;"><s:property value="#prfm.crtdate" /></td> 
+                            <td width="30%">&nbsp;</td>
+                            <td width="40%" class="text-center pageHeading">Application Log</td>
+                            <td width="30%">&nbsp;</td>
+                        </tr>
+                    </table>
+                    
+                    <table width="100%" class="logs-grid-table" cellpadding="3" style="border: 1px solid #cccccc;">
+                        <tr>
+                            <td class="tableHeading">Model Name</td>
+                            <td class="tableHeading">Proc Name</td>
+                            <td class="tableHeading">Status</td>
+                            <td class="tableHeading">Message</td>  
+                            <td class="tableHeading" style="width: 200px;">Time</td> 
                         </tr> 
-                    </s:iterator>  
-                </table>
-            </s:if>
-            <s:else>
-                <table width="500" class="logs-grid-table" align="center" cellpadding="0">
-                    <tr>
-                        <td style="width: 100px;">&nbsp;</td>
-                        <td class="text-center pageHeading">Application Log</td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px;">&nbsp;</td>
-                        <td class="text-center tableEntry">There is no data in the Application Log Table</td>
-                    </tr>
-                </table> 
-            </s:else>
+                        <c:forEach var="logBean" items="${logList}">
+                            <tr>
+                                <td class="tableEntry"><s:property value="#attr.strModelName" /></td>
+                                <td class="tableEntry"><c:out value="${logBean.procname}" /></td>
+                                <td class="tableEntry"><c:out value="${logBean.status}" /></td>
+                                <td class="tableEntry"><c:out value="${logBean.msg}" /></td> 
+                                <td class="tableEntry" style="width: 200px;"><c:out value="${logBean.crtdate}" /></td> 
+                            </tr> 
+                        </c:forEach>  
+                    </table>
+                </c:when>
+                <c:otherwise>
+                    <table width="500" class="logs-grid-table" align="center" cellpadding="0">
+                        <tr>
+                            <td style="width: 100px;">&nbsp;</td>
+                            <td class="text-center pageHeading">Application Log</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 200px;">&nbsp;</td>
+                            <td class="text-center tableEntry">There is no data in the Application Log Table</td>
+                        </tr>
+                    </table> 
+                </c:otherwise>
+            </c:choose>
         </td> 
     </tr>
     <tr><td><br><br></td></tr>
     
     <tr>
         <td>
-            <%-- Error Log Evaluation Branch --%>
-            <s:if test="errorList != null && errorList.size() != 0">
-                <table width="100%" class="logs-grid-table" cellpadding="3" style="margin-bottom: 10px;">
-                    <tr> 
-                        <td style="width: 100px;">&nbsp;</td>
-                        <td class="pageHeading">Error Log</td>
-                    </tr>
-                </table> 
-                
-                <table width="100%" class="logs-grid-table" cellpadding="3" style="border: 1px solid #cccccc;">
-                    <tr>
-                        <td class="tableHeading">Modelid</td>
-                        <td class="tableHeading">ProcName</td>
-                        <td class="tableHeading">Status</td>
-                        <td class="tableHeading">Message</td>  
-                        <td class="tableHeading" style="width: 200px;">Time</td>  
-                    </tr>
-                    <s:iterator value="errorList" var="errorLog">
+            <%-- Error Log Evaluation Branch using JSTL Expression matching working sample flow --%>
+            <c:choose>
+                <c:when test="${errorList != null && !empty errorList}">
+                    <table width="100%" class="logs-grid-table" cellpadding="3" style="margin-bottom: 10px;">
+                        <tr> 
+                            <td style="width: 100px;">&nbsp;</td>
+                            <td class="pageHeading">Error Log</td>
+                        </tr>
+                    </table> 
+                    
+                    <table width="100%" class="logs-grid-table" cellpadding="3" style="border: 1px solid #cccccc;">
                         <tr>
-                            <td class="tableEntry"><s:property value="#errorLog.modelid" /></td>
-                            <td class="tableEntry"><s:property value="#errorLog.procname" /></td>
-                            <td class="tableEntry"><s:property value="#errorLog.status" /></td>
-                            <td class="tableEntry"><s:property value="#errorLog.msg" /></td> 
-                            <td class="tableEntry" style="width: 200px;"><s:property value="#errorLog.crtdate" /></td> 
+                            <td class="tableHeading">Modelid</td>
+                            <td class="tableHeading">ProcName</td>
+                            <td class="tableHeading">Status</td>
+                            <td class="tableHeading">Message</td>  
+                            <td class="tableHeading" style="width: 200px;">Time</td>  
+                        </tr>
+                        <c:forEach var="errBean" items="${errorList}">
+                            <tr>
+                                <td class="tableEntry"><c:out value="${errBean.modelid}" /></td>
+                                <td class="tableEntry"><c:out value="${errBean.procname}" /></td>
+                                <td class="tableEntry"><c:out value="${errBean.status}" /></td>
+                                <td class="tableEntry"><c:out value="${errBean.msg}" /></td> 
+                                <td class="tableEntry" style="width: 200px;"><c:out value="${errBean.crtdate}" /></td> 
+                            </tr> 
+                        </c:forEach>  
+                    </table> 
+                </c:when>
+                <c:otherwise>
+                    <table width="500" class="logs-grid-table" cellpadding="0">
+                        <tr>
+                            <td style="width: 100px;">&nbsp;</td>
+                            <td class="text-center pageHeading">Error Log</td>
                         </tr> 
-                    </s:iterator>  
-                </table> 
-            </s:if>
-            <s:else> 
-                <table width="500" class="logs-grid-table" cellpadding="0">
-                    <tr>
-                        <td style="width: 100px;">&nbsp;</td>
-                        <td class="text-center pageHeading">Error Log</td>
-                    </tr> 
-                    <tr>
-                        <td style="width: 200px;">&nbsp;</td>
-                        <td class="text-center tableEntry">There is no data in the Error Log Table</td>
-                    </tr> 
-                </table> 
-            </s:else>
+                        <tr>
+                            <td style="width: 200px;">&nbsp;</td>
+                            <td class="text-center tableEntry">There is no data in the Error Log Table</td>
+                        </tr> 
+                    </table> 
+                </c:otherwise>
+            </c:choose>
         </td>
     </tr>
 

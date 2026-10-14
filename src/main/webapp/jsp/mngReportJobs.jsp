@@ -5,8 +5,8 @@
 <%-- 1. Initialize pageTitle context BEFORE pulling layout headers --%>
 <%! String pageTitle="Job Reports"; %>
 
-<%-- 2. Include document headers --%>
-<%@ include file="/include/header.jsf" %>
+<%@ include file="/include/header.jsf"%>
+<c:set var="pageTitle" value="Job Reports" scope="request" />
 
 <head>
 <style>
@@ -57,10 +57,10 @@ function openReportNet() {
             style="background-color: #FFD523; 
                    color: #003B73; 
                    font-family: sans-serif;
-                   font-size: 16px; 
+                   font-size: 14px; 
                    font-weight: bold; 
                    font-style: italic;
-                   padding: 10px 24px; 
+                   padding: 6px 12px; 
                    border: 1px solid #E6BE1E; 
                    border-radius: 4px; 
                    cursor: pointer; 

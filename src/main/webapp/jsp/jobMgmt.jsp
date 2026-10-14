@@ -202,7 +202,7 @@
 									<s:iterator value="completedJobList" var="processes">
 										<option value="<s:property value="#processes.jobQueId"/>">
 											<s:property value="#processes.desc" /> |
-											<s:property value="#processes.jobStatus.name" /> |
+											<s:property value="#processes.jobStatus" /> |
 											<s:property value="#processes.endTime" /> |
 											<s:property value="#processes.userSubmitted" />
 										</option>

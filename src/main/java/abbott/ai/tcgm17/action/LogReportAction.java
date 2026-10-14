@@ -2,38 +2,30 @@ package abbott.ai.tcgm17.action;
 
 import java.util.*;
 import jakarta.servlet.http.HttpServletRequest;
-
-// Correct Struts 7.x Context Packages
-import org.apache.struts2.action.ServletRequestAware;
-import org.apache.struts2.action.SessionAware;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
-
-// Log4j2 Standard Imports
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.ProcessMngr;
 
-
-public class LogReportAction extends TCGMAction implements ServletRequestAware, SessionAware {
+/**
+ * <p>Title: TCGM</p>
+ * <p>Description: Application and Error Logs Action aligning with Unified Template Flow</p>
+ * <p>Company: Abbott Laboratories</p>
+ * @version 3.1
+ */
+public class LogReportAction extends TCGMAction {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger myLogger = LogManager.getLogger(LogReportAction.class);
 
-    private HttpServletRequest request;
-    private Map<String, Object> session;
-
-    private String className = getClass().getName();
-
-    private String selProcessId;
-    private String selJodDesc;
-    private String selJodStatus;
+    private String selProcessId = "";
+    private String selJodDesc = "";
+    private String selJodStatus = "";
     
-    private List<?> logList = new ArrayList<>();
-    private List<?> errorList = new ArrayList<>();
+    private Vector logList = new Vector();
+    private Vector errorList = new Vector();
 
     public LogReportAction() {
         super();
@@ -41,49 +33,45 @@ public class LogReportAction extends TCGMAction implements ServletRequestAware, 
 
     @Override
     public String execute() throws Exception {
-        myLogger.debug("Executing execute() method in LogReportAction.");
+        HttpServletRequest request = ServletActionContext.getRequest();
+        this.clearErrorsAndMessages();
 
-        this.clearActionErrors();
-
-        if (this.isSessionValid(this.request)) {
-            UserToken ut = this.getUserToken(this.request);
+        if (this.isSessionValid()) {
+            UserToken ut = this.getUserToken();
 
             String procId = this.getSelProcessId();
-
-            if (procId == null) {
-                procId = (String) this.request.getAttribute("selProcessId");
+            if (procId == null || procId.trim().isEmpty()) {
+                procId = (String) request.getAttribute("selProcessId");
                 this.setSelProcessId(procId);
+            }
+
+            if (this.getSelJodDesc() == null || this.getSelJodDesc().trim().isEmpty()) {
+                this.setSelJodDesc((String) request.getAttribute("selJodDesc"));
+            }
+            
+            if (this.getSelJodStatus() == null || this.getSelJodStatus().trim().isEmpty()) {
+                this.setSelJodStatus((String) request.getAttribute("selJodStatus"));
             }
 
             try {
                 ProcessMngr processMngr = new ProcessMngr();
-                this.setLogList(processMngr.getJobLogs(ut, procId));
-                this.setErrorList(processMngr.getErrorLogs(ut, procId));
-                this.session.put("processForm", this);
+                
+                // Fetch and cast logs directly into dedicated Vectors matching the working flow template
+                List<?> rawLogs = processMngr.getJobLogs(ut, procId);
+                this.logList = (rawLogs != null) ? new Vector(rawLogs) : new Vector();
+                
+                List<?> rawErrors = processMngr.getErrorLogs(ut, procId);
+                this.errorList = (rawErrors != null) ? new Vector(rawErrors) : new Vector();
 
-                this.logger.debug("{} Forward: {}", this.className, SUCCESS);
-                return SUCCESS;
+                return TCGMConstants.FORWARD_SUCCESS;
 
             } catch (TCGMException ex) {
                 this.logger.error(ex.toString(), ex);
-                this.request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
+                request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
                 return TCGMConstants.G_FORWARD_EXCEPTION;
             }
-        } else {
-            String formMissingMsg = getText("error.asr.form.missing", "Required selection configuration form model data is missing.");
-            this.addActionError(formMissingMsg);
-            return "selectModel"; 
         }
-    }
-
-    @Override
-    public void withServletRequest(HttpServletRequest request) {
-        this.request = request;
-    }
-
-    @Override
-    public void withSession(Map<String, Object> session) {
-        this.session = session;
+        return TCGMConstants.G_FORWARD_SELECT_MODEL;
     }
 
     public String getSelProcessId() {
@@ -113,19 +101,37 @@ public class LogReportAction extends TCGMAction implements ServletRequestAware, 
         this.selJodStatus = selJodStatus;
     }
 
-    public List<?> getLogList() {
-        return logList;
+    @StrutsParameter(depth = 3)
+    public Vector getLogList() {
+        if (this.logList == null) {
+            this.logList = new Vector();
+        }
+        return this.logList;
     }
 
-    public void setLogList(List<?> logList) {
+    @StrutsParameter(depth = 3)
+    public void setLogList(Vector logList) {
         this.logList = logList;
     }
 
-    public List<?> getErrorList() {
-        return errorList;
+    @StrutsParameter(depth = 3)
+    public Vector getErrorList() {
+        if (this.errorList == null) {
+            this.errorList = new Vector();
+        }
+        return this.errorList;
     }
 
-    public void setErrorList(List<?> errorList) {
+    @StrutsParameter(depth = 3)
+    public void setErrorList(Vector errorList) {
         this.errorList = errorList;
+    }
+
+    public int getLogListSize() {
+        return this.getLogList().size();
+    }
+
+    public int getErrorListSize() {
+        return this.getErrorList().size();
     }
 }
