@@ -28,15 +28,28 @@
 				</nested:equal>
 			</span>
 		</td>
-		<nested:nest property="pagingFilter">
-		<td width="160">
-		<div class="fltrTblHdng">
-		Record # 
-		<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
-		 onkeyup="return autoTab(this, 7, event);" />
-		</td>
-		</div>
-		</nested:nest>
+		<!-- <nested:nest property="pagingFilter">
+		    <td width="160">
+			<div class="fltrTblHdng">
+			Record # 
+			<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+			 onkeyup="return autoTab(this, 7, event);" />
+			</div>
+		  </td>
+		</nested:nest> -->
+		
+	<td width="160">
+    <div class="fltrTblHdng">
+        Record #
+        <s:textfield
+            name="pagingFilter.recordNumberInSet"
+            maxlength="7"
+            cssClass="fltrWidth7"
+            onkeyup="return autoTab(this, 7, event);" />
+    </div>
+</td>
+		
+		
 		<td width="0%">
 		<a href="javascript:changeCmdAndSubmit(document.rateDataForm,'selectedrecordpage');">
 		<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
