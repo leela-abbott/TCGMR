@@ -431,7 +431,7 @@
 		</action>
 
 		<action name="notesTranMaint"
-			class="abbott.ai.tcgm.action.notes.NotesTranMaint">
+			class="abbott.ai.tcgm17.action.notes.NotesTranMaint">
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
 			<result name="advancedfilter">/jsp/notesTranMaintAdvFilter.jsp</result>
