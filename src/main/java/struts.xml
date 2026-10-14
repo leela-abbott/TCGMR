@@ -648,8 +648,9 @@
 		</action>
 
 		<action name="mngAnalysisModels"
-			class="abbott.ai.tcgm.action.MngAnalysisModels">
+			class="abbott.ai.tcgm17.action.MngAnalysisModelsAction">
 			<result name="success">/jsp/mngAnalysisModels.jsp</result>
+			<result name="input">/jsp/mngAnalysisModels.jsp</result>
 		</action>
 
 		<action name="mngCostExchModels"
