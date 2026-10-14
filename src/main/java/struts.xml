@@ -647,10 +647,10 @@
 			<result name="success">/jsp/miscReports.jsp</result>
 		</action>
 
-		<action name="mngAnalysisModels"
-			class="abbott.ai.tcgm17.action.MngAnalysisModelsAction">
-			<result name="success">/jsp/mngAnalysisModels.jsp</result>
-			<result name="input">/jsp/mngAnalysisModels.jsp</result>
+		<action name="mngAnalysisModels" class="abbott.ai.tcgm17.action.MngAnalysisModelsAction" method="execute">
+		    <result name="success">/jsp/mngAnalysisModels.jsp</result>
+		    <result name="restrictions">/jsp/restrictions.jsp</result>
+		    <result name="input">/jsp/mngAnalysisModels.jsp</result> 
 		</action>
 
 		<action name="mngCostExchModels"
