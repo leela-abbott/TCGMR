@@ -852,6 +852,7 @@
 			<result name="burst">/jsp/burstMaint.jsp</result> <result name="usersview">/jsp/cognosUsersView.jsp</result> 
 			<result name="users">/jsp/cognosUsers.jsp</result> <result name="datausersView">/jsp/dataUsersView.jsp</result> 
 			<result name="datausers">/jsp/reportUsers.jsp</result> </action> -->
+			
 		<action name="rptUserMaint"
 			class="abbott.ai.tcgm17.action.user.RptUserMaintAction">
 			<result name="input">/jsp/rptUserCreate.jsp</result>

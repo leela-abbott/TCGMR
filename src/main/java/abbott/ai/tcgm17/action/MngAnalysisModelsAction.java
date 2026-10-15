@@ -99,7 +99,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	}
 
 	private void processCmd(HttpServletRequest req) throws TCGMException {
-		UserToken ut = this.getUserToken();
+		UserToken ut = this.getUserToken(req);
 		String currentCmd = this.getCmd();
 
 		if (currentCmd.equalsIgnoreCase("FETCH_PROD_HEADERS")) {
@@ -305,16 +305,6 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		this.cmd = "";
 	}
 
-	protected boolean isSessionValid(HttpServletRequest req) {
-		return true;
-	}
-
-	protected UserToken getUserToken(HttpServletRequest req) {
-		if (req != null && req.getSession() != null) {
-			return (UserToken) req.getSession().getAttribute("USER_TOKEN");
-		}
-		return null;
-	}
 
 	public String getRestrictionStr() {
 		StringBuffer sb = new StringBuffer();
@@ -507,4 +497,6 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	public void withServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
+	
+
 }

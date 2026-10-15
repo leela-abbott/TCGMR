@@ -12,6 +12,10 @@ package abbott.ai.tcgm.exception;
  */
 public class TCGMJobDefinitionFailureException extends TCGMException
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/*****************************************************************************************/
 	private String throwingClass;
 	private String throwingMethod;
@@ -21,34 +25,21 @@ public class TCGMJobDefinitionFailureException extends TCGMException
 	/**
 	 * Default Constructor
 	 */
-	public TCGMJobDefinitionFailureException()
-	{
+	public TCGMJobDefinitionFailureException() {
+	    // Calls the single-string parent constructor with a default message
+	    super("Job definition failure exception occurred."); 
 	}
 
-	public TCGMJobDefinitionFailureException(String pThrowingClass,String pThrowingMethod, String pParameterList,String pErrorMessage)
-	{
-		this.setErrorMessage(pErrorMessage);
-		this.setThrowingClass(pThrowingClass);
-		this.setThrowingMethod(pThrowingMethod);
-		this.setParameterList(pParameterList);
+	public TCGMJobDefinitionFailureException(String pThrowingClass, String pThrowingMethod, String pParameterList, String pErrorMessage) {
+	    // Explicitly invokes the matching 4-argument parent constructor
+	    super(pThrowingClass, pThrowingMethod, pParameterList, pErrorMessage);
 	}
-	/**
-	 * Override default constructor
-	 * @param pThrowingClass name of the throwing class
-	 * @param pThrowingMethod name of the throwing method
-	 * @param pErrorMessage error message
-	 */
-	public TCGMJobDefinitionFailureException(String pThrowingClass,String pThrowingMethod,String pErrorMessage)
-	{
-		this.setErrorMessage(pErrorMessage);
-		this.setThrowingClass(pThrowingClass);
-		this.setThrowingMethod(pThrowingMethod);
+
+	public TCGMJobDefinitionFailureException(String pThrowingClass, String pThrowingMethod, String pErrorMessage) {
+	    // Explicitly invokes the matching 3-argument parent constructor
+	    super(pThrowingClass, pThrowingMethod, pErrorMessage);
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @return throwingClass
-	 */
+
 	public String getThrowingClass()
 	{
 		return this.throwingClass;

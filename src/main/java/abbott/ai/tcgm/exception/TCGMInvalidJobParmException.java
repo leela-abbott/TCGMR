@@ -20,6 +20,6 @@ public class TCGMInvalidJobParmException extends TCGMException
 	 */
 	public TCGMInvalidJobParmException(String parmError)
 	{
-		super();
+		super(parmError);
 	}
 }

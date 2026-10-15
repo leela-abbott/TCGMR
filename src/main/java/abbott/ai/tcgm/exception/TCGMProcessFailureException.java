@@ -23,14 +23,12 @@ public class TCGMProcessFailureException extends TCGMException
 	 */
 	public TCGMProcessFailureException()
 	{
+		super("exception occured");
 	}
 
 	public TCGMProcessFailureException(String pThrowingClass,String pThrowingMethod, String pParameterList,String pErrorMessage)
 	{
-		this.setErrorMessage(pErrorMessage);
-		this.setThrowingClass(pThrowingClass);
-		this.setThrowingMethod(pThrowingMethod);
-		this.setParameterList(pParameterList);
+		super(pErrorMessage,pThrowingClass, 		pThrowingMethod,		pParameterList);
 	}
 	/**
 	 * Override default constructor
@@ -40,9 +38,7 @@ public class TCGMProcessFailureException extends TCGMException
 	 */
 	public TCGMProcessFailureException(String pThrowingClass,String pThrowingMethod,String pErrorMessage)
 	{
-		this.setErrorMessage(pErrorMessage);
-		this.setThrowingClass(pThrowingClass);
-		this.setThrowingMethod(pThrowingMethod);
+		super(pErrorMessage, pThrowingClass, 		pThrowingMethod);
 	}
 	/*****************************************************************************************/
 	/**

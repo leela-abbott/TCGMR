@@ -20,7 +20,7 @@ public class TCGMUniqueExpectedException extends TCGMException
 	 */
 	public TCGMUniqueExpectedException(String itemDuplicateFound)
 	{
-		super();
+		super(itemDuplicateFound);
 	}
 
 	public TCGMUniqueExpectedException(String pThrowingClass,String pThrowingMethod, String pParameterList,String pErrorMessage) {

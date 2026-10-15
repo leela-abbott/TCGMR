@@ -12,6 +12,6 @@ public class TCGMUpdateWithBlankUsernameException extends TCGMException
 	 */
 	public TCGMUpdateWithBlankUsernameException(String blankUsernameOnUpdate)
 	{
-		super();
+		super(blankUsernameOnUpdate);
 	}
 }

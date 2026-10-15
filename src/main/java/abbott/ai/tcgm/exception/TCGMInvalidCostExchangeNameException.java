@@ -20,6 +20,6 @@ public class TCGMInvalidCostExchangeNameException extends TCGMException
 	 */
 	public TCGMInvalidCostExchangeNameException(String invalidName)
 	{
-		super();
+		super(invalidName);
 	}
 }
