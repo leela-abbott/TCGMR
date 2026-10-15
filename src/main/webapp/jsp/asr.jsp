@@ -18,8 +18,8 @@
 -->
 
                    <!-- Added for -->
-<abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
-<jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
+<%-- <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" /> --%>
+<%-- <jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" /> --%>
 <jsp:useBean id="DBConst"  scope="session" class="abbott.ai.tcgm.data.DBConst" />
 <jsp:useBean id="asrForm" scope="session" class="abbott.ai.tcgm.action.form.AsrForm" />
 <!-- end -->
@@ -33,6 +33,8 @@
 <%@ include file="/include/maintNav.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 
+<script type="text/javascript" src="include/common.js"></script>
+
 
 <!-- ========================================================= -->
 <!-- MAIN FORM                                                 -->
@@ -43,8 +45,8 @@
     <s:hidden name="cmd" id="cmd"/>
     <s:hidden name="focusField"/>
     <s:hidden name="rowToCopy"/>
-    <s:hidden name="asrErrorListSize"/>
-    <s:hidden name="asrListSize"/>
+   <%--  <s:hidden name="asrErrorListSize"/> --%>
+   <%--  <s:hidden name="asrListSize"/ --%>>
 
     <s:hidden name="sortObject.sortColumn"/>
     <s:hidden name="sortObject.sortOrder"/>
@@ -887,7 +889,7 @@
     <div id="navigationTop"
          class="hidden">
 
-        <%@ include file="/include/asrPaging.jsf" %>
+        <%-- <%@ include file="/include/asrPaging.jsf" %> --%>
 
     </div>
 

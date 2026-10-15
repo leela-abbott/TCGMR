@@ -21,248 +21,326 @@ import abbott.ai.tcgm.helpers.AsrMngr;
 import abbott.ai.tcgm17.action.TCGMAction;
 
 /**
- * <p>Title: TCGM</p>
- * <p>Description: </p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott Laboratories</p>
+ * <p>
+ * Title: TCGM
+ * </p>
+ * <p>
+ * Description:
+ * </p>
+ * <p>
+ * Copyright: Copyright (c) 2002
+ * </p>
+ * <p>
+ * Company: Abbott Laboratories
+ * </p>
+ * 
  * @author David Fields
  * @version 1.0
  */
-public class AsrMaint extends TCGMAction implements SessionAware
-{
-    private static final long serialVersionUID = 1L;
-    private static Logger myLogger = LogManager.getLogger("AsrMaint");
+public class AsrMaint extends TCGMAction implements SessionAware {
+	private static final long serialVersionUID = 1L;
+	private static Logger myLogger = LogManager.getLogger("AsrMaint");
 
-    // --- AsrForm attributes inlined ---
-    private Asr searchObject = new Asr();
-    private List<Asr> asrList = new ArrayList<>();
-    private List<Asr> asrErrorList = new ArrayList<>();
-    private PagingFilter pagingFilter = new PagingFilter();
-    private Sort sortObject = new Sort(DBConst.COL_ASR_DEF, DBConst.SORT_ASC);
-    private AsrTran addNew = new AsrTran();
-    private String errs = "";
-    private String cmd = "";
-    private String focusField = DBConst.ASR_DFT_FOCUS;
-    private String rowToCopy = "";
+	// --- AsrForm attributes inlined ---
+	private Asr searchObject = new Asr();
+	private List<Asr> asrList = new ArrayList<>();
+	private List<Asr> asrErrorList = new ArrayList<>();
+	private PagingFilter pagingFilter = new PagingFilter();
+	private Sort sortObject = new Sort(DBConst.COL_ASR_DEF, DBConst.SORT_ASC);
+	private AsrTran addNew = new AsrTran();
+	private String errs = "";
+	private String cmd = "";
+	private String focusField = DBConst.ASR_DFT_FOCUS;
+	private String rowToCopy = "";
 
-    public AsrMaint() {
-        super();
-    }
-    
-    private Map<String, Object> session;
+	public AsrMaint() {
+		super();
+	}
 
-    public String execute() throws Exception {
-        myLogger.debug("Executing perform() method in AsrMaint.");
+	private Map<String, Object> session;
 
-        this.clearActionErrors();
+	public String execute() throws Exception {
+		myLogger.debug("Executing perform() method in AsrMaint.");
 
-        if (!this.isSessionValid(request)) {
-            return this.getForward();
-        }
+		this.clearActionErrors();
 
-        if (!this.isModelSelected(request)) {
-            return this.getForward();
-        }
+		if (!this.isSessionValid(request)) {
+			return this.getForward();
+		}
 
-        processCmd();
+		if (!this.isModelSelected(request)) {
+			return this.getForward();
+		}
 
-        if (cmd != null && cmd.equalsIgnoreCase(TCGMConstants.URL_PARM_VAL_ADV_FILTER)) {
-            request.getSession().setAttribute("asrTranAdvFilter", buildSnapshot());
-            reset();
-            this.setForward(TCGMConstants.FORWARD_ADVANCEDFILTER);
-            return this.getForward();
-        }
+		processCmd();
 
-        AsrMngr asrMngr = new AsrMngr();
+		if (cmd != null && cmd.equalsIgnoreCase(TCGMConstants.URL_PARM_VAL_ADV_FILTER)) {
+			request.getSession().setAttribute("asrTranAdvFilter", buildSnapshot());
+			reset();
+			this.setForward(TCGMConstants.FORWARD_ADVANCEDFILTER);
+			return this.getForward();
+		}
 
-        try {
-            initModelAndDataset(
-                this.getState(request).getCurrentModelIdString(),
-                DBConst.DEF_DATASET_TABLE_ID);
+		AsrMngr asrMngr = new AsrMngr();
 
-            if (getErrs().equalsIgnoreCase("on")) {
-                asrList = new ArrayList<>(asrErrorList);
-                pagingFilter.setTotalRecordsInSet(asrErrorList.size());
-                errs = "";
-                this.addActionError(getText("error.list"));
-            } else {
-                pagingFilter.setTotalRecordsInSet(asrMngr.getCount(this.getUserToken(request), searchObject));
+		try {
+			initModelAndDataset(this.getState(request).getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID);
 
-                if (getCmd().equalsIgnoreCase("")) {
-                    asrList = createEmptyAsrRecs(this.getState(request).getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID);
-                } else {
-                    asrList = new ArrayList<>(asrMngr.getAsr(this.getUserToken(request), searchObject, pagingFilter, sortObject));
-                }
-                asrErrorList = new ArrayList<>();
-            }
-            this.setForward(TCGMConstants.FORWARD_SUCCESS);
-        } catch (TCGMException ex) {
-            this.logger.error(ex.toString(), ex);
-            request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
-            this.setForward(TCGMConstants.G_FORWARD_EXCEPTION);
-        }
+			if (getErrs().equalsIgnoreCase("on")) {
+				asrList = new ArrayList<>(asrErrorList);
+				pagingFilter.setTotalRecordsInSet(asrErrorList.size());
+				errs = "";
+				this.addActionError(getText("error.list"));
+			} else {
+				pagingFilter.setTotalRecordsInSet(asrMngr.getCount(this.getUserToken(request), searchObject));
 
-        this.logger.debug(className + " Forward: " + this.getForward());
-        return this.getForward();
-    }
+				if (getCmd().equalsIgnoreCase("")) {
+					asrList = createEmptyAsrRecs(this.getState(request).getCurrentModelIdString(),
+							DBConst.DEF_DATASET_TABLE_ID);
+				} else {
+					asrList = new ArrayList<>(
+							asrMngr.getAsr(this.getUserToken(request), searchObject, pagingFilter, sortObject));
+				}
+				asrErrorList = new ArrayList<>();
+			}
+			this.setForward(TCGMConstants.FORWARD_SUCCESS);
+		} catch (TCGMException ex) {
+			this.logger.error(ex.toString(), ex);
+			request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
+			this.setForward(TCGMConstants.G_FORWARD_EXCEPTION);
+		}
 
-    // --- AsrForm methods ---
+		this.logger.debug(className + " Forward: " + this.getForward());
+		return this.getForward();
+	}
 
-    public void processCmd() {
-        if (TCGMConstants.URL_PARM_VAL_NEXT_PAGE.equals(cmd)) {
-            pagingFilter.setNextpage();
-        } else if (TCGMConstants.URL_PARM_VAL_PREV_PAGE.equals(cmd)) {
-            pagingFilter.setPrevPage();
-        } else if (TCGMConstants.URL_PARM_VAL_FILTER.equals(cmd)
-                || TCGMConstants.URL_PARM_VAL_ADV_FILTER.equals(cmd)) {
-            pagingFilter.setStartRecord(1);
-        } else if (TCGMConstants.URL_PARM_VAL_CLEAR_FILTER.equals(cmd)) {
-            AsrTran savedAddNew = addNew;
-            reset();
-            setAddNew(savedAddNew);
-        } else if (TCGMConstants.URL_PARM_VAL_CLEAR_ADD_NEW.equals(cmd)) {
-            setAddNew(new AsrTran());
-            setCmd("");
-        } else if (TCGMConstants.URL_PARM_VAL_COPY_ROW.equals(cmd)) {
-            int row = getRowToCopyInt();
-            if (row >= 0 && row < asrList.size()) {
-                addNew.setAsr(asrList.get(row));
-            }
-        } else if (TCGMConstants.URL_PARM_VAL_SELECTED_RECORD_PAGE.equals(cmd)) {
-            pagingFilter.setDispSelectedRecordPage();
-        }
+	// --- AsrForm methods ---
 
-        setFocusField(DBConst.ASR_DFT_FOCUS);
+	public void processCmd() {
+		if (TCGMConstants.URL_PARM_VAL_NEXT_PAGE.equals(cmd)) {
+			pagingFilter.setNextpage();
+		} else if (TCGMConstants.URL_PARM_VAL_PREV_PAGE.equals(cmd)) {
+			pagingFilter.setPrevPage();
+		} else if (TCGMConstants.URL_PARM_VAL_FILTER.equals(cmd) || TCGMConstants.URL_PARM_VAL_ADV_FILTER.equals(cmd)) {
+			pagingFilter.setStartRecord(1);
+		} else if (TCGMConstants.URL_PARM_VAL_CLEAR_FILTER.equals(cmd)) {
+			AsrTran savedAddNew = addNew;
+			reset();
+			setAddNew(savedAddNew);
+		} else if (TCGMConstants.URL_PARM_VAL_CLEAR_ADD_NEW.equals(cmd)) {
+			setAddNew(new AsrTran());
+			setCmd("");
+		} else if (TCGMConstants.URL_PARM_VAL_COPY_ROW.equals(cmd)) {
+			int row = getRowToCopyInt();
+			if (row >= 0 && row < asrList.size()) {
+				addNew.setAsr(asrList.get(row));
+			}
+		} else if (TCGMConstants.URL_PARM_VAL_SELECTED_RECORD_PAGE.equals(cmd)) {
+			pagingFilter.setDispSelectedRecordPage();
+		}
 
-        if (TCGMConstants.URL_PARM_VAL_FILTER.equals(cmd)
-                || TCGMConstants.URL_PARM_VAL_ADV_FILTER.equals(cmd)
-                || TCGMConstants.URL_PARM_VAL_SAVE.equals(cmd)
-                || TCGMConstants.URL_PARM_VAL_MASS_UPDATE.equals(cmd)) {
-            setFocusField("addNew.actionCode");
-        }
-    }
+		setFocusField(DBConst.ASR_DFT_FOCUS);
 
-    public void reset() {
-        setCmd("");
-        if (addNew != null && addNew.getAsr() != null) {
-            addNew.getAsr().clearMsg();
-        }
-        setSearchObject(new Asr());
-        setAddNew(new AsrTran());
-        if (asrList != null) {
-            for (Asr asr : asrList) {
-                if (asr != null) asr.setSelected(false);
-            }
-        }
-        setFocusField(DBConst.ASR_DFT_FOCUS);
-    }
+		if (TCGMConstants.URL_PARM_VAL_FILTER.equals(cmd) || TCGMConstants.URL_PARM_VAL_ADV_FILTER.equals(cmd)
+				|| TCGMConstants.URL_PARM_VAL_SAVE.equals(cmd) || TCGMConstants.URL_PARM_VAL_MASS_UPDATE.equals(cmd)) {
+			setFocusField("addNew.actionCode");
+		}
+	}
 
-    public void initModelAndDataset(String modelId, String datasetTableId) {
-        addNew.getAsr().setModelId(modelId);
-        addNew.getAsr().setDatasetTableId(datasetTableId);
-        searchObject.setModelId(modelId);
-        searchObject.setDatasetTableId(datasetTableId);
-    }
+	public void reset() {
+		setCmd("");
+		if (addNew != null && addNew.getAsr() != null) {
+			addNew.getAsr().clearMsg();
+		}
+		setSearchObject(new Asr());
+		setAddNew(new AsrTran());
+		if (asrList != null) {
+			for (Asr asr : asrList) {
+				if (asr != null)
+					asr.setSelected(false);
+			}
+		}
+		setFocusField(DBConst.ASR_DFT_FOCUS);
+	}
 
-    private abbott.ai.tcgm.action.form.AsrForm buildSnapshot() {
-        abbott.ai.tcgm.action.form.AsrForm snap = new abbott.ai.tcgm.action.form.AsrForm();
-        snap.setSearchObject(searchObject);
-        snap.setAsrList(new Vector<>(asrList));
-        snap.setAsrErrorList(new Vector<>(asrErrorList));
-        snap.setPagingFilter(pagingFilter);
-        snap.setSortObject(sortObject);
-        snap.setAddNew(addNew);
-        snap.setErrs(errs);
-        snap.setCmd(cmd);
-        snap.setFocusField(focusField);
-        snap.setRowToCopy(rowToCopy);
-        return snap;
-    }
+	public void initModelAndDataset(String modelId, String datasetTableId) {
+		addNew.getAsr().setModelId(modelId);
+		addNew.getAsr().setDatasetTableId(datasetTableId);
+		searchObject.setModelId(modelId);
+		searchObject.setDatasetTableId(datasetTableId);
+	}
 
-    public long getAsrListSize() {
-        return asrList == null ? 0 : asrList.size();
-    }
+	private abbott.ai.tcgm.action.form.AsrForm buildSnapshot() {
+		abbott.ai.tcgm.action.form.AsrForm snap = new abbott.ai.tcgm.action.form.AsrForm();
+		snap.setSearchObject(searchObject);
+		snap.setAsrList(new Vector<>(asrList));
+		snap.setAsrErrorList(new Vector<>(asrErrorList));
+		snap.setPagingFilter(pagingFilter);
+		snap.setSortObject(sortObject);
+		snap.setAddNew(addNew);
+		snap.setErrs(errs);
+		snap.setCmd(cmd);
+		snap.setFocusField(focusField);
+		snap.setRowToCopy(rowToCopy);
+		return snap;
+	}
 
-    public long getAsrErrorListSize() {
-        return asrErrorList == null ? 0 : asrErrorList.size();
-    }
+	@StrutsParameter
+	public long getAsrListSize() {
+		return asrList == null ? 0 : asrList.size();
+	}
 
-    /**
-     * List-level getter — satisfies OGNL for:
-     *   <s:if test="asrListItem != null && !asrListItem.isEmpty()">
-     *   <s:iterator value="asrListItem" ...>
-     */
-    public List<Asr> getAsrListItem() {
-        return asrList;
-    }
+	@StrutsParameter
+	public long getAsrErrorListSize() {
+		return asrErrorList == null ? 0 : asrErrorList.size();
+	}
 
-    @StrutsParameter(depth = 2)
-    public void setAsrListItem(List<Asr> asrListItem) {
-        this.asrList = asrListItem;
-    }
+	/**
+	 * List-level getter — satisfies OGNL for:
+	 * <s:if test="asrListItem != null && !asrListItem.isEmpty()"> <s:iterator
+	 * value="asrListItem" ...>
+	 */
+	@StrutsParameter(depth = 3)
+	public List<Asr> getAsrListItem() {
+		return asrList;
+	}
 
-    /** Indexed getter — satisfies Struts2 binding: asrListItem[n].xxx */
-    public Asr getAsrListItem(int index) {
-        if (asrList == null) return null;
-        if (index >= 0 && index < asrList.size()) return asrList.get(index);
-        return null;
-    }
+	@StrutsParameter(depth = 3)
+	public void setAsrListItem(List<Asr> asrListItem) {
+		this.asrList = asrListItem;
+	}
 
-    /** Indexed setter — satisfies Struts2 binding: asrListItem[n].xxx */
-    public void setAsrListItem(int index, Asr asr) {
-        if (asrList == null) asrList = new ArrayList<>();
-        while (asrList.size() <= index) asrList.add(new Asr());
-        asrList.set(index, asr);
-    }
+	/** Indexed getter — satisfies Struts2 binding: asrListItem[n].xxx */
+	@StrutsParameter(depth = 3)
+	public Asr getAsrListItem(int index) {
+		if (asrList == null)
+			return null;
+		if (index >= 0 && index < asrList.size())
+			return asrList.get(index);
+		return null;
+	}
 
-    public int getRowToCopyInt() {
-        try { return Integer.parseInt(rowToCopy); } catch (Exception e) { return -1; }
-    }
+	/** Indexed setter — satisfies Struts2 binding: asrListItem[n].xxx */
+	@StrutsParameter
+	public void setAsrListItem(int index, Asr asr) {
+		if (asrList == null)
+			asrList = new ArrayList<>();
+		while (asrList.size() <= index)
+			asrList.add(new Asr());
+		asrList.set(index, asr);
+	}
 
-    // --- Getters & Setters with @StrutsParameter ---
+	public int getRowToCopyInt() {
+		try {
+			return Integer.parseInt(rowToCopy);
+		} catch (Exception e) {
+			return -1;
+		}
+	}
 
-    public Asr getSearchObject() { return searchObject; }
-    @StrutsParameter(depth = 1)
-    public void setSearchObject(Asr searchObject) { this.searchObject = searchObject; }
+	// --- Getters & Setters with @StrutsParameter ---
 
-    public List<Asr> getAsrList() { return asrList; }
-    @StrutsParameter(depth = 2)
-    public void setAsrList(List<Asr> asrList) { this.asrList = asrList; }
+	@StrutsParameter(depth = 3)
+	public Asr getSearchObject() {
+		return searchObject;
+	}
 
-    public List<Asr> getAsrErrorList() { return asrErrorList; }
-    @StrutsParameter(depth = 2)
-    public void setAsrErrorList(List<Asr> asrErrorList) { this.asrErrorList = asrErrorList; }
+	@StrutsParameter(depth = 1)
+	public void setSearchObject(Asr searchObject) {
+		this.searchObject = searchObject;
+	}
 
-    public PagingFilter getPagingFilter() { return pagingFilter; }
-    @StrutsParameter(depth = 1)
-    public void setPagingFilter(PagingFilter pagingFilter) { this.pagingFilter = pagingFilter; }
+	public List<Asr> getAsrList() {
+		return asrList;
+	}
 
-    public Sort getSortObject() { return sortObject; }
-    @StrutsParameter(depth = 1)
-    public void setSortObject(Sort sortObject) { this.sortObject = sortObject; }
+	@StrutsParameter(depth = 2)
+	public void setAsrList(List<Asr> asrList) {
+		this.asrList = asrList;
+	}
 
-    public AsrTran getAddNew() { return addNew; }
-    @StrutsParameter(depth = 2)
-    public void setAddNew(AsrTran addNew) { this.addNew = addNew; }
+	@StrutsParameter
+	public List<Asr> getAsrErrorList() {
+		return asrErrorList;
+	}
 
-    public String getErrs() { return errs == null ? "" : errs.trim(); }
-    @StrutsParameter
-    public void setErrs(String errs) { this.errs = errs; }
+	@StrutsParameter
+	public void setAsrErrorList(List<Asr> asrErrorList) {
+		this.asrErrorList = asrErrorList;
+	}
 
-    public String getCmd() { return cmd == null ? "" : cmd; }
-    @StrutsParameter
-    public void setCmd(String cmd) { this.cmd = cmd; }
+	@StrutsParameter(depth =1)
+	public PagingFilter getPagingFilter() {
+		return pagingFilter;
+	}
 
-    public String getFocusField() { return focusField; }
-    @StrutsParameter
-    public void setFocusField(String focusField) { this.focusField = focusField; }
+	@StrutsParameter(depth=1)
+	public void setPagingFilter(PagingFilter pagingFilter) {
+		this.pagingFilter = pagingFilter;
+	}
 
-    public String getRowToCopy() { return rowToCopy; }
-    @StrutsParameter
-    public void setRowToCopy(String rowToCopy) { this.rowToCopy = rowToCopy; }
+	@StrutsParameter(depth = 1)
+	public Sort getSortObject() {
+		return sortObject;
+	}
+
+	@StrutsParameter(depth = 1)
+	public void setSortObject(Sort sortObject) {
+		this.sortObject = sortObject;
+	}
+
+	@StrutsParameter(depth = 3)
+	public AsrTran getAddNew() {
+		return addNew;
+	}
+
+	@StrutsParameter(depth = 3)
+	public void setAddNew(AsrTran addNew) {
+		this.addNew = addNew;
+	}
+
+	@StrutsParameter
+	public String getErrs() {
+		return errs == null ? "" : errs.trim();
+	}
+
+	@StrutsParameter
+	public void setErrs(String errs) {
+		this.errs = errs;
+	}
+
+	@StrutsParameter
+	public String getCmd() {
+		return cmd == null ? "" : cmd;
+	}
+
+	@StrutsParameter
+	public void setCmd(String cmd) {
+		this.cmd = cmd;
+	}
+
+	@StrutsParameter
+	public String getFocusField() {
+		return focusField;
+	}
+
+	@StrutsParameter
+	public void setFocusField(String focusField) {
+		this.focusField = focusField;
+	}
+
+	@StrutsParameter
+	public String getRowToCopy() {
+		return rowToCopy;
+	}
+
+	@StrutsParameter
+	public void setRowToCopy(String rowToCopy) {
+		this.rowToCopy = rowToCopy;
+	}
 
 	@Override
-	public void withSession(Map<String, Object> arg0) {
-		this.session = session;		
+	public void withSession(Map<String, Object> session) {
+		this.session = session;
 	}
 }

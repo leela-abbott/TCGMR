@@ -14,7 +14,7 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>TCGM Factor model</title>
-    <script type="text/javascript" src="include/common.js"></script>
+   <script type="text/javascript" src="include/common.js"></script>
    <script type="text/javascript" language=javascript>
 	function getForm() {
 		return document.getElementById('mngFactorModelsForm');
@@ -109,7 +109,7 @@
     </div>
 </s:if>
 
-<s:if test="hasActionMessages()">
+ <s:if test="hasActionMessages()">
     <div class="message">
         <s:actionmessage />
     </div>
