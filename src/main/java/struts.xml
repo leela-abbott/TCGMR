@@ -668,7 +668,7 @@
 			<result name="success">/jsp/mngPerpetualModels.jsp</result>
 		</action>
 
-		<action name="mngUnits" class="abbott.ai.tcgm.action.MngUnits">
+		<action name="mngUnits" class="abbott.ai.tcgm17.action.MngUnits">
 			<result name="success">/jsp/mngUnits.jsp</result>
 		</action>
 

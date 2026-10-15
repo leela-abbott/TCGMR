@@ -23,7 +23,8 @@
     <%-- Replaced legacy scriptlet with safe Struts 2 scope evaluation --%>
     <title><s:property value="#attr.pageTitle" /></title>
 
-    <script type="text/javascript" src="/include/common.js"></script>
+    <%-- <script type="text/javascript" src="/include/common.js"></script> --%>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/include/common.js"></script>
 
     <c:choose>
         <c:when test="${pageScope.TCGMUser.role.accessLevel == 3 || pageScope.TCGMUser.role.name == 'TCGM_ADMIN'}">
