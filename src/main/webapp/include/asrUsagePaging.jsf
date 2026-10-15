@@ -1,4 +1,5 @@
-<%@ page import="abbott.ai.tcgm.action.form.AsrUsageForm" %>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<!-- Model Selection and Options -->
 <table border="0" width="780" cellpadding="0" cellspacing="0" height="0%">
 	<tr>
 		<td class="fltrTblHdng">
@@ -7,36 +8,31 @@
 		</td>
 		<td class="right">
 			<span id="modelDsp">
-				<nested:define id="factorModels" property="models" />
-				<% // Sridevi.K 7-12-05:  Call the removeOptions script onfocus event. So, add this as attribute to the html select tag%>
-				<html:select name="affasrForm" property="modelSelected" size="1" >
-				<%//Sridevi.K End .. %>
-					<option value="none"><none></option>
-					<html:options property="modelId" labelProperty="name" collection="factorModels" />
-				</html:select>
+				<s:select name="modelSelected" 
+						  size="1"
+						  list="models" 
+						  listKey="modelId" 
+						  listValue="name"
+						  headerKey="none" 
+						  headerValue="<none>"
+						  theme="simple" />
 			</span>
 		</td>
 		<td class="fltrTblHdng">
 			Reporting<br>
 			Aff<br>
 		</td>
-		<nested:define id="supAffList" property="supAffList" />
 		<td>
-		 <html:select name="affasrForm" property="supAffSelected" size="1" onchange='<%="javascript:setFilter();javascript:changeCmdAndSubmit(document.affasrForm,\'filter\');" %>'>
-				  <option value="-1">Select Affiliate</option>
-			  	<% String selected = null; 
-			  	   for (int i=0; i<affasrForm.getSupAffList().size(); i++) {
-			  	   if ( (affasrForm.getSupAffList().get(i)).equals(affasrForm.getSupAffSelected())) selected = "Selected";
-			  	%>
-				  <option value="<%=affasrForm.getSupAffList().get(i)%>" <%=selected%>><%=affasrForm.getSupAffList().get(i)%></option>
-				  <%  selected = null;} %>
-				  document.getElementById('affasrForm.getSupAffList().get(i)').addEventListener('change',javascript:setFilter()
-				  {location.reload;});
-			   </html:select>
-
+			<s:select name="supAffSelected" 
+					  size="1"
+					  list="supAffList"
+					  headerKey="-1" 
+					  headerValue="Select Affiliate"
+					  onchange="javascript:setFilter();javascript:changeCmdAndSubmit(document.affasrForm,'filter');"
+					  theme="simple" />
 		</td>
-                <td class="fltrTblHdng">
-                       <span id ="fetchedAllData">
+		<td class="fltrTblHdng">
+			<span id="fetchedAllData">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'fetchedData','affAsrDataFetched.do');">
 					<img src="images/btnDataFetched.png" border="0" alt="Data Fetch" /></a>
 			</span>
@@ -45,120 +41,106 @@
 			Update Option (Add/Chg/Del)<br>
 		</td>												
 		<td>
-			<select name="selUpdateType">
-				<option>A</option>
-				<option>C</option>
-				<option>D</option>
-			</select>
+			<s:select name="selUpdateType"
+					  list="{'A','C','D'}"
+					  theme="simple" />
 		</td>
 	</tr>
 </table>
+<!-- Pagination and Actions -->
 <table border="0" width="780" cellpadding="0" cellspacing="0" height="0%">
 	<tr>			
 		<td width="0%">
 			<span id="prevPageDiv">				
-					<nested:equal property="pagingFilter.dispPrevPage" value="true">
-						<a href="javascript:checkFilterDirtyFlag(document.affasrForm,'prevpage');" >
-							<img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
-						</a>
-					</nested:equal>
+				<s:if test="pagingFilter.dispPrevPage == true">
+					<a href="javascript:checkFilterDirtyFlag(document.affasrForm,'prevpage');">
+						<img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
+					</a>
+				</s:if>
 			</span>							
 		</td>
 		<td nowrap width="1%">
 			<div class="pagingInfo" id="pagingDiv">
-				<nested:notEqual property="asrListSize" value="0">
-					<nested:nest property="pagingFilter">
-						<nested:hidden property="startRecord" />
-						<nested:hidden property="recordsToRetrieve" />
-						<nested:hidden property="totalRecordsInSet" />
-						<nested:write property="startRecord" />-<nested:write property="endRecordForDisplay"/>/<nested:write property="totalRecordsInSet" /> 
-					</nested:nest>
-				</nested:notEqual>
+				<s:if test="asrListSize != 0">
+					<s:hidden name="pagingFilter.startRecord" />
+					<s:hidden name="pagingFilter.recordsToRetrieve" />
+					<s:hidden name="pagingFilter.totalRecordsInSet" />
+					<s:property value="pagingFilter.startRecord" />-<s:property value="pagingFilter.endRecordForDisplay"/>/<s:property value="pagingFilter.totalRecordsInSet" /> 
+				</s:if>
 			</div>
 		</td>
 		<td width="0%">
 			<span id="nextPageDiv">				
-					<nested:equal property="pagingFilter.dispNextPage" value="true" >
-						<a href="javascript:checkFilterDirtyFlag(document.affasrForm,'nextpage');">
-							<img src="images/btnPageRight.png" border="0" alt="Next Page" /></a>
-					</nested:equal>
+				<s:if test="pagingFilter.dispNextPage == true">
+					<a href="javascript:checkFilterDirtyFlag(document.affasrForm,'nextpage');">
+						<img src="images/btnPageRight.png" border="0" alt="Next Page" /></a>
+				</s:if>
 			</span>							
 		</td>
-		<nested:nest property="pagingFilter">
 		<td width="160">
-		<div class="fltrTblHdng">
-		Record # 
-		<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
-		 onkeyup="return autoTab(this, 7, event);" />
+			<div class="fltrTblHdng">
+				Record # 
+				<s:textfield name="pagingFilter.recordNumberInSet" 
+							 maxlength="7" 
+							 cssClass="fltrWidth7"
+							 onkeyup="return autoTab(this, 7, event);"
+							 theme="simple" />
+			</div>
 		</td>
-		</div>
-		</nested:nest>
 		<td width="0%">
-		<a href="javascript:changeCmdAndSubmit(document.affasrForm,'selectedrecordpage');">
-		<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
+			<a href="javascript:changeCmdAndSubmit(document.affasrForm,'selectedrecordpage');">
+				<img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
 		</td>	
-		
-		<%//  Date Modified: 12/13/2005
-		  //  Modified By  : Udaya B Aravapalli
-		  //  The Initiate button was no longer required and such is being removed.%>
-	 <td class="fltrTblHdng">
-			
+		<td class="fltrTblHdng">
+			<!-- Empty cell -->
 		</td>
-		<nested:define id="supAffList" property="supAffList" />
 		<td class="right">
-	    	  
-	  </td>
+			<!-- Empty cell -->
+		</td>
 		<td class="right">									
-			<span id ="copySelDiv">
+			<span id="copySelDiv">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'saveselected','affAsrSave.do');">
 					<img src="images/btnCopySelected.png" border="0" alt="Copy Selected"/></a>
 			</span>		
-			<span id ="copyAllDiv">
+			<span id="copyAllDiv">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'saveall','affAsrSave.do');">
 					<img src="images/btnCopyAll.png" border="0" alt="Copy All" /></a>
 			</span>
-                		
+		</td>
 		<td class="right">									
-			<span id ="delSelDiv">
+			<span id="delSelDiv">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'deleteselected','affAsrDelete.do');">
 					<img src="images/btnDeleteSelected.png" border="0" alt="Delete Selected"/></a>
 			</span>					
-			<span id ="delAllDiv">
+			<span id="delAllDiv">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'deleteall','affAsrDelete.do');">
 					<img src="images/btnDeleteAll.png" border="0" alt="Delete All" /></a>
 			</span>
 		</td>
 		<td class="pagingBtns">
-			<span id = "saveDiv" class="hidden">
+			<span id="saveDiv" class="hidden">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'save','affAsrSave.do');">
 					<img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
 			</span>
 		</td>
 		<td class="pagingBtns">
-			<span id = "cancelDiv" class="hidden">
+			<span id="cancelDiv" class="hidden">
 				<a href="javascript:chgActCmdSubmit(document.affasrForm,'cancel','affAsrMaint.do');">
 					<img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
 			</span>
 		</td>				
 	</tr>			
 </table>
-	<script language="JavaScript1.2" type="text/javascript">
-		function setFilter()
-		{
- 		  document.getElementById('searchObject.affiliate').value = document.forms[0].supAffSelected.options[document.forms[0].supAffSelected.selectedIndex].value;
-			if (document.getElementById('searchObject.affiliate').value == "-1")
-			{
-				document.getElementById('searchObject.cycleId').value = document.getElementById('searchObject.affiliate').value.substring(0,document.getElementById('searchObject.affiliate').value.indexOf("::"));
-				document.getElementById('searchObject.affiliate').value = document.getElementById('searchObject.affiliate').value.substring(document.getElementById('searchObject.affiliate').value.indexOf("::")+2,document.getElementById('searchObject.affiliate').value.lastIndexOf("::"));
-
-				//document.getElementById('searchObject.affiliate').value = "-1";
-			}
-			else
-			{
-
-				document.getElementById('searchObject.cycleId').value = document.getElementById('searchObject.affiliate').value.substring(0,document.getElementById('searchObject.affiliate').value.indexOf("::"));
-				document.getElementById('searchObject.affiliate').value = document.getElementById('searchObject.affiliate').value.substring(document.getElementById('searchObject.affiliate').value.indexOf("::")+2,document.getElementById('searchObject.affiliate').value.lastIndexOf("::"));
-
-			}
+<script language="JavaScript1.2" type="text/javascript">
+	function setFilter() {
+		var selectedValue = document.forms[0].supAffSelected.options[document.forms[0].supAffSelected.selectedIndex].value;
+		document.getElementById('searchObject.affiliate').value = selectedValue;
+		if (document.getElementById('searchObject.affiliate').value == "-1") {
+			document.getElementById('searchObject.cycleId').value = document.getElementById('searchObject.affiliate').value.substring(0, document.getElementById('searchObject.affiliate').value.indexOf("::"));
+			document.getElementById('searchObject.affiliate').value = document.getElementById('searchObject.affiliate').value.substring(document.getElementById('searchObject.affiliate').value.indexOf("::") + 2, document.getElementById('searchObject.affiliate').value.lastIndexOf("::"));
+		} else {
+			document.getElementById('searchObject.cycleId').value = document.getElementById('searchObject.affiliate').value.substring(0, document.getElementById('searchObject.affiliate').value.indexOf("::"));
+			document.getElementById('searchObject.affiliate').value = document.getElementById('searchObject.affiliate').value.substring(document.getElementById('searchObject.affiliate').value.indexOf("::") + 2, document.getElementById('searchObject.affiliate').value.lastIndexOf("::"));
 		}
-	</script>
+	}
+</script>

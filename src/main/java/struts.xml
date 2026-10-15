@@ -101,7 +101,7 @@
 		</action>
 
 		<action name="affAsrMaint"
-			class="abbott.ai.tcgm.action.asr.AsrUsageMaint">
+			class="abbott.ai.tcgm17.action.asr.AsrUsageMaint">
 			<result name="input">/jsp/asrUsage.jsp</result>
 			<result name="success">/jsp/asrUsage.jsp</result>
 		</action>
