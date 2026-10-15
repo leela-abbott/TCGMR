@@ -389,7 +389,7 @@
 		</action>
 
 		<action name="affBpcMaint"
-			class="abbott.ai.tcgm.action.affbpc.AffBpcMaint">
+			class="abbott.ai.tcgm17.action.affbpc.AffBpcMaint">
 			<result name="input">/jsp/affBpc.jsp</result>
 			<result name="success">/jsp/affBpc.jsp</result>
 			<result name="failure">/jsp/login.jsp</result>
