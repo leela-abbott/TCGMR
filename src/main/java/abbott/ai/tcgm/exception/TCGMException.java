@@ -58,7 +58,9 @@ public class TCGMException extends Exception {
         this.errorMessage = pErrorMessage;
     }
 
-    // Getters
+
+
+	// Getters
     public String getThrowingClass() { return this.throwingClass; }
     public String getThrowingMethod() { return this.throwingMethod; }
     public String getParameterList() { return this.parameterList; }

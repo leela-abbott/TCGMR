@@ -33,7 +33,7 @@
 			<result>/jsp/login.jsp</result>
 		</action>
 
-		<action name="tcgmAjax" class="abbott.ai.tcgm.action.TCGMAjax">
+		<action name="tcgmAjax" class="abbott.ai.tcgm17.action.TCGMAjaxAction">
 			<result name="input">/jsp/burstMaint.jsp</result>
 			<result name="failure">/jsp/login.jsp</result>
 			<result name="success">/jsp/login.jsp</result>

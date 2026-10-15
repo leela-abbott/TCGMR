@@ -27,7 +27,6 @@ import abbott.ai.tcgm.helpers.*;
 import abbott.ai.tcgm.*;
 import abbott.ai.tcgm.process.*;
 
-
 public class MngAnalysisModelsAction extends TCGMAction implements SessionAware, ServletRequestAware {
 
 	private static final long serialVersionUID = 1L;
@@ -49,7 +48,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	private boolean chkRestrict;
 	private boolean restrictionEntered;
 	private String modelSelected;
-	private Vector models;
+	private Vector<AnalysisModel> models;
 	private String jobName;
 	private String selReportDest;
 	private boolean chkImmediate;
@@ -73,7 +72,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 						&& !this.getCmd().equalsIgnoreCase("CANCEL")) {
 					if (this.isChkRestrict() && !this.isRestrictionEntered()) {
 						session.put("restrictionForm", this);
-						return "restrictions"; 
+						return "restrictions";
 					} else {
 						if (this.getCmd().equalsIgnoreCase("ADD_JOB") && TCGMUtil.isEmpty(this.getModelSelected())) {
 							addActionError(getText("error.model.none_selected"));
@@ -83,11 +82,12 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 
 						processCmd(req);
 						this.reset();
+						this.setupForm(req);
 						return SUCCESS;
 					}
 				} else {
 					this.setupForm(req);
-					return SUCCESS; 
+					return SUCCESS;
 				}
 			}
 		} catch (TCGMException ex) {
@@ -99,7 +99,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	}
 
 	private void processCmd(HttpServletRequest req) throws TCGMException {
-		UserToken ut = this.getUserToken(req);
+		UserToken ut = this.getUserToken();
 		String currentCmd = this.getCmd();
 
 		if (currentCmd.equalsIgnoreCase("FETCH_PROD_HEADERS")) {
@@ -213,7 +213,13 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 			this.setShowAnalModel("open");
 		}
 
-		this.setModels(mm.getModels(ut, analModel));
+		Vector<AnalysisModel> fetchedModels = mm.getModels(ut, analModel);
+		if (fetchedModels == null) {
+			this.setModels(new Vector<AnalysisModel>());
+		} else {
+			this.setModels(fetchedModels);
+		}
+
 		session.put("mngAnalysisModelsForm", this);
 		req.getSession().setAttribute("mngAnalysisModelsForm", this);
 	}
@@ -264,10 +270,10 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		AnalysisModel currentModel;
 
 		if (this.getModels() != null && this.getModels().size() > 0) {
-			Vector v = this.getModels();
-			Iterator iterator = v.iterator();
+			Vector<AnalysisModel> v = this.getModels();
+			Iterator<AnalysisModel> iterator = v.iterator();
 			while (iterator.hasNext()) {
-				currentModel = (AnalysisModel) iterator.next();
+				currentModel = iterator.next();
 				sb.append("['");
 				sb.append("<b>Desc:</b> ").append(TCGMUtil.escapeString(currentModel.getDesc())).append("<br>");
 				sb.append("<b>Base Factor Model:</b> ")
@@ -402,7 +408,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 
 	@StrutsParameter
 	public void setCmd(String cmd) {
-		this.cmd = cmd;
+		this.cmd = (cmd != null && cmd.contains(",")) ? cmd.split(",")[0].trim() : cmd;
 	}
 
 	public boolean isChkRestrict() {
@@ -432,11 +438,12 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		this.modelSelected = modelSelected;
 	}
 
-	public Vector getModels() {
+	public Vector<AnalysisModel> getModels() {
 		return models;
 	}
 
-	public void setModels(Vector models) {
+	@StrutsParameter
+	public void setModels(Vector<AnalysisModel> models) {
 		this.models = models;
 	}
 
