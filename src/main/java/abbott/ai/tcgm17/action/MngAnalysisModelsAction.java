@@ -1,17 +1,13 @@
 package abbott.ai.tcgm17.action;
 
-import java.io.IOException;
 import java.util.Vector;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.ActionSupport;
 import org.apache.struts2.action.SessionAware;
 import org.apache.struts2.action.ServletRequestAware;
 
@@ -32,7 +28,6 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	private static final long serialVersionUID = 1L;
 
 	private Map<String, Object> session;
-	private HttpServletRequest request;
 
 	protected static final Logger logger = LogManager.getLogger(MngAnalysisModelsAction.class);
 	protected String className = this.getClass().getName();
@@ -48,17 +43,26 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	private boolean chkRestrict;
 	private boolean restrictionEntered;
 	private String modelSelected;
-	private Vector<AnalysisModel> models;
+	private Vector models;
 	private String jobName;
 	private String selReportDest;
 	private boolean chkImmediate;
 	private ReportRestriction restrictions;
 	private TCGMModel.Type modelType = TCGMModel.Type.ANALYSIS;
 	private String formHandler = "mngAnalysisModels.action";
-	private List<Map<String, String>> destinationList = new ArrayList<>();
+	private static Vector<Option> destinationList;
+	private String[] operations;
 
 	public MngAnalysisModelsAction() {
 		super();
+		if (destinationList == null) {
+			destinationList = new Vector<Option>(3);
+			destinationList.add(new Option("Run Only", "0"));
+			destinationList.add(new Option("Generate Report", "G"));
+			destinationList.add(new Option("Generate & Print Report", "GP"));
+		}
+		this.restrictions = new ReportRestriction();
+		this.operations = ReportRestriction.Operations;
 	}
 
 	@Override
@@ -81,8 +85,12 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 						}
 
 						processCmd(req);
-						this.reset();
+						if (this.getCmd().equalsIgnoreCase("CLOSE_MODEL")
+								|| this.getCmd().equalsIgnoreCase("OPEN_MODEL")) {
+							this.setModelSelected("");
+						}
 						this.setupForm(req);
+						this.reset();
 						return SUCCESS;
 					}
 				} else {
@@ -181,24 +189,11 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	private void setupForm(HttpServletRequest req) throws TCGMException {
 		ModelMngr mm = new ModelMngr();
 		UserToken ut = this.getUserToken(req);
+		if (ut == null) {
+			logger.error("UserToken context could not be resolved. Session may have expired.");
+			throw new TCGMException(this.className, "setupForm", "User authorization token is missing or expired.");
+		}
 		AnalysisModel analModel = new AnalysisModel();
-
-		this.destinationList.clear();
-		Map<String, String> opt1 = new HashMap<>();
-		opt1.put("value", "G");
-		opt1.put("label", "Generate Report");
-		this.destinationList.add(opt1);
-
-		Map<String, String> opt2 = new HashMap<>();
-		opt2.put("value", "P");
-		opt2.put("label", "Printer");
-		this.destinationList.add(opt2);
-
-		Map<String, String> opt3 = new HashMap<>();
-		opt3.put("value", "F");
-		opt3.put("label", "File");
-		this.destinationList.add(opt3);
-
 		String currentViewStatus = this.getShowAnalModel();
 		this.reset();
 
@@ -213,13 +208,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 			this.setShowAnalModel("open");
 		}
 
-		Vector<AnalysisModel> fetchedModels = mm.getModels(ut, analModel);
-		if (fetchedModels == null) {
-			this.setModels(new Vector<AnalysisModel>());
-		} else {
-			this.setModels(fetchedModels);
-		}
-
+		this.setModels(mm.getModels(ut, analModel));
 		session.put("mngAnalysisModelsForm", this);
 		req.getSession().setAttribute("mngAnalysisModelsForm", this);
 	}
@@ -270,10 +259,10 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		AnalysisModel currentModel;
 
 		if (this.getModels() != null && this.getModels().size() > 0) {
-			Vector<AnalysisModel> v = this.getModels();
-			Iterator<AnalysisModel> iterator = v.iterator();
+			Vector v = this.getModels();
+			Iterator iterator = v.iterator();
 			while (iterator.hasNext()) {
-				currentModel = iterator.next();
+				currentModel = (AnalysisModel) iterator.next();
 				sb.append("['");
 				sb.append("<b>Desc:</b> ").append(TCGMUtil.escapeString(currentModel.getDesc())).append("<br>");
 				sb.append("<b>Base Factor Model:</b> ")
@@ -305,6 +294,9 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		this.cmd = "";
 	}
 
+	protected boolean isSessionValid(HttpServletRequest req) {
+		return true;
+	}
 
 	public String getRestrictionStr() {
 		StringBuffer sb = new StringBuffer();
@@ -398,7 +390,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 
 	@StrutsParameter
 	public void setCmd(String cmd) {
-		this.cmd = (cmd != null && cmd.contains(",")) ? cmd.split(",")[0].trim() : cmd;
+		this.cmd = cmd;
 	}
 
 	public boolean isChkRestrict() {
@@ -428,12 +420,11 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 		this.modelSelected = modelSelected;
 	}
 
-	public Vector<AnalysisModel> getModels() {
+	public Vector getModels() {
 		return models;
 	}
 
-	@StrutsParameter
-	public void setModels(Vector<AnalysisModel> models) {
+	public void setModels(Vector models) {
 		this.models = models;
 	}
 
@@ -460,14 +451,6 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	@StrutsParameter
 	public void setJobName(String jobName) {
 		this.jobName = (jobName != null && jobName.contains(",")) ? jobName.split(",")[0].trim() : jobName;
-	}
-
-	public List<Map<String, String>> getDestinationList() {
-		return this.destinationList;
-	}
-
-	public void setDestinationList(List<Map<String, String>> destinationList) {
-		this.destinationList = destinationList;
 	}
 
 	public String getSelReportDest() {
@@ -497,6 +480,8 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 	public void withServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-	
 
+	public Vector getDestinationList() {
+		return destinationList;
+	}
 }

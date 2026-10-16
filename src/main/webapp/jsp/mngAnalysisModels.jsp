@@ -5,10 +5,30 @@
 <%@ page import="abbott.ai.tcgm.entities.User"%>
 <%!String pageTitle = "Factor Analysis Model Management";%>
 
+
 <%@ include file="/include/header.jsf"%>
 <s:set var="TCGMUser" value="#session['TCGMUser']" scope="page" />
 
+
 <style type="text/css">
+.dataDisp {
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: normal !important;
+	color: #000000 !important;
+	text-align: left !important;
+	line-height: 1.4 !important;
+	padding: 6px 8px !important;
+	display: block !important;
+}
+
+.dataDisp b, .dataDisp strong {
+	font-family: Arial, Helvetica, sans-serif !important;
+	font-size: 14px !important;
+	font-weight: bold !important;
+	color: #1A365D !important;
+}
+
 fieldset {
 	border: 1px solid #B0C4DE;
 	border-radius: 4px;
@@ -72,17 +92,22 @@ select#modelSelected {
 </style>
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<c:set var="pageTitle" value="Factor Analysis Model Management"
+		scope="request" />
 	<%@ include file="/include/masthead.jsf"%>
-	<%@ include file="/include/errorDisplay.jsf"%>
+
 
 	<s:form id="mngAnalysisModelsForm" name="mngAnalysisModelsForm"
 		action="mngAnalysisModels" method="post" theme="simple">
 		<div id="divToHide">
+			<div id="strutsActionErrorsContainer"
+				style="display: block; text-align: center;">
+				<%@ include file="/include/errorDisplay.jsf"%>
+			</div>
+
 			<%@ include file="/include/jobOptions.jsf"%>
 
 			<s:hidden name="showAnalModel" id="showAnalModel" />
-			<s:hidden name="cmd" id="cmd" />
-			<s:hidden name="jobName" id="jobName" />
 
 			<TABLE class="tableCommand">
 				<s:if test='showAnalModel == "open"'>
@@ -120,8 +145,7 @@ select#modelSelected {
 												onclick="location.href='createAnalysisModel.action'">Create
 												New Model</button> <br> <br>
 											<button type="button" class="btn-html btn-calculate"
-												onclick="addJob(this.form, 'ANL_CALC')">Calculate
-												Analysis</button>
+												onclick="addJob('ANL_CALC')">Calculate Analysis</button>
 										</td>
 										<td width="330"><div id="divModelDetail" class="dataDisp"></div></td>
 									</tr>
@@ -185,63 +209,59 @@ select#modelSelected {
 										<table width="100" cellpadding="4" cellspacing="2">
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_EXSUMMRY')">Sales
-														Extended Summary</button></td>
+														onclick="addJob('ANL_EXSUMMRY')">Sales Extended
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_WSUMMRY')">Sales
-														World Summary</button></td>
+														onclick="addJob('ANL_WSUMMRY')">Sales World
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_XSEC_SUM')">Sales
-														Sector Summary</button></td>
+														onclick="addJob('ANL_XSEC_SUM')">Sales Sector
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_ARSUMMRY')">Sales
-														Area Region Smry</button></td>
+														onclick="addJob('ANL_ARSUMMRY')">Sales Area
+														Region Smry</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_SAMPEX')">Sample
-														Extended Summary</button></td>
+														onclick="addJob('ANL_SAMPEX')">Sample Extended
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_SAMPW')">Sample
-														World Smry</button></td>
+														onclick="addJob('ANL_SAMPW')">Sample World Smry</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_SAMSEC_SUM')">Sample
-														Sector Summary</button></td>
+														onclick="addJob('ANL_SAMSEC_SUM')">Sample Sector
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_SAMPAR')">Sample
-														Area Region Summary</button></td>
+														onclick="addJob('ANL_SAMPAR')">Sample Area Region
+														Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_PUSRCSUM')">Extended
-														Summary by Src</button></td>
+														onclick="addJob('ANL_PUSRCSUM')">Extended Summary
+														by Src</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_PUSUMMRY')">Per
-														Unit Summary</button></td>
+														onclick="addJob('ANL_PUSUMMRY')">Per Unit Summary</button></td>
 											</tr>
 											<tr>
 												<td width="225"><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_REJECTS')">Unable
-														To Analyze</button></td>
+														onclick="addJob('ANL_REJECTS')">Unable To Analyze</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="addJob(this.form, 'ANL_DETAIL')">Detail
-														Analysis</button></td>
+														onclick="addJob('ANL_DETAIL')">Detail Analysis</button></td>
 											</tr>
 										</table>
 									</td>
@@ -262,22 +282,22 @@ select#modelSelected {
 										<table border="0">
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="confirmAndAddJob(this.form, 'ANL_PSUM_PUB')">Pub
+														onclick="confirmAndAddJob('ANL_PSUM_PUB')">Pub
 														Per Unit Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="confirmAndAddJob(this.form, 'ANL_XTSM_400')">Pub
+														onclick="confirmAndAddJob('ANL_XTSM_400')">Pub
 														Sales Ext Summary</button></td>
 											</tr>
 											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="confirmAndAddJob(this.form, 'ANL_PSUM_400')">Pub
+														onclick="confirmAndAddJob('ANL_PSUM_400')">Pub
 														Sales Sector Smry</button></td>
 											</tr>
-																				<tr>
+											<tr>
 												<td><button type="button" class="btn-html"
-														onclick="confirmAndAddJob(this.form, 'ANL_PSSES_AREA')">Pub
+														onclick="confirmAndAddJob('ANL_PSSES_AREA')">Pub
 														Sales Samples Ext Smry Area</button></td>
 											</tr>
 											<tr>
@@ -294,12 +314,12 @@ select#modelSelected {
 								</tr>
 								<tr>
 									<td><button type="button" class="btn-html"
-											onclick="changeCmdAndSubmit(this.form, 'FETCH_TEST_HEADERS')">Fetch
+											onclick="changeCmdAndSubmit('FETCH_TEST_HEADERS')">Fetch
 											Test Header Labels</button></td>
 								</tr>
 								<tr>
 									<td><button type="button" class="btn-html"
-											onclick="changeCmdAndSubmit(this.form, 'FETCH_PROD_HEADERS')">Fetch
+											onclick="changeCmdAndSubmit('FETCH_PROD_HEADERS')">Fetch
 											Production Labels</button></td>
 								</tr>
 								<tr>
@@ -316,6 +336,7 @@ select#modelSelected {
 	<p>&nbsp;</p>
 
 	<script language="javascript">
+		var detailArray = <s:property value="modelDetailArrayString" escapeHtml="false" />;
 		function deleteModel(se) {
 			if (!se || se.value == 0) {
 				alert("You must select a model to delete.");
@@ -325,9 +346,20 @@ select#modelSelected {
 			if (confirm("Are you sure that you would like to delete "
 					+ modelName
 					+ "?\nThis will delete all attributes and can not be undone.")) {
-				changeActionAndSubmit(document
-						.getElementById('mngAnalysisModelsForm'),
-						"deleteAnalysisModel.action");
+				var form = document.getElementById('mngAnalysisModelsForm');
+				var cmdElements = form.elements['cmd'];
+				if (cmdElements) {
+					if (cmdElements.length) {
+						for (var i = cmdElements.length - 1; i >= 0; i--) {
+							cmdElements[i].value = 'DELETE_MODEL';
+						}
+					} else {
+						cmdElements.value = 'DELETE_MODEL';
+					}
+				}
+
+				form.action = "deleteAnalysisModel.action";
+				form.submit();
 			}
 		}
 
@@ -339,9 +371,20 @@ select#modelSelected {
 			var modelName = se.options[se.selectedIndex].text;
 			if (confirm("Are you sure that you would like to close "
 					+ modelName + "?")) {
-				changeActionAndSubmit(document
-						.getElementById('mngAnalysisModelsForm'),
-						"closeAnalysisModel.action");
+				var form = document.getElementById('mngAnalysisModelsForm');
+				var cmdElements = form.elements['cmd'];
+				if (cmdElements) {
+					if (cmdElements.length) {
+						for (var i = cmdElements.length - 1; i >= 0; i--) {
+							cmdElements[i].value = 'CLOSE_MODEL';
+						}
+					} else {
+						cmdElements.value = 'CLOSE_MODEL';
+					}
+				}
+
+				form.action = "closeAnalysisModel.action";
+				form.submit();
 			}
 		}
 
@@ -353,19 +396,40 @@ select#modelSelected {
 			var modelName = se.options[se.selectedIndex].text;
 			if (confirm("Are you sure that you would like to open " + modelName
 					+ "?")) {
-				changeActionAndSubmit(document
-						.getElementById('mngAnalysisModelsForm'),
-						"openAnalysisModel.action");
+				var form = document.getElementById('mngAnalysisModelsForm');
+
+				var cmdElements = form.elements['cmd'];
+				if (cmdElements) {
+					if (cmdElements.length) {
+						for (var i = cmdElements.length - 1; i >= 0; i--) {
+							cmdElements[i].value = 'OPEN_MODEL';
+						}
+					} else {
+						cmdElements.value = 'OPEN_MODEL';
+					}
+				}
+
+				form.action = "mngAnalysisModels.action";
+				form.submit();
 			}
 		}
 
 		function updateDetails() {
 			document.body.style.cursor = 'wait';
-			var selectedVal = document.getElementById('modelSelected').value;
-			processActiveURL(
-					'tcgmAjax.action?cascadingCmd=ModelInfo&cascadingVal='
-							+ selectedVal + '&cascadingSecVal=ANALYSIS',
-					'divModelDetail');
+			var selectEl = document.getElementById('modelSelected');
+			var detailDiv = document.getElementById('divModelDetail');
+
+			if (selectEl && detailDiv) {
+				var selectedIndex = selectEl.selectedIndex;
+
+				// Safely extract the pre-compiled description matching the selected list index position
+				if (selectedIndex >= 0 && detailArray
+						&& detailArray[selectedIndex]) {
+					detailDiv.innerHTML = detailArray[selectedIndex][0];
+				} else {
+					detailDiv.innerHTML = "";
+				}
+			}
 			document.body.style.cursor = "default";
 		}
 
@@ -376,68 +440,77 @@ select#modelSelected {
 			form.submit();
 		}
 
-		function changeActionAndSubmit(form, action) {
-			form.action = action;
-			form.submit();
-		}
+		function addJob(jobName) {
+			var form = document.getElementById('mngAnalysisModelsForm');
 
-		function processActiveURL(url, select) {
-			if (window.XMLHttpRequest) { 
-				req = new XMLHttpRequest();
-				try {
-					req.open("POST", url, false); 
-				} catch (e) {
-					alert("Problem Communicating with Server\n" + e);
-				}
-				req.setRequestHeader("Method", "POST " + url + " HTTP/1.1");
-				req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-				req.send(null);
-				processActVal(req, select);
-			} else if (window.ActiveXObject) { 
-				req = new ActiveXObject("Microsoft.XMLHTTP");
-				if (req) {
-					req.open("POST", url, false);
-					req.setRequestHeader("Method", "POST " + url + " HTTP/1.1");
-					req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-					req.send(null);
-					processActVal(req, select);
-				}
-			}
-		}
-
-		function processActVal(req, select) {
-			if (req.readyState == 4) { 
-				if (req.status == 200) { 
-					if (req.responseText != '') {
-						document.getElementById(select).innerHTML = req.responseText;
-					}
+			var selectEl = document.getElementById('modelSelected');
+			if (!selectEl || selectEl.value === "" || selectEl.value == 0) {
+				var errorDiv = document
+						.getElementById('strutsActionErrorsContainer');
+				if (errorDiv) {
+					errorDiv.innerHTML = "<div style='color: #FF0000; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; text-align: left; margin: 10px 0;'>• A model must be selected before using this command.</div>";
+					errorDiv.style.display = "block";
 				} else {
-					alert("Problem with server response:\n " + req.statusText);
+					alert("A model must be selected before using this command.");
 				}
+				return;
+			}
+
+			if (form) {
+				var cmdElements = form.elements['cmd'];
+				if (cmdElements) {
+					if (cmdElements.length) {
+						for (var i = cmdElements.length - 1; i >= 0; i--) {
+							cmdElements[i].value = 'ADD_JOB';
+						}
+					} else {
+						cmdElements.value = 'ADD_JOB';
+					}
+				}
+
+				var jobElements = form.elements['jobName'];
+				if (jobElements) {
+					if (jobElements.length) {
+						for (var j = jobElements.length - 1; j >= 0; j--) {
+							jobElements[j].value = jobName;
+						}
+					} else {
+						jobElements.value = jobName;
+					}
+				}
+
+				form.submit();
 			}
 		}
-		
 
-		function addJob(myForm, jobName) {
-		    document.getElementById('cmd').value = 'ADD_JOB'; 
-		    document.getElementById('jobName').value = jobName; 
-		    alert('Sales Extended Summary job submission');
-		    myForm.submit();
+		function confirmAndAddJob(jobName) {
+			var selectEl = document.getElementById('modelSelected');
+			if (!selectEl || selectEl.value === "" || selectEl.value == 0) {
+				addJob(jobName);
+				return;
+			}
+			var modelName = selectEl.options[selectEl.selectedIndex].text;
+			if (confirm("Are you sure you want to run this publish report for "
+					+ modelName + "?")) {
+				addJob(jobName);
+			}
 		}
 
-		function changeCmdAndSubmit(form, cmd) {
-		    document.getElementById('cmd').value = cmd;
-		    form.submit();
+		function changeCmdAndSubmit(cmdName) {
+			var form = document.getElementById('mngAnalysisModelsForm');
+			if (form) {
+				var cmdElements = form.elements['cmd'];
+				if (cmdElements) {
+					if (cmdElements.length) {
+						for (var i = cmdElements.length - 1; i >= 0; i--) {
+							cmdElements[i].value = cmdName;
+						}
+					} else {
+						cmdElements.value = cmdName;
+					}
+				}
+				form.submit();
+			}
 		}
-
-		function confirmAndAddJob(myForm, jobName) {
-		    if (confirm("Do you really want to export details ?")) {
-		        document.getElementById('cmd').value = 'ADD_JOB'; // Explicit ID target
-		        document.getElementById('jobName').value = jobName; // Explicit ID target
-		        myForm.submit();
-		    }
-		}
-
 	</script>
 	<%@ include file="/include/footer.jsf"%>
-									
