@@ -541,13 +541,13 @@
 		</action>
 
 		<action name="deleteAnalysisModel"
-			class="abbott.ai.tcgm.action.DeleteModel">
+			class="abbott.ai.tcgm17.action.DeleteModel">
 			<result name="success" type="redirectAction">mngAnalysisModels</result>
 			<result name="failure" type="redirectAction">mngAnalysisModels</result>
 		</action>
 
 		<action name="closeAnalysisModel"
-			class="abbott.ai.tcgm.action.CloseModel">
+			class="abbott.ai.tcgm17.action.CloseModel">
 			<result name="success" type="redirectAction">mngAnalysisModels</result>
 			<result name="failure" type="redirectAction">mngAnalysisModels</result>
 		</action>
