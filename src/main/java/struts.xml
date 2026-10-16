@@ -1060,11 +1060,7 @@
 		</action>
 
 		<action name="mngDataFeedLog"
-<<<<<<< Updated upstream
 			class="abbott.ai.tcgm17.action.MngDataFeedLogAction">
-=======
-			class="abbott.ai.tcgm17.action.MngDataFeedLog">
->>>>>>> Stashed changes
 			<result name="success">/jsp/mngDataFeedLog.jsp</result>
 		</action>
 
