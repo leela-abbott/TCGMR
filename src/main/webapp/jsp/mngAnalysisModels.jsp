@@ -415,22 +415,35 @@ select#modelSelected {
 		}
 
 		function updateDetails() {
-			document.body.style.cursor = 'wait';
 			var selectEl = document.getElementById('modelSelected');
 			var detailDiv = document.getElementById('divModelDetail');
 
 			if (selectEl && detailDiv) {
-				var selectedIndex = selectEl.selectedIndex;
+				var selectedVal = selectEl.value;
 
-				// Safely extract the pre-compiled description matching the selected list index position
-				if (selectedIndex >= 0 && detailArray
-						&& detailArray[selectedIndex]) {
-					detailDiv.innerHTML = detailArray[selectedIndex][0];
+				if (selectedVal && selectedVal != 0) {
+					document.body.style.cursor = 'wait';
+					fetch('tcgmAjax.action?cascadingCmd=ModelInfo&cascadingVal=' + selectedVal + '&cascadingSecVal=ANALYSIS')
+						.then(function(response) {
+							if (!response.ok) {
+								throw new Error('Network response was not ok');
+							}
+							return response.text();
+						})
+						.then(function(htmlResult) {
+							detailDiv.innerHTML = htmlResult;
+						})
+						.catch(function(error) {
+							console.error('Error fetching model specific details:', error);
+							detailDiv.innerHTML = "<span style='color:red;'>Error loading model details.</span>";
+						})
+						.finally(function() {
+							document.body.style.cursor = 'default';
+						});
 				} else {
 					detailDiv.innerHTML = "";
 				}
 			}
-			document.body.style.cursor = "default";
 		}
 
 		function showClosedModelDetails(stat) {

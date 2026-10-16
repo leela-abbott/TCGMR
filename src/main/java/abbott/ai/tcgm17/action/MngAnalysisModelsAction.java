@@ -85,8 +85,7 @@ public class MngAnalysisModelsAction extends TCGMAction implements SessionAware,
 						}
 
 						processCmd(req);
-						if (this.getCmd().equalsIgnoreCase("CLOSE_MODEL")
-								|| this.getCmd().equalsIgnoreCase("OPEN_MODEL")) {
+						if (this.getCmd().equalsIgnoreCase("CLOSE_MODEL")) {
 							this.setModelSelected("");
 						}
 						this.setupForm(req);

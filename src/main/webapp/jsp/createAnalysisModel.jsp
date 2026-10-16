@@ -1,111 +1,209 @@
-<%@ page import="abbott.ai.tcgm.entities.User" %>
-<%! String pageTitle="Create Factor Analysis";%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ include file="/include/header.jsf"%>
 
-
-<%@ include file="/include/header.jsf" %>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
- 
-<%@ include file="/include/masthead1.jsf" %>
- <%@ include file="/include/errorDisplay.jsf" %>
-<html:form name="createAnalysisModelForm" action="createAnalysisModel" type="abbott.ai.tcgm.action.form.CreateAnalysisModelForm">
-<bean:define id="unitSets"  name="createAnalysisModelForm" property="unitSets" />
-<bean:define id="factorModels"  name="createAnalysisModelForm" property="factorModels" />
-<nested:define id="periodMonthList" property="periodMonthList" />
+	<s:set var="pageTitle" value="'Create Factor Analysis'" scope="page" />
+	<%@ include file="/include/masthead.jsf"%>
+	<%@ include file="/include/errorDisplay.jsf"%>
 
-  <table class="tableCommand" >
-    <tr>
-      <td colspan="5" bgcolor="#b4d8f4" ><p class="tableHeading">Create New Factor
-        Analysis</p></td>
-    </tr> 
-    <tr>
-      <td width="22" class=right ></td>
-      <td width="361" class="commandOptionLabel" >Factor Analysis Model Name</td>
-      <td colspan="3"><html:text property="modelName" name="createAnalysisModelForm" size="30" styleClass="commandOption" maxlength="30"/></td>
-    </tr>
-    <tr>
-      <td width="22" class=right ></td>
-      <td class="commandOptionLabel">Model Desc</td>
-      <td colspan="3"><html:text property="modelDesc" name="createAnalysisModelForm" size="65" styleClass="commandOption" maxlength="80"/></td>
-    </tr>
+	<style type="text/css">
+/* Precise reproduction style layout rule matching production image button aesthetics */
+.btn-create-model {
+	display: inline-block;
+	background: linear-gradient(to bottom, #FFF7A1 0%, #FFD700 100%);
+	border: 1px solid #C2A800;
+	border-radius: 4px;
+	color: #333333;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 14px;
+	height: 24px;
+	cursor: pointer;
+	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+	transition: background 0.1s ease;
+}
 
-    <tr>
-      <td width="22" class=right ></td>
-      <td width="121" class="commandOptionLabel" >Base Factor Model</td>
-      <td width="150">
-	  <html:select property="baseModelSelected" name="createAnalysisModelForm" styleClass="commandOption" >
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-      </html:select></td>
-      <td width="127" class="commandOptionLabel">Period</td>
-      <td width="172">
-	  <html:select property="baseModelPeriod" name="createAnalysisModelForm" styleClass="commandOption" >
-	      <html:option value="13">13</html:option>
-          <html:options collection="periodMonthList" labelProperty="label" property="value" />
-      </html:select>
-	  </td>
-    </tr>
-    <tr>
-      <td width="22" class=right ></td>
-      <td width="201" class="commandOptionLabel">Analysis Factor Model</td>
-      <td><html:select property="analysisModelSelected" name="createAnalysisModelForm" styleClass="commandOption" >
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-      </html:select></td>
-      <td class="commandOptionLabel">Period</td>
-      <td><html:select property="analysisModelPeriod" name="createAnalysisModelForm" styleClass="commandOption" > 
-	  		<html:option value="13">13</html:option>               
-            <html:options collection="periodMonthList" labelProperty="label" property="value" />
-          </html:select></td>
-    </tr>
-    <tr>
-      <td width="22" class=right ></td>
-      <td width="127" class="commandOptionLabel">Base Units</td>
-      <td width="172"><html:select property="analysisUnitsSelected" name="createAnalysisModelForm" styleClass="commandOption" >
-          <html:options property="datasetTableId" labelProperty="datasetNameLogStamp" collection="unitSets" />
-      </html:select></td>
-      <td class="commandOptionLabel">Period</td>
-      <td>
-	  <html:select property="analysisUnitsPeriod" name="createAnalysisModelForm" styleClass="commandOption" >   
-	  		<html:option value="13">13</html:option>             
-            <html:options collection="periodMonthList" labelProperty="label" property="value" />
-      </html:select>
-	  </td>
-    </tr>
-    <tr>
-      <td class=right ></td>
-      <td class="commandOptionLabel">Analysis Units</td>
-      <td><html:select property="volumeUnitsSelected" name="createAnalysisModelForm" styleClass="commandOption" >
-          <html:options property="datasetTableId" labelProperty="datasetNameLogStamp" collection="unitSets" />
-      </html:select></td>
-      <td class="commandOptionLabel">Period</td>
-      <td>
-		<html:select property="volumeUnitsPeriod" name="createAnalysisModelForm" styleClass="commandOption" > 
-		    <html:option value="13">13</html:option>               
-            <html:options collection="periodMonthList" labelProperty="label" property="value" />
-        </html:select> 
-	  </td>
-    </tr>
-    
-    <!-- A.Winter - 7/1/05 - added textarea for memo -->
-	<tr>
-	  <td width="7" height="0" class=right ></td>
-	  <td  class="commandOptionLabel"> Memo: </td>
-	  <td colspan="3"  width="242" >
-	      <html:textarea property="memo" name="createAnalysisModelForm" cols="68" rows="7" onkeyup="return checkLength(this, 425);" styleClass="commandOption" />
-	  </td>
-	  </tr> 
-	   <!-- A.Winter - 7/1/05 - added textarea for memo -->
-    
-    <tr>
-      <td class=right ></td>
-      <td class="commandOptionLabel">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td class="commandOptionLabel">&nbsp;</td>
-      <td><a href="javascript:validateFormData(document.forms[0], 'CREATE_MODEL');"><img border="0" height="20" src="images/btnCreateModel.png" width="100"></a></td>
-    </tr>
-  </table>
-<nested:hidden property="cmd" />
-</html:form>
+.btn-create-model:hover {
+	background: linear-gradient(to bottom, #FFE86B 0%, #E6C000 100%);
+}
 
-<p>&nbsp; </p>
-<p>&nbsp;</p>
+.btn-create-model:active {
+	transform: translateY(1px);
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+</style>
 
-<%@ include file="/include/footer.jsf" %>
+	<s:if test="hasActionErrors()">
+		<div class="tcgm-error-msg-container">
+			<s:iterator value="actionErrors">
+				<span class="tcgm-error-msg-text"> <s:property
+						escapeHtml="false" />
+				</span>
+			</s:iterator>
+		</div>
+	</s:if>
+
+	<s:form id="createAnalysisModelForm" action="createAnalysisModel"
+		method="post" theme="simple">
+
+		<table class="tableCommand" width="820" cellpadding="3"
+			cellspacing="1" border="0">
+			<tr>
+				<td colspan="5" bgcolor="#b4d8f4">
+					<p class="tableHeading"
+						style="font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; margin: 4px; color: #1A365D;">Create
+						New Factor Analysis</p>
+				</td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<!-- EXACT FIX: Width set to 140 to force the label to wrap over two lines exactly like production -->
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Factor
+					Analysis Model Name</td>
+				<td colspan="3" align="left"><s:textfield name="modelName"
+						id="modelName" size="30" cssClass="commandOption" maxlength="30"
+						style="font-family: Arial; font-size: 12px; width: 220px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Model
+					Desc</td>
+				<td colspan="3" align="left"><s:textfield name="modelDesc"
+						id="modelDesc" size="65" cssClass="commandOption" maxlength="80"
+						style="font-family: Arial; font-size: 12px; width: 450px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Base
+					Factor Model</td>
+				<td width="320" align="left"><s:select name="baseModelSelected"
+						id="baseModelSelected" list="factorModels" listKey="modelId"
+						listValue="name" cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 310px;" /></td>
+				<td width="55" class="commandOptionLabel" align="right"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding-right: 8px;">Period</td>
+				<td width="290" align="left"><s:select name="baseModelPeriod"
+						id="baseModelPeriod" list="periodMonthList" listKey="value"
+						listValue="label" headerKey="13" headerValue="13"
+						cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 55px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Analysis
+					Factor Model</td>
+				<td align="left"><s:select name="analysisModelSelected"
+						id="analysisModelSelected" list="factorModels" listKey="modelId"
+						listValue="name" cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 310px;" /></td>
+				<td class="commandOptionLabel" align="right"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding-right: 8px;">Period</td>
+				<td align="left"><s:select name="analysisModelPeriod"
+						id="analysisModelPeriod" list="periodMonthList" listKey="value"
+						listValue="label" headerKey="13" headerValue="13"
+						cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 55px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Base
+					Units</td>
+				<td align="left"><s:select name="analysisUnitsSelected"
+						id="analysisUnitsSelected" list="unitSets"
+						listKey="datasetTableId" listValue="datasetNameLogStamp"
+						cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 620px;" /></td>
+				<td class="commandOptionLabel" align="right"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding-right: 8px;">Period</td>
+				<td align="left"><s:select name="analysisUnitsPeriod"
+						id="analysisUnitsPeriod" list="periodMonthList" listKey="value"
+						listValue="label" headerKey="13" headerValue="13"
+						cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 55px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 4px 0;">Analysis
+					Units</td>
+				<td align="left"><s:select name="volumeUnitsSelected"
+						id="volumeUnitsSelected" list="unitSets" listKey="datasetTableId"
+						listValue="datasetNameLogStamp" cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 620px;" /></td>
+				<td class="commandOptionLabel" align="right"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding-right: 8px;">Period</td>
+				<td align="left"><s:select name="volumeUnitsPeriod"
+						id="volumeUnitsPeriod" list="periodMonthList" listKey="value"
+						listValue="label" headerKey="13" headerValue="13"
+						cssClass="commandOption"
+						style="font-family: Arial; font-size: 12px; width: 55px;" /></td>
+			</tr>
+
+			<tr>
+				<td width="15" class="right"></td>
+				<td width="140" class="commandOptionLabel"
+					style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; padding: 8px 0 valign: top;">Memo:</td>
+				<td colspan="3" align="left">
+					<!-- EXACT FIX: Adjusted dimensions and font styles to perfectly hold layout text without shifting surrounding elements -->
+					<s:textarea name="memo" id="memo" cols="60" rows="6"
+						onkeyup="return checkLength(this, 425);" cssClass="commandOption"
+						style="font-family: Arial, sans-serif; font-size: 12px; width: 450px; height: 110px; resize: none;" />
+				</td>
+			</tr>
+
+			<tr>
+				<td class="right">&nbsp;</td>
+				<td class="commandOptionLabel">&nbsp;</td>
+				<td colspan="3" align="right"
+					style="padding-top: 15px; padding-right: 172px;">
+					<button type="button" class="btn-create-model"
+						onclick="validateFormData(document.getElementById('createAnalysisModelForm'), 'CREATE_MODEL');">
+						Create Model</button>
+				</td>
+			</tr>
+		</table>
+
+		<s:hidden name="cmd" id="formCmd" />
+	</s:form>
+
+
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+
+	<script language="javascript">
+		function validateFormData(formObj, actionCmd) {
+			if (!formObj)
+				return;
+
+			var hiddenCmd = document.getElementById('formCmd');
+			if (hiddenCmd) {
+				hiddenCmd.value = actionCmd;
+				formObj.submit();
+			}
+		}
+
+		function checkLength(field, maxLimit) {
+			if (field.value.length > maxLimit) {
+				field.value = field.value.substring(0, maxLimit);
+				return false;
+			}
+			return true;
+		}
+	</script>
+
+	<%@ include file="/include/footer.jsf"%>
