@@ -1,6 +1,7 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%! String pageTitle="Data Feed Log"; %>
+<<<<<<< Updated upstream
 <%@ include file="../include/header.jsf" %>
 
 <style>
@@ -129,3 +130,47 @@
 </div>
 
 <%@ include file="../include/footer.jsf" %>
+=======
+<%@ include file="../include/header.jsf"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<%@ include file="../include/masthead.jsf"%>
+	<%@ include file="/include/errorDisplay.jsf"%>
+	<s:form method="post" name="mngDataFeedLogForm" action="mngDataFeedLog.action"
+		namespace="/" theme="simple">
+		<s:hidden name="cmd" />
+		<table class="tableCommand">
+			<tr>
+				<td colspan="4" align="right"><a
+					href="javascript:changeCmdAndSubmit(document.forms[0], 'DELETE_ALL')">
+						<img src="images/btnDeleteAll.png" border="0">
+				</a></td>
+			</tr>
+			<tr class="tableHeading">
+				<td>File</td>
+				<td>Start Time</td>
+				<td>End Time</td>
+				<td>Completion Message</td>
+			</tr>
+			<s:iterator value="logentrylist" var="logEntry" status="logStatus">
+				<%
+					Integer currentIndex = (Integer) pageContext.getAttribute("logStatus.index");
+					int rowNumber = (currentIndex != null) ? currentIndex.intValue() : 0;
+				%>
+				<abbott:row evenStyleClass="evenRow" oddStyleClass="oddRow"
+					rowNum="<%=rowNumber%>" id="mntRow">
+					<td class="mntLeft"><s:property value="#logEntry.fullFileName" />
+					</td>
+					<td class="mntLeft"><s:property
+							value="#logEntry.startTimeInStringFormat" /></td>
+					<td class="mntLeft"><s:property
+							value="#logEntry.endTimeInStringFormat" /></td>
+					<td class="mntLeft"><s:property
+							value="#logEntry.completionMsg" /></td>
+				</abbott:row>
+			</s:iterator>
+		</table>
+	</s:form>
+	<%@ include file="../include/footer.jsf"%>
+</body>
+>>>>>>> Stashed changes
