@@ -42,6 +42,13 @@ public class TCGMProductionForm extends TCGMForm {
 	private String modelLongDesc ="";  //A.Winter 
 	private String memo ="";  //A.Winter
 	private boolean restrictionEntered = false;
+	
+	public TCGMProductionForm(String jobName, boolean chkImmediate, String selReportDest) {
+		this.jobName = jobName;
+		this.chkImmediate = chkImmediate;
+		this.selReportDest = selReportDest;
+		
+	}
 
 	public TCGMProductionForm() {
 		if (destinationList == null) {

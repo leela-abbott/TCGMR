@@ -1049,7 +1049,7 @@
 		</action>
 
 		<action name="dataTransfers"
-			class="abbott.ai.tcgm.action.DataTransfers">
+			class="abbott.ai.tcgm17.action.DataTransfers">
 			<result name="input">/jsp/dataTransfers.jsp</result>
 			<result name="success">/jsp/dataTransfers.jsp</result>
 		</action>
