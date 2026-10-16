@@ -5,18 +5,79 @@
 <s:hidden name="jobName" id="jobName" />
 <s:hidden name="cmd" id="cmd" />
 
-<table class="tableJob" cellspacing="0">
-	<tr valign="middle">
-		<td class="tdJobHeader">Job Options</td>
-		<td width="10" class="tdJobOption">&nbsp;</td>
-		<td class="tdJobOption"><s:checkbox name="chkImmediate"
-				theme="simple" />Run Job Immediate</td>
-		<td width="180" class="tdJobOption">&nbsp;</td>
-		<td class="tdJobOption"><s:select name="selReportDest"
-				list="destinationList" listKey="value" listValue="label" value="'G'"
-				cssClass="smNormal" theme="simple" /></td>
-		<td class="tdJobOption"><s:checkbox name="chkRestrict"
-				theme="simple" /> Restrict Output &nbsp;&nbsp;&nbsp;&nbsp; <!-- <s:textfield name="numCopies" value="1" size="3" maxlength="3" cssClass="smNormal" theme="simple" /> Copies -->
+<style>
+	.tableJobContainer {
+		width: 100%;
+		border-collapse: collapse;
+		table-layout: auto;
+		font-family: Arial, Helvetica, sans-serif;
+		background-color: #0b4a7a;
+		color: #ffffff;
+	}
+
+	.tableJobContainer tr {
+		height: 28px; /* Reduced layout height for a slimmer bar */
+	}
+
+	.tdJobHeaderItem {
+		font-weight: bold;
+		font-style: italic;
+		font-size: 13px; /* Slightly smaller than normal */
+		padding: 0 15px 0 10px;
+		color: #ffffff;
+		white-space: nowrap;
+		width: 1%;
+	}
+
+	.tdJobOptionItem {
+		font-size: 12px; /* Smaller, compact font profile */
+		color: #ffffff;
+		vertical-align: middle;
+		padding: 2px 12px; /* Tight padding to minimize vertical footprint */
+		white-space: nowrap;
+	}
+
+	.tdJobOptionItemLast {
+		font-size: 12px;
+		color: #ffffff;
+		vertical-align: middle;
+		padding: 2px 12px;
+		white-space: nowrap;
+	}
+
+	.tdJobOptionItem input[type="checkbox"],
+	.tdJobOptionItemLast input[type="checkbox"] {
+		vertical-align: middle;
+		margin-right: 4px;
+		cursor: pointer;
+		width: 12px; /* Downsized checkbox dimensions */
+		height: 12px;
+	}
+
+	.smNormalDropdown {
+		padding: 2px 6px; /* Narrowed inside spacing */
+		font-size: 11px; /* Scaled down drop-down typography */
+		border: 1px solid #ffffff;
+		border-radius: 2px;
+		background-color: #ffffff;
+		color: #333333;
+		cursor: pointer;
+		height: 22px; /* Fixed small operational height */
+	}
+</style>
+
+<table class="tableJobContainer" cellspacing="0" cellpadding="0">
+	<tr>
+		<td class="tdJobHeaderItem">Job Options</td>
+		<td class="tdJobOptionItem">
+			<s:checkbox name="chkImmediate" theme="simple" />Run Job Immediate
 		</td>
+		<td class="tdJobOptionItem">
+			<s:select name="selReportDest" list="destinationList" listKey="value" listValue="label" value="'G'" cssClass="smNormalDropdown" theme="simple" />
+		</td>
+		<td class="tdJobOptionItemLast">
+			<s:checkbox name="chkRestrict" theme="simple" />Restrict Output
+		</td>
+		<td style="width: auto;">&nbsp;</td>
 	</tr>
 </table>

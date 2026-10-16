@@ -1,16 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page errorPage="/jsp/exception.jsp" %>
 <%@ page import="abbott.ai.tcgm.entities.Role" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib uri="/WEB-INF/taglib/abbott.tld" prefix="abbott" %>
 
-<%-- Expose session properties into page/session attributes for clean framework lookups --%>
 <s:set var="TCGMUser" value="#session['TCGMUser']" scope="page" />
 <s:set var="TCGMConstants" value="#session['abbott.ai.tcgm.TCGMConstants']" scope="session" />
 <s:set var="DBConst" value="#session['abbott.ai.tcgm.data.DBConst']" scope="session" />
 
-<%-- Handle Session Authentication Checking via Custom Taglib --%>
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 
 <!DOCTYPE html>
@@ -19,36 +16,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    
-    <%-- Replaced legacy scriptlet with safe Struts 2 scope evaluation --%>
     <title><s:property value="#attr.pageTitle" /></title>
-
-    <%-- <script type="text/javascript" src="/include/common.js"></script> --%>
     <script type="text/javascript" src="${pageContext.request.contextPath}/include/common.js"></script>
 
-    <c:choose>
-        <c:when test="${pageScope.TCGMUser.role.accessLevel == 3 || pageScope.TCGMUser.role.name == 'TCGM_ADMIN'}">
-            <%@ include file="../jsp/menu_admin.jsp" %>
-        </c:when>
+    <style>
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-        <c:when test="${pageScope.TCGMUser.role.accessLevel == 1 || pageScope.TCGMUser.role.accessLevel == 5 || pageScope.TCGMUser.role.name == 'TCGM_OPERATOR' || pageScope.TCGMUser.role.name == 'TCGM_QUERY'}">
-            <%@ include file="../jsp/menu_operator.jsp" %>
-        </c:when>
-
-        <c:when test="${pageScope.TCGMUser.role.accessLevel == 4 || pageScope.TCGMUser.role.name == 'TCGM_RPTADMIN'}">
-            <%@ include file="../jsp/menu_rptadmin.jsp" %>
-        </c:when>
-
-        <c:otherwise>
-            <%@ include file="../jsp/menu_supervisor.jsp" %>
-        </c:otherwise>
-    </c:choose>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            overflow-y: auto; 
+            overflow-x: auto;
+            background-color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .menuContainmentWrapper {
+            position: -webkit-sticky; 
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999; 
+            background-color: #013c67; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+    </style>
 
     <script type="text/javascript" src="include/mmenu.js"></script>
     <script type="text/javascript" src="include/AnchorPosition.js"></script>
     <script type="text/javascript" src="include/PopupWindow.js"></script>
     <script type="text/javascript" src="include/popupInit.js"></script>
 
-    <!-- Master Corporate Style Sheet Bindings Mapping -->
     <link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
 </head>
+<body>
+
+    <div class="menuContainmentWrapper">
+        <c:choose>
+            <c:when test="${pageScope.TCGMUser.role.accessLevel == 3 || pageScope.TCGMUser.role.name == 'TCGM_ADMIN'}">
+                <%@ include file="../jsp/menu_admin.jsp" %>
+            </c:when>
+    
+            <c:when test="${pageScope.TCGMUser.role.accessLevel == 1 || pageScope.TCGMUser.role.accessLevel == 5 || pageScope.TCGMUser.role.name == 'TCGM_OPERATOR' || pageScope.TCGMUser.role.name == 'TCGM_QUERY'}">
+                <%@ include file="../jsp/menu_operator.jsp" %>
+            </c:when>
+    
+            <c:when test="${pageScope.TCGMUser.role.accessLevel == 4 || pageScope.TCGMUser.role.name == 'TCGM_RPTADMIN'}">
+                <%@ include file="../jsp/menu_rptadmin.jsp" %>
+            </c:when>
+    
+            <c:otherwise>
+                <%@ include file="../jsp/menu_supervisor.jsp" %>
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+
+</body>
+</html>

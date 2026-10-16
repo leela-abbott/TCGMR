@@ -166,7 +166,7 @@ body {
 }
 
 .currModelDisp {
-    font-size: 10px;
+    font-size: 12px;
     white-space: normal;
     word-break: break-word;
     max-width: 400px;

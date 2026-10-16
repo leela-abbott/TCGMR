@@ -46,7 +46,8 @@ public class OracleDataFeedLogDao extends OracleDao implements DataFeedLogDao
 
     try
         {
-            this.initRS("SELECT * FROM " + this.getEntity() + " order by " + DBConst.COL_DFL_END_TIME  + " desc" , TCGMConstants.JDBC_ROWSET );
+    	this.initRS("SELECT * FROM " + this.getEntity() + " order by " + DBConst.COL_DFL_END_TIME + " desc " + "FETCH FIRST 10 ROWS ONLY", TCGMConstants.JDBC_ROWSET);
+
             this.rs.execute();
 
             while (rs.next())
