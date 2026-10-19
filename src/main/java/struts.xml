@@ -623,9 +623,10 @@
 		</action>
 
 		<action name="createAnalysisModel"
-			class="abbott.ai.tcgm.action.CreateAnalysisModel">
+			class="abbott.ai.tcgm17.action.CreateAnalysisModelAction">
 			<result name="input">/jsp/createAnalysisModel.jsp</result>
 			<result name="success" type="redirectAction">mngAnalysisModels</result>
+			<result name="exception">/jsp/createModelException.jsp</result>
 		</action>
 
 		<action name="createCostExchModel"
