@@ -77,12 +77,36 @@ public final class SQLUtil
 	{
 		Connection conn = null;
 		String methodName = "openConnection";
+		DataSource ds = null;
+		
 		try 
 		{
-			Context initContext = new InitialContext();
-			Context envContext  = (Context)initContext.lookup("java:/comp/env");
-			DataSource ds = (DataSource)envContext.lookup("jdbc/tcgm");
-			conn = ds.getConnection();
+			InitialContext initContext = new InitialContext();
+			try 
+			{
+				Context envContext = (Context) initContext.lookup("java:/comp/env");
+				ds = (DataSource) envContext.lookup("jdbc/tcgm");
+			} 
+			catch (NamingException ne) 
+			{
+				try 
+				{
+					ds = (DataSource) initContext.lookup("java:comp/env/jdbc/tcgm");
+				} 
+				catch (NamingException ne2) 
+				{
+					ds = (DataSource) initContext.lookup("jdbc/tcgm");
+				}
+			}
+			
+			if (ds != null) 
+			{
+				conn = ds.getConnection();
+			} 
+			else 
+			{
+				throw new TCGMException(className, methodName, "DataSource lookup returned null.");
+			}
 		} 
 		catch (NamingException e) 
 		{
