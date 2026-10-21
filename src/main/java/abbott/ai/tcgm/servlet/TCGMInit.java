@@ -25,6 +25,13 @@ public class TCGMInit extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        
+        try {
+            Class.forName("oracle.jdbc.OracleDriver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver registration failed: " + e.getMessage());
+        }
+
         DatasetConst dsConst = DatasetConst.getInstance();
 
         try {

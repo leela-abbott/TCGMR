@@ -2,19 +2,19 @@ package abbott.ai.tcgm.data.oracle;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import javax.sql.RowSet;
-
-import oracle.jdbc.rowset.OracleCachedRowSet;
-import oracle.jdbc.rowset.OracleJDBCRowSet;
-
+import javax.sql.rowset.RowSetProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.data.DBConst;
 import abbott.ai.tcgm.data.SQLUtil;
@@ -22,14 +22,7 @@ import abbott.ai.tcgm.entities.Search;
 import abbott.ai.tcgm.entities.Sort;
 import abbott.ai.tcgm.entities.UserToken;
 import abbott.ai.tcgm.exception.TCGMException;
-/**
- * <p>Title: TCGM</p>
- * <p>Description: Contains common methods and properties that will be extended to all Oracle Dao Objects</p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: Abbott International</p>
- * @author Dave Fields
- * @version 1.0
- */
+
 public class OracleDao
 {
 	protected final static String MIDDLE_SELECT_END = " )";
@@ -44,9 +37,8 @@ public class OracleDao
 	protected final static String SET_PUBLISHED = " SET PUBLISH_FLAG ='P' ";
 	protected final static String SET_UNPUBLISHED = " SET PUBLISH_FLAG ='U' ";
 	protected final static String ORDER_BY = " ORDER BY ";
-	/** End Constants for SQL */
 
-	protected final String className = this.getClass().getName();//convenience property
+	protected final String className = this.getClass().getName();
 	protected javax.sql.RowSet rs;
 	protected UserToken userToken;
 	private String entityTable = "";
@@ -57,9 +49,6 @@ public class OracleDao
 	protected Vector searchList = new Vector();
 	protected static Logger logger = null;
 
-	/**
-	 * Default Constructor
-	 */
 	public OracleDao()
 	{
 		this.logger = LogManager.getLogger(this.getClass());
@@ -69,45 +58,26 @@ public class OracleDao
 		this._conn = c;
 	}
 
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @param entityTable Name of the database table
-	 */
 	protected void setEntityTable(String entityTable)
 	{
 		this.entityTable = entityTable;
 	}
-	/**
-	 *
-	 * @return Schema + the name of the database table in the format schema.entityTable
-	 */
+
 	protected String getEntity()
 	{
 		return TCGMConstants.DATASOURCE_SCHEMA_NAME + "." + this.entityTable + " ";
 	}
-	/*****************************************************************************************/
-	/**
-	 * @param entityView
-	 */
+
 	protected void setEntityView(String entityView)
 	{
 		this.entityView = entityView;
 	}
-	/**
-	 * @return
-	 */
+
 	protected String getEntityView()
 	{
 		return TCGMConstants.DATASOURCE_SCHEMA_NAME + "." + this.entityView + " ";
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @param sql SQL string that rowset will execute
-	 * @param rowSetType tells if the rowset will be a cached rowset or a jdbc rowset
-	 * @throws TCGMException
-	 */
+
 	protected void initRS(String sql,int rowSetType) throws TCGMException
 	{
 		String methodName = "initRS";
@@ -115,73 +85,52 @@ public class OracleDao
 		this.rs = this.createRowSet(sql, rowSetType);
 	}
 
-
-
-	protected RowSet createRowSet(String sql,int rowSetType) throws TCGMException {
+	protected RowSet createRowSet(String sql, int rowSetType) throws TCGMException {
 		String methodName = "createRowSet(String sql, int rowSetType)";
-		RowSet rst = null;
-
-		try
-		{
-			switch(rowSetType)
-			{
-				case TCGMConstants.CACHED_ROWSET:
-					// logger.debug("Creating new RowSet in OracleDao/createRowSet(sql, rowSetType)");
-					rst = new OracleCachedRowSet();
-					break;
-				case TCGMConstants.JDBC_ROWSET:
-					// logger.debug("Creating new RowSet in OracleDao/createRowSet(sql, rowSetType)");
-					rst = new OracleJDBCRowSet();
-					break;
-				default:
-					throw new TCGMException(className,methodName,"The RowSet type specified (" + rowSetType + ") is invalid");
-			}
-			
-			String dbUrl = SQLUtil.getInstance().getDatasourceURL();
-			logger.info("Datasource URL = " + dbUrl);
-
-			rst.setUrl(dbUrl);
 		
-			//rst.setUrl(SQLUtil.getInstance().getDatasourceURL());
-			// 11-8-05 * Chgs Rqd for Active Directory Authentication *
-			//         Instead of using the password from the userToken here,
-			//         use a generic standard userid & password for this access
-			//         to the oracle db. We are changing the security model so
-			//         that individual users will not have to be in the oracle system.
-
-			//rst.setUsername(this.userToken.getUserid());
-			//rst.setPassword(this.userToken.getPassword());
-			rst.setUsername(SQLUtil.getInstance().getOracleAdmin().getUserid());
-			rst.setPassword(SQLUtil.getInstance().getOracleAdmin().getPassword());
-//			rst.setUsername("tcgm");
-//			rst.setPassword("tcgm");
-			rst.setCommand(sql);
-			rst.setConcurrency(rst.CONCUR_READ_ONLY);
-			rst.setType(rst.TYPE_SCROLL_INSENSITIVE);
-			//rst.setFetchDirection(rst.FETCH_FORWARD);
+		try {
+			if (rowSetType == TCGMConstants.CACHED_ROWSET) {
+				Connection conn = null;
+				try {
+					conn = SQLUtil.openConnection();
+					javax.sql.rowset.CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+					crs.setCommand(sql);
+					crs.setConcurrency(ResultSet.CONCUR_READ_ONLY);
+					crs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
+					crs.execute(conn);
+					return crs;
+				} finally {
+					SQLUtil.closeConnection(conn);
+				}
+			} else if (rowSetType == TCGMConstants.JDBC_ROWSET) {
+				javax.sql.rowset.JdbcRowSet jrs = RowSetProvider.newFactory().createJdbcRowSet();
+				
+				Connection conn = SQLUtil.openConnection();
+				jrs.setCommand(sql);
+				jrs.setConcurrency(ResultSet.CONCUR_READ_ONLY);
+				jrs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
+				
+				jrs.setUrl(SQLUtil.getDatasourceURL());
+				jrs.setUsername(SQLUtil.getOracleAdmin().getUserid());
+				jrs.setPassword(SQLUtil.getOracleAdmin().getPassword());
+				
+				return jrs;
+			} else {
+				throw new TCGMException(className, methodName, "The RowSet type specified (" + rowSetType + ") is invalid");
+			}
+		} catch (SQLException sqle) {
+			throw new TCGMException(this.className, methodName, sqle.toString());
+		} catch (Exception e) {
+			throw new TCGMException(this.className, methodName, e.toString());
 		}
-		catch(SQLException sqle)
-		{
-			throw new TCGMException(this.className,methodName,sqle.toString());
-		}
-		catch(Exception e)
-		{
-			throw new TCGMException(this.className,methodName,e.toString());
-		}
-		return rst;
 	}
-	/*****************************************************************************************/
-	/**
-	 * @return _conn
-	 * @throws TCGMException
-	 */
+
 	protected Connection getConnection() throws TCGMException
 	{
 		String methodName = "getConnection()";
 		try {
 			if (this._conn == null || this._conn.isClosed() )
 			{
-				// logger.debug("Creating new connection in OracleDao/getConnection()");
 				this._conn = SQLUtil.openConnection();
 			}
 		}
@@ -191,34 +140,17 @@ public class OracleDao
 		}
 		return this._conn;
 	}
-	/*****************************************************************************************/
-	/**
-	 * @param sortObject Sort object
-	 * @return sort clause
-	 */
+
 	protected String buildSortClause(Sort sortObject)
 	{
-		//return (this.ORDER_BY + sortObject.getSortColumn() + " " + sortObject.getSortOrder());
 		return (ORDER_BY + sortObject.getSortColumn() + " " + sortObject.getSortOrder());
 	}
 	
-	/*****************************************************************************************/
-	/**
-	 * @param sortObject Sort object
-	 * @return sort clause
-	 */
 	protected String buildEBCDICSortClause(Sort sortObject)
 	{
-		//return (this.ORDER_BY + sortObject.getSortColumn() + " " + sortObject.getSortOrder());
-		//return (ORDER_BY + " EBCDIC_SORT( " +sortObject.getSortColumn() + " ) " + sortObject.getSortOrder());
 		return (ORDER_BY + " CONVERT( " +sortObject.getSortColumn() + ",'WE8EBCDIC1047','US7ASCII' ) " + sortObject.getSortOrder());
 	}
 
-	/**
-	 * There is a 1 to 1 relationship between the columnName and sortOrder for any given index
-	 * @param sortObject array of sort orders to sort by
-	 * @return sort clause
-	 */
 	protected String buildSortClause(Sort sortObject[])
 	{
 		StringBuffer sortClause = new StringBuffer();
@@ -234,14 +166,7 @@ public class OracleDao
 		}
 		return sortClause.toString();
 	}
-	/*****************************************************************************************/
-	/**
-	 * If the newValue is not null or blank then return the new value or else return the
-	 * existing value
-	 * @param currentValue existing value in the object
-	 * @param newValue new value to set if not null or blank
-	 * @return String
-	 */
+
 	public String updCol(String currentValue,String newValue)
 	{
 		String retVal = currentValue;
@@ -253,16 +178,6 @@ public class OracleDao
 		return retVal;
 	}
 
-	/**
-	 * Some columns are not allowed to be null but are allowed to have a space
-	 * Other columns are not allowed to be null but must be a numeric value.
-	 * This method will check the existing value and if null or "" will return the defValue
-	 * We could have set the default value in the entities but it was causing problems with the view
-	 * portion of the application where we don't necessarily want default values.
-	 * @param curVal Existing value in the object
-	 * @param defVal Default value in the object
-	 * @return String
-	 */
 	protected String updColDefault(String curVal,String defVal)
 	{
 		String retVal = curVal;
@@ -274,10 +189,6 @@ public class OracleDao
 		return retVal;
 	}
 
-	/**
-	 * This method assumes that the
-	 * @return String
-	 */
 	protected String genWhereClause()
 	{
 		String whereClause = "";
@@ -292,12 +203,7 @@ public class OracleDao
 		}
 		return whereClause;
 	}
-	/*****************************************************************************************/
-	/**
-	 *
-	 * @return number of records returned from query
-	 * @throws TCGMException
-	 */
+
 	public long getCount() throws TCGMException
 	{
 		String methodName = "getCount";
@@ -331,15 +237,9 @@ public class OracleDao
 			SQLUtil.closeRowSet(rs);
 		}
 	}
-	/*****************************************************************************************/
-	/**
-	 * Close the rs and conn if not null.
-	 */
+
 	public void finalize()
 	{
-		// These statements make the log very unreadable due to their frequency.
-		// Now having gone to a cached connection mechanism, these can be disabled pending further issues.
-		// logger.debug("Closing rowset and connection through object destruction.");
 		SQLUtil.closeRowSet(this.rs);
 	}
 
@@ -348,19 +248,11 @@ public class OracleDao
 		this.logger.error(className + ":" + methodName + ":" + ex.toString(),ex);
 	}
 
-	/**
-	 *
-	 * @param logger Log4j logger object
-	 */
 	protected void setLogger(Logger logger)
 	{
 		this.logger = logger;
 	}
 
-	/**
-	 *
-	 * @return Log4j logger
-	 */
 	protected Logger getLogger()
 	{
 		return this.logger;
@@ -374,8 +266,7 @@ public class OracleDao
 	CallableStatement cs = null;
 	Connection conn = null;
 	String sql = "{ CALL " + this.schema + ".PARM_WRITE(?, ?, ?, ?) }";
-	// parm name, parm value, modelId, datasetTable Id, user assumed to caller
-	if (props.size() > 0) { // only set this up if parameters exist
+	if (props.size() > 0) { 
 	    conn = this.getConnection();
 		cs = conn.prepareCall(sql);
 		cs.setInt(3, Integer.parseInt(modelId) );
@@ -416,11 +307,6 @@ public class OracleDao
 		return returnCount;
   }
   
-  /**
-   * Method returns the comparison type based on the supplied string value.
-   * If the value contains comma seperated the the comparison type is IN
-   * else LIKE 
-   */
   protected String comparisonType(String strValue)
   {
 	  String strReturn = "";
@@ -431,7 +317,6 @@ public class OracleDao
 		  }
 	
 	  return 	strReturn;				
-	
   }
 
 }
