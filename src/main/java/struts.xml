@@ -571,13 +571,13 @@
 		</action>
 
 		<action name="deletePerpetualModel"
-			class="abbott.ai.tcgm.action.DeleteModel">
+			class="abbott.ai.tcgm17.action.DeleteModel">
 			<result name="success" type="redirectAction">mngPerpetualModels</result>
 			<result name="failure" type="redirectAction">mngPerpetualModels</result>
 		</action>
 
 		<action name="closePerpetualModel"
-			class="abbott.ai.tcgm.action.CloseModel">
+			class="abbott.ai.tcgm17.action.CloseModel">
 			<result name="success" type="redirectAction">mngPerpetualModels</result>
 			<result name="failure" type="redirectAction">mngPerpetualModels</result>
 		</action>
@@ -636,10 +636,11 @@
 		</action>
 
 		<action name="createPerpetualModel"
-			class="abbott.ai.tcgm.action.CreatePerpetualModel">
+			class="abbott.ai.tcgm17.action.CreatePerpetualModelAction">
 			<result name="input">/jsp/createPerpetualModel.jsp</result>
 			<result name="success" type="redirectAction">mngPerpetualModels</result>
 			<result name="failure" type="redirectAction">createPerpetualModel</result>
+			<result name="exception">/jsp/createModelException.jsp</result>
 		</action>
 
 		<action name="miscReports"
@@ -664,9 +665,12 @@
 			<result name="success">/jsp/mngFactorModels.jsp</result>
 		</action>
 
+		
 		<action name="mngPerpetualModels"
-			class="abbott.ai.tcgm.action.MngPerpetualModels">
+			class="abbott.ai.tcgm17.action.MngPerpetualModelsAction">
 			<result name="success">/jsp/mngPerpetualModels.jsp</result>
+			<result name="input">/jsp/mngPerpetualModels.jsp</result>
+			<result name="restrictions">/jsp/restricationsPerpetualModels.jsp</result>
 		</action>
 
 		<action name="mngUnits" class="abbott.ai.tcgm17.action.MngUnits">
