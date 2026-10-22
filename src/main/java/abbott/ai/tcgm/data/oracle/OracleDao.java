@@ -8,9 +8,6 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import javax.sql.RowSet;
 import javax.sql.rowset.RowSetProvider;
 import org.apache.logging.log4j.LogManager;
@@ -90,30 +87,23 @@ public class OracleDao
 		
 		try {
 			if (rowSetType == TCGMConstants.CACHED_ROWSET) {
-				Connection conn = null;
-				try {
-					conn = SQLUtil.openConnection();
-					javax.sql.rowset.CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
-					crs.setCommand(sql);
-					crs.setConcurrency(ResultSet.CONCUR_READ_ONLY);
-					crs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
-					crs.execute(conn);
-					return crs;
-				} finally {
-					SQLUtil.closeConnection(conn);
-				}
+				javax.sql.rowset.CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+				crs.setCommand(sql);
+				crs.setUrl(SQLUtil.getDatasourceURL());
+				crs.setUsername(SQLUtil.getOracleAdmin().getUserid());
+				crs.setPassword(SQLUtil.getOracleAdmin().getPassword());
+				crs.setConcurrency(ResultSet.CONCUR_READ_ONLY);
+				crs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
+				crs.execute();
+				return crs;
 			} else if (rowSetType == TCGMConstants.JDBC_ROWSET) {
 				javax.sql.rowset.JdbcRowSet jrs = RowSetProvider.newFactory().createJdbcRowSet();
-				
-				Connection conn = SQLUtil.openConnection();
 				jrs.setCommand(sql);
 				jrs.setConcurrency(ResultSet.CONCUR_READ_ONLY);
 				jrs.setType(ResultSet.TYPE_SCROLL_INSENSITIVE);
-				
 				jrs.setUrl(SQLUtil.getDatasourceURL());
 				jrs.setUsername(SQLUtil.getOracleAdmin().getUserid());
 				jrs.setPassword(SQLUtil.getOracleAdmin().getPassword());
-				
 				return jrs;
 			} else {
 				throw new TCGMException(className, methodName, "The RowSet type specified (" + rowSetType + ") is invalid");
