@@ -1,292 +1,231 @@
 <!-- Although we are using the Model framework and defining Cost Exchange as a Model, 
      we call it a Dataset to avoid confusing the user. -->  
 
-<%@ page import="abbott.ai.tcgm.entities.User" %>
-<%! String pageTitle="Margin Billed Exchange Flex";%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%! String pageTitle="Margin Billed Exchange Flex"; %>
 
 <%@ include file="/include/header.jsf" %>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
-<%@ include file="/include/masthead1.jsf" %>
+<style type="text/css">
+/* Replicates production yellow 3D look without static image assets */
+.prod-action-btn {
+	display: inline-block;
+	width: 145px;
+	box-sizing: border-box;
+	background: #FFD700;
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
+	text-decoration: none;
+	padding: 3px 12px;
+	margin-bottom: 8px;
+	border-top: 2px solid #FFFDF0;
+	border-left: 2px solid #FFFDF0;
+	border-right: 2px solid #9A7B00;
+	border-bottom: 2px solid #9A7B00;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
+
+.prod-action-btn:active {
+	border-top: 2px solid #9A7B00;
+	border-left: 2px solid #9A7B00;
+	border-right: 2px solid #FFFDF0;
+	border-bottom: 2px solid #FFFDF0;
+}
+
+.prod-action-btn:hover {
+	background: #FFE240;
+	text-decoration: none;
+	color: #000000;
+}
+
+.hidden {
+	display: none;
+}
+</style>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<c:set var="pageTitle" value="Margin Billed Exchange Flex" scope="request" />
+<%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
 
 <div id="divToHide">
-<html:form  name="mngCostExchModelsForm" action="mngCostExchModels" type="abbott.ai.tcgm.action.form.MngCostExchModelsForm" scope="session">
-<nested:define id="yearList" property="yearList" />
-<%@ include file="/include/jobOptions.jsf" %>
-<nested:text property="showCostModel" maxlength="8" styleClass="hidden" />
-<TABLE style="margin-left:50px;text-indent: 3px;width: 675;border:0px solid;cell-padding:0;cell-spacing:0;">
+<s:form id="mngCostExchModelsForm" name="mngCostExchModelsForm" action="mngCostExchModels" method="POST">
+	<%@ include file="/include/jobOptions.jsf" %>
+	<s:hidden name="showCostModel" id="showCostModel" />
+	<s:hidden name="cmd" id="hiddenCmd" />
+	<s:hidden name="jobName" id="hiddenJobName" />
 
-		<TR>
-<c:if test="${mngCostExchModelsForm.showCostModel =='open'}" >
-			<TD valign="top">
-<fieldset style="width:70px;"><legend class="commandOptionLabel"></legend>
-  <table style="width: 675;border:0px solid;cell-padding:0;cell-spacing:0;" >
-	<tr>
-
-
-	  <td colspan="3" class="tableHeading" >Margin Billed Exchange Flex</td>
-      <td class="tableHeading" >Dataset Details</td>
-    </tr> 
-	<tr>
-	  <td width="20">&nbsp;</td>
-      <td width="104"> 
-		  <bean:define id="costExchModels" name="mngCostExchModelsForm" property="models" />
-		  <html:select size="6" property="modelSelected" onclick="updateDetails()" >
-			<html:options property="modelId" labelProperty="name" collection="costExchModels" />
-		  </html:select>
-<BR>
-&nbsp;
-			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				<a class="CmdSm" href='javascript:showClosedModelDetails("closed")' >Show Closed Model</a>
-			</abbott:securePage>
-
-		
-		</td>
-      <td width="156">
-	  	<p><a href=javascript:deleteModel(document.mngCostExchModelsForm.modelSelected)><img src="images/btnDeleteDataset.png"  border=0></a></p>
-		<p><a href=javascript:closeModel(document.mngCostExchModelsForm.modelSelected)><img src="images/btnCloseModel.png"  border=0></a></p>
-        <p><a href="createCostExchModel.do"><img src="images/btnCreateNewDataset.png"  border="0"></a></p>
-        <p><a href="javascript:addJob(document.forms[0], 'CXCHG_FLEX')"><img src="images/btnFlexExchRates.png" border="0"></a>
-		<p><a href="javascript:addJob(document.forms[0], 'CXC_ANL04E')"><img src="images/btnCalcCurrExposure.png" border="0"></a>
-		</td>
-
-      <td ><div id="divModelDetail" class="dataDisp"></div></td>
-    </tr>
-  </table>
-  </fieldset>
-</TD>
-</c:if>
-<c:if test="${mngCostExchModelsForm.showCostModel =='closed'}" >
-<TD valign="top">
-<fieldset style="width:70px;"><legend class="commandOptionLabel"></legend>
-  <table style="width: 675;border:0px solid;cell-padding:0;cell-spacing:0;" >
-	<tr>
-<td colspan="3" class="tableHeading" >Closed Margin Billed Exchange Flex</td>
-      <td class="tableHeading" >Dataset Details</td>
-    </tr> 
-	<tr>
-	  <td width="20">&nbsp;</td>
-      <td width="104"> 
-		  <bean:define id="costExchModels" name="mngCostExchModelsForm" property="models" />
-		  <html:select size="6" property="modelSelected" onclick="updateDetails()" >
-			<html:options property="modelId" labelProperty="name" collection="costExchModels" />
-		  </html:select>
-<BR>
-&nbsp;
-			<abbott:securePage userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>" comparisonType="=">
-				<a class="CmdSm" href='javascript:showClosedModelDetails("open")' >Show Open Model</a>
-			</abbott:securePage>
-
-		
-		</td>
-      <td width="156" valign="top">
-	  	<p><a href=javascript:openModel(document.mngCostExchModelsForm.modelSelected)><img src="images/btnOpenModel.png"  border=0></a></p>        
-		</td>
-
-      <td ><div id="divModelDetail" class="dataDisp"></div></td>
-    </tr>
-  </table>
-  </fieldset>
-</TD>
-</c:if>
-</TR>
-</TABLE>
-
-  <table class="tableCommand">
-	
-	<tr valign="top">	    
-      <td >
-      <fieldset style="width:70px;"><legend class="commandOptionLabel"></legend>
-	  <table width="175">
-	  <tr>
-	  <td colspan="2" class="tableHeading">Reports</td>  	      
-   	 </tr>
-          <tr>
-	  	    <td colspan="1">
-	  			<a href="javascript:addJob(document.forms[0], 'CXCHG_CSTSL1')"><img src="images/btnDetailByRptAff.png" border="0"></a>
-	  		 	<nested:select property="selDtlMetric" styleClass="commandOption" >
-                	<option>Cost</option>
-                	<option>Sales</option>
-              </nested:select>
-              <!-- <br><a href="javascript:addJob(document.forms[0], 'CXCHG_CSTSL2')"><img src="images/btnDetailBySupAff.png" border="0"></a> -->
-			</td>
-		  </tr>
+	<table style="margin-left:50px; text-indent: 3px; width: 675px; border:0px; cellpadding:0; cellspacing:0;">
+		<tr>
+			<%-- Safe evaluation of showCostModel string comparisons using Struts 2 OGNL expressions --%>
+			<s:if test="showCostModel == null || showCostModel.equals('open')">
+				<td valign="top">
+					<table style="width: 675px; border:0px; cellpadding:0; cellspacing:0;">
+						<tr>
+							<td colspan="3" class="tableHeading" style="width: 280px;">Margin Billed Exchange Flex</td>
+							<td class="tableHeading">Dataset Details</td>
+						</tr> 
+						<tr>
+							<td width="20">&nbsp;</td>
+							<td width="104" valign="top"> 
+								<!-- Fixed: Directly targets selection index lookup -->
+								<s:select size="6" name="modelSelected" id="modelSelected"
+										  list="models" listKey="modelId" listValue="name" 
+										  onclick="updateDetails(this.selectedIndex)" theme="simple" style="width: 170px; margin-top: 5px;" />
+								<br>&nbsp;
+								<a class="CmdSm" href='javascript:showClosedModelDetails("closed")' style="color: red; font-size: 10px;">Show Closed Model</a>
+							</td>
+							<td width="156" valign="top" style="padding-top: 5px; padding-left: 10px;">
+								<button type="button" class="prod-action-btn" onclick="deleteModel(document.getElementById('modelSelected'))">Delete Dataset</button>
+								<button type="button" class="prod-action-btn" onclick="closeModel(document.getElementById('modelSelected'))">Close Model</button>
+								<a href="createCostExchModel.action" class="prod-action-btn" style="line-height: 12px; display: inline-block;">Create New Dataset</a>
+								<button type="button" class="prod-action-btn" onclick="submitJob('CXCHG_FLEX')">Flex Exch Rates</button>
+								<button type="button" class="prod-action-btn" onclick="submitJob('CXC_ANL04E')">Calc Cur Exposure</button>
+							</td>
+							<td valign="top"><div id="divModelDetail" class="dataDisp" style="padding-top: 5px;"></div></td>
+						</tr>
+					</table>
+				</td>
+			</s:if>
 			
-          <tr>
-	   		<td>
-				<a href="javascript:addJob(document.forms[0], 'CXCHG_CSMP2')"><img src="images/btnCSMByALG.png" border="0"></a>
-			</td>
-          </tr>
-       	  
-     </table>
-     </fieldset>
-     </td>
-	 
-<!-- 
+			<s:if test="showCostModel != null && showCostModel.equals('closed')">
+				<td valign="top">
+					<table style="width: 675px; border:0px; cellpadding:0; cellspacing:0;">
+						<tr>
+							<td colspan="3" class="tableHeading" style="width: 280px;">Closed Margin Billed Exchange Flex</td>
+							<td class="tableHeading">Dataset Details</td>
+						</tr> 
+						<tr>
+							<td width="20">&nbsp;</td>
+							<td width="104" valign="top"> 
+								<!-- Fixed: Directly targets selection index lookup -->
+								<s:select size="6" name="modelSelected" id="modelSelected"
+										  list="models" listKey="modelId" listValue="name" 
+										  onclick="updateDetails(this.selectedIndex)" theme="simple" style="width: 170px; margin-top: 5px;" />
+								<br>&nbsp;
+								<a class="CmdSm" href='javascript:showClosedModelDetails("open")' style="color: red; font-size: 10px;">Show Open Model</a>
+							</td>
+							<td width="156" valign="top" style="padding-top: 5px; padding-left: 10px;">
+								<button type="button" class="prod-action-btn" onclick="openModel(document.getElementById('modelSelected'))">Open Model</button>        
+							</td>
+							<td valign="top"><div id="divModelDetail" class="dataDisp" style="padding-top: 5px;"></div></td>
+						</tr>
+					</table>
+				</td>
+			</s:if>
+		</tr>
+	</table>
+
+	<table style="margin-left: 50px; text-indent: 3px; width: 675px; border: 0px; cellpadding: 0; cellspacing: 0; margin-top: 15px;">
+		<tr valign="top">	    
 			<td>
-			<fieldset style="width:100px;"><legend class="commandOptionLabel"></legend>			
-		  		<table width="490">
-		  		<tr>
-	  
-      <td colspan="3" class="tableHeading">Essbase Exports</td>    </tr>
-		  			<tr>
-
-						<td width="200">
-							<a href="javascript:confirmAndAddJob(document.forms[0], 'SEND_ANL_FLEX_ESS')"><img src="images/btnSendToEssbase.png" border="0"></a>
+				<table width="175" style="border: 0px; cellpadding: 0; cellspacing: 0;">
+					<tr>
+						<td colspan="2" class="tableHeading">Reports</td>  	      
+					</tr>
+					<tr>
+						<td style="padding-top: 5px;">
+							<button type="button" class="prod-action-btn" onclick="submitJob('CXCHG_CSTSL1')">Detail By Rpt Aff</button>
+							<br>
+							<s:select name="selDtlMetric" cssClass="commandOption" list="{'Cost','Sales'}" theme="simple" style="margin-bottom: 8px; width: 65px;" />
 						</td>
-		  			</tr>
-		  			<tr>
-						<td class="commandOptionLabel">
-							Version&nbsp;&nbsp;&nbsp;Year&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;&nbsp;&nbsp;&nbsp;Start Period&nbsp;&nbsp;&nbsp;&nbsp;End Period
-						<br>
-							<html:select property="essbaseVersion" styleClass="commandOption" >
-								<option>01</option>
-								<option>02</option>
-								<option>03</option>
-							</html:select> 
-		           			<nested:select property="essbaseYear" styleClass="commandOption">
-                    			<html:options collection="yearList" labelProperty="label" property="value" />
-                  			</nested:select>
-							<html:select property="essbaseType" styleClass="commandOption" >
-				  				<option values="F1">F1</option>
-				  				<option values="F2">F2</option>
-							</html:select>&nbsp;&nbsp;
-							<html:select property="essbaseStPeriod" styleClass="commandOption" onchange="changeSelect();" styleId="essbaseStPeriod">
-				  				<option value="ALL" >ALL</option>
-				  				<option value="1">1</option>
-				  				<option value="2">2</option>
-				  				<option value="3">3</option>
-				  				<option value="4">4</option>
-				  				<option value="5">5</option>
-				  				<option value="6">6</option>
-				  				<option value="7">7</option>
-				  				<option value="8">8</option>
-				  				<option value="9">9</option>
-				  				<option value="10">10</option>
-				  				<option value="11">11</option>
-				  				<option value="12">12</option>
-							</html:select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<html:select property="essbaseEndPeriod" styleClass="commandOption" styleId="essbaseEndPeriod">
-				  				<option value="ALL" >ALL</option>				  				
-							</html:select>							
+					</tr>
+					<tr>
+						<td>
+							<button type="button" class="prod-action-btn" onclick="submitJob('CXCHG_CSMP2')">CSM - Aff\Line\Grp</button>
 						</td>
-		  			</tr>
+					</tr>
 				</table>
-				</fieldset>
-			</td>-->
-	 
-      <td width="20" > </td>
-      <td width="116" >&nbsp;</td>
-      <td width="177" >&nbsp;</td>
-    </tr>
-  </table>
-</html:form></div>
+			</td>
+			<td width="20"></td>
+			<td width="116">&nbsp;</td>
+			<td width="177">&nbsp;</td>
+		</tr>
+	</table>
+</s:form>
+</div>
 <br>
-
 <p>&nbsp;</p>
 
-<script language=javascript>
+<script type="text/javascript">
+	// Fixed: Inject the runtime details array securely using native Struts tags
+	var modelDetailArray = <s:property value="modelDetailArrayString" escapeHtml="false"/>;
+
+	function updateDetails(selectedIndex) {
+		// Verify array bounds safely to ensure it loads flawlessly without null/undefined pointers
+		if (modelDetailArray && selectedIndex !== undefined && selectedIndex >= 0 && selectedIndex < modelDetailArray.length) {
+			document.getElementById('divModelDetail').innerHTML = modelDetailArray[selectedIndex];
+		} else {
+			document.getElementById('divModelDetail').innerHTML = "<i>No details available for the selected model.</i>";
+		}
+	}
+
 	function deleteModel(se) {
-		if (se.value == 0) {
-			alert ("You must select a model to delete.");
+		if (!se || se.value == "" || se.value == 0) {
+			alert("You must select a model to delete.");
 			return;
 		}
-		var modelName = getSelectedOptionText(se);
-		if ( confirm("Are you sure that you would like to delete " + modelName + "?\nThis will delete all attributes and can not be undone.") ) {
-			changeActionAndSubmit(se.form, "deleteCostExchModel.do");
+		var modelName = se.options[se.selectedIndex].text;
+		if (confirm("Are you sure that you would like to delete " + modelName + "?\nThis will delete all attributes and can not be undone.")) {
+			var form = document.getElementById('mngCostExchModelsForm');
+			form.action = "deleteCostExchModel.action";
+			form.submit();
 		}
 	}
-function closeModel(se) {
-		if (se.value == 0) {
-			alert ("You must select a model to close.");
+
+	function closeModel(se) {
+		if (!se || se.value == "" || se.value == 0) {
+			alert("You must select a model to close.");
 			return;
 		}
-		var modelName = getSelectedOptionText(se);
-		if ( confirm("Are you sure that you would like to close " + modelName + "?") ) {
-			changeActionAndSubmit(se.form, "closeCostExchModel.do");
+		var modelName = se.options[se.selectedIndex].text;
+		if (confirm("Are you sure that you would like to close " + modelName + "?")) {
+			var form = document.getElementById('mngCostExchModelsForm');
+			form.action = "closeCostExchModel.action";
+			form.submit();
 		}
 	}
-function openModel(se)
-	 {
-		if (se.value == 0) {
-			alert ("You must select a model to open.");
+
+	function openModel(se) {
+		if (!se || se.value == "" || se.value == 0) {
+			alert("You must select a model to open.");
 			return;
 		}
-		var modelName = getSelectedOptionText(se);
-		 if ( confirm("Are you sure that you would like to open " + modelName + "?") ) {
-			 //document.forms.mngCostExchModelsForm.modelSelected.value=modelid;
-			 //document.forms.mngCostExchModelsForm.showModels.value = 'closed';
-			 changeActionAndSubmit(document.forms.mngCostExchModelsForm, "openCostModel.do")
-		 }
-	}
-	function updateDetails() {
-		document.body.style.cursor = 'wait';
-			processActiveURL('tcgmAjax.do?cascadingCmd=ModelInfo&cascadingVal='+document.mngCostExchModelsForm.modelSelected.value+'&cascadingSecVal=COSTEXCH','divModelDetail');
-			document.body.style.cursor = "default";
-			
-			var x=''+document.getElementById('divModelDetail').innerHTML;
-			var stPeriodData=x.substring(x.indexOf('<B>Start Period:</B>')+20);
-			var endPeriodData=x.substring(x.indexOf('<B>End Period:</B>')+18);
-			var stPeriod=parseInt(trim(stPeriodData.substring(0,stPeriodData.indexOf(','))));
-			var endPeriod=parseInt(trim(endPeriodData.substring(0,endPeriodData.indexOf(','))));			
-			var strt=document.forms[0].essbaseStPeriod;
-			var endt=document.forms[0].essbaseEndPeriod;
-			removeAllOptions(strt);
-			removeAllOptions(endt);
-			addOption(endt,'ALL','ALL');
-			addOption(strt,'ALL','ALL');
-			for(i=stPeriod;i<=endPeriod;i++){
-	   			addOption(strt,''+i,''+i);
-			}			
-
+		var modelName = se.options[se.selectedIndex].text;
+		if (confirm("Are you sure that you would like to open " + modelName + "?")) {
+			var form = document.getElementById('mngCostExchModelsForm');
+			form.action = "openCostModel.action";
+			form.submit();
 		}
-function addOption(selectbox,text,value)
-{
-	var optn = document.createElement("OPTION");
-	optn.text = trim(text);
-	optn.value = trim(value);
-	selectbox.options.add(optn);
-}
-function removeAllOptions(selectbox)
-{
-	var i;
-	for(i=selectbox.options.length-1;i>=0;i--)
-	{
-		selectbox.remove(i);
 	}
-}
-function trim(stringToTrim) {
-	return stringToTrim.replace(/^\s+|\s+$/g,"");
-}
-function changeSelect(){
 
-var strt=document.forms[0].essbaseStPeriod;
-var endt=document.forms[0].essbaseEndPeriod;
-
-			var x=''+document.getElementById('divModelDetail').innerHTML;			
-			var endPeriodData=x.substring(x.indexOf('<B>End Period:</B>')+18);
-			var endPeriod=parseInt(trim(endPeriodData.substring(0,endPeriodData.indexOf(','))));	
-
-
-var i;
-removeAllOptions(endt);
-if(strt.value=='ALL'){	
-	addOption(endt,'ALL','ALL');
-}else{
-	for(i=strt.value;i<=endPeriod;i++){
-	
-	   addOption(endt,''+i,''+i);
-	  
+	function submitJob(jobDefinitionName) {
+		var se = document.getElementById('modelSelected');
+		if (!se || se.value == "" || se.value == 0) {
+			alert("You must select a model.");
+			return;
+		}
+		document.getElementById('hiddenCmd').value = "ADD_JOB";
+		document.getElementById('hiddenJobName').value = jobDefinitionName;
+		var form = document.getElementById('mngCostExchModelsForm');
+		form.action = "mngCostExchModels.action";
+		form.submit();
 	}
-}
 
-}		
-function showClosedModelDetails(stat) {
-		document.forms.mngCostExchModelsForm.showCostModel.value = stat;
-		document.mngCostExchModelsForm.action = 'mngCostExchModels.do';
-		document.mngCostExchModelsForm.submit();
-		}	
+	function showClosedModelDetails(stat) {
+		document.getElementById('showCostModel').value = stat;
+		var form = document.getElementById('mngCostExchModelsForm');
+		form.action = 'mngCostExchModels.action';
+		form.submit();
+	}
 </script>
 
 <%@ include file="/include/footer.jsf" %>

@@ -559,7 +559,7 @@
 		</action>
 
 		<action name="deleteCostExchModel"
-			class="abbott.ai.tcgm.action.DeleteModel">
+			class="abbott.ai.tcgm17.action.DeleteModel">
 			<result name="success" type="redirectAction">mngCostExchModels</result>
 			<result name="failure" type="chain">mngCostExchModels</result>
 		</action>
@@ -656,8 +656,9 @@
 		</action>
 
 		<action name="mngCostExchModels"
-			class="abbott.ai.tcgm.action.MngCostExchModels">
+			class="abbott.ai.tcgm17.action.MngCostExchModelsAction">
 			<result name="success">/jsp/mngCostExchModels.jsp</result>
+			 <result name="input">/jsp/mngCostExchModels.jsp</result> 
 		</action>
 
 		<action name="mngFactorModels"
