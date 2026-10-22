@@ -46,27 +46,25 @@ td {
 }
 
 pre {
-	background: #222;
-	color: #fff;
+	background: #f8f9fa;
+	/* FIXED: Light grey background to replace the solid black banner */
+	color: #333333;
+	/* FIXED: Dark charcoal text color for easy readability */ border : 1px
+	solid #e2e8f0;
+	/* FIXED: Soft structural accent border line */
 	padding: 15px;
 	overflow: auto;
 	border-radius: 4px;
 	font-size: 12px;
+	font-family: monospace;
+	margin-top: 20px;
+	border: 1px solid #e2e8f0;
 }
 </style>
 </head>
 <body>
 
 	<table>
-		<tr>
-			<td class="label">Status Code:</td>
-			<td>
-				<%
-				Object status = request.getAttribute("jakarta.servlet.error.status_code");
-				out.print(status != null ? status : "500 (Struts Action Forward)");
-				%>
-			</td>
-		</tr>
 		<tr>
 			<td class="label">Exception Type:</td>
 			<td>
@@ -76,7 +74,6 @@ pre {
 				} else if (request.getAttribute("jakarta.servlet.error.exception") != null) {
 					out.print(request.getAttribute("jakarta.servlet.error.exception").getClass().getName());
 				} else if (request.getAttribute("abbott.ai.tcgm.Exception") != null) {
-
 					out.print(request.getAttribute("abbott.ai.tcgm.Exception").getClass().getName());
 				} else {
 					out.print("abbott.ai.tcgm.exception.TCGMException");
@@ -93,7 +90,6 @@ pre {
 				} else if (request.getAttribute("jakarta.servlet.error.message") != null) {
 					out.print(request.getAttribute("jakarta.servlet.error.message"));
 				} else if (request.getAttribute("errorMessage") != null) {
-
 					out.print(request.getAttribute("errorMessage"));
 				} else {
 					out.print("No explicit exception message string mapped to error tracking stream.");
@@ -101,7 +97,6 @@ pre {
 				%>
 			</td>
 		</tr>
-
 
 		<%
 		if (request.getAttribute("errorClass") != null) {
@@ -113,6 +108,7 @@ pre {
 		<%
 		}
 		%>
+
 		<%
 		if (request.getAttribute("errorMethod") != null) {
 		%>
@@ -139,7 +135,6 @@ pre {
 			t.printStackTrace(pw);
 			out.print(sw.toString());
 		} else if (request.getAttribute("abbott.ai.tcgm.Exception") != null) {
-			// EXACT FIX: Print the true nested database stack trace out of the Action's TCGMException object
 			Throwable t = (Throwable) request.getAttribute("abbott.ai.tcgm.Exception");
 			java.io.StringWriter sw = new java.io.StringWriter();
 			java.io.PrintWriter pw = new java.io.PrintWriter(sw);
@@ -155,8 +150,14 @@ pre {
 		if (request.getAttribute("errorMessage") != null && request.getRequestURI().contains("createAnalysisModel")) {
 		%>
 		<a href="createAnalysisModel.action"
-			style="color: #0044aa; text-weight: bold; text-decoration: underline;">&lt;&lt;
+			style="color: #0044aa; font-weight: bold; text-decoration: underline;">&lt;&lt;
 			Return to Create Analysis Model</a>
+		<%
+		} else if (request.getAttribute("errorMessage") != null && request.getRequestURI().contains("createPerpetualModel")) {
+		%>
+		<a href="createPerpetualModel.action"
+			style="color: #0044aa; font-weight: bold; text-decoration: underline;">&lt;&lt;
+			Return to Create Perpetual Model</a>
 		<%
 		} else {
 		%>

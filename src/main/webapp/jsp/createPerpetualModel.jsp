@@ -1,159 +1,222 @@
-<%@ page import="abbott.ai.tcgm.entities.User" %>
-<%! String pageTitle="Create Perpetual";%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="abbott.ai.tcgm.entities.User"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 
+<%!String pageTitle = "Create Perpetual";%>
 
-<%@ include file="/include/header.jsf" %>
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="javascript:init()">
- <%@ include file="/include/masthead1.jsf" %>
- <%@ include file="/include/errorDisplay.jsf" %>
-<html:form name="createPerpetualModelForm" action="createPerpetualModel" type="abbott.ai.tcgm.action.form.CreatePerpetualModelForm" >
-<nested:define id="monthListNumber" property="monthListNumber" />
-<nested:define id="yearList" property="yearList" />
-<nested:define id="factorModels"  name="createPerpetualModelForm" property="factorModels" />
-<nested:define id="units"  name="createPerpetualModelForm" property="units" />
- 
-  <table class="tableCommand">
-    <tr>
-      <td colspan="5"  class="tableHeading">Create New Perpetual Model </td>
-    </tr>
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right" class="commandOptionLabel" >Model Name</td>
-      <td colspan="3"><html:text property="modelName" name="createPerpetualModelForm" size="30" styleClass="commandOption" maxlength="30"/></td>
-    </tr>
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right" class="commandOptionLabel" >Model
-        Desc.</td>
-      <td colspan="3"><html:text property="modelDesc" name="createPerpetualModelForm" size="65" styleClass="commandOption" maxlength="80"/></td>
-    </tr>
+<%@ include file="/include/header.jsf"%>
 
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right" class="commandOptionLabel" >Starting  Inventory Model & Units</td>
-      
-      <td width="135">
-      	  <html:select property="selStartingModel" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-        </html:select></td>
-    
-      <td width="135">
-      	  <html:select property="selStartingModelUnits" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="datasetName" labelProperty="datasetName" collection="units" />
-        </html:select></td>
+<style type="text/css">
+.prod-btn {
+	display: inline-block;
+	box-sizing: border-box;
+	background: #FFD700;
+	color: #000000;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	font-style: italic;
+	text-align: center;
+	text-decoration: none;
+	padding: 3px 12px;
+	border-top: 2px solid #FFFDF0;
+	border-left: 2px solid #FFFDF0;
+	border-right: 2px solid #9A7B00;
+	border-bottom: 2px solid #9A7B00;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
 
-        <td width="150" align="right"> </td>
-        <td width="141" align="right"> </td>
-    </tr>
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right" class="commandOptionLabel" >Current Actual Model & Actual Units</td>
-      
-      <td width="135">
-      	  <html:select property="selCurrentYearActualModel" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-        </html:select></td>
-    
-      <td width="135">
-      	  <html:select property="selCurrentYearActualUnits" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="datasetName" labelProperty="datasetName" collection="units" />
-        </html:select></td>
-      <td width="150" align="right" class="commandOptionLabel" >Starting Period</td>
-      <td width="141" >
-	   	<nested:select property="selStartPeriod" name="createPerpetualModelForm" styleClass="commandOption" >
-		  <option>13</option>
-          <html:options collection="monthListNumber" labelProperty="label" property="value" />
-        </nested:select>
-		<nested:select property="selStartYear"  name="createPerpetualModelForm" styleClass="commandOption" >
-          <html:options collection="yearList" labelProperty="label" property="value" />
-        </nested:select></td>
+.prod-btn:active {
+	border-top: 2px solid #9A7B00;
+	border-left: 2px solid #9A7B00;
+	border-right: 2px solid #FFFDF0;
+	border-bottom: 2px solid #FFFDF0;
+}
 
-    </tr>
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right" class="commandOptionLabel" >Previous Actual Model & Actual Units</td>
-      
-      <td width="135">
-      	  <html:select property="selLastYearActualModel" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-        </html:select></td>
-    
-      <td width="135">
-      	  <html:select property="selLastYearActualUnits" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="datasetName" labelProperty="datasetName" collection="units" />
-        </html:select></td>
-       <td width="150" align="right"  class="commandOptionLabel" >Ending Period</td>
+.prod-btn:hover {
+	background: #FFE240;
+	text-decoration: none;
+	color: #000000;
+}
 
-	  	<td><html:select property="selEndPeriod" name="createPerpetualModelForm" styleClass="commandOption" >
-		  <option>13</option>
-          <html:options collection="monthListNumber" labelProperty="label" property="value" />
-        </html:select>
-		<html:select property="selEndYear" name="createPerpetualModelForm" styleClass="commandOption" >
-          <html:options collection="yearList" labelProperty="label" property="value" />
-        </html:select>
-	  </td>
-       
-    </tr>
+.commandOption {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
 
-    <tr>
-      <td width="20" height="23" class=right ></td>
-      <td width="158" align="right"  class="commandOptionLabel" >Costing Model</td>
-      <td><html:select property="selCostingModel" name="createPerpetualModelForm" styleClass="commandOption" >
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-          </html:select>
-      </td>
-      <td width="141" >
-    
-    </tr>
+.commandOptionLabel {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #003366;
+}
+</style>
 
-    <tr>
-      <td width="20" height="31" class=right ></td>
-      <td width="158" height="31" align="right" class="commandOptionLabel" >Ending Inventory & Units</td>
-      <td align="left" >
-        <html:select property="selEndingModel" name="createPerpetualModelForm" styleClass="commandOption"  >
-          <html:option value="NONE">--none--</html:option>
-          <html:options property="modelId" labelProperty="name" collection="factorModels" />
-        </html:select></td>
-      <td width="135">
-      	  <html:select property="selEndingModelUnits" name="createPerpetualModelForm" styleClass="commandOption" >
-		  
-          <html:options property="datasetName" labelProperty="datasetName" collection="units" />
-        </html:select></td>
-      <td colspan="2" align="right"> &nbsp;</td>
-    </tr>
-    
-    <!-- A.Winter - 7/1/05 - added textarea for memo -->
-	<tr>
-	   <td width="20" height="31" class=right ></td>
-	   <td  align="right" class="commandOptionLabel"> Memo &nbsp;&nbsp;</td>
-	   <td colspan="3"  width="242" >
-	      <html:textarea property="memo" name="createPerpetualModelForm" cols="68" rows="7" onkeyup="return checkLength(this, 425);" styleClass="commandOption" />
-	   </td>
-    </tr>
-	<!-- A.Winter - 7/1/05 - added textarea for memo -->
-	</tr>
-	  <td class=right ></td>
-      <td class="commandOptionLabel">&nbsp;</td>
-      <td>&nbsp;</td>
-      <td class="commandOptionLabel">&nbsp;</td>
-    <td colspan="2" align="right"><div align="left"><a href="javascript:validateFormData(document.forms[0], 'CREATE_MODEL');"><img border="0" height="20" src="images/btnCreateModel.png" width="100"></a></div></td>
-    </tr>
-  </table>
-<nested:hidden property="cmd" />
-</html:form>
-<script language="JavaScript" type="text/JavaScript">
- function init() {
-     document.forms[0].selEndingModel.disabled=false;
-    }
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
+	onload="init()">
+	<c:set var="pageTitle" value="Create Perpetual" scope="request" />
+	<%@ include file="/include/masthead.jsf"%>
+	<%@ include file="/include/errorDisplay.jsf"%>
 
- function validateEndingCBO() {
-     document.forms[0].selEndingModel.disabled=!document.forms[0].selEndingModel.disabled;
-    }
-</script>
-<%@ include file="/include/footer.jsf" %>
+	<s:form id="createPerpetualModelForm" name="createPerpetualModelForm"
+		action="createPerpetualModel" method="POST">
+		<s:hidden name="cmd" id="hiddenCmd" />
+
+		<table class="tableCommand" border="0" cellpadding="3" cellspacing="1">
+			<tr>
+				<td colspan="6" class="tableHeading">Create New Perpetual Model</td>
+			</tr>
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Model
+					Name</td>
+				<td colspan="4"><s:textfield name="modelName" size="30"
+						cssClass="commandOption" maxlength="30" theme="simple" /></td>
+			</tr>
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Model
+					Desc.</td>
+				<td colspan="4"><s:textfield name="modelDesc" size="65"
+						cssClass="commandOption" maxlength="80" theme="simple" /></td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Starting
+					Inventory Model &amp; Units</td>
+				<td width="135"><s:select name="selStartingModel"
+						list="factorModels" listKey="modelId" listValue="name"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="135"><s:select name="selStartingModelUnits"
+						list="units" listKey="datasetName" listValue="datasetName"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="150" colspan="2">&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Current
+					Actual Model &amp; Actual Units</td>
+				<td width="135"><s:select name="selCurrentYearActualModel"
+						list="factorModels" listKey="modelId" listValue="name"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="135"><s:select name="selCurrentYearActualUnits"
+						list="units" listKey="datasetName" listValue="datasetName"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="150" align="right" class="commandOptionLabel">Starting
+					Period</td>
+				<td width="141"><s:select name="selStartPeriod"
+						list="monthListNumber" listKey="value" listValue="label"
+						headerKey="13" headerValue="13" cssClass="commandOption"
+						theme="simple" /> <s:select name="selStartYear" list="yearList"
+						listKey="value" listValue="label" cssClass="commandOption"
+						theme="simple" /></td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Previous
+					Actual Model &amp; Actual Units</td>
+				<td width="135"><s:select name="selLastYearActualModel"
+						list="factorModels" listKey="modelId" listValue="name"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="135"><s:select name="selLastYearActualUnits"
+						list="units" listKey="datasetName" listValue="datasetName"
+						cssClass="commandOption" theme="simple" /></td>
+				<td width="150" align="right" class="commandOptionLabel">Ending
+					Period</td>
+				<td width="141"><s:select name="selEndPeriod"
+						list="monthListNumber" listKey="value" listValue="label"
+						headerKey="13" headerValue="13" cssClass="commandOption"
+						theme="simple" /> <s:select name="selEndYear" list="yearList"
+						listKey="value" listValue="label" cssClass="commandOption"
+						theme="simple" /></td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Costing
+					Model</td>
+				<td colspan="4"><s:select name="selCostingModel"
+						list="factorModels" listKey="modelId" listValue="name"
+						cssClass="commandOption" theme="simple" /></td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td width="158" align="right" class="commandOptionLabel">Ending
+					Inventory &amp; Units</td>
+				<td align="left"><s:select name="selEndingModel"
+						list="factorModels" listKey="modelId" listValue="name"
+						headerKey="NONE" headerValue="--none--" cssClass="commandOption"
+						theme="simple" onchange="validateEndingCBO()" /></td>
+				<td width="135"><s:select name="selEndingModelUnits"
+						id="selEndingModelUnits" list="units" listKey="datasetName"
+						listValue="datasetName" cssClass="commandOption" theme="simple" />
+				</td>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+
+			<tr>
+				<td width="20"></td>
+				<td align="right" class="commandOptionLabel">Memo &nbsp;&nbsp;</td>
+				<td colspan="4"><s:textarea name="memo" cols="68" rows="7"
+						onkeyup="return checkLength(this, 425);" cssClass="commandOption"
+						theme="simple" /></td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td colspan="2" align="left" style="padding-top: 10px;">
+					<button type="button" class="prod-btn"
+						onclick="validateFormData('CREATE_MODEL')">Create Model</button>
+				</td>
+			</tr>
+		</table>
+	</s:form>
+
+	<script type="text/javascript">
+		function init() {
+			validateEndingCBO();
+		}
+
+		function validateEndingCBO() {
+			var selectElement = document.getElementsByName('selEndingModel')[0];
+			var endingUnits = document.getElementById('selEndingModelUnits');
+			if (selectElement && endingUnits) {
+				endingUnits.disabled = false;
+			}
+		}
+
+		function validateFormData(commandValue) {
+			var form = document.getElementById('createPerpetualModelForm');
+			var mName = document.getElementsByName('modelName')[0];
+			var mDesc = document.getElementsByName('modelDesc')[0];
+
+			if (mName && mName.value.trim() === "") {
+				mName.value = "";
+			}
+			if (mDesc && mDesc.value.trim() === "") {
+				mDesc.value = "";
+			}
+
+			document.getElementById('hiddenCmd').value = commandValue;
+			form.submit();
+		}
+
+		function checkLength(control, maxLength) {
+			if (control.value.length > maxLength) {
+				control.value = control.value.substring(0, maxLength);
+				alert("Memo field cannot exceed " + maxLength + " characters.");
+				return false;
+			}
+			return true;
+		}
+	</script>
+
+	<%@ include file="/include/footer.jsf"%>
