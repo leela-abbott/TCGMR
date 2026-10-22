@@ -19,6 +19,7 @@
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
+		<default-action-ref name="badRequest"/>
 		<global-results>
 			<result name="exception">/jsp/exception.jsp</result>
 			<result name="login">/jsp/login.jsp</result>
@@ -28,6 +29,10 @@
 			<result name="admin" type="redirectAction">userMaint</result>
 			<result name="main" type="redirectAction">main</result>
 		</global-results>
+		
+		<action name="badRequest">
+			<result>/jsp/badRequest.jsp</result>
+		</action>
 
 		<action name="openLogin">
 			<result>/jsp/login.jsp</result>
