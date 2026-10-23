@@ -652,7 +652,7 @@
 		</action>
 
 		<action name="miscReports"
-			class="abbott.ai.tcgm.action.MiscReports">
+			class="abbott.ai.tcgm17.action.MiscReportsAction">
 			<result name="input">/jsp/miscReports.jsp</result>
 			<result name="success">/jsp/miscReports.jsp</result>
 		</action>
