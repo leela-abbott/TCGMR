@@ -19,7 +19,7 @@
 
 	<package name="tcgm-default" extends="struts-default"
 		namespace="/">
-		<default-action-ref name="badRequest"/>
+		<default-action-ref name="badRequest" />
 		<global-results>
 			<result name="exception">/jsp/exception.jsp</result>
 			<result name="login">/jsp/login.jsp</result>
@@ -29,7 +29,7 @@
 			<result name="admin" type="redirectAction">userMaint</result>
 			<result name="main" type="redirectAction">main</result>
 		</global-results>
-		
+
 		<action name="badRequest">
 			<result>/jsp/badRequest.jsp</result>
 		</action>
@@ -38,7 +38,8 @@
 			<result>/jsp/login.jsp</result>
 		</action>
 
-		<action name="tcgmAjax" class="abbott.ai.tcgm17.action.TCGMAjaxAction">
+		<action name="tcgmAjax"
+			class="abbott.ai.tcgm17.action.TCGMAjaxAction">
 			<result name="input">/jsp/burstMaint.jsp</result>
 			<result name="failure">/jsp/login.jsp</result>
 			<result name="success">/jsp/login.jsp</result>
@@ -635,9 +636,11 @@
 		</action>
 
 		<action name="createCostExchModel"
-			class="abbott.ai.tcgm.action.CreateCostExchModel">
+			class="abbott.ai.tcgm17.action.CreateCostExchModelAction">
 			<result name="input">/jsp/createCostExchModel.jsp</result>
 			<result name="success" type="redirectAction">mngCostExchModels</result>
+			<result name="failure" type="redirectAction">createCostExchModel</result>
+			<result name="exception">/jsp/createModelException.jsp</result>
 		</action>
 
 		<action name="createPerpetualModel"
@@ -654,24 +657,27 @@
 			<result name="success">/jsp/miscReports.jsp</result>
 		</action>
 
-		<action name="mngAnalysisModels" class="abbott.ai.tcgm17.action.MngAnalysisModelsAction" method="execute">
-		    <result name="success">/jsp/mngAnalysisModels.jsp</result>
-		    <result name="restrictions">/jsp/restrictions.jsp</result>
-		    <result name="input">/jsp/mngAnalysisModels.jsp</result> 
+		<action name="mngAnalysisModels"
+			class="abbott.ai.tcgm17.action.MngAnalysisModelsAction"
+			method="execute">
+			<result name="success">/jsp/mngAnalysisModels.jsp</result>
+			<result name="restrictions">/jsp/restrictions.jsp</result>
+			<result name="input">/jsp/mngAnalysisModels.jsp</result>
 		</action>
 
 		<action name="mngCostExchModels"
 			class="abbott.ai.tcgm17.action.MngCostExchModelsAction">
-			<result name="success">/jsp/mngCostExchModels.jsp</result>
-			 <result name="input">/jsp/mngCostExchModels.jsp</result> 
+			<result name="success" type="redirectAction">mngCostExchModels</result>
+			<result name="input">/jsp/mngCostExchModels.jsp</result>
 		</action>
+		
 
 		<action name="mngFactorModels"
 			class="abbott.ai.tcgm17.action.MngFactorModels">
 			<result name="success">/jsp/mngFactorModels.jsp</result>
 		</action>
 
-		
+
 		<action name="mngPerpetualModels"
 			class="abbott.ai.tcgm17.action.MngPerpetualModelsAction">
 			<result name="success">/jsp/mngPerpetualModels.jsp</result>
@@ -679,7 +685,8 @@
 			<result name="restrictions">/jsp/restricationsPerpetualModels.jsp</result>
 		</action>
 
-		<action name="mngUnits" class="abbott.ai.tcgm17.action.MngUnits">
+		<action name="mngUnits"
+			class="abbott.ai.tcgm17.action.MngUnits">
 			<result name="success">/jsp/mngUnits.jsp</result>
 		</action>
 
@@ -706,10 +713,8 @@
 			<result name="success">/jsp/reportMenu.jsp</result>
 		</action>
 
-<!-- 	<action name="viewReport"
-			class="abbott.ai.tcgm.action.ViewReport">
-			<result name="failure">/jsp/sessionExpired.jsp</result>
-		</action> -->
+		<!-- <action name="viewReport" class="abbott.ai.tcgm.action.ViewReport"> 
+			<result name="failure">/jsp/sessionExpired.jsp</result> </action> -->
 
 		<action name="viewReport"
 			class="abbott.ai.tcgm17.action.ViewReportAction">
@@ -863,7 +868,7 @@
 			<result name="burst">/jsp/burstMaint.jsp</result> <result name="usersview">/jsp/cognosUsersView.jsp</result> 
 			<result name="users">/jsp/cognosUsers.jsp</result> <result name="datausersView">/jsp/dataUsersView.jsp</result> 
 			<result name="datausers">/jsp/reportUsers.jsp</result> </action> -->
-			
+
 		<action name="rptUserMaint"
 			class="abbott.ai.tcgm17.action.user.RptUserMaintAction">
 			<result name="input">/jsp/rptUserCreate.jsp</result>
@@ -1011,11 +1016,9 @@
 			<result name="success">/jsp/prMfgList.jsp</result>
 		</action>
 
-<!-- 		<action name="mngReportJobs"
-			class="abbott.ai.tcgm.action.MngReportJobs">
-			<result name="success">/jsp/mngReportJobs.jsp</result>
-		</action> -->
-		
+		<!-- <action name="mngReportJobs" class="abbott.ai.tcgm.action.MngReportJobs"> 
+			<result name="success">/jsp/mngReportJobs.jsp</result> </action> -->
+
 		<action name="mngReportJobs"
 			class="abbott.ai.tcgm17.action.MngReportJobsAction">
 			<result name="success">/jsp/mngReportJobs.jsp</result>

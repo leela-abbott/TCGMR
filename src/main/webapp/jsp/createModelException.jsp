@@ -49,8 +49,8 @@ pre {
 	background: #f8f9fa;
 	/* FIXED: Light grey background to replace the solid black banner */
 	color: #333333;
-	/* FIXED: Dark charcoal text color for easy readability */ border : 1px
-	solid #e2e8f0;
+	/* FIXED: Dark charcoal text color for easy readability */
+	border: 1px solid #e2e8f0;
 	/* FIXED: Soft structural accent border line */
 	padding: 15px;
 	overflow: auto;
@@ -158,6 +158,12 @@ pre {
 		<a href="createPerpetualModel.action"
 			style="color: #0044aa; font-weight: bold; text-decoration: underline;">&lt;&lt;
 			Return to Create Perpetual Model</a>
+		<%
+		} else if (request.getAttribute("errorMessage") != null && request.getRequestURI().contains("createCostExchModel")) {
+		%>
+		<a href="createCostExchModel.action"
+			style="color: #0044aa; font-weight: bold; text-decoration: underline;">&lt;&lt;
+			Return to Create Cost Exch Model</a>
 		<%
 		} else {
 		%>

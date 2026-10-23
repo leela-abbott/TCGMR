@@ -66,7 +66,11 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 		try {
 			if (this.isSessionValid(request)) {
 				clearErrorsAndMessages();
-
+				String savedMsg = (String) request.getSession().getAttribute("tcgmJobSuccessMessage");
+				if (savedMsg != null) {
+					addActionMessage(savedMsg);
+					request.getSession().removeAttribute("tcgmJobSuccessMessage"); // Clear after rendering once
+				}
 				if (this.getCmd() != null && !TCGMUtil.isEmpty(getCmd()) && !getCmd().equals("CANCEL")) {
 					if (chkRestrict && !this.isRestrictionEntered()) {
 						session.put("restrictionForm", this);
@@ -97,26 +101,32 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 
 	private void processCmd(HttpServletRequest request) throws TCGMException {
 		UserToken ut = this.getUserToken(request);
-
 		if ("ADD_JOB".equalsIgnoreCase(cmd)) {
 			if (TCGMUtil.isEmpty(getModelSelected())) {
 				addActionError(getText("error.model.none_selected", "You must select a model."));
 				return;
 			}
 
+			// FIX: Fallback directly to the raw request parameter if the bean field didn't
+			// bind correctly
+			String activeJobName = getJobName();
+			if (TCGMUtil.isEmpty(activeJobName)) {
+				activeJobName = request.getParameter("jobName");
+			}
+
 			ProcessMngr pm = new ProcessMngr();
 			Map<String, Object> jobDetails = new HashMap<>();
-			jobDetails.put("jobName", getJobName());
+			jobDetails.put("jobName", activeJobName);
 			jobDetails.put("SelReportDest", getSelReportDest());
 			jobDetails.put("RestrictionStr", getRestrictionStr());
 			jobDetails.put("ChkImmediate", isChkImmediate());
+
 			JobInstance job = pm.createJob(getModelSelected(), "-1", jobDetails);
 			ModelMngr mm = new ModelMngr();
 			CostExchModel model = (CostExchModel) mm.getModelFromId(ut, Integer.parseInt(getModelSelected()),
 					CostExchModel.Type.COSTEXCH);
 			job.setDesc(job.getJobDef().getJobName() + TCGMConstants.STR_SEP + model.getName());
 			ModelDao md = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getModelDao(ut, TCGMModel.Type.FACTOR);
-
 			// Job Parameters Handling Mapping
 			if (job.getJobDef().equals(JobDefinition.CXCHG_CSMP1C) || job.getJobDef().equals(JobDefinition.CXCHG_CSMP2)
 					|| job.getJobDef().equals(JobDefinition.CXCHG_CSMP3)
@@ -189,7 +199,12 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 			}
 
 			pm.addJob(job, ut);
-			addActionMessage(getText("success.job.add", "Job successfully added: " + job.getJobDef().getJobName()));
+			if (this.session != null) {
+			    this.session.put("tcgmJobSuccessMessage", "You have successfully added " + job.getJobDef().getJobName() + " to the job que");
+			} else {
+			    // Fallback if session map isn't fully injected yet
+			    ServletActionContext.getRequest().getSession().setAttribute("tcgmJobSuccessMessage", "You have successfully added " + job.getJobDef().getJobName() + " to the job que");
+			}
 		}
 	}
 
@@ -440,7 +455,7 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 	public void setRestrictionEntered(boolean restrictionEntered) {
 		this.restrictionEntered = restrictionEntered;
 	}
-	
+
 	public Vector<Option> getDestinationList() {
 		return destinationList;
 	}
