@@ -15,18 +15,7 @@ import abbott.ai.tcgm.data.SQLUtil;
 import abbott.ai.tcgm.data.oracle.OracleDao;
 import abbott.ai.tcgm.exception.TCGMException;
 import abbott.ai.tcgm.helpers.ProcessMngr;
-/**
- *
- * <p>Title: </p>
- * <p>Description: ProcessScheduler is an inner class of ProcessEngine.  This
- * class has a thread that gets started and stopped by the user.  Processing
- * by this thread consists of checking for jobs to run in the jobqueue.
- * </p>
- * <p>Copyright: Copyright (c) 2002</p>
- * <p>Company: </p>
- * @author unascribed
- * @version 1.0
- */
+
 public class ProcessScheduler extends SelfRunningThread
 {
 	private Calendar calendar = null;
@@ -36,7 +25,6 @@ public class ProcessScheduler extends SelfRunningThread
 	private String currentProcess = "--NONE--";
 	private static boolean batchFlag=true;
 
-
 	public ProcessScheduler(int sleepInterval)
 	{
 		super(sleepInterval);
@@ -44,28 +32,13 @@ public class ProcessScheduler extends SelfRunningThread
 		this.start();
 	}
 
-	/**
-	 *
-	 */
 	protected void runWork()
 	{
 		myLogger.info("ProcessScheduler Started.");
-		while ( this.noStopRequested )
+		while ( this.noStopRequested && !Thread.currentThread().isInterrupted() )
 		{
 			try
 			{
-
-				/**
-				 * 8-28-03 bd
-				 * I think right here is the place to fix the hangup with the job scheduler. The
-				 * problem appears to be that another job can't get submitted while a job is currently
-				 * running; Maybe the checkForJob() method should be called by spawning another thread
-				 * itself to check for the job.
-				 *
-				 * Or, basically the fix needs to be that the submission of a job is done via spawning
-				 * a new thread. It shouldn't have to wait for the current thread to complete in order
-				 * to just submit a new job.
-				 */
 				try{
 							ProcessMngr pm = new ProcessMngr();
 		
@@ -79,38 +52,27 @@ public class ProcessScheduler extends SelfRunningThread
 					{
 	
 					}
-				Thread.currentThread().sleep(this.sleeptime);
+				Thread.sleep(this.sleeptime);
 			}
 			catch (java.lang.InterruptedException ex)
 			{
 				myLogger.error("Process Scheduler Interupted");
-				// no problem, interrupt me.
 				myLogger.error("Process Scheduler Monitor stop method invoking");
 				DaemonMngr dm = DaemonMngr.getInstance();
 				dm.stopProcessSchedulerMonitor();
 				myLogger.error("Process Scheduler Monitor stop method executed");
+				break;
 			}
 		}
 		myLogger.info("ProcessScheduler Exiting.");
 	}
 
-	/**
-	 *
-	 */
 	private void checkForJob()
 	{
 		try
 		{
-			// myLogger.debug("Checking for job...");
 			ProcessMngr pm = new ProcessMngr();
 			JobInstance job = null;
-			/************************************************************
-			 * Added by Udaya B Aravapalli on 01/25/2006.
-			 * If there are jobs sitting in the Job Que table with a
-			 * Processing state, they need to be chnaged to Unknown
-			 * state, because the process Scheduler has moved on to
-			 * the next job. We have no more status on this job.
-			 *************************************************************/
 			Vector processingJobs = pm.getAllProcessingJobs(SQLUtil.getOracleAdmin());
 			for (int i=0; i< processingJobs.size();i++)
 			{
@@ -120,12 +82,6 @@ public class ProcessScheduler extends SelfRunningThread
 				pd.setJobComplete(job.getJobQueId(), JobInstance.JobStatus.Unknown);
 				job = null;
 			}
-			/************************************************************
-			 * Added by Veerendra K Pesala on 05/02/2006.
-			 * If there are jobs sitting in the Job Que table with a
-			 * Jobcomplete state, they need to be started to process
-			 * the reporting part of the job to move to status R or C.
-			 *************************************************************/
 			Vector nonCompletedJobs = pm.getAllNonCompleteJobs(SQLUtil.getOracleAdmin());
 			for (int i=0; i< nonCompletedJobs.size();i++)
 			{
@@ -203,7 +159,6 @@ public class ProcessScheduler extends SelfRunningThread
 	}
 	private boolean isBatchMode() {
 
-		// update internal calendar with current time
 		calendar.setTime(new Date(System.currentTimeMillis()) );
 
 		String dateTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" +
@@ -211,8 +166,6 @@ public class ProcessScheduler extends SelfRunningThread
 					   (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DATE);
 		myLogger.debug("Scheduler Date/Time: " + dateTime );
 		
-		// currently batch mode is less that 5 am and greater than 7pm, hard coded. Migrate to application constants
-		//added by Rama Goshike to check whether the batchmode to start or not
 		if(isBatchFlag())
 		{
 			if ( (calendar.get(Calendar.HOUR_OF_DAY) >= this.BATCH_START) ||
@@ -248,15 +201,9 @@ public class ProcessScheduler extends SelfRunningThread
 		pm.addJob(job, SQLUtil.getOracleAdmin());
 	}
 	
-	/**
-	 * @return Returns the batchFlag.
-	 */
 	public static boolean isBatchFlag() {
 		return batchFlag;
 	}
-	/**
-	 * @param batchFlag The batchFlag to set.
-	 */
 	public static void setBatchFlag(boolean flag) {
 		batchFlag = flag;
 	}

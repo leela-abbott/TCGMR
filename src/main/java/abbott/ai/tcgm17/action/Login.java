@@ -2,8 +2,7 @@ package abbott.ai.tcgm17.action;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import org.apache.struts2.ActionSupport;                 
+                
 import org.apache.struts2.action.ServletRequestAware;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
@@ -17,8 +16,8 @@ import abbott.ai.tcgm.exception.*;
 
 public class Login extends TCGMAction implements ServletRequestAware {
 
-	private static final long serialVersionUID = 1L;
-	
+    private static final long serialVersionUID = 1L;
+    
     private String userid = "";
     private String password = "";
     private HttpServletRequest request;
@@ -87,13 +86,37 @@ public class Login extends TCGMAction implements ServletRequestAware {
         }
     }
 
-    public String getUserid() { return this.userid; }
-    
+    // FIX: In Struts 6.x, @StrutsParameter must be applied to the getter method
     @StrutsParameter
-    public void setUserid(String userid) { this.userid = userid; }
+    public String getUserid() { 
+        return this.userid; 
+    }
+    
+    public void setUserid(String userid) { 
+        this.userid = userid; 
+    }
 
-    public String getPassword() { return this.password; }
-    
+    // Overload setter to catch data if the browser submits it as an array structure
+    public void setUserid(String[] userid) {
+        if (userid != null && userid.length > 0) {
+            this.userid = userid[0];
+        }
+    }
+
+    // FIX: Moved @StrutsParameter to the getter method
     @StrutsParameter
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() { 
+        return this.password; 
+    }
+    
+    public void setPassword(String password) { 
+        this.password = password; 
+    }
+
+    // Overload setter to catch data if the browser submits it as an array structure
+    public void setPassword(String[] password) {
+        if (password != null && password.length > 0) {
+            this.password = password[0];
+        }
+    }
 }

@@ -37,10 +37,15 @@ public abstract class SelfRunningThread {
 
 	public void stopRequested() {
 		noStopRequested = false;
-		internalThread.interrupt();
+		if (internalThread != null) {
+			internalThread.interrupt();
+		}
 	}
 
 	public boolean isAlive() {
+		if (internalThread == null) {
+			return false;
+		}
 		return internalThread.isAlive();
 	}
 }

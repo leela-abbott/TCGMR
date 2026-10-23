@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
-
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-
 import abbott.ai.tcgm.AppConst;
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.TCGMUtil;
@@ -37,13 +35,6 @@ public class DataFeedMonitor extends SelfRunningThread {
 
 	public DataFeedMonitor(int sleeptime) throws TCGMException {
 		super(sleeptime);
-		// Setup datafeeds. A datafeed has three constructor parameters to establish a feed.
-		// Location - A String indicating the place to look for the file. Generally read from appconts/web.xml
-		// Extension - A String that the filename will end in, for instants "units" for files that end with ".units"
-		// Job To Run - The name of a stored procedure to execute
-		// This are stored in the database and read in through a DAO. At this time they are read each
-		// time the monitor starts up.
-
 		this.dataFeeds = new DataFeedMngr().getAllDataFeeds();
 		if (this.dataFeeds == null || this.dataFeeds.size() == 0)
 			logger.warn("No datafeeds to process.");
@@ -79,21 +70,8 @@ public class DataFeedMonitor extends SelfRunningThread {
 		}
 		try
 		{
-			// Create a new file object to represent the file as viewed from the database.
-			// This is often perceived as a different location since the processing code runs on the db server
-			// while the monitoring code runs on the web server.
 			dbFile = new File(dataFeed.getDbLocation(), appFile.getName() );
 			UserToken ut = SQLUtil.getOracleAdmin();
-			/********************************************************************
-			 * Modified Date: 12/20/2005
-			 * Modified By : Udaya B Aravapalli
-			 * This will read the Paramter value(Paramter name: SENDTREEMVS) from
-			 * the paramter table. The first 8 characters will be the file name,
-			 * the next 2 characters will be the delimiter '::' and the last character
-			 * will be a value of 0 or 1. 1 indicates the file is still not ready.
-			 * 0 indicates the file is ready.
-			 *
-			 ********************************************************************/
 			ModelDao md = DaoFactory.getDaoFactory(DaoFactory.ORACLE).getModelDao(ut, TCGMModel.Type.FACTOR);
 			logger.info("Process Name :" + dataFeed.getProcessName());
 			toAddress=md.getModelParm(-1, "SUPPORT_SEND_ERROR_LIST");
@@ -122,14 +100,11 @@ public class DataFeedMonitor extends SelfRunningThread {
 				sendTreeMVSParm = md.getModelParm(-1, TCGMConstants.DT_EXPORT_RTC_DATA);
 			}
 			else if(dataFeed.getProcessName().equalsIgnoreCase(TCGMConstants.DT_JOB_SEND_FACT_CCS)){
-				
 				sendTreeMVSParm = md.getModelParm(-1, TCGMConstants.DT_EXPORT_CCS_DATA);				
 			}
 			else if(dataFeed.getProcessName().equalsIgnoreCase(TCGMConstants.DT_JOB_SEND_PRICING_IPS)){
-				
 				sendTreeMVSParm = md.getModelParm(-1, TCGMConstants.DT_EXPORT_IPS_DATA);				
 			}
-
 			if (!(sendTreeMVSParm ==null))
 			{
 				StringTokenizer tokens = new StringTokenizer(sendTreeMVSParm, TCGMConstants.DT_COLON_DELIMITER);
@@ -140,7 +115,6 @@ public class DataFeedMonitor extends SelfRunningThread {
 					{
 						fileName = tokens.nextToken();
 					}
-
 					if ((tokenCount == 1) && (Integer.parseInt(tokens.nextToken()) == 0))
 					{
 						processFlag = true;
@@ -148,58 +122,34 @@ public class DataFeedMonitor extends SelfRunningThread {
 				tokenCount++;
 				}
 			}
-
-			// 12-6-05 Separate Import from Export DataFeedMonitor jobs
 			String javaJobPckg = "abbott.ai.tcgm.process.javajob";
-			if(dataFeed.getJobType().equals("JV") && processFlag) // this is an export and a javajob processes job
+			if(dataFeed.getJobType().equals("JV") && processFlag) 
 			{
 				logger.debug(" This is a file in the export directory. Java Job is kicking in..");
 				JobInstance instance = new JobInstance();
-				// As we have to pass the file name to the Java Job , We are usinng the
-				// model field in the JobInstance to do this. This is not pretty. But this
-				// is one way we could effectively solve this issue. If we come up with a better
-				// idea on how to handle this, this should be changed.
-				
 				JavaJob javaJob = (JavaJob) Class.forName(javaJobPckg + "." + dataFeed.getProcessName()).newInstance();
-				
 				if(dataFeed.getProcessName().equalsIgnoreCase(TCGMConstants.DT_JOB_SEND_FACT_CCS)){
 					instance.setModel(appFile.getAbsolutePath());	
 					javaJob.perform(instance);
-					//appFile.renameTo(new File(appFile.getParent(),  appFile.getName() + ".processed" ) );
 					appFile.delete();				
 				}else if(dataFeed.getProcessName().equalsIgnoreCase(TCGMConstants.DT_JOB_SEND_PRICING_IPS)) {
-					
-									
 					instance.setModel(appFile.getAbsolutePath());	
 					javaJob.perform(instance);
-					//appFile.renameTo(new File(appFile.getParent(),  appFile.getName() + ".processed" ) );
 					appFile.delete();
 				}else{
 					instance.setModel(fileName);					
 					javaJob.perform(instance);
 					appFile.renameTo(new File(appFile.getParent(),  appFile.getName() + ".processed" ) );					
 				}
-				
-				
-				
-				
 				dataFeedLogInsertFlag = true;
-				// 12/8/05 Need to execute the corresponding javajob.
 			}
-			else if(dataFeed.getJobType().equals("SP"))// "SP" this is an import and a store procedure processes job
+			else if(dataFeed.getJobType().equals("SP"))
 			{
-
-				/*********************************************************************************
-				 * If the Procedure is "AFFBPC_LOAD" then we need to create a Job so that
-				 * the Process Scheduler will run the Job(generate Reports) and call the
-				 * Report Manager to do the rest to generate the Actual Report in CRN.
-				 *********************************************************************************/
 				if ((dataFeed.getProcessName()).equalsIgnoreCase(JobConstants.PN_AFFBPC_LOAD))
 				{
 					String supAffID = null;
 					supAffID = pm.processAffBPCDataFeed(dbFile, dataFeed);
 					appFile.renameTo(new File(appFile.getParent(),  appFile.getName() + ".processed" + TCGMUtil.getRandomDigitStr(4)  ) );
-
 					JobInstance job = pm.createDataTRFRJob(JobConstants.PN_AFFBPC_REPORT, "-1", "-1");
 					job.setDesc(job.getJobDef().getJobName()  + " (Affiliate #"+supAffID+")");
 					if (supAffID != null)
@@ -210,47 +160,38 @@ public class DataFeedMonitor extends SelfRunningThread {
 				}
 				else
 				{
-					//01/26/2006 Udaya B Aravapalli. Need to pass the dataFeed Instance
-					// so that we can retrieve all the required values in the DAO.
 					pm.processDataFeed(dbFile, dataFeed);
 					appFile.renameTo(new File(appFile.getParent(),  appFile.getName() + ".processed" + TCGMUtil.getRandomDigitStr(4)  ) );
 				}
 				dataFeedLogInsertFlag = true;
 			}
-
 			entry.setCompletionMsg("File Processed Successfully");
 		}
 		catch (TCGMException tex) {
 			StringWriter errors = new StringWriter();
-			//tex.printStackTrace();
-				tex.printStackTrace(new PrintWriter(errors));
-				String errorOutput = errors.toString();
-				if(errorOutput.equals("")){
-					errorOutput=tex.getErrorMessage();
-				}
+			tex.printStackTrace(new PrintWriter(errors));
+			String errorOutput = errors.toString();
+			if(errorOutput.equals("")){
+				errorOutput=tex.getErrorMessage();
+			}
 			try{
 				if(!toAddress.equals("")){
 					sEmail.sendEMail(toAddress,errorOutput,"Error processing file."+dataFeed.getProcessName(),"tcgm.no-reply@abbvie.com","");
 				}
-			}catch(Exception myEX){
-				
-			}
+			}catch(Exception myEX){}
 			logger.error("Error processing data feed: " + dataFeed.toString() + ", Message: " + tex.toString() );
 			appFile.renameTo(new File(appFile.getParent(), appFile.getName() + ".failed" + TCGMUtil.getRandomDigitStr(4)  ) );
 			entry.setCompletionMsg("Error processing file. Message: " + tex.getErrorMessage() );
 		}
 		catch (Exception ex) {
-			//ex.printStackTrace();
-				StringWriter errors = new StringWriter();			
-				ex.printStackTrace(new PrintWriter(errors));
-				String errorOutput = errors.toString();
+			StringWriter errors = new StringWriter();			
+			ex.printStackTrace(new PrintWriter(errors));
+			String errorOutput = errors.toString();
 			try{
 				if(!toAddress.equals("")){
 					sEmail.sendEMail(toAddress,errorOutput,"Error processing file."+dataFeed.getProcessName(),"tcgm.no-reply@abbvie.com","");
 				}
-			}catch(Exception myEX){
-				
-			}
+			}catch(Exception myEX){}
 			logger.error("Error processing data feed: " + dataFeed.toString() + ", Message: " + ex.toString() );
 			appFile.renameTo(new File(appFile.getParent(), appFile.getName() + ".failed" + TCGMUtil.getRandomDigitStr(4)  ) );
 			entry.setCompletionMsg("Error processing file. Message: " + ex.getMessage() );
@@ -265,26 +206,25 @@ public class DataFeedMonitor extends SelfRunningThread {
 		}
 		try
 		{
-		  logger.debug("Important Information Start:");
-		  logger.debug("Full File Name:" + entry.getFullFileName());
-		  logger.debug("Completion Msg:" + entry.getCompletionMsg());
-		  logger.debug("Start Time:"     + entry.getStartTime());
-		  logger.debug("End Time:"       + entry.getEndTime());
-		  logger.debug("Important Information End:");
-			  if(dataFeedLogInsertFlag){
+			logger.debug("Important Information Start:");
+			logger.debug("Full File Name:" + entry.getFullFileName());
+			logger.debug("Completion Msg:" + entry.getCompletionMsg());
+			logger.debug("Start Time:"     + entry.getStartTime());
+			logger.debug("End Time:"       + entry.getEndTime());
+			logger.debug("Important Information End:");
+			if(dataFeedLogInsertFlag){
 				new DataFeedMngr().writeLogEntry(entry);
-			  }
-		 }
+			}
+		}
 		catch (TCGMException tex2)
 		{
-		  logger.error("Error writing to datafeed log: " + dataFeed.toString() + ", Message: " + tex2.getErrorMessage() );
+			logger.error("Error writing to datafeed log: " + dataFeed.toString() + ", Message: " + tex2.getErrorMessage() );
 		}
 		this.currentFeed = "--NONE--";
 	}
 
 	private File getFileFromFeed(DataFeed dataFeed)
 	{
-
 		try
 		{
 			File[] files = dataFeed.getAsLocation().listFiles( dataFeed.getFilenameFilter() );
@@ -300,9 +240,7 @@ public class DataFeedMonitor extends SelfRunningThread {
 			ex.printStackTrace();
 			return null;
 		}
-
 	}
-
 
 	public String getCurrentFeed() {
 		return this.currentFeed;
@@ -310,7 +248,7 @@ public class DataFeedMonitor extends SelfRunningThread {
 
 	protected void runWork() {
 		this.logger.debug("Begin monitoring data feeds");
-		while (noStopRequested) {
+		while (this.noStopRequested && !Thread.currentThread().isInterrupted()) {
 			try {
 				Thread.sleep(this.sleeptime);
 				Iterator item = dataFeeds.iterator();
@@ -323,13 +261,10 @@ public class DataFeedMonitor extends SelfRunningThread {
 				}
 			}
 			catch (InterruptedException iex) {
-				// Any caught exceptions should be reasserted for
-				// any blocking statements that follow.
-				Thread.currentThread().interrupt();
+				logger.error("Data Feed Monitor Interrupted");
+				break;
 			}
 		}
 		logger.debug("Stop monitoring data feeds");
 	}
 }
-
-
