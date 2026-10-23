@@ -249,7 +249,7 @@ public class AsrMaint extends TCGMAction implements SessionAware {
 	public void setSearchObject(Asr searchObject) {
 		this.searchObject = searchObject;
 	}
-
+	@StrutsParameter(depth = 3)
 	public List<Asr> getAsrList() {
 		return asrList;
 	}

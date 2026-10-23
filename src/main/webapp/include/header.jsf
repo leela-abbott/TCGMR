@@ -50,10 +50,10 @@
         }
     </style>
 
-    <script type="text/javascript" src="include/mmenu.js"></script>
-    <script type="text/javascript" src="include/AnchorPosition.js"></script>
-    <script type="text/javascript" src="include/PopupWindow.js"></script>
-    <script type="text/javascript" src="include/popupInit.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/include/mmenu.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/include/AnchorPosition.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/include/PopupWindow.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/include/popupInit.js"></script>
 
     <link rel="stylesheet" type="text/css" href="include/master.css" title="Default">
 </head>
