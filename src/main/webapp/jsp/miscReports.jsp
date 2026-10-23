@@ -1,152 +1,170 @@
-<%@ page import="abbott.ai.tcgm.entities.User" %>
-<%! String pageTitle="Miscellaneous Reports";%>
-
-<%@ include file="/include/header.jsf" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<c:set var="pageTitle" value="Miscellaneous Reports" scope="request" />
+<head>
+  <meta charset="UTF-8">
+  <title>Miscellaneous Reports</title>
+  <%@ include file="/include/header.jsf" %>
+  <style type="text/css">
+    .btn-job {
+        background: #ffea4a; 
+        background: linear-gradient(to bottom, #fff67a 0%, #ffea4a 30%, #e0c716 100%);
+        border: 1px solid #bfa506;
+        color: #0b3168;
+        padding: 0px 4px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        font-style: italic;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 175px;
+        height: 22px;
+        line-height: 20px;
+        text-align: center;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .btn-job:hover {
+        background: linear-gradient(to bottom, #fff899 0%, #ffef66 30%, #ebd121 100%);
+        border-color: #a38d04;
+    }
+    .dropdown-auto-width {
+        width: auto;
+        min-width: 175px;
+        max-width: 550px;
+        box-sizing: border-box;
+    }
+  </style>
+</head>
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <%@ include file="/include/masthead.jsf" %>
 <%@ include file="/include/errorDisplay.jsf" %>
-<html:form name="miscReportsForm" action="miscReports" type="abbott.ai.tcgm.action.form.MiscReportsForm" scope="session" >
-<bean:define id="unitSets" name="miscReportsForm" property="unitSets" />
-<nested:define id="monthListNumber" property="monthListNumber" />
-<nested:define id="yearList" property="yearList" />
-<nested:define id="factorModels" property="factorModels" />
 
-  <div id="divToHide">
-  	<%@ include file="/include/jobOptions.jsf" %> 
-	<table class="tableCommand" >
-	  <tr>
-	    <td colspan="2"  class="tableHeading">Misc Jobs and Reports</td>
+<s:form action="miscReports" method="post" theme="simple" style="width: 100%;">
+  <s:hidden name="cmd" id="cmdField" />
+
+  <div id="divToHide" style="width: 100%;">
+    <%@ include file="/include/jobOptions.jsf" %> 
+    <table class="tableCommand" style="width: 100%;">
+      <tr>
+        <td colspan="2" class="tableHeading">Misc Jobs and Reports</td>
       </tr>
       <tr>
         <td width="20">&nbsp;</td>
-        <td align="left"  >
-          <table cellspacing="4" >
+        <td align="left">
+          <table cellspacing="4" style="border-collapse: separate; border-spacing: 12px 6px; width: 100%;">
             <tr>
-              <td width="225">
-			  <a href="javascript:deleteAsrPartial()"><img src="images/btnDeleteASRofPartialTrees.png" border=0></a></td>
-              <td width="225" >
-			  <a href="javascript:addJob(document.forms[0], 'BPC_PRT0CST')"><img src="images/btnBPCwithAllZeroCosts.png" border=0></a></a>
-			</td>
-              <td width="225" >
-			  	</td>
+              <td width="20%" valign="top">
+                <button type="button" onclick="deleteAsrPartial()" class="btn-job">Delete ASR of Partial Trees</button>
+              </td>
+              <td width="40%" valign="top">
+                <button type="button" onclick="addJob('BPC_PRT0CST')" class="btn-job">BPC with All Zero Costs</button>
+              </td>
+              <td width="40%" valign="top"></td>
             </tr>
             <tr>
-              <td width="225">
-				<a href="javascript:deleteAsr()"><img src="images/btnDeleteASRwoBPCMatch.png" border=0></a></td>
-              <td width="225">
-				<a href="javascript:addJob(document.forms[0], 'BPC_PRT0BP')"><img src="images/btnBPCwithAllZeroPrices.png" border=0></a></td>
-              <td width="225"></td>
+              <td width="20%" valign="top">
+                <button type="button" onclick="deleteAsr()" class="btn-job">Delete ASR w/o BP/C Match</button>
+              </td>
+              <td width="40%" valign="top">
+                <button type="button" onclick="addJob('BPC_PRT0BP')" class="btn-job">BP/C with all Zero Prices</button>
+              </td>
+              <td width="40%" valign="top"></td>
             </tr>
             <tr>
-              <td width="225"><a href="javascript:deleteBpc()"><img src="images/btnDeleteBPCwoASRMatch.png" border=0></a>
-				</td>
-              <td width="225"><a href="javascript:addJob(document.forms[0], 'DELETE_AUDIT')"><img src="images/btnDeleteAuditSets.png" border=0></a>				</td>
-              <td width="225">			 	</td>				
-            </tr>
-
-
-            <tr valign="top">
-              <td width="225" height="50">
-				</td>
-              <td width="225">&nbsp;</td>
-              <td width="225">&nbsp;</td>			  
+              <td width="20%" valign="top">
+                <button type="button" onclick="deleteBpc()" class="btn-job">Delete BP/C w/o ASR Match</button>
+              </td>
+              <td width="40%" valign="top">
+                <button type="button" onclick="addJob('DELETE_AUDIT')" class="btn-job">Delete Audit Sets</button>
+              </td>
+              <td width="40%" valign="top"></td>
             </tr>
 
             <tr valign="top">
-              <td width="225">
-			  	  	<div class="commandOption" style="border:solid blue 0px;padding:0 px;">
-					<a href="javascript:addJob(document.forms[0], 'BPC_0PLNVSIM')"><img src="images/btnZeroBPCComparedWModel.png" border=0></a>
-					<br>
-                  Comparison Model:
+              <td width="20%" height="40"></td>
+              <td width="40%">&nbsp;</td>
+              <td width="40%">&nbsp;</td>
+            </tr>
 
-                  <nested:select property="selComparisonModel">
-
-                    <html:options property="modelId" labelProperty="name" collection="factorModels" styleClass="commandOption" />
-                	</nested:select>
-                  <br>
-					
-					</div></td>
-              <td width="275">
-				<a href="javascript:addJob(document.forms[0], 'ROUTE_EXCEPT')"><img src="images/btnRouteExceptions.png" border=0></a><br>
-				<div class="commandOption" align="left" style="margin-right:10px;" >
-				Starting D.5.6 Period:
-                  <nested:select property="selRoutingStartPeriod" styleClass="commandOption" >
-				    <html:option value="13">13</html:option>
-                    <html:options collection="monthListNumber" labelProperty="label" property="value" />
-                </nested:select>
-                  <nested:select property="selRoutingStartYear" styleClass="commandOption" >
-                    <html:options collection="yearList" labelProperty="label" property="value" />
-                  </nested:select>
-                  <br>
-				Ending D.5.6 Period:
-                  <nested:select property="selRoutingEndPeriod" styleClass="commandOption" >
-				    <html:option value="13">13</html:option>
-                    <html:options collection="monthListNumber" labelProperty="label" property="value" />
-                </nested:select>
-                  <nested:select property="selRoutingEndYear" styleClass="commandOption" >
-                    <html:options collection="yearList" labelProperty="label" property="value" />
-                </nested:select>
-<!-- 9-19-03 Beginning of Routing Year Units Addition -->				
-                  <br>
-				Beginning Routing Year Units
-                  <br>
-				<html:select property="begRouteUnitsSelected" styleClass="commandOption" >
-        			<option value="">&lt;none&gt;</option>
-            		<html:options property="datasetTableId" labelProperty="datasetNameLogStamp" collection="unitSets" />
-        		</html:select>				  
-                  <br>
-				Ending Routing Year Units
-                  <br>
-				<html:select property="endRouteUnitsSelected" styleClass="commandOption" >
-        			<option value="">&lt;none&gt;</option>
-            		<html:options property="datasetTableId" labelProperty="datasetNameLogStamp" collection="unitSets" />
-        		</html:select>				  
-<!-- 9-19-03 Ending of Routing Year Units Addition -->			
+            <tr valign="top">
+              <td width="20%" valign="top">
+                <div class="commandOption" style="border:solid blue 0px;padding:0px; width: 100%;">
+                  <button type="button" onclick="addJob('BPC_0PLNVSIM')" class="btn-job">Zero BP/C Compared w Model</button>
+                  <br>Comparison Model:<br>
+                  <s:select name="selComparisonModel" list="factorModels" listKey="modelId" listValue="name" cssClass="commandOption dropdown-auto-width" />
                 </div>
-			  </td>
-              <td width="225">
-			  <a href="javascript:addJob(document.forms[0], 'BPC_ANALYS')"><img src="images/btnInterCoTransferAnalysis.png" border=0></a>
-			  	<div class="commandOption" style="margin-right:80px;">Period:
-				  <nested:select property="interCoTransferPeriod"  styleClass="commandOption" >
-				    <html:option value="13">13</html:option>
-                    <html:options collection="monthListNumber" labelProperty="label" property="value" />
-				  </nested:select>
-				  <br>
-				    Actual Units
-        			<nested:select property="actualUnitsSelected" styleClass="commandOption">
-		            	<option value="0">&lt;none&gt;</option>
-        		    	<html:options property="datasetTableId" labelProperty="datasetNameLogStamp" collection="unitSets" />
-		            </nested:select> 
-				  <!-- 11-20-05 Filename parm added -->
-        			<!-- 03/20/2006 Veerendra Hiding the text field and passing the Hidden Param by default -->
-        			<!-- <p>Tree File Name: <br> -->
-        			<nested:text property="treeFilename" maxlength="8" styleClass="hidden" value="TCGMICTA" /> 
-        			</div>
-			  </td>
+              </td>
+              <td width="40%" valign="top">
+                <button type="button" onclick="addJob('ROUTE_EXCEPT')" class="btn-job">Route Exception</button><br>
+                <div class="commandOption" align="left" style="margin-right:10px; width: 100%;">
+                  Starting D.5.6 Period:
+                  <s:select name="selRoutingStartPeriod" list="monthListNumber" listKey="value" listValue="label" headerKey="13" headerValue="13" cssClass="commandOption" />
+                  <s:select name="selRoutingStartYear" list="yearList" listKey="value" listValue="label" cssClass="commandOption" />
+                  <br>
+                  Ending D.5.6 Period:
+                  <s:select name="selRoutingEndPeriod" list="monthListNumber" listKey="value" listValue="label" headerKey="13" headerValue="13" cssClass="commandOption" />
+                  <s:select name="selRoutingEndYear" list="yearList" listKey="value" listValue="label" cssClass="commandOption" />
+                  <br>
+                  Beginning Routing Year Units:
+                  <br>
+                  <s:select name="begRouteUnitsSelected" list="unitSets" listKey="datasetTableId" listValue="datasetNameLogStamp" headerKey="" headerValue="<none>" cssClass="commandOption dropdown-auto-width" />
+                  <br>
+                  Ending Routing Year Units:
+                  <br>
+                  <s:select name="endRouteUnitsSelected" list="unitSets" listKey="datasetTableId" listValue="datasetNameLogStamp" headerKey="" headerValue="<none>" cssClass="commandOption dropdown-auto-width" />
+                </div>
+              </td>
+              <td width="40%" valign="top" style="padding-left: 40px;">
+                <button type="button" onclick="addJob('BPC_ANALYS')" class="btn-job">Inter Co Transfer Analysis</button>
+                <div class="commandOption" style="width: 100%;">
+                  Period:
+                  <s:select name="interCoTransferPeriod" list="monthListNumber" listKey="value" listValue="label" headerKey="13" headerValue="13" cssClass="commandOption" />
+                  <br>
+                  Actual Units:
+                  <s:select name="actualUnitsSelected" list="unitSets" listKey="datasetTableId" listValue="datasetNameLogStamp" headerKey="0" headerValue="<none>" cssClass="commandOption dropdown-auto-width" />
+                  <s:hidden name="treeFilename" value="TCGMICTA" id="treeFilename" />
+                </div>
+              </td>
             </tr>
-          </table></td>
+          </table>
+        </td>
       </tr>
     </table>
   </div>
-</html:form>
-<script language=javascript>
+</s:form>
+
+<script type="text/javascript">
+function addJob(commandName) {
+    var cmdField = document.getElementById('cmdField');
+    if (cmdField) {
+        cmdField.value = commandName;
+        cmdField.form.submit();
+    }
+}
 function deleteAsrPartial(){
-			if ( confirm("Do You Really Wanted to Delete ASR of Partial Trees Record?") )
-			{		
-				javascript:addJob(document.forms[0], 'ASR_DLT_PART')
-			}
+    if (confirm("Do You Really Want to Delete ASR of Partial Trees Record?")) {		
+        addJob('ASR_DLT_PART');
+    }
 }
 function deleteAsr(){
-			if ( confirm("Do You Really Wanted to Delete ASR w/o BP/C Records?") )
-			{		
-				javascript:addJob(document.forms[0], 'ASR_DELETE')
-			}
+    if (confirm("Do You Really Want to Delete ASR w/o BP/C Records?")) {		
+        addJob('ASR_DELETE');
+    }
 }
 function deleteBpc(){
-			if ( confirm("Do You Really Wanted to Delete BP/C w/o ASR Records?") )
-			{		
-				javascript:addJob(document.forms[0], 'BPC_DELETE')
-			}
+    if (confirm("Do You Really Want to Delete BP/C w/o ASR Records?")) {		
+        addJob('BPC_DELETE');
+    }
 }
 </script>
 <%@ include file="/include/footer.jsf" %>
+</body>
+</html>

@@ -77,7 +77,7 @@ public class ProcessMngr implements TCGMMngr
 	public JobInstance createJob(String modelId, String datasetTableId, TCGMProductionForm form) throws TCGMException {
 		String jobName = form.getJobName();
 		JobInstance job = new JobInstance(JobDefinition.getJobDefFromName(jobName));
-		job.getJobDef().populateDetail(); // this call retrives additional detail about the job definition from the database. Specifically we need the desc in this case
+		job.getJobDef().populateDetail(); 
 
 		if ( form.isChkImmediate() )
 			job.setJobStatus(JobInstance.JobStatus.Immediate);
@@ -87,27 +87,10 @@ public class ProcessMngr implements TCGMMngr
 		job.setModelId( modelId );
 		job.setDatasetTableId(datasetTableId); // not used here
 
-		// 10-9-03 Routing steps do not apply on factor model actions
 		if (!form.getJobName().equals("MODEL_CLOSE")   &&
 			!form.getJobName().equals("MODEL_COMPACT") &&
 			!form.getJobName().equals("MODEL_DELETE"))
 		{
-
-			// 11-21-05 Replace with code that follows.
-			// add routing parameters if necessary
-			// if (!form.getSelReportDest().equals("0")) // add routing information
-			// {
-			//  	job.setPrintOutput(true);
-			//		job.addJobParm("REPORT_DEST", form.getSelReportDest() );
-			//		job.addJobParm("REPORT_COPIES", form.getNumCopies() );
-			// }
-
-			/** 11-21-05 The routing info above is not used w/ ReportNet but could be
-			*  leveraged later. We only add the print flag attrs to the job here.
-			*  The determination whether to print the report or not is determined
-			*  by inspecting the selReportDest attribute of the ReportPrintRequest
-			*  in the ReportMngr class, not the printOutput attrs below.
-			*/
 			if (form.getSelReportDest().equals("GP")) // Generate & Print Report
 			{
 				job.setPrintOutput(true);
@@ -126,8 +109,6 @@ public class ProcessMngr implements TCGMMngr
 			}
 			else
 			{
-				// specifically add a single space parameter. This will get pushed into the
-				// global pool and override the restriction setting left from any previous reports
 				job.addJobParm( JobConstants.PN_RESTRICTIONS, " " );
 			}
 
