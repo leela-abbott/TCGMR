@@ -1,5 +1,4 @@
-<% // Sridevi.K 7-12-05 imports and code added%>
-<%@ page import="abbott.ai.tcgm.TCGMConstants" %>
+<%-- <%@ page import="abbott.ai.tcgm.TCGMConstants" %>
 <%@ page import="abbott.ai.tcgm.entities.TCGMState" %>
 <%
 		TCGMState state = (TCGMState)request.getSession().getAttribute(TCGMConstants.SESSION_NAME_STATE);
@@ -8,7 +7,6 @@
 			state = new TCGMState();
 		}
 %>
-<% // Sridevi.K 7-12-05 End of imports and newcode %>
 
 <table border="0" width="780" cellpadding="0" cellspacing="0" height="0%">
 	<tr>
@@ -53,11 +51,6 @@
 			</td>
 			</div>
 		</nested:nest>
-		
-	
-	
-	
-		
 		
 		<td width="0%">
 			   <a href="javascript:changeCmdAndSubmit(document.asrTranForm,'selectedrecordpage');">
@@ -140,4 +133,168 @@
 		</td>
 		<%}%>
 	</tr>
+</table>  --%>
+
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%-- <jsp:useBean id="TCGMUser" scope="session" type="abbott.ai.tcgm.entities.User" />
+<jsp:useBean id="Role" scope="session" class="abbott.ai.tcgm.entities.Role" /> --%>
+<table border="0" width="780" cellpadding="0" cellspacing="0" height="0%">
+    <tr>
+        <!-- Previous Page Button -->
+        <td width="0%">&nbsp;
+            <span id="prevPageDiv">
+                <s:if test="pagingFilter.dispPrevPage == true">
+                    <a href="javascript:checkFilterDirtyFlag(document.asrTranForm,'prevpage');">
+                        <img src="images/btnPageLeft.png" border="0" alt="Previous Page" />
+                    </a>
+                </s:if>
+            </span>
+        </td>
+        <!-- Record Counter Display -->
+        <td nowrap width="1%">
+            <div class="pagingInfo" id="pagingDiv">
+                <s:if test="asrTranListSize != 0">
+                    <s:hidden name="pagingFilter.startRecord" />
+                    <s:hidden name="pagingFilter.recordsToRetrieve" />
+                    <s:hidden name="pagingFilter.totalRecordsInSet" />
+                    <s:property value="pagingFilter.startRecord" />-<s:property value="pagingFilter.endRecordForDisplay"/>/<s:property value="pagingFilter.totalRecordsInSet" />&nbsp;
+                </s:if>
+            </div>
+        </td>
+        <!-- Next Page Button -->
+        <td width="0%">&nbsp;
+            <span id="nextPageDiv">
+                <s:if test="pagingFilter.dispNextPage == true">
+                    <a href="javascript:checkFilterDirtyFlag(document.asrTranForm,'nextpage');">
+                        <img src="images/btnPageRight.png" border="0" alt="Next Page" />
+                    </a>
+                </s:if>
+            </span>
+        </td>
+        <!-- Goto Record Input -->
+        <%-- <td width="160">
+            <div class="fltrTblHdng">
+                Record&nbsp;#&nbsp;
+                <s:textfield name="pagingFilter.recordNumberInSet" id = "pagingFilter.recordNumberInSet" 
+                             maxlength="7" 
+                             cssClass="fltrWidth7"
+                             onkeyup="return autoTab(this, 7, event);" 
+                             onchange="javascript:document.getElementById('pagingFilter.recordNumberInSet').value =(this.value);"
+                             theme="simple" />
+            </div>
+        </td> --%>
+        
+        
+        <nested:nest property="pagingFilter">
+			<td width="160">
+			<div class="fltrTblHdng">
+				Record&nbsp;#&nbsp;
+				<nested:text property="recordNumberInSet" maxlength="7" styleClass="fltrWidth7"
+				onkeyup="return autoTab(this, 7, event);" onchange="javascript:document.getElementById('pagingFilter.recordNumberInSet').value =(this.value);" />
+			</td>
+			</div>
+		</nested:nest>
+        
+        
+        <!-- Goto Page Button -->
+        <td width="0%">
+            <a href="javascript:changeCmdAndSubmit(document.asrTranForm,'selectedrecordpage');">
+                <img src="images/btnGotoPage.png" border="0" alt="Goto Record"/></a>
+        </td>
+        <!-- Model Selection Dropdown -->
+        <td rowspan="2" width="100%" class="right" valign="top">
+            <span id="modelDsp">
+                <s:select name="modelSelected" 
+                          size="1" 
+                          list="models" 
+                          listKey="modelId" 
+                          listValue="name"
+                          headerKey="none" 
+                          headerValue="<none>"
+                          onfocus="javascript:removeOption(this,'%{#session.TCGMState.currentModelName}');"
+                          theme="simple" />
+            </span>
+        </td>
+        <!-- Action Buttons - Row 1 (Only for non-Query users) -->
+        <abbott:securePage 
+            userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" 
+            requiredAccessLevel="<%=Role.Query.getAccessLevel()%>" 
+            comparisonType="!=">
+            <!-- Copy Selected -->
+            <td class="pagingBtns">
+                <span id="copySelDiv">
+                    <a href="javascript:checkCopy(document.asrTranForm.modelSelected.value, document.asrTranForm,'copyselected','asrTranCopy.do');">
+                        <img src="images/btnCopySelected.png" border="0" alt="Copy Selected"/></a>
+                </span>
+            </td>
+            <!-- Delete Selected -->
+            <td class="pagingBtns">
+                <span id="delSelDiv">
+                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteselected','asrTranDelete.do');">
+                        <img src="images/btnDeleteSelected.png" border="0" alt="Delete Selected"/></a>
+                </span>
+            </td>
+            <!-- Publish Selected -->
+            <td class="pagingBtns">
+                <span id="pubSelDiv">
+                    <a href="javascript:checkPublish(document.asrTranForm,'publishselected','asrTranPublish.do');">
+                        <img src="images/btnPublishSelected.png" border="0" alt="Publish Selected" /></a>
+                </span>
+            </td>
+            <!-- Save Selected (Hidden by default) -->
+            <td class="pagingBtns">
+                <span id="saveDiv" class="hidden">
+                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'saveselected','asrTranSave.do');">
+                        <img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
+                </span>
+            </td>
+        </abbott:securePage>
+    </tr>
+    <!-- Second Row of Buttons -->
+    <tr>
+        <abbott:securePage 
+            userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>" 
+            requiredAccessLevel="<%=Role.Query.getAccessLevel()%>" 
+            comparisonType="!=">
+            <!-- Unpublish Buttons -->
+            <td colspan="6" class="pagingBtns">&nbsp;
+                <span id="pubSelDiv">
+                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishselected','asrTranPublish.do');">
+                        <img src="images/btnUnpublishSelected.png" border="0" alt="Unpublish Selected" /></a>
+                </span>&nbsp;&nbsp;
+                <span id="pubAllDiv">
+                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishall','asrTranPublish.do');">
+                        <img src="images/btnUnpublishAll.png" border="0" alt="Unpublish All" /></a>
+                </span>
+            </td>
+            <!-- Copy All -->
+            <td class="pagingBtns">
+                <span id="copyAllDiv">
+                    <a href="javascript:checkCopy(document.asrTranForm.modelSelected.value,document.asrTranForm,'copyall','asrTranCopy.do');">
+                        <img src="images/btnCopyAll.png" border="0" alt="Copy All" /></a>
+                </span>
+            </td>
+            <!-- Delete All -->
+            <td class="pagingBtns">
+                <span id="delAllDiv">
+                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteall','asrTranDelete.do');">
+                        <img src="images/btnDeleteAll.png" border="0" alt="Delete All" /></a>
+                </span>
+            </td>
+            <!-- Publish All -->
+            <td class="pagingBtns">
+                <span id="pubAllDiv">
+                    <a href="javascript:checkPublish(document.asrTranForm,'publishall','asrTranPublish.do');">
+                        <img src="images/btnPublishAll.png" border="0" alt="Publish All" /></a>
+                </span>
+            </td>
+            <!-- Cancel (Hidden by default) -->
+            <td class="pagingBtns">
+                <span id="cancelDiv" class="hidden">
+                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'cancel','asrTranMaintenance.do');">
+                        <img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
+                </span>
+            </td>
+        </abbott:securePage>
+    </tr>
 </table>

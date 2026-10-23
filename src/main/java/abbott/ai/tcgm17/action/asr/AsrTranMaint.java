@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.data.DBConst;
 import abbott.ai.tcgm.data.TCGMDataValidation;
+import abbott.ai.tcgm.entities.Asr;
 import abbott.ai.tcgm.entities.AsrTran;
 import abbott.ai.tcgm.entities.FactorModel;
 import abbott.ai.tcgm.entities.PagingFilter;
@@ -22,23 +23,7 @@ import abbott.ai.tcgm.helpers.AsrMngr;
 import abbott.ai.tcgm.helpers.ModelMngr;
 import abbott.ai.tcgm17.action.TCGMAction;
 
-/**
- * <p>
- * Title: TCGM
- * </p>
- * <p>
- * Description:
- * </p>
- * <p>
- * Copyright: Copyright (c) 2002
- * </p>
- * <p>
- * Company: Abbott Laboratories
- * </p>
- * 
- * @author David Fields
- * @version 1.0
- */
+ 
 public class AsrTranMaint extends TCGMAction {
 	private static final long serialVersionUID = 1L;
 	private static Logger myLogger = LogManager.getLogger("AsrTranMaint");
@@ -63,6 +48,7 @@ public class AsrTranMaint extends TCGMAction {
 
 	public AsrTranMaint() {
 		super();
+		//initializeNestedObjects();
 	}
 
 	public String execute() throws Exception {
@@ -89,7 +75,7 @@ public class AsrTranMaint extends TCGMAction {
 		processCmd();
 
 		if (cmd != null && cmd.equalsIgnoreCase(TCGMConstants.URL_PARM_VAL_ADV_FILTER)) {
-			request.getSession().setAttribute("asrTranAdvFilter", buildSnapshot());
+			//request.getSession().setAttribute("asrTranAdvFilter", buildSnapshot());
 			reset();
 			this.setForward(TCGMConstants.FORWARD_ADVANCEDFILTER);
 			return this.getForward();
@@ -130,6 +116,52 @@ public class AsrTranMaint extends TCGMAction {
 		this.logger.debug(className + " Forward: " + this.getForward());
 		return this.getForward();
 	}
+	
+	 private void initializeNestedObjects() {
+	        // Initialize searchObject
+	        if (searchObject == null) {
+	            searchObject = new AsrTran();
+	        }
+			if (searchObject == null) {
+				searchObject = new AsrTran();
+			}
+
+			if (asrTranList == null) {
+				asrTranList = new Vector<AsrTran>();
+			}
+
+
+			if (pagingFilter == null) {
+				pagingFilter = new PagingFilter();
+			}
+
+			if (sortObject == null) {
+				sortObject = new Sort(DBConst.COL_ASR_DEF, DBConst.SORT_ASC);
+			}
+
+			if (addNew == null) {
+				addNew = new AsrTran();
+			}
+
+			if (addNew.getAsr() == null) {
+				addNew.setAsr(new Asr());
+			}
+
+
+			if (cmd == null) {
+				cmd = "";
+			}
+
+			if (focusField == null || focusField.trim().length() == 0) {
+
+				focusField = DBConst.ASR_DFT_FOCUS;
+			}
+
+			if (rowToCopy == null) {
+				rowToCopy = "";
+			}
+		
+	 }
 
 	// --- Form methods ---
 
@@ -225,16 +257,18 @@ public class AsrTranMaint extends TCGMAction {
 	 * List-level getter for OGNL: asrTranListItem != null &&
 	 * !asrTranListItem.isEmpty()
 	 */
+	@StrutsParameter(depth = 4)
 	public List<AsrTran> getAsrTranListItem() {
 		return asrTranList;
 	}
 
-	@StrutsParameter(depth = 2)
+	@StrutsParameter(depth = 4)
 	public void setAsrTranListItem(List<AsrTran> asrTranListItem) {
 		this.asrTranList = asrTranListItem;
 	}
 
 	/** Indexed getter for Struts2 binding: asrTranListItem[n].xxx */
+	@StrutsParameter(depth = 4)
 	public AsrTran getAsrTranListItem(int index) {
 		if (asrTranList == null)
 			return null;
@@ -262,6 +296,8 @@ public class AsrTranMaint extends TCGMAction {
 
 	// --- Getters & Setters with @StrutsParameter ---
 
+	
+	@StrutsParameter(depth = 3)
 	public AsrTran getSearchObject() {
 		return searchObject;
 	}
@@ -271,6 +307,7 @@ public class AsrTranMaint extends TCGMAction {
 		this.searchObject = searchObject;
 	}
 
+	@StrutsParameter(depth = 4)
 	public List<AsrTran> getAsrTranList() {
 		return asrTranList;
 	}
@@ -280,15 +317,17 @@ public class AsrTranMaint extends TCGMAction {
 		this.asrTranList = asrTranList;
 	}
 
+	@StrutsParameter(depth =2)
 	public PagingFilter getPagingFilter() {
 		return pagingFilter;
 	}
 
-	@StrutsParameter(depth = 1)
+	@StrutsParameter(depth = 2)
 	public void setPagingFilter(PagingFilter pagingFilter) {
 		this.pagingFilter = pagingFilter;
 	}
 
+	@StrutsParameter(depth = 1)
 	public Sort getSortObject() {
 		return sortObject;
 	}
@@ -298,6 +337,7 @@ public class AsrTranMaint extends TCGMAction {
 		this.sortObject = sortObject;
 	}
 
+	@StrutsParameter(depth = 4)
 	public AsrTran getAddNew() {
 		return addNew;
 	}
