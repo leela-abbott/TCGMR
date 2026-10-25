@@ -661,7 +661,7 @@
 			class="abbott.ai.tcgm17.action.MngAnalysisModelsAction"
 			method="execute">
 			<result name="success">/jsp/mngAnalysisModels.jsp</result>
-			<result name="restrictions">/jsp/restrictions.jsp</result>
+			<result name="restrictions">/jsp/restrictionsMngAnalysisModel.jsp</result>
 			<result name="input">/jsp/mngAnalysisModels.jsp</result>
 		</action>
 
