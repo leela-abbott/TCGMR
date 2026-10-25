@@ -159,7 +159,7 @@
 		</action>
 
 		<action name="asrDelete"
-			class="abbott.ai.tcgm17.action.asr.AsrDelete">
+			class="abbott.ai.tcgm.action.asr.AsrDelete">
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
@@ -174,7 +174,7 @@
 		</action>
 
 		<action name="asrSave"
-			class="abbott.ai.tcgm17.action.asr.AsrSave">
+			class="abbott.ai.tcgm.action.asr.AsrSave">
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
 			<result name="failure" type="redirectAction">openLogin</result>
@@ -652,7 +652,7 @@
 		</action>
 
 		<action name="miscReports"
-			class="abbott.ai.tcgm17.action.MiscReportsAction">
+			class="abbott.ai.tcgm.action.MiscReports">
 			<result name="input">/jsp/miscReports.jsp</result>
 			<result name="success">/jsp/miscReports.jsp</result>
 		</action>
@@ -670,7 +670,7 @@
 			<result name="success" type="redirectAction">mngCostExchModels</result>
 			<result name="input">/jsp/mngCostExchModels.jsp</result>
 		</action>
-		
+
 
 		<action name="mngFactorModels"
 			class="abbott.ai.tcgm17.action.MngFactorModels">
@@ -1056,10 +1056,11 @@
 			<result name="success">/jsp/mngDaemons.jsp</result>
 		</action>
 
-		<action name="miscAnalysis"
-			class="abbott.ai.tcgm.action.MiscAnalysis">
+	<action name="miscAnalysis"
+			class="abbott.ai.tcgm17.action.MiscAnalysisAction">
 			<result name="input">/jsp/miscAnalysis.jsp</result>
 			<result name="success">/jsp/miscAnalysis.jsp</result>
+			<result name="restrictions">/jsp/restrictionsMiscAnalysis.jsp</result>
 		</action>
 
 		<action name="dataTransfers"
