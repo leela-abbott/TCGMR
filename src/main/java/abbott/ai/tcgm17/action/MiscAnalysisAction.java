@@ -122,16 +122,8 @@ public class MiscAnalysisAction extends TCGMAction implements SessionAware, Serv
 			ModelMngr mm = new ModelMngr();
 
 			TCGMState state = this.getState(request);
-			// AnalysisModel am = (AnalysisModel) new ModelMngr().getModelFromId(ut,
-			// Integer.parseInt(this.getModelSelected()), TCGMModel.Type.ANALYSIS);
 			AnalysisModel am = (AnalysisModel) mm.getModelFromId(ut, state.getCurrentModelId(),
 					TCGMModel.Type.ANALYSIS);
-
-			/*
-			 * if (am == null) { this.addActionError(
-			 * "The current active model is invalid or not an Analysis Model type. Please select a valid Analysis Model first."
-			 * ); return; }
-			 */
 			ProcessMngr pm = new ProcessMngr();
 
 			if ("SND_NET_ANL".equals(jobName)) {
@@ -200,7 +192,6 @@ public class MiscAnalysisAction extends TCGMAction implements SessionAware, Serv
 						this.selSalesList = null;
 					}
 
-					// Null safe safeguards for Report Suffix and Input Period strings
 					String safeReportNameSuf = (this.reportNameSuf != null) ? this.reportNameSuf : "";
 					job.addJobParm(JobConstants.PN_RPT_NAME_SUP, safeReportNameSuf);
 					mm.setModelParmII(ut, am, JobConstants.PN_RPT_NAME_SUP, safeReportNameSuf);
@@ -301,7 +292,6 @@ public class MiscAnalysisAction extends TCGMAction implements SessionAware, Serv
 						mm.setModelParmII(ut, am, "HDGE_UNITS_NAME", datasetName);
 					}
 
-					// Period selections null safeguards (Fixes the ConcurrentHashMap crash)
 					job.addJobParm("HDGE_PERIOD", this.selHedExPeriod != null ? this.selHedExPeriod : "");
 					if (this.selHedExPeriod != null) {
 						mm.setModelParmII(ut, am, "HDGE_PERIOD", this.selHedExPeriod);
@@ -432,7 +422,6 @@ public class MiscAnalysisAction extends TCGMAction implements SessionAware, Serv
 				if (flag) {
 					pm.addJob(job, ut);
 					addActionMessage(getText("success.job.add", new String[] { job.getJobDef().getJobName() }));
-					// this.addActionMessage("success.job.add: " + job.getJobDef().getJobName());
 				}
 			}
 		}
@@ -447,8 +436,6 @@ public class MiscAnalysisAction extends TCGMAction implements SessionAware, Serv
 		this.unitSets = dm.getDatasetByTableName(ut, DBConst.TABLE_UNIT_DATA);
 		this.rateSets = dm.getDatasetByTableName(ut, DBConst.TABLE_RATE_DATA);
 
-		// Populate monthListNumber (01 to 12) to prevent the JSP NullPointerException /
-		// JasperException
 		this.monthListNumber = new Vector<String>();
 		for (int i = 1; i <= 12; i++) {
 			String monthStr = (i < 10) ? "0" + i : String.valueOf(i);

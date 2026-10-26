@@ -655,6 +655,7 @@
 			class="abbott.ai.tcgm17.action.MiscReportsAction">
 			<result name="input">/jsp/miscReports.jsp</result>
 			<result name="success">/jsp/miscReports.jsp</result>
+			<result name="restrictions">/jsp/restrictionsMisReports.jsp</result>
 		</action>
 
 		<action name="mngAnalysisModels"
@@ -1057,7 +1058,7 @@
 			<result name="success">/jsp/mngDaemons.jsp</result>
 		</action>
 
-	<action name="miscAnalysis"
+		<action name="miscAnalysis"
 			class="abbott.ai.tcgm17.action.MiscAnalysisAction">
 			<result name="input">/jsp/miscAnalysis.jsp</result>
 			<result name="success">/jsp/miscAnalysis.jsp</result>

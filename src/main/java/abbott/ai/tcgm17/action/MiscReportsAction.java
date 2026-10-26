@@ -1,8 +1,7 @@
 package abbott.ai.tcgm17.action;
 
-import java.io.IOException;
 import java.util.Vector;
-import jakarta.servlet.ServletException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.parameter.StrutsParameter;
@@ -36,7 +35,7 @@ public class MiscReportsAction extends TCGMAction {
 
 	private Vector reportList;
 	private String selReport;
-	private static Vector destinationList;
+	private static Vector<Option> destinationList;
 	private String selReportDest;
 	private boolean chkImmediate;
 	private String[] operations;
@@ -50,7 +49,7 @@ public class MiscReportsAction extends TCGMAction {
 	public MiscReportsAction() {
 		super();
 		if (destinationList == null) {
-			destinationList = new Vector(3);
+			destinationList = new Vector<Option>(3);
 			destinationList.add(new Option("Run Only", "0"));
 			destinationList.add(new Option("Generate Report", "G"));
 			destinationList.add(new Option("Generate & Print Report", "GP"));
@@ -66,7 +65,7 @@ public class MiscReportsAction extends TCGMAction {
 		try {
 			if (this.isSessionValid(request) && this.isModelSelected(request)) {
 				UserToken ut = this.getUserToken(request);
-				this.clearErrors();
+
 				if (this.cmd != null && !TCGMUtil.isEmpty(this.cmd) && !this.cmd.equals("CANCEL")) {
 					if (this.isChkRestrict() && !this.isRestrictionEntered()) {
 						request.getSession().setAttribute("restrictionForm", this);
@@ -74,9 +73,15 @@ public class MiscReportsAction extends TCGMAction {
 					} else {
 						processCmd(request);
 						this.setupForm(request);
+						this.cmd = "";
+						this.jobName = "";
+
 						this.setForward(TCGMConstants.FORWARD_SUCCESS);
 					}
 				} else {
+					this.clearErrorsAndMessages();
+					this.cmd = "";
+					this.jobName = "";
 					this.setupForm(request);
 					this.setForward(TCGMConstants.FORWARD_INPUT);
 				}
@@ -94,6 +99,17 @@ public class MiscReportsAction extends TCGMAction {
 		String modelId = ((TCGMState) this.getState(request)).getCurrentModelIdString();
 		FactorModel fm = (FactorModel) new ModelMngr().getModelFromId(ut, Integer.parseInt(modelId),
 				TCGMModel.Type.FACTOR);
+
+		if (TCGMUtil.isEmpty(this.getJobName())) {
+			String rawParam = request.getParameter("jobName");
+			if (rawParam != null && rawParam.contains(",")) {
+				String[] parts = rawParam.split(",");
+				this.jobName = parts[parts.length - 1].trim();
+			} else {
+				this.jobName = (rawParam != null) ? rawParam.trim() : "";
+			}
+		}
+
 		if (this.cmd.equalsIgnoreCase("ADD_JOB")) {
 			TCGMProductionForm legacyFormAdapter = new TCGMProductionForm() {
 				{
@@ -221,7 +237,7 @@ public class MiscReportsAction extends TCGMAction {
 				job.addJobParm(JobConstants.PN_ACTUAL_USER, ut.getUserid());
 			}
 			pm.addJob(job, ut);
-			this.addActionMessage("success.job.add: " + job.getJobDef().getJobName());
+			addActionMessage(getText("success.job.add", new String[] { job.getJobDef().getJobName() }));
 		}
 	}
 
@@ -266,7 +282,18 @@ public class MiscReportsAction extends TCGMAction {
 
 	@StrutsParameter
 	public void setCmd(String cmd) {
-		this.cmd = cmd;
+		if (cmd != null && cmd.contains(",")) {
+			String[] parts = cmd.split(",");
+			for (String part : parts) {
+				if (part != null && !part.trim().isEmpty()) {
+					this.cmd = part.trim();
+					return;
+				}
+			}
+			this.cmd = parts[0].trim();
+		} else {
+			this.cmd = (cmd != null) ? cmd.trim() : null;
+		}
 	}
 
 	public boolean isChkRestrict() {
@@ -458,11 +485,12 @@ public class MiscReportsAction extends TCGMAction {
 		this.operations = operations;
 	}
 
+	@StrutsParameter(depth = 2)
 	public ReportRestriction getRestrictions() {
 		return restrictions;
 	}
 
-	@StrutsParameter
+	@StrutsParameter(depth = 2)
 	public void setRestrictions(ReportRestriction restrictions) {
 		this.restrictions = restrictions;
 	}
@@ -491,7 +519,18 @@ public class MiscReportsAction extends TCGMAction {
 
 	@StrutsParameter
 	public void setJobName(String jobName) {
-		this.jobName = jobName;
+		if (jobName != null && jobName.contains(",")) {
+			String[] parts = jobName.split(",");
+			for (int i = parts.length - 1; i >= 0; i--) {
+				if (parts[i] != null && !parts[i].trim().isEmpty() && !parts[i].trim().equalsIgnoreCase("ADD_JOB")) {
+					this.jobName = parts[i].trim();
+					return;
+				}
+			}
+			this.jobName = "";
+		} else {
+			this.jobName = (jobName != null) ? jobName.trim() : "";
+		}
 	}
 
 	public String getModelLongDesc() {
