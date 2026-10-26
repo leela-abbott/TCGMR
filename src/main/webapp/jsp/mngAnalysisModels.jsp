@@ -409,7 +409,7 @@ select#modelSelected {
 					}
 				}
 
-				form.action = "mngAnalysisModels.action";
+				form.action = "openAnalysisModel.action";
 				form.submit();
 			}
 		}
