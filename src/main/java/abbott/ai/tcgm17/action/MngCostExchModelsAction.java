@@ -69,7 +69,7 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 				String savedMsg = (String) request.getSession().getAttribute("tcgmJobSuccessMessage");
 				if (savedMsg != null) {
 					addActionMessage(savedMsg);
-					request.getSession().removeAttribute("tcgmJobSuccessMessage"); // Clear after rendering once
+					request.getSession().removeAttribute("tcgmJobSuccessMessage");
 				}
 				if (this.getCmd() != null && !TCGMUtil.isEmpty(getCmd()) && !getCmd().equals("CANCEL")) {
 					if (chkRestrict && !this.isRestrictionEntered()) {
@@ -132,6 +132,7 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 					|| job.getJobDef().equals(JobDefinition.CXCHG_CSMP3)
 					|| job.getJobDef().equals(JobDefinition.CXCHG_CSMP4)
 					|| job.getJobDef().equals(JobDefinition.CXCHG_FLEX5)
+					|| job.getJobDef().getJobName().equalsIgnoreCase("CXCHG_FLEX")
 					|| job.getJobDef().equals(JobDefinition.CXC_ANL04E)
 					|| job.getJobDef().equals(JobDefinition.CXCHG_CSTSL1)) {
 
@@ -179,7 +180,8 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 				job.addJobParm(JobConstants.PN_CXC_CSTSL1, getSelDtlMetric());
 			} else if (job.getJobDef().equals(JobDefinition.CXCHG_CSTSL2)) {
 				job.addJobParm(JobConstants.PN_CXC_CSTSL2, getSelDtlMetric());
-			} else if (job.getJobDef().equals(JobDefinition.CXCHG_FLEX5)) {
+			} else if (job.getJobDef().equals(JobDefinition.CXCHG_FLEX5)
+					|| job.getJobDef().getJobName().equalsIgnoreCase("CXCHG_FLEX")) {
 				job.addJobParm(JobConstants.PN_TYP_UPDT, model.getCostExchUnits().getDatasetName().trim());
 			} else if (job.getJobDef().equals(JobDefinition.CXCHG_CSMP1C)) {
 				job.addJobParm(JobConstants.PN_CXC_SUMFIELD, getSelCSMAff());
@@ -199,12 +201,7 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 			}
 
 			pm.addJob(job, ut);
-			if (this.session != null) {
-			    this.session.put("tcgmJobSuccessMessage", "You have successfully added " + job.getJobDef().getJobName() + " to the job que");
-			} else {
-			    // Fallback if session map isn't fully injected yet
-			    ServletActionContext.getRequest().getSession().setAttribute("tcgmJobSuccessMessage", "You have successfully added " + job.getJobDef().getJobName() + " to the job que");
-			}
+			addActionMessage(getText("success.job.add", new String[] { job.getJobDef().getJobName() }));
 		}
 	}
 
@@ -282,7 +279,18 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 
 	@StrutsParameter
 	public void setCmd(String cmd) {
-		this.cmd = cmd;
+		if (cmd != null && cmd.contains(",")) {
+			String[] parts = cmd.split(",");
+			for (String part : parts) {
+				if (part != null && !part.trim().isEmpty()) {
+					this.cmd = part.trim();
+					return;
+				}
+			}
+			this.cmd = parts[0].trim();
+		} else {
+			this.cmd = (cmd != null) ? cmd.trim() : cmd;
+		}
 	}
 
 	public String getModelSelected() {
@@ -380,7 +388,18 @@ public class MngCostExchModelsAction extends TCGMAction implements SessionAware,
 
 	@StrutsParameter
 	public void setJobName(String jobName) {
-		this.jobName = (jobName != null && jobName.contains(",")) ? jobName.split(",")[0].trim() : jobName;
+		if (jobName != null && jobName.contains(",")) {
+			String[] parts = jobName.split(",");
+			for (int i = parts.length - 1; i >= 0; i--) {
+				if (parts[i] != null && !parts[i].trim().isEmpty()) {
+					this.jobName = parts[i].trim();
+					return;
+				}
+			}
+			this.jobName = "";
+		} else {
+			this.jobName = (jobName != null) ? jobName.trim() : null;
+		}
 	}
 
 	public String getSelReportDest() {

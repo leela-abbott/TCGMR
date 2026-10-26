@@ -667,8 +667,9 @@
 
 		<action name="mngCostExchModels"
 			class="abbott.ai.tcgm17.action.MngCostExchModelsAction">
-			<result name="success" type="redirectAction">mngCostExchModels</result>
+			<result name="success">/jsp/mngCostExchModels.jsp</result>
 			<result name="input">/jsp/mngCostExchModels.jsp</result>
+			<result name="restrictions">/jsp/restricationsMngCostExchModel.jsp</result>
 		</action>
 
 

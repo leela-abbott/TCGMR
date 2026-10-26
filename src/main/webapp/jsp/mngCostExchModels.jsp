@@ -1,6 +1,3 @@
-<!-- Although we are using the Model framework and defining Cost Exchange as a Model, 
-     we call it a Dataset to avoid confusing the user. -->
-
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
@@ -10,7 +7,6 @@
 <%@ include file="/include/header.jsf"%>
 
 <style type="text/css">
-/* Replicates production yellow 3D look without static image assets */
 .prod-action-btn {
 	display: inline-block;
 	width: 145px;
@@ -56,13 +52,12 @@
 		scope="request" />
 	<%@ include file="/include/masthead.jsf"%>
 	<%@ include file="/include/errorDisplay.jsf"%>
-	<s:if test="#session.tcgmJobSuccessMessage != null">
+	<s:if test="sessionScope.tcgmJobSuccessMessage != null">
 		<div class="welcome"
 			style="color: #CC0000; font-weight: bold; text-align: center; margin-top: 10px; font-family: Arial, sans-serif; font-size: 12px;">
-			<s:property value="#session.tcgmJobSuccessMessage" />
+			<s:property value="sessionScope.tcgmJobSuccessMessage" />
 		</div>
-		<!-- Clear the message immediately after displaying so it doesn't show up again on a refresh -->
-		<s:set var="discard" value="#session.remove('tcgmJobSuccessMessage')" />
+		<s:set var="discard" value="sessionScope.remove('tcgmJobSuccessMessage')" />
 	</s:if>
 
 	<div id="divToHide">
@@ -76,7 +71,6 @@
 			<table
 				style="margin-left: 50px; text-indent: 3px; width: 675px; border: 0px; cellpadding: 0; cellspacing: 0;">
 				<tr>
-					<%-- Safe evaluation of showCostModel string comparisons using Struts 2 OGNL expressions --%>
 					<s:if test="showCostModel == null || showCostModel.equals('open')">
 						<td valign="top">
 							<table
@@ -110,7 +104,7 @@
 										style="line-height: 12px; display: inline-block;">Create
 											New Dataset</a>
 										<button type="button" class="prod-action-btn"
-											onclick="submitJob('CXCHG_FLEX5')">Flex Exch Rates</button>
+											onclick="submitJob('CXCHG_FLEX')">Flex Exch Rates</button>
 										<button type="button" class="prod-action-btn"
 											onclick="submitJob('CXC_ANL04E')">Calc Cur Exposure</button>
 									</td>
@@ -133,15 +127,13 @@
 								</tr>
 								<tr>
 									<td width="20">&nbsp;</td>
-									<td width="104" valign="top">
-										<!-- Fixed: Directly targets selection index lookup --> <s:select
-											size="6" name="modelSelected" id="modelSelected"
-											list="models" listKey="modelId" listValue="name"
+									<td width="104" valign="top"><s:select size="6"
+											name="modelSelected" id="modelSelected" list="models"
+											listKey="modelId" listValue="name"
 											onclick="updateDetails(this.selectedIndex)" theme="simple"
 											style="width: 170px; margin-top: 5px;" /> <br>&nbsp; <a
 										class="CmdSm" href='javascript:showClosedModelDetails("open")'
-										style="color: red; font-size: 10px;">Show Open Model</a>
-									</td>
+										style="color: red; font-size: 10px;">Show Open Model</a></td>
 									<td width="156" valign="top"
 										style="padding-top: 5px; padding-left: 10px;">
 										<button type="button" class="prod-action-btn"
@@ -194,11 +186,9 @@
 	<p>&nbsp;</p>
 
 	<script type="text/javascript">
-		// Fixed: Inject the runtime details array securely using native Struts tags
 		var modelDetailArray = <s:property value="modelDetailArrayString" escapeHtml="false"/>;
 
 		function updateDetails(selectedIndex) {
-			// Verify array bounds safely to ensure it loads flawlessly without null/undefined pointers
 			if (modelDetailArray && selectedIndex !== undefined
 					&& selectedIndex >= 0
 					&& selectedIndex < modelDetailArray.length) {
@@ -258,14 +248,41 @@
 				return;
 			}
 
-			// Securely updates target operational markers
-			document.getElementById('hiddenCmd').value = "ADD_JOB";
-			document.getElementById('hiddenJobName').value = jobDefinitionName;
-
 			var form = document.getElementById('mngCostExchModelsForm');
+
+			var restrictBox = form.elements['chkRestrict'];
+			var isRestricted = false;
+			if (restrictBox) {
+				if (restrictBox.length) {
+					isRestricted = restrictBox[0].checked;
+				} else {
+					isRestricted = restrictBox.checked;
+				}
+			}
+
+			if (isRestricted) {
+				document.getElementById('hiddenCmd').value = "ADD_JOB";
+			} else {
+				document.getElementById('hiddenCmd').value = "ADD_JOB";
+			}
+
+			// FIX: Safe multi-element parameter sync
+			var jobElements = form.elements['jobName'];
+			if (jobElements) {
+				if (jobElements.length) {
+					for (var j = 0; j < jobElements.length; j++) {
+						jobElements[j].value = jobDefinitionName;
+					}
+				} else {
+					jobElements.value = jobDefinitionName;
+				}
+			}
+
+			document.getElementById('hiddenJobName').value = jobDefinitionName;
 			form.action = "mngCostExchModels.action";
 			form.submit();
 		}
+
 		function showClosedModelDetails(stat) {
 			document.getElementById('showCostModel').value = stat;
 			var form = document.getElementById('mngCostExchModelsForm');
