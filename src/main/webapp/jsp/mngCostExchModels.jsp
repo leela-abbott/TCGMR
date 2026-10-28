@@ -67,6 +67,11 @@
 			<s:hidden name="showCostModel" id="showCostModel" />
 			<s:hidden name="cmd" id="hiddenCmd" />
 			<s:hidden name="jobName" id="hiddenJobName" />
+			<s:hidden name="showCostModel" id="showCostModel" />
+			<s:hidden name="cascadingCmd" id="cascadingCmd" />
+			<s:hidden name="cascadingVal" id="cascadingVal" />
+			<s:hidden name="cascadingSecVal" id="cascadingSecVal" value="COSTEXCH" />
+			
 
 			<table
 				style="margin-left: 50px; text-indent: 3px; width: 675px; border: 0px; cellpadding: 0; cellspacing: 0;">
@@ -189,14 +194,29 @@
 		var modelDetailArray = <s:property value="modelDetailArrayString" escapeHtml="false"/>;
 
 		function updateDetails(selectedIndex) {
-			if (modelDetailArray && selectedIndex !== undefined
-					&& selectedIndex >= 0
-					&& selectedIndex < modelDetailArray.length) {
-				document.getElementById('divModelDetail').innerHTML = modelDetailArray[selectedIndex];
-			} else {
-				document.getElementById('divModelDetail').innerHTML = "<i>No details available for the selected model.</i>";
-			}
+		    var se = document.getElementById('modelSelected');
+		    if (!se || se.value == "" || se.value == 0) {
+		        document.getElementById('divModelDetail').innerHTML = "<i>No details available for the selected model.</i>";
+		        return;
+		    }
+		    
+		    var modelId = se.value;
+		    document.getElementById('cascadingCmd').value = "ModelInfo";
+		    document.getElementById('cascadingVal').value = modelId;
+		    document.getElementById('cascadingSecVal').value = "COSTEXCH";
+		    var xhr = new XMLHttpRequest();
+		    xhr.open("POST", "tcgmAjax.action", true);
+		    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		    xhr.onreadystatechange = function() {
+		        if (xhr.readyState === 4 && xhr.status === 200) {
+		            document.getElementById('divModelDetail').innerHTML = xhr.responseText;
+		        }
+		    };
+		    
+		    var params = "cascadingCmd=ModelInfo&cascadingVal=" + modelId + "&cascadingSecVal=COSTEXCH";
+		    xhr.send(params);
 		}
+
 
 		function deleteModel(se) {
 			if (!se || se.value == "" || se.value == 0) {
