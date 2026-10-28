@@ -83,7 +83,7 @@ public class TCGMAjaxAction extends TCGMAction {
 			request.setAttribute(TCGMConstants.SESSION_NAME_EXCEPTION, ex);
 		}
 
-		return NONE; // Return NONE tells Struts 2 that the response was handled directly via stream
+		return NONE;
 	}
 
 	@SuppressWarnings("unchecked")

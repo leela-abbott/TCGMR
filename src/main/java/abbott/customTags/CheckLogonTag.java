@@ -53,8 +53,8 @@ public final class CheckLogonTag extends TagSupport {
                     targetPath = "/" + targetPath;
                 }
                 
-                if (targetPath.endsWith(".jsp") && !targetPath.contains("openLogin")) {
-                    ((jakarta.servlet.http.HttpServletResponse) pageContext.getResponse()).sendRedirect(ctxPath + "/openLogin.action");
+                if (targetPath.endsWith(".jsp") && !targetPath.contains("login")) {
+                    ((jakarta.servlet.http.HttpServletResponse) pageContext.getResponse()).sendRedirect(ctxPath + "/login.action");
                 } else {
                     pageContext.forward(targetPath);
                 }
