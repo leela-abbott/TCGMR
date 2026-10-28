@@ -633,12 +633,15 @@ public class AsrMngr implements TCGMMngr
 
 			if(asrTran.getAsr().isSelected())
 			{
+				asrTran.getAsr().setDatasetTableId(DBConst.DEF_DATASET_TABLE_ID);
+				asrTran.setPublishFlag(TCGMConstants.FLAG_UNPUBLISHED);
 				selectedAsrTran.add(asrTran);
 			}
 		}
 
 		return selectedAsrTran;
 	}
+	
 	/**
 	 * Given a vector of Asr, returns the ones that have the selected flag set to true
 	 * @param asrList Vector
