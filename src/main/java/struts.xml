@@ -34,10 +34,6 @@
 			<result>/jsp/badRequest.jsp</result>
 		</action>
 
-		<action name="openLogin">
-			<result>/jsp/login.jsp</result>
-		</action>
-
 		<action name="tcgmAjax"
 			class="abbott.ai.tcgm17.action.TCGMAjaxAction">
 			<result name="input">/jsp/burstMaint.jsp</result>
@@ -48,7 +44,7 @@
 		<action name="main" class="abbott.ai.tcgm17.action.Main">
 			<result name="input">/jsp/login.jsp</result>
 			<result name="success">/jsp/index.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="fileUpload"
@@ -59,10 +55,10 @@
 
 			<result name="input">/jsp/fileUpload.jsp</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
-			<result name="login" type="redirectAction">openLogin</result>
+			<result name="login" type="redirectAction">login</result>
 			<result name="selectModel">/jsp/selectModel.jsp</result>
 			<result name="exception">/jsp/exception.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="fileUploadv2"
@@ -73,17 +69,17 @@
 
 			<result name="input">/jsp/fileUpload.jsp</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
-			<result name="login" type="redirectAction">openLogin</result>
+			<result name="login" type="redirectAction">login</result>
 			<result name="selectModel">/jsp/selectModel.jsp</result>
 			<result name="exception">/jsp/exception.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="createDirectory"
 			class="abbott.ai.tcgm17.action.FileUploadAction">
 			<result name="input" type="redirectAction">fileUpload</result>
 			<result name="success">/jsp/fileUpload.jsp</result>
-			<result name="login" type="redirectAction">openLogin</result>
+			<result name="login" type="redirectAction">login</result>
 			<result name="exception">/jsp/exception.jsp</result>
 		</action>
 
@@ -91,7 +87,7 @@
 			class="abbott.ai.tcgm17.action.DeleteFileAction">
 			<result name="input">/jsp/deleteFile.jsp</result>
 			<result name="success">/jsp/deleteFile.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affasrFormUpload"
@@ -116,21 +112,21 @@
 			class="abbott.ai.tcgm.action.asr.AsrUsageCopy">
 			<result name="input">/jsp/asrUsage.jsp</result>
 			<result name="success">/jsp/asrUsage.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affAsrDataFetched"
 			class="abbott.ai.tcgm.action.asr.AsrUsageDataFetch">
 			<result name="input">/jsp/asrUsage.jsp</result>
 			<result name="success">/jsp/asrUsage.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affAsrDelete"
 			class="abbott.ai.tcgm.action.asr.AsrUsageDelete">
 			<result name="input">/jsp/asrUsage.jsp</result>
 			<result name="success">/jsp/asrUsage.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<!-- <action name="affAreaMaint" class="abbott.ai.tcgm.action.AffAreaDivMaint"> 
@@ -148,21 +144,21 @@
 			class="abbott.ai.tcgm17.action.LogReportAction">
 			<result name="input">/jsp/jobMgmt.jsp</result>
 			<result name="success">/jsp/logReport.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="generateReport"
 			class="abbott.ai.tcgm17.action.GenerateReportAction">
 			<result name="input">/jsp/jobMgmt.jsp</result>
 			<result name="success">/jsp/generateReport.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrDelete"
 			class="abbott.ai.tcgm17.action.asr.AsrDelete">
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrMaintenance"
@@ -170,21 +166,21 @@
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
 			<result name="advancedfilter">/jsp/asrMaintAdvFilter.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrSave"
 			class="abbott.ai.tcgm17.action.asr.AsrSave">
 			<result name="input">/jsp/asr.jsp</result>
 			<result name="success">/jsp/asr.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrTranDelete"
 			class="abbott.ai.tcgm.action.asr.AsrTranDelete">
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrTranMaintenance"
@@ -192,21 +188,21 @@
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
 			<result name="advancedfilter">/jsp/asrTranMaintAdvFilter.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrTranPublish"
 			class="abbott.ai.tcgm.action.asr.AsrTranPublish">
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrTranSave"
 			class="abbott.ai.tcgm.action.asr.AsrTranSave">
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="bpcExSave"
@@ -276,7 +272,7 @@
 			class="abbott.ai.tcgm.action.bpc.BpcsSave">
 			<result name="input">/jsp/bpcs.jsp</result>
 			<result name="success">/jsp/bpcs.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="bpcsDelete"
@@ -377,21 +373,21 @@
 			class="abbott.ai.tcgm.action.affbpc.AffBpcSave">
 			<result name="input">/jsp/affBpc.jsp</result>
 			<result name="success">/jsp/affBpc.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affBpcDelete"
 			class="abbott.ai.tcgm.action.affbpc.AffBpcDelete">
 			<result name="input">/jsp/affBpc.jsp</result>
 			<result name="success">/jsp/affBpc.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affBpcUpload"
 			class="abbott.ai.tcgm.action.affbpc.AffBpcUpload">
 			<result name="input">/jsp/affBpc.jsp</result>
 			<result name="success">/jsp/affBpc.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="affBpcMaint"
@@ -412,7 +408,7 @@
 			class="abbott.ai.tcgm.action.notes.NotesDelete">
 			<result name="input">/jsp/notesMaint.jsp</result>
 			<result name="success">/jsp/notesMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="notesMaint"
@@ -420,20 +416,20 @@
 			<result name="input">/jsp/notesMaint.jsp</result>
 			<result name="success">/jsp/notesMaint.jsp</result>
 			<result name="advancedfilter">/jsp/notesMaintAdvFilter.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="notesSave"
 			class="abbott.ai.tcgm.action.notes.NotesSave">
 			<result name="input">/jsp/notesMaint.jsp</result>
 			<result name="success">/jsp/notesMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 		<action name="notesTranDelete"
 			class="abbott.ai.tcgm.action.notes.NotesTranDelete">
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="notesTranMaint"
@@ -441,21 +437,21 @@
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
 			<result name="advancedfilter">/jsp/notesTranMaintAdvFilter.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="notesTranPublish"
 			class="abbott.ai.tcgm.action.notes.NotesTranPublish">
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="notesTranSave"
 			class="abbott.ai.tcgm.action.notes.NotesTranSave">
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="login" class="abbott.ai.tcgm17.action.Login">
@@ -468,7 +464,7 @@
 			<result name="main" type="redirectAction">main</result>
 		</action>
 
-		<action name="openLogin"
+		<action name="login"
 			class="abbott.ai.tcgm.action.DefaultForward">
 			<result name="success">/jsp/login.jsp</result>
 		</action>
@@ -491,7 +487,7 @@
 			class="abbott.ai.tcgm.action.ratedata.RateDataSave">
 			<result name="input">/jsp/rateData.jsp</result>
 			<result name="success">/jsp/rateData.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateDataUpdate"
@@ -784,49 +780,49 @@
 			class="abbott.ai.tcgm.action.rateex.RateExDelete">
 			<result name="input">/jsp/rateEx.jsp</result>
 			<result name="success">/jsp/rateEx.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExMaint"
 			class="abbott.ai.tcgm.action.rateex.RateExMaint">
 			<result name="input">/jsp/rateEx.jsp</result>
 			<result name="success">/jsp/rateEx.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExSave"
 			class="abbott.ai.tcgm.action.rateex.RateExSave">
 			<result name="input">/jsp/rateEx.jsp</result>
 			<result name="success">/jsp/rateEx.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExTranDelete"
 			class="abbott.ai.tcgm.action.rateex.RateExTranDelete">
 			<result name="input">/jsp/rateExTran.jsp</result>
 			<result name="success">/jsp/rateExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExTranMaint"
 			class="abbott.ai.tcgm.action.rateex.RateExTranMaint">
 			<result name="input">/jsp/rateExTran.jsp</result>
 			<result name="success">/jsp/rateExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExTranPublish"
 			class="abbott.ai.tcgm.action.rateex.RateExTranPublish">
 			<result name="input">/jsp/rateExTran.jsp</result>
 			<result name="success">/jsp/rateExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExTranSave"
 			class="abbott.ai.tcgm.action.rateex.RateExTranSave">
 			<result name="input">/jsp/rateExTran.jsp</result>
 			<result name="success">/jsp/rateExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<!-- <action name="userMaint" class="abbott.ai.tcgm.action.user.UserMaint"> 
@@ -932,42 +928,42 @@
 			class="abbott.ai.tcgm.action.notes.NotesTranCopy">
 			<result name="input">/jsp/notesTranMaint.jsp</result>
 			<result name="success">/jsp/notesTranMaint.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="asrTranCopy"
 			class="abbott.ai.tcgm.action.asr.AsrTranCopy">
 			<result name="input">/jsp/asrTran.jsp</result>
 			<result name="success">/jsp/asrTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="bpcExTranCopy"
 			class="abbott.ai.tcgm.action.bpcex.BpcExTranCopy">
 			<result name="input">/jsp/bpcExTran.jsp</result>
 			<result name="success">/jsp/bpcExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="bpcRevTranCopy"
 			class="abbott.ai.tcgm.action.bpcrev.BpcRevTranCopy">
 			<result name="input">/jsp/bpcRevTran.jsp</result>
 			<result name="success">/jsp/bpcRevTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="rateExTranCopy"
 			class="abbott.ai.tcgm.action.rateex.RateExTranCopy">
 			<result name="input">/jsp/rateExTran.jsp</result>
 			<result name="success">/jsp/rateExTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 		<action name="bpcsTranCopy"
 			class="abbott.ai.tcgm.action.bpc.BpcsTranCopy">
 			<result name="input">/jsp/bpcsTran.jsp</result>
 			<result name="success">/jsp/bpcsTran.jsp</result>
-			<result name="failure" type="redirectAction">openLogin</result>
+			<result name="failure" type="redirectAction">login</result>
 		</action>
 
 
