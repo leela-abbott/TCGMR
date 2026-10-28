@@ -5,11 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.action.ServletRequestAware;
 import org.apache.struts2.action.SessionAware;
+import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import abbott.ai.tcgm.TCGMConstants;
 
 public class DefaultForwardAction extends TCGMAction implements ServletRequestAware, SessionAware {
 
@@ -22,6 +22,9 @@ public class DefaultForwardAction extends TCGMAction implements ServletRequestAw
     private String className = getClass().getName();
     private boolean loginRequired = true;
 
+    private String userid;
+    private String password;
+
     public DefaultForwardAction() {
         super();
     }
@@ -30,12 +33,10 @@ public class DefaultForwardAction extends TCGMAction implements ServletRequestAw
     public String execute() throws Exception {
         LOG.debug("{} - Processing default navigation route mapping lifecycle", this.className);
 
-        // Default forward configuration target matching legacy TCGMConstants.FORWARD_SUCCESS
         String forwardTarget = SUCCESS; 
 
         if (this.isLoginRequired()) {
             if (!this.isSessionValid(this.request)) {
-                // Equivalent to your legacy TCGMConstants.G_FORWARD_LOGIN global forward token
                 forwardTarget = "login"; 
             }
         }
@@ -60,5 +61,23 @@ public class DefaultForwardAction extends TCGMAction implements ServletRequestAw
 
     public void setLoginRequired(boolean loginRequired) {
         this.loginRequired = loginRequired;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    @StrutsParameter
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @StrutsParameter
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
