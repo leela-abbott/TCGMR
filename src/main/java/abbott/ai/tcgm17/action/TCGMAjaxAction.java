@@ -33,6 +33,7 @@ public class TCGMAjaxAction extends TCGMAction {
 	private String cascadingVal;
 	private String cascadingSecVal;
 	private String ajaxResponse = "";
+	private String modelSelected;
 
 	public TCGMAjaxAction() {
 		super();
@@ -395,5 +396,14 @@ public class TCGMAjaxAction extends TCGMAction {
 	@StrutsParameter
 	public void setCascadingSecVal(String cascadingSecVal) {
 		this.cascadingSecVal = cascadingSecVal;
+	}
+	
+	public String getModelSelected() {
+		return modelSelected;
+	}
+
+	@StrutsParameter
+	public void setModelSelected(String modelSelected) {
+		this.modelSelected = modelSelected;
 	}
 }
