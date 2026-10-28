@@ -215,6 +215,17 @@
 		    
 		    var params = "cascadingCmd=ModelInfo&cascadingVal=" + modelId + "&cascadingSecVal=COSTEXCH";
 		    xhr.send(params);
+			if (modelDetailArray && selectedIndex !== undefined
+					&& selectedIndex >= 0
+					&& selectedIndex < modelDetailArray.length) {
+				document.getElementById('divModelDetail').innerHTML = modelDetailArray[selectedIndex];
+				var form = document.getElementById('mngCostExchModelsForm');
+				form.action='TCGMAjaxAction.action';
+				form.cascadingSecVal='COSTEXCH';
+				form.submit();
+			} else {
+				document.getElementById('divModelDetail').innerHTML = "<i>No details available for the selected model.</i>";
+			}
 		}
 
 
