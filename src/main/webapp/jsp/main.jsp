@@ -46,7 +46,7 @@
     <!-- Secure Frontend Session Guard -->
     <s:if test="#session.TCGMUser == null">
         <script type="text/javascript">
-            window.location.href = "${pageContext.request.contextPath}/openLogin.action";
+            window.location.href = "${pageContext.request.contextPath}/login.action";
         </script>
     </s:if>
 
