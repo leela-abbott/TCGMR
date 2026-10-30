@@ -8,6 +8,7 @@ import org.apache.struts2.interceptor.parameter.StrutsParameter;
 
 import abbott.ai.tcgm.TCGMConstants;
 import abbott.ai.tcgm.data.DBConst;
+import abbott.ai.tcgm.entities.Asr;
 import abbott.ai.tcgm.entities.AsrTran;
 import abbott.ai.tcgm.entities.FactorModel;
 import abbott.ai.tcgm.entities.PagingFilter;
@@ -51,6 +52,11 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 	private abbott.ai.tcgm.entities.TCGMModel.Type modelType;
 	
 	private Map<String, Object> session;
+	
+	Vector<AsrTran> asrTranListExisting = new Vector<>();
+	private int asrTranListSize;
+
+	
 
 	/*
 	 * ===================================================== Execute Method
@@ -79,9 +85,14 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 
 			AsrMngr asrMngr = new AsrMngr();
 			ModelMngr modelMngr = new ModelMngr();
+			String currentModelId = getState(request).getCurrentModelIdString();
+			
+			asrTranListExisting = asrMngr.getAsrTran(userToken, searchObject, pagingFilter, sortObject);
 
-			initModelAndDataset(getState().getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID);
+			initModelAndDataset(getState().getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID, asrTranListExisting);
+			
 			this.getAddNew().setPublishFlag(TCGMConstants.FLAG_UNPUBLISHED);
+			
 
 			/*
 			 * User Selection Logic
@@ -109,6 +120,9 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 			/*
 			 * Command Processing
 			 */
+			
+			
+			
 			if (TCGMConstants.URL_PARM_VAL_ADD.equals(cmd)) {
 
 				duplicate = asrMngr.addNewAsrTran(userToken, addNew);
@@ -156,7 +170,7 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 
 				AsrMngr asrMngr = new AsrMngr();
 
-				initModelAndDataset(getState().getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID);
+				initModelAndDataset(getState().getCurrentModelIdString(), DBConst.DEF_DATASET_TABLE_ID,asrTranListExisting);
 
 				pagingFilter.setTotalRecordsInSet(asrMngr.getCount(getUserToken(), searchObject));
 
@@ -223,6 +237,7 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 			addFieldError("Data Field Error", "Data Field Error");
 		}
 	}
+	
 
 	/*
 	 * Helper methods migrated from Form Bean
@@ -258,13 +273,28 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 		}
 	}
 
-	public void initModelAndDataset(String modelId, String datasetTableId) {
+	public void initModelAndDataset(String modelId, String datasetTableId, Vector<AsrTran> asrTranListExisting) {
 
 		addNew.getAsr().setModelId(modelId);
 		addNew.getAsr().setDatasetTableId(datasetTableId);
 
 		searchObject.getAsr().setModelId(modelId);
 		searchObject.getAsr().setDatasetTableId(datasetTableId);
+		
+		if (asrTranList != null) {
+			for (AsrTran asrTran : asrTranList) {
+				if (asrTran != null) {
+					asrTran.getAsr().setModelId(modelId);
+					asrTran.getAsr().setDatasetTableId(datasetTableId);
+					asrTran.setPublishFlag(TCGMConstants.FLAG_UNPUBLISHED);
+				}
+			}
+		}
+		
+		for (int i = 0; i < asrTranListExisting.size(); i++) {
+			asrTranList.get(i).setAsrTranId(asrTranListExisting.get(i).getAsrTranId());
+		}
+		
 	}
 
 	@Override
@@ -280,16 +310,34 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 	public void setSearchObject(AsrTran searchObject) {
 		this.searchObject = searchObject;
 	}
-
+	
 	@StrutsParameter(depth = 4)
-	public Vector<AsrTran> getAsrTranList() {
-		return asrTranList;
+	public Vector getAsrTranList()
+	{
+		if(this.asrTranList == null)
+		{
+			this.setAsrTranList(new Vector());
+		}
+		return this.asrTranList;
 	}
-
-	@StrutsParameter(depth = 4)
-	public void setAsrTranList(Vector<AsrTran> asrTranList) {
+	/**
+	 *
+	 * @param asrTranList vector of AsrTran objects
+	 */
+	public void setAsrTranList(Vector asrTranList)
+	{
 		this.asrTranList = asrTranList;
 	}
+	
+	
+
+	/*
+	 * @StrutsParameter(depth = 4) public Vector<AsrTran> getAsrTranList() { return
+	 * asrTranList; }
+	 * 
+	 * @StrutsParameter(depth = 4) public void setAsrTranList(Vector<AsrTran>
+	 * asrTranList) { this.asrTranList = asrTranList; }
+	 */
 
 	@StrutsParameter(depth =2)
 	public PagingFilter getPagingFilter() {
@@ -396,6 +444,16 @@ public class AsrTranSave extends TCGMAction implements SessionAware {
 
 	public void setModelType(abbott.ai.tcgm.entities.TCGMModel.Type modelType) {
 		this.modelType = modelType;
+	}
+	public int getAsrTranListSize() {
+	    if (asrTranList != null) {
+	        return asrTranList.size();
+	    }
+	    return 0;
+	}
+
+	public void setAsrTranListSize(int asrTranListSize) {
+	    this.asrTranListSize = asrTranListSize;
 	}
 	
 	

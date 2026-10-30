@@ -230,21 +230,21 @@
             <!-- Delete Selected -->
             <td class="pagingBtns">
                 <span id="delSelDiv">
-                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteselected','asrTranDelete.do');">
+                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteselected','asrTranDelete.action');">
                         <img src="images/btnDeleteSelected.png" border="0" alt="Delete Selected"/></a>
                 </span>
             </td>
             <!-- Publish Selected -->
             <td class="pagingBtns">
                 <span id="pubSelDiv">
-                    <a href="javascript:checkPublish(document.asrTranForm,'publishselected','asrTranPublish.do');">
+                    <a href="javascript:checkPublish(document.asrTranForm,'publishselected','asrTranPublish.action');">
                         <img src="images/btnPublishSelected.png" border="0" alt="Publish Selected" /></a>
                 </span>
             </td>
             <!-- Save Selected (Hidden by default) -->
             <td class="pagingBtns">
                 <span id="saveDiv" class="hidden">
-                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'saveselected','asrTranSave.do');">
+                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'saveselected','asrTranSave.action');">
                         <img src="images/btnSaveSelected.png" border="0" alt="Save Selected" /></a>
                 </span>
             </td>
@@ -259,39 +259,39 @@
             <!-- Unpublish Buttons -->
             <td colspan="6" class="pagingBtns">&nbsp;
                 <span id="pubSelDiv">
-                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishselected','asrTranPublish.do');">
+                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishselected','asrTranPublish.action');">
                         <img src="images/btnUnpublishSelected.png" border="0" alt="Unpublish Selected" /></a>
                 </span>&nbsp;&nbsp;
                 <span id="pubAllDiv">
-                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishall','asrTranPublish.do');">
+                    <a href="javascript:checkPublish(document.asrTranForm,'unpublishall','asrTranPublish.action');">
                         <img src="images/btnUnpublishAll.png" border="0" alt="Unpublish All" /></a>
                 </span>
             </td>
             <!-- Copy All -->
             <td class="pagingBtns">
                 <span id="copyAllDiv">
-                    <a href="javascript:checkCopy(document.asrTranForm.modelSelected.value,document.asrTranForm,'copyall','asrTranCopy.do');">
+                    <a href="javascript:checkCopy(document.asrTranForm.modelSelected.value,document.asrTranForm,'copyall','asrTranCopy.action');">
                         <img src="images/btnCopyAll.png" border="0" alt="Copy All" /></a>
                 </span>
             </td>
             <!-- Delete All -->
             <td class="pagingBtns">
                 <span id="delAllDiv">
-                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteall','asrTranDelete.do');">
+                    <a href="javascript:confirmDelete(document.asrTranForm,'deleteall','asrTranDelete.action');">
                         <img src="images/btnDeleteAll.png" border="0" alt="Delete All" /></a>
                 </span>
             </td>
             <!-- Publish All -->
             <td class="pagingBtns">
                 <span id="pubAllDiv">
-                    <a href="javascript:checkPublish(document.asrTranForm,'publishall','asrTranPublish.do');">
+                    <a href="javascript:checkPublish(document.asrTranForm,'publishall','asrTranPublish.action');">
                         <img src="images/btnPublishAll.png" border="0" alt="Publish All" /></a>
                 </span>
             </td>
             <!-- Cancel (Hidden by default) -->
             <td class="pagingBtns">
                 <span id="cancelDiv" class="hidden">
-                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'cancel','asrTranMaintenance.do');">
+                    <a href="javascript:chgActCmdSubmit(document.asrTranForm,'cancel','asrTranMaintenance.action');">
                         <img src="images/btnCancel.png" border="0" alt="Cancel Changes" /></a>
                 </span>
             </td>

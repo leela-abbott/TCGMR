@@ -15,6 +15,7 @@ pageEncoding="UTF-8" %>
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 <jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
 <jsp:useBean id="DBConst"  scope="session" class="abbott.ai.tcgm.data.DBConst" />
+<c:set var="pageTitle" value="BPCS Maintenance Data" scope="request" />
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<%@ include file="/include/masthead.jsf" %>

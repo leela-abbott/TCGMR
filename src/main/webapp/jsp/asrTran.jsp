@@ -1,8 +1,6 @@
 <a name="FilterView"></a>
 <%! String pageTitle = "ASR Maintenance"; %>
 <%@ include file="/include/header.jsf"%>
-<%-- <jsp:useBean id="asrTranForm" scope="session" class="abbott.ai.tcgm.action.form.AsrTranForm" /> --%>
-<!-- Added for -->
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 <jsp:useBean id="TCGMUser" scope="session"
 	type="abbott.ai.tcgm.entities.User" />
@@ -10,7 +8,8 @@
 	class="abbott.ai.tcgm.data.DBConst" />
 <jsp:useBean id="asrForm" scope="session"
 	class="abbott.ai.tcgm.action.form.AsrForm" />
-<!-- end -->
+<c:set var="pageTitle" value="ASR Maintenance" scope="request" />	
+	
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 	<%@ include file="/include/masthead.jsf"%>
 	<%@ include file="/include/maintNav.jsf"%>
@@ -68,351 +67,161 @@
 			<!-- Struts2 starts -->
 
 			<%-- <s:iterator value="searchObject"> --%>
-				<s:hidden name="asr.modelId" />
-				<s:hidden name="asr.datasetTableId" />
+			<s:hidden name="asr.modelId" />
+			<s:hidden name="asr.datasetTableId" />
 
 
-				<!-- Starts -->
+			<!-- Starts -->
 
-				<tr class="oddRowCenter">
+			<tr class="oddRowCenter">
 
-					<td><s:textfield theme="simple" name="searchObject.actionCode"
-							maxlength="1" cssClass="fltrWidth1"
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 1, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');" /></td>
+				<td><s:textfield theme="simple" name="searchObject.actionCode"
+						maxlength="1" cssClass="fltrWidth1"
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 1, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');" /></td>
 
 
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.productOrigin" maxlength="1"
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 1, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold'); "
-							cssClass="fltrWidth1" /></td>
-					<td><s:textfield theme="simple" name="searchObject.asr.rptAff"
-							maxlength="4"
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 4, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							onblur="checkPadLeft(this,'0',4);" cssClass="fltrWidth4" /></td>
-
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.rptProduct.invCode" maxlength="1"
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 1, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.productOrigin" maxlength="1"
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 1, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold'); "
 						cssClass="fltrWidth1" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.rptProduct.list" maxlength="6" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 6, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth6" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.rptProduct.label" maxlength="3" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 3, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth3" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.rptProduct.size" maxlength="3" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 3, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth3" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.rptProduct.pack" maxlength="4" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 4, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth4" /></td>
+				<td><s:textfield theme="simple" name="searchObject.asr.rptAff"
+						maxlength="4"
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 4, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						onblur="checkPadLeft(this,'0',4);" cssClass="fltrWidth4" /></td>
 
-					<td><s:textfield theme="simple" name="searchObject.asr.supAff"
-							maxlength="4" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 4, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							onblur="checkPadLeft(this,'0',4);" class="fltrWidth4" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.rptProduct.invCode" maxlength="1"
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 1, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						cssClass="fltrWidth1" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.rptProduct.list" maxlength="6" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 6, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth6" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.rptProduct.label" maxlength="3" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 3, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth3" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.rptProduct.size" maxlength="3" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 3, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth3" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.rptProduct.pack" maxlength="4" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 4, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth4" /></td>
 
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.supProduct.invCode" maxlength="1" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 1, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth1" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.supProduct.list" maxlength="6" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 6, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth6" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.supProduct.label" maxlength="3" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 3, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth3" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.supProduct.size" maxlength="3" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 3, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth3" /></td>
-					<td><s:textfield theme="simple"
-							name="searchObject.asr.supProduct.pack" maxlength="4" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 4, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth4" /></td>
+				<td><s:textfield theme="simple" name="searchObject.asr.supAff"
+						maxlength="4" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 4, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						onblur="checkPadLeft(this,'0',4);" class="fltrWidth4" /></td>
 
-					<td><s:textfield theme="simple" name="searchObject.asr.usage"
-							maxlength="16" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 16, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							onblur="alertLength(this,10);" class="fltrWidth16" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.supProduct.invCode" maxlength="1" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 1, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth1" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.supProduct.list" maxlength="6" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 6, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth6" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.supProduct.label" maxlength="3" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 3, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth3" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.supProduct.size" maxlength="3" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 3, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth3" /></td>
+				<td><s:textfield theme="simple"
+						name="searchObject.asr.supProduct.pack" maxlength="4" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 4, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth4" /></td>
 
-					<td><s:textfield theme="simple" name="searchObject.asr.supKey"
-							maxlength="1" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onkeyup="return autoTab(this, 1, event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth1" /></td>
+				<td><s:textfield theme="simple" name="searchObject.asr.usage"
+						maxlength="16" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 16, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						onblur="alertLength(this,10);" class="fltrWidth16" /></td>
 
-					<td><s:textfield theme="simple"
-							name="searchObject.publishFlag" maxlength="1" value=""
-							onkeydown="submitFilter(document.asrTranForm,'filter', event);"
-							onchange="makeFilterDirty('pagingDiv','red','bold');"
-							class="fltrWidth1" /></td>
-				</tr>
+				<td><s:textfield theme="simple" name="searchObject.asr.supKey"
+						maxlength="1" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onkeyup="return autoTab(this, 1, event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth1" /></td>
 
-
-				
-
-				<tr class="fltrTblHdng">
-					<td colspan="2">User<br>Id
-					</td>
-					<td colspan="15" class="bgWhiteRight">&nbsp;</td>
-				</tr>
-				<tr class="oddRowCenter">
-					<td colspan="2"><abbott:securePage
-							userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>"
-							requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>"
-							comparisonType=">=">
-							<s:select name="userSelected" cssClass="commandOption"
-								list="userlist"
-								onchange="makeFilterDirty('pagingDiv','red','bold');" />
-						</abbott:securePage>
-						<s:else>
-							<s:property value="TCGMUser.userid" />
-						</s:else></td>
-
-
-					<td colspan="15" class="bgWhiteRight"> <a
-						href="javascript:changeCmdAndSubmit(document.asrTranForm,'filter');">
-							<img src="images/btnFilter.png" alt="Filter" />
-					</a> <a
-						href="javascript:changeCmdAndSubmit(document.asrTranForm,'advancedfilter');">
-							<img src="images/btnAdvancedFilter.png" alt="Advanced Filter" />
-					</a> <a
-						href="javascript:changeCmdAndSubmit(document.asrTranForm,'clearfilter');">
-							<img src="images/btnClear.png" alt="Clear Filter" />
-					</a>
-					</td>
-				</tr>
-			<%-- </s:iterator> --%>
+				<td><s:textfield theme="simple" name="searchObject.publishFlag"
+						maxlength="1" value=""
+						onkeydown="submitFilter(document.asrTranForm,'filter', event);"
+						onchange="makeFilterDirty('pagingDiv','red','bold');"
+						class="fltrWidth1" /></td>
+			</tr>
 
 
 
 
-			<!-- Strust2 end -->
+			<tr class="fltrTblHdng">
+				<td colspan="2">User<br>Id
+				</td>
+				<td colspan="15" class="bgWhiteRight">&nbsp;</td>
+			</tr>
+			<tr class="oddRowCenter">
+				<td colspan="2"><abbott:securePage
+						userAccessLevel="<%=TCGMUser.getRole().getAccessLevel()%>"
+						requiredAccessLevel="<%=Role.Analyst.getAccessLevel()%>"
+						comparisonType=">=">
+						<s:select name="userSelected" cssClass="commandOption"
+							list="userlist"
+							onchange="makeFilterDirty('pagingDiv','red','bold');" />
+					</abbott:securePage> <s:else>
+						<s:property value="TCGMUser.userid" />
+					</s:else></td>
+
+
+				<td colspan="15" class="bgWhiteRight"><a
+					href="javascript:changeCmdAndSubmit(document.asrTranForm,'filter');">
+						<img src="images/btnFilter.png" alt="Filter" />
+				</a> <a
+					href="javascript:changeCmdAndSubmit(document.asrTranForm,'advancedfilter');">
+						<img src="images/btnAdvancedFilter.png" alt="Advanced Filter" />
+				</a> <a
+					href="javascript:changeCmdAndSubmit(document.asrTranForm,'clearfilter');">
+						<img src="images/btnClear.png" alt="Clear Filter" />
+				</a></td>
+			</tr>
 
 
 		</table>
 		<hr />
-		<%//Begin code for add new row%>
 
-		<%-- 		
-		<table width="780" cellspacing="0" >
-			<tr class="fltrTblHdng">
-				<td rowspan="2">Act<br>Code</td>
-				<td rowspan="2">Prod<br>Orig</td>
-				<td rowspan="2">Rpt<br>Aff</td>
-				<td rowspan="2">Inv<br>Cd</td>
-				<td colspan="4">Rpt Prod</td>
-				<td rowspan="2">Supp<br>Aff</td>
-				<td rowspan="2">Inv<br>Cd</td>
-				<td colspan="4">Sup Prod</td>
-				<td rowspan="2">Usage<br>Factor</td>
-				<td rowspan="2">Sup<br>Key</td>
-			</tr>
-			<tr class="fltrTblHdng">
-				<td>List</td>
-				<td>Label</td>
-				<td>Size</td>
-				<td>Pack</td>
-				<td>List</td>
-				<td>Label</td>
-				<td>Size</td>
-				<td>Pack</td>
-			</tr>
-			
-			
-			<nested:nest property="addNew">
-				<nested:nest property="asr">
-					<nested:hidden property="modelId" />
-					<nested:hidden property="datasetTableId" />
-				</nested:nest>
-				<% String submitAdd = "submitAdd(document.asrTranForm,'add','asrTranSave.do', event);";
-					if ((TCGMUser.getRole().getAccessLevel()) != (Role.Query.getAccessLevel())) {
-						submitAdd = "submitAdd(document.asrTranForm,'add','asrTranSave.do', event);";
-					}else{
-						submitAdd = "";
-					}
-				 %>
-				<tr class="oddRowCenter">
-					<td>
-						<nested:notEqual property="asr.msg" value="">
-							<a class="error"
-								href="#"
-								id="anchorAddNew"
-								name="anchorAddNew"
-								onclick="return false;"
-								onmouseover="showMsgPopup('anchorAddNew', '<nested:write property="asr.msg" />');"
-								onmouseout='hideMsgPopup();' >
-								<img src="images/exclamation.png" />
-							</a>
-						</nested:notEqual>
-						<nested:text property="actionCode" maxlength="1" styleClass="fltrWidth1"
-							onchange="makeAddNewDirty();"
-     					    onkeydown = "<%=submitAdd%>"							
-							onkeyup="return autoTab(this, 1, event);" />
-					</td>
-					<nested:nest property="asr">
-						<td>
-							<nested:text property="productOrigin" maxlength="1" styleClass="fltrWidth1"
-										 onchange="makeAddNewDirty();"
-										 onkeydown = "<%=submitAdd%>"
-										 onkeyup="return autoTab(this, 1, event);" />
-						</td>
-						<td>
-							<nested:text property="rptAff" maxlength="4" styleClass="fltrWidth4"
-										 onchange="makeAddNewDirty();"
-										 onkeydown = "<%=submitAdd%>"
-										 onkeyup="return autoTab(this, 4, event);"
-										 onblur="checkPadLeft(this,'0',4);" />
-						</td>
-						<nested:nest property="rptProduct">
-							<td>
-								<nested:text property="invCode" maxlength="1" styleClass="fltrWidth1"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 1, event);" />
-							</td>
-							<td>
-								<nested:text property="list" maxlength="6" styleClass="fltrWidth6"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 6, event);"
-											 onblur="checkPadLeft(this,'0',6);"/>
-							</td>
-							<td>
-								<nested:text property="label" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 3, event);"
-											 onblur="checkPadLeft(this,'0',3);" />
-							</td>
-							<td>
-								<nested:text property="size" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 3, event);"
-											 onblur="checkPadLeft(this,'0',3);" />
-							</td>
-							<td>
-								<nested:text property="pack" maxlength="4" styleClass="fltrWidth4"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 4, event);"
-											 onblur="checkPadLeft(this,'0',4);" />
-							</td>
-						</nested:nest>
-						<td>
-							<nested:text property="supAff" maxlength="4" styleClass="fltrWidth4"
-										 onchange="makeAddNewDirty();"
-										 onkeydown = "<%=submitAdd%>"
-										 onkeyup="return autoTab(this, 4, event);"
-										 onblur="checkPadLeft(this,'0',4);" />
-						</td>
-						<nested:nest property="supProduct">
-							<td>
-								<nested:text property="invCode" maxlength="1" styleClass="fltrWidth1"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 1, event);" />
-							</td>
-							<td>
-								<nested:text property="list" maxlength="6" styleClass="fltrWidth6"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 6, event);"
-											 onblur="checkPadLeft(this,'0',6);" />
-							</td>
-							<td>
-								<nested:text property="label" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 3, event);"
-											 onblur="checkPadLeft(this,'0',3);" />
-							</td>
-							<td>
-								<nested:text property="size" maxlength="3" styleClass="fltrWidth3"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 3, event);"
-											 onblur="checkPadLeft(this,'0',3);" />
-							</td>
-							<td>
-								<nested:text property="pack" maxlength="4" styleClass="fltrWidth4"
-											 onchange="makeAddNewDirty();"
-											 onkeydown = "<%=submitAdd%>"
-											 onkeyup="return autoTab(this, 4, event);"
-											 onblur="checkPadLeft(this,'0',4);" />
-							</td>
-						</nested:nest>
-						<td>
-							<nested:text property="usage" maxlength="16" styleClass="fltrWidth16"
-										 onchange="makeAddNewDirty();"
-										 onkeydown = "<%=submitAdd%>"
-										  onblur="alertLength(this,10);"
-										 onkeyup="return autoTab(this, 16, event);" />
-						</td>
-						<td>
-							<nested:text property="supKey" maxlength="1" styleClass="fltrWidth1"
-										 onchange="makeAddNewDirty();"
-										 onkeydown = "<%=submitAdd%>" />
-						</td>
-					</tr>
-				</nested:nest>
-			</nested:nest>
-			<tr>
-			<% 
-				if ((TCGMUser.getRole().getAccessLevel()) != (Role.Query.getAccessLevel())) { %>
-				<td colspan="16" class="right">
-					<a href="javascript:chgActCmdSubmit(document.asrTranForm,'add','asrTranSave.do');" >
-						<img src="images/btnAdd.png" alt="Add" /></a>
-					<a href="javascript:chgActCmdSubmit(document.asrTranForm,'massupdate','asrTranSave.do');">
-						<img src="images/btnMassUpdate.png" alt="Apply Changes to all records based on Filter criteria" /></a>
-					<a href="javascript:chgActCmdSubmit(document.asrTranForm,'clearaddnew','asrTranMaintenance.do');" >
-						<img src="images/btnClear.png" alt="Clear"/></a>
-				</td>
-				<%}%>
-			</tr>
-		</table> --%>
-
-
-		<!-- Strusts 2 starts -->
 
 		<table width="780" cellspacing="0">
 			<tr class="fltrTblHdng">
@@ -445,85 +254,94 @@
 				<td>Size</td>
 				<td>Pack</td>
 			</tr>
-			<%-- <s:iterator value="addNew"> --%>
-				<s:hidden name="asr.modelId" />
-				<s:hidden name="asr.datasetTableId" />
-				<tr class="oddRowCenter">
-					<td><s:if test="addNew.asr.msg != ''">
-							<a class="error" href="#" id="anchorAddNew" name="anchorAddNew"
-								onclick="return false;"
-								<%-- onmouseover="showMsgPopup('anchorAddNew', '<s:property value="asr.msg" />');" --%>
+			<s:hidden name="searchObject.asr.modelId" />
+			<s:hidden name="searchObject.asr.datasetTableId" />
+			<tr class="oddRowCenter">
+				<td><s:if test="addNew.asr.msg != ''">
+						<a class="error" href="#" id="anchorAddNew" name="anchorAddNew"
+							onclick="return false;"
+							<%-- onmouseover="showMsgPopup('anchorAddNew', '<s:property value="asr.msg" />');" --%>
 								onmouseover="showMsgPopup('anchorAddNew', '<s:property value="addNew.asr.msg" escapeHtml="true"/>');"
-								onmouseout='hideMsgPopup();'> <img
-								src="images/exclamation.png" />
-							</a>
-						</s:if> <s:textfield theme="simple" name="addNew.actionCode" id="addNew.actionCode" maxlength="1"
-							cssClass="fltrWidth1" onchange="makeAddNewDirty();"
-							onkeydown="return autoTab(this, 1, event);" /></td>
-					<%-- <s:iterator value="asr"> --%>
-						<td><s:textfield theme="simple" name="addNew.asr.productOrigin"
-								maxlength="1" cssClass="fltrWidth1"
-								onchange="makeAddNewDirty();"
-								onkeydown="return autoTab(this, 1, event);" /></td>
-						<td><s:textfield theme="simple" name="addNew.asr.rptAff" maxlength="4"
-								cssClass="fltrWidth4" onchange="makeAddNewDirty();"
-								onkeydown="return autoTab(this, 4, event);"
-								onblur="checkPadLeft(this,'0',4);" /></td>
-						<%-- <s:iterator value="rptProduct"> --%>
-							<td><s:textfield theme="simple" name="addNew.asr.rptProduct.invCode" maxlength="1"
-									cssClass="fltrWidth1" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 1, event);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.rptProduct.list" maxlength="6"
-									cssClass="fltrWidth6" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 6, event);"
-									onblur="checkPadLeft(this,'0',6);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.rptProduct.label" maxlength="3"
-									cssClass="fltrWidth3" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 3, event);"
-									onblur="checkPadLeft(this,'0',3);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.rptProduct.size" maxlength="3"
-									cssClass="fltrWidth3" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 3, event);"
-									onblur="checkPadLeft(this,'0',3);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.rptProduct.pack" maxlength="4"
-									cssClass="fltrWidth4" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 4, event);"
-									onblur="checkPadLeft(this,'0',4);" /></td>
-						<%-- </s:iterator> --%>
-						<td><s:textfield theme="simple" name="addNew.asr.supAff" maxlength="4"
-								cssClass="fltrWidth4" onchange="makeAddNewDirty();"
-								onkeydown="return autoTab(this, 4, event);"
-								onblur="checkPadLeft(this,'0',4);" /></td>
-						<%-- <s:iterator value="supProduct"> --%>
-							<td><s:textfield theme="simple" name="addNew.asr.supProduct.invCode" maxlength="1"
-									cssClass="fltrWidth1" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 1, event);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.supProduct.list" maxlength="6"
-									cssClass="fltrWidth6" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 6, event);"
-									onblur="checkPadLeft(this,'0',6);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.supProduct.label" maxlength="3"
-									cssClass="fltrWidth3" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 3, event);"
-									onblur="checkPadLeft(this,'0',3);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.supProduct.size" maxlength="3"
-									cssClass="fltrWidth3" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 3, event);"
-									onblur="checkPadLeft(this,'0',3);" /></td>
-							<td><s:textfield theme="simple" name="addNew.asr.supProduct.pack" maxlength="4"
-									cssClass="fltrWidth4" onchange="makeAddNewDirty();"
-									onkeydown="return autoTab(this, 4, event);"
-									onblur="checkPadLeft(this,'0',4);" /></td>
-						<%-- </s:iterator> --%>
-						<td><s:textfield theme="simple" name="addNew.asr.usage" maxlength="16"
-								cssClass="fltrWidth16" onchange="makeAddNewDirty();"
-								onkeydown="return autoTab(this, 16, event);"
-								onblur="alertLength(this,10);" /></td>
-						<td><s:textfield theme="simple" name="addNew.asr.supKey" maxlength="1"
-								cssClass="fltrWidth1" onchange="makeAddNewDirty();"
-								onkeydown="return autoTab(this, 1, event);" /></td>
-					<%-- </s:iterator> --%>
-				</tr>
+							onmouseout='hideMsgPopup();'> <img
+							src="images/exclamation.png" />
+						</a>
+					</s:if> <s:textfield theme="simple" name="addNew.actionCode"
+						id="addNew.actionCode" maxlength="1" cssClass="fltrWidth1"
+						onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 1, event);" /></td>
+				<td><s:textfield theme="simple" name="addNew.asr.productOrigin"
+						maxlength="1" cssClass="fltrWidth1" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 1, event);" /></td>
+				<td><s:textfield theme="simple" name="addNew.asr.rptAff"
+						maxlength="4" cssClass="fltrWidth4" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 4, event);"
+						onblur="checkPadLeft(this,'0',4);" /></td>
+				<%-- <s:iterator value="rptProduct"> --%>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.rptProduct.invCode" maxlength="1"
+						cssClass="fltrWidth1" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 1, event);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.rptProduct.list" maxlength="6"
+						cssClass="fltrWidth6" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 6, event);"
+						onblur="checkPadLeft(this,'0',6);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.rptProduct.label" maxlength="3"
+						cssClass="fltrWidth3" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 3, event);"
+						onblur="checkPadLeft(this,'0',3);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.rptProduct.size" maxlength="3"
+						cssClass="fltrWidth3" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 3, event);"
+						onblur="checkPadLeft(this,'0',3);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.rptProduct.pack" maxlength="4"
+						cssClass="fltrWidth4" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 4, event);"
+						onblur="checkPadLeft(this,'0',4);" /></td>
+				<%-- </s:iterator> --%>
+				<td><s:textfield theme="simple" name="addNew.asr.supAff"
+						maxlength="4" cssClass="fltrWidth4" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 4, event);"
+						onblur="checkPadLeft(this,'0',4);" /></td>
+				<%-- <s:iterator value="supProduct"> --%>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.supProduct.invCode" maxlength="1"
+						cssClass="fltrWidth1" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 1, event);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.supProduct.list" maxlength="6"
+						cssClass="fltrWidth6" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 6, event);"
+						onblur="checkPadLeft(this,'0',6);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.supProduct.label" maxlength="3"
+						cssClass="fltrWidth3" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 3, event);"
+						onblur="checkPadLeft(this,'0',3);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.supProduct.size" maxlength="3"
+						cssClass="fltrWidth3" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 3, event);"
+						onblur="checkPadLeft(this,'0',3);" /></td>
+				<td><s:textfield theme="simple"
+						name="addNew.asr.supProduct.pack" maxlength="4"
+						cssClass="fltrWidth4" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 4, event);"
+						onblur="checkPadLeft(this,'0',4);" /></td>
+				<%-- </s:iterator> --%>
+				<td><s:textfield theme="simple" name="addNew.asr.usage"
+						maxlength="16" cssClass="fltrWidth16"
+						onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 16, event);"
+						onblur="alertLength(this,10);" /></td>
+				<td><s:textfield theme="simple" name="addNew.asr.supKey"
+						maxlength="1" cssClass="fltrWidth1" onchange="makeAddNewDirty();"
+						onkeydown="return autoTab(this, 1, event);" /></td>
+				<%-- </s:iterator> --%>
+			</tr>
 			<%-- </s:iterator> --%>
 			<tr>
 
@@ -551,8 +369,8 @@
 
 		<a name="ChangeMultipleRowView"></a>
 		<div name="navigation" id="navigation" class="hidden">
-		   <%@ include	file="/include/asrTranPaging.jsf"%>
-		 </div>
+			<%@ include file="/include/asrTranPaging.jsf"%>
+		</div>
 
 		<table width="780" cellspacing="0">
 			<tr class="mntTblHdng">
@@ -632,7 +450,7 @@
 				</a></td>
 				<td rowspan="2" valign="middle"><input type="image"
 					src="images/btnCheck.png" alt="Toggle Select All"
-					onclick="return toggleSelectAll('asrTranListItem','asr.selected','<s:property value='asrTranListSize'/>');" />
+					onclick="return toggleSelectAll('asrTranList','asr.selected','<s:property value='asrTranListSize'/>');" />
 				</td>
 			</tr>
 			<tr class="mntTblHdng">
@@ -701,117 +519,141 @@
 						</s:if>
 				</a></td>
 			</tr>
-			<s:hidden property="asrTranListSize" />
+			<s:hidden name="asrTranListSize" />
 
 			<s:if test="asrTranList != null">
-			
-				<s:iterator value="asrTranList" var="asrTranBean" status="asrTranStatus">
-					<tr class="<s:if test='#asrTranStatus.even'>evenRow</s:if><s:else>oddRow</s:else>">
-						<td class="mntCenter">
-							<s:property value="pagingFilter.startRecord + #asrTranStatus.index" />
-							<s:if test="#asrTranBean.asr.msg != ''">
-								<a class="error" href="#"
-								   id="anchor<s:property value='#asrTranStatus.index'/>"
-								   name="anchor<s:property value='#asrTranStatus.index'/>"
-								   onclick="return false;"
-								   onmouseover="showMsgPopup('anchor<s:property value='#asrTranStatus.index'/>', '<s:property value='#asrTranBean.asr.msg'/>');"
-								   onmouseout="hideMsgPopup();">
-									<img src="images/exclamation.png" />
-								</a>
-							</s:if>
-							<s:textfield theme ="simple" 
-							     name="asrTranList[%{#asrTranStatus.index}].actionCode"
-							     maxlength="1" cssClass="mntWidth1"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" 
-								 onkeydown="restrSpace(event);" />
-						</td>
-						
-						<td class="mntCenter">
-							<s:textfield theme ="simple" 
-							    name="asrTranList[%{#asrTranStatus.index}].asr.productOrigin" 
-							      maxlength="1" cssClass="mntWidth1"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" 
-								 onblur="checkPadLeft(this,'0',1);" 
-								 onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.rptAff" maxlength="4" cssClass="mntWidth4"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 4, event);" onblur="checkPadLeft(this,'0',4);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.invCode" maxlength="1" cssClass="mntWidth1"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" onblur="checkPadLeft(this,'0',1);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.list" maxlength="6" cssClass="mntWidth6"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 6, event);" onblur="checkPadLeft(this,'0',6);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.label" maxlength="3" cssClass="mntWidth3"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 3, event);" onblur="checkPadLeft(this,'0',3);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.size" maxlength="3" cssClass="mntWidth3"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 3, event);" onblur="checkPadLeft(this,'0',3);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.pack" maxlength="4" cssClass="mntWidth4"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 4, event);" onblur="checkPadLeft(this,'0',4);" onkeydown="restrSpace(event);" />
-						</td>
 
+				<s:iterator value="asrTranList" var="asrTranBean"
+					status="asrTranStatus">
+					<tr
+						class="<s:if test='#asrTranStatus.even'>evenRow</s:if><s:else>oddRow</s:else>">
+						<td class="mntCenter"><s:property
+								value="pagingFilter.startRecord + #asrTranStatus.index" /> <s:if
+								test="#asrTranBean.asr.msg != ''">
+								<a class="error" href="#"
+									id="anchor<s:property value='#asrTranStatus.index'/>"
+									name="anchor<s:property value='#asrTranStatus.index'/>"
+									onclick="return false;"
+									onmouseover="showMsgPopup('anchor<s:property value='#asrTranStatus.index'/>', '<s:property value='#asrTranBean.asr.msg'/>');"
+									onmouseout="hideMsgPopup();"> <img
+									src="images/exclamation.png" />
+								</a>
+							</s:if> <s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].actionCode"
+								maxlength="1" cssClass="mntWidth1"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 1, event);"
+								onkeydown="restrSpace(event);" /></td>
+
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.productOrigin"
+								maxlength="1" cssClass="mntWidth1"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 1, event);"
+								onblur="checkPadLeft(this,'0',1);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptAff"
+								maxlength="4" cssClass="mntWidth4"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 4, event);"
+								onblur="checkPadLeft(this,'0',4);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.invCode"
+								maxlength="1" cssClass="mntWidth1"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 1, event);"
+								onblur="checkPadLeft(this,'0',1);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.list"
+								maxlength="6" cssClass="mntWidth6"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 6, event);"
+								onblur="checkPadLeft(this,'0',6);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.label"
+								maxlength="3" cssClass="mntWidth3"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 3, event);"
+								onblur="checkPadLeft(this,'0',3);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.size"
+								maxlength="3" cssClass="mntWidth3"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 3, event);"
+								onblur="checkPadLeft(this,'0',3);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.rptProduct.pack"
+								maxlength="4" cssClass="mntWidth4"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 4, event);"
+								onblur="checkPadLeft(this,'0',4);"
+								onkeydown="restrSpace(event);" /></td>
+
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supAff"
+								maxlength="4" cssClass="mntWidth4"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 4, event);"
+								onblur="checkPadLeft(this,'0',4);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.invCode"
+								maxlength="1" cssClass="mntWidth1"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 1, event);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.list"
+								maxlength="6" cssClass="mntWidth6"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 6, event);"
+								onblur="checkPadLeft(this,'0',6);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.label"
+								maxlength="3" cssClass="mntWidth3"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 3, event);"
+								onblur="checkPadLeft(this,'0',3);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.size"
+								maxlength="3" cssClass="mntWidth3"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 3, event);"
+								onblur="checkPadLeft(this,'0',3);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.pack"
+								maxlength="4" cssClass="mntWidth4"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeyup="return autoTab(this, 4, event);"
+								onblur="checkPadLeft(this,'0',4);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.usage"
+								maxlength="16" cssClass="mntWidth16"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onblur="alertLength(this,10);"
+								onkeyup="return autoTab(this, 16, event);"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield theme="simple"
+								name="asrTranList[%{#asrTranStatus.index}].asr.supKey"
+								maxlength="1" cssClass="mntWidth1"
+								onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
+								onkeydown="restrSpace(event);" /></td>
+						<td class="mntCenter"><s:textfield
+								name="asrTranList[%{#asrTranStatus.index}].publishFlag"
+								maxlength="1" cssClass="mntWidth1" disabled="true" /></td>
 						<td class="mntCenter">
-							<s:textfield theme ="simple"  name="asrTranList[%{#asrTranStatus.index}].asr.supAff" maxlength="4" cssClass="mntWidth4"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 4, event);" onblur="checkPadLeft(this,'0',4);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.invCode" maxlength="1" cssClass="mntWidth1"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 1, event);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.list" maxlength="6" cssClass="mntWidth6"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 6, event);" onblur="checkPadLeft(this,'0',6);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.label" maxlength="3" cssClass="mntWidth3"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 3, event);" onblur="checkPadLeft(this,'0',3);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.size" maxlength="3" cssClass="mntWidth3"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 3, event);" onblur="checkPadLeft(this,'0',3);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supProduct.pack" maxlength="4" cssClass="mntWidth4"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onkeyup="return autoTab(this, 4, event);" onblur="checkPadLeft(this,'0',4);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.usage" maxlength="16" cssClass="mntWidth16"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');"
-								 onblur="alertLength(this,10);" onkeyup="return autoTab(this, 16, event);" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield theme ="simple" name="asrTranList[%{#asrTranStatus.index}].asr.supKey" maxlength="1" cssClass="mntWidth1"
-								 onchange="makeEditDirty('asrTranList[%{#asrTranStatus.index}].asr.selected');" onkeydown="restrSpace(event);" />
-						</td>
-						<td class="mntCenter">
-							<s:textfield name="asrTranList[%{#asrTranStatus.index}].publishFlag" maxlength="1" cssClass="mntWidth1" disabled="true" />
-						</td>
-						<td class="mntCenter">
-							<s:checkbox name="asrTranList[%{#asrTranStatus.index}].asr.selected" />
-						</td>
+						P<s:checkbox
+								name="asrTranList[%{#asrTranStatus.index}].asr.selected" /></td>
 					</tr>
 				</s:iterator>
 				<div name="navigation" id="navigation" class="hidden">
@@ -822,7 +664,7 @@
 
 
 
-		<s:if test="asrTranListItem == null || asrTranListItem.isEmpty()">
+		<s:if test="asrTranList == null || asrTranList.isEmpty()">
 			<p class="recordsNotFound">No Records Found Matching Filter
 				Criteria</p>
 		</s:if>
@@ -837,7 +679,6 @@
 	/**
 	*
 	*/
-  <%//Sridevi.K Script added to alert the user if he clicks copySelected without selecting any row%>
   
   /**
   * Prompt the user to select atleast one records
@@ -856,7 +697,7 @@
 			}
 			else {
 				for(i = 0; i < asrTranForm.asrTranListSize.value; i++) {
-					var element = "asrTranListItem[" + i + "].asr.selected";				
+					var element = "asrTranList[" + i + "].asr.selected";				
 					if(!rowSelected){
 						for(j = 0; j < asrTranForm.elements.length; j++) {
 							if(asrTranForm.elements[j].name == element){
@@ -878,7 +719,6 @@
 		}
 	}
 	
-  <%//Sridevi.K added script to alert the user to select atleast one row to publish%>	
   /**
   * Prompt the user to select atleast one records
   */  	
@@ -890,7 +730,7 @@
 			}
 			else {
 				for(i = 0; i < asrTranForm.asrTranListSize.value; i++) {			
-					var element = "asrTranListItem[" + i + "].asr.selected";				
+					var element = "asrTranList[" + i + "].asr.selected";				
 					if(!rowSelected){				
 						for(j = 0; j < asrTranForm.elements.length; j++) {
 							if(asrTranForm.elements[j].name == element){
@@ -909,20 +749,20 @@
 				alert( 'You must select at least one row to publish' );
 			}	
 	}		
-	<%//Sridevi.K end of Script to alert the user if he clicks publish selected without selecting any rows%>
   
 /**
  * Prompt the user to select atleast one record and confirm the deletion of records
  */
 function confirmDelete(form,cmd,action)
 {
+	alert("2");
 	var rowSelected=false;
 	if ( cmd == 'deleteall'){		
 			rowSelected=true;
 	}
 	else {
 		for(i = 0; i < asrTranForm.asrTranListSize.value; i++) {
-			var element = "asrTranListItem[" + i + "].asr.selected";				
+			var element = "asrTranList[" + i + "].asr.selected";				
 			if(!rowSelected){
 				for(j = 0; j < asrTranForm.elements.length; j++) {
 					if(asrTranForm.elements[j].name == element){
@@ -957,5 +797,4 @@ return true;
         
 }
   </script>
-	<%//Sridevi.K end of script added to alert the user if he clicks copyselected without selecting any row%>
 	<%@ include file="/include/footer.jsf"%>

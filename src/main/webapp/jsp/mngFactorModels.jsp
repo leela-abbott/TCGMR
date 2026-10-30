@@ -1,12 +1,13 @@
 <%! String pageTitle="Select or Create Model";%>
 <%@ include file="/include/header.jsf" %>
-<%@ include file="/include/masthead.jsf" %>
+
 <%@ include file="/include/errorDisplay.jsf" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <!-- Added for -->
 <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" />
 <jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" />
+<c:set var="pageTitle" value="Select or Create Model" scope="request" />
 <!-- end -->
 
 <!DOCTYPE html>
@@ -16,6 +17,7 @@
     <title>TCGM Factor model</title>
    <script type="text/javascript" src="include/common.js"></script>
    <script type="text/javascript" language=javascript>
+   
 	function getForm() {
 		return document.getElementById('mngFactorModelsForm');
 	}
@@ -65,7 +67,6 @@
 		changeActionAndSubmit(form, "updateModelSelection.do");
 	}
 
-	<%//Sridevi.K 06/05/2005 New script for fixing the empty description field while creating a model starts here.%>
 	function createModel() {
 		
 		var iChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
@@ -81,7 +82,6 @@
 			createForm.submit();
 		}
 	}
-	<%//Sridevi.K New script ends here 06/05/2005%>
 
 	function showClosedModelDetails(stat) {
 		var form = getForm();
@@ -115,7 +115,7 @@
     </div>
 </s:if>
 
-
+<%@ include file="/include/masthead.jsf" %>
 
 <s:form name="mngFactorModelsForm" id="mngFactorModelsForm" action="" type="abbott.ai.tcgm.action.form.MngFactorModelsForm">
 

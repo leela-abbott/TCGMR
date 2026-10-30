@@ -14,8 +14,7 @@
 	type="abbott.ai.tcgm.entities.User" />
 <jsp:useBean id="DBConst" scope="session"
 	class="abbott.ai.tcgm.data.DBConst" />
-<%-- <jsp:useBean id="bpcsForm" scope="session" class="abbott.ai.tcgm.action.form.BpcsForm" /> --%>
-<!-- end -->
+<c:set var="pageTitle" value="BPC Data" scope="request" />
 
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">

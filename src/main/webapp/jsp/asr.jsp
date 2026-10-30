@@ -10,19 +10,12 @@
 <a id="FilterView" name="FilterView"></a>
 
 <%@ include file="/include/header.jsf"%>
-<!--
-    Keep this custom tag only if it is still available in the application.
-    Ideally authentication should eventually move to a Struts interceptor.
--->
 
-<!-- Added for -->
-<%-- <abbott:checkLogon beanName="TCGMUser" forwardPage="login.jsp" /> --%>
-<%-- <jsp:useBean id="TCGMUser"  scope="session" type="abbott.ai.tcgm.entities.User" /> --%>
 <jsp:useBean id="DBConst" scope="session"
 	class="abbott.ai.tcgm.data.DBConst" />
 <jsp:useBean id="asrForm" scope="session"
 	class="abbott.ai.tcgm.action.form.AsrForm" />
-<!-- end -->
+<c:set var="pageTitle" value="ASR Data" scope="request" />
 
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
@@ -44,8 +37,6 @@
 		<s:hidden name="cmd" id="cmd" />
 		<s:hidden name="focusField" />
 		<s:hidden name="rowToCopy" />
-		<%--  <s:hidden name="asrErrorListSize"/> --%>
-		<%--  <s:hidden name="asrListSize"/ --%>
 
     <s:hidden name="sortObject.sortColumn" />
 		<s:hidden name="sortObject.sortOrder" />
@@ -117,7 +108,6 @@
 				<!-- Errors checkbox -->
 
 				<s:if test="asrErrorListSize != 0">
-xxx
 					<td><input type="checkbox" name="errs" value="on"
 						onclick="changeCmdAndSubmit(
                                document.getElementById('asrForm'),
@@ -551,11 +541,6 @@ xxx
 			</tr>
 
 
-			<!--
-            Recommended:
-            calculate canEdit in the Struts Action rather than referencing
-            Role.Query.getAccessLevel() directly from JSP.
-        -->
 
 			<s:if test="canEdit">
 
@@ -764,11 +749,6 @@ xxx
 			<!-- DATA ROWS                                             -->
 			<!-- ===================================================== -->
 
-
-
-
-			<%-- <s:if test="asrListItem != null && !asrListItem.isEmpty()"> --%>
-
 			<s:if test="asrList != null">
 
 				<s:iterator value="asrList" var="asrBean" status="asrStatus">
@@ -798,13 +778,6 @@ xxx
 						<td class="mntCenter"><s:if
 								test="#asrBean.msg != null && #asrBean.msg != ''">
 
-								<%--  #"
-                               onclick="return false;"
-                               title="<s:property value='#asrBean.msg'/>">
-
-                                images/exclamation.png
-
-                            </a> --%>
 
 								<a class="error" href="#"
 									id="anchor<c:out value="${asrStatus.index}"/>"
@@ -1047,16 +1020,6 @@ xxx
         return document.getElementById("asrForm");
     }
 
-
-    /*
-     * Replaces references such as:
-     *
-     * document.asrForm
-     *
-     * Using getElementById is more reliable.
-     */
-
-
     function markRowDirty(index) {
 
         var form = getAsrForm();
@@ -1068,21 +1031,10 @@ xxx
 
         if (field) {
 
-            /*
-             * Preserve the behavior of the old
-             * makeEditDirty(...) function.
-             */
-
             makeEditDirty(fieldName);
         }
     }
 
-
-    /*
-     * Enter on Add/Mass Update row.
-     *
-     * canEdit should be exposed by the Action.
-     */
 
     function submitAddNewSave(event) {
     	
@@ -1312,8 +1264,6 @@ xxx
     );
 
 </script>
-
-
 	<%@ include file="/include/footer.jsf"%>
 
 </body>

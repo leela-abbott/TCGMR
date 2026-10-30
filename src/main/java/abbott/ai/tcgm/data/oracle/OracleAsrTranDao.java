@@ -598,11 +598,11 @@ public class OracleAsrTranDao extends OracleDao implements AsrTranDao
 			cs.setString( 20, this.updColDefault(this.userToken.getUserid(),"Anonymous") );
 			cs.setString( 21, this.updColDefault(this.userToken.getUserid(),"Anonymous") );
 			cs.setString( 22, asrTran.getAsrTranId());
-
 			cs.execute();
 		}
 		catch(SQLException sqle)
 		{
+			sqle.printStackTrace();
 			logException(className,methodName,sqle);
 			if(sqle.toString().indexOf("ORA-00001") > 0)
 			{
@@ -617,6 +617,7 @@ public class OracleAsrTranDao extends OracleDao implements AsrTranDao
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			logException(className,methodName,e);
 			throw new TCGMException ( className,methodName,e.toString());
 		}

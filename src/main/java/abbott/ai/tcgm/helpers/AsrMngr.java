@@ -626,6 +626,7 @@ public class AsrMngr implements TCGMMngr
 	public Vector getSelectedAsrTran(Vector asrTranList)
 	{
 		Vector selectedAsrTran = new Vector();
+		
 
 		for(int i = 0; i < asrTranList.size(); i++)
 		{
@@ -633,8 +634,8 @@ public class AsrMngr implements TCGMMngr
 
 			if(asrTran.getAsr().isSelected())
 			{
-				asrTran.getAsr().setDatasetTableId(DBConst.DEF_DATASET_TABLE_ID);
-				asrTran.setPublishFlag(TCGMConstants.FLAG_UNPUBLISHED);
+				//asrTran.getAsr().setDatasetTableId(DBConst.DEF_DATASET_TABLE_ID);
+				//asrTran.setPublishFlag(TCGMConstants.FLAG_UNPUBLISHED);
 				selectedAsrTran.add(asrTran);
 			}
 		}
